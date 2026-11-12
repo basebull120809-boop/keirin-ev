@@ -1,0 +1,18 @@
+name: notify-test（通知テスト）
+on:
+  workflow_dispatch:
+  push:
+    paths: [".github/workflows/notify-test.yml"]
+permissions: { issues: write }
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: |
+          gh api -X POST repos/${{ github.repository }}/issues/1/comments \
+            -f body="### 🔔 通知テスト（$(TZ=Asia/Tokyo date +%H:%M)）
+          当日運用の買い目は、この形でIssueにコメントされます。
+          | 買い目 | 金額 | 確率 | オッズ | 期待値 |
+          |---|---:|---:|---:|---:|
+          | **2-4-3** | 200円 | 1.7% | 117.7 | 2.01 |"
