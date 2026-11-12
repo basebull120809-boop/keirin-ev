@@ -119,3 +119,18 @@ def export_report(con, days, dates, market=None, backtest=None):
     if paper:
         d["paper"] = paper
     save(d)
+
+
+def split_docs(folder="site/docs"):
+    """dashboard.json → ページのデータベース（collection: site）用の文書ファイル"""
+    d = load()
+    Path(folder).mkdir(parents=True, exist_ok=True)
+    docs = dict(summary={k: d.get(k) for k in ("updated_at", "collect", "config", "model")},
+                picks=d.get("picks"), paper=d.get("paper"),
+                backtest=d.get("backtest"), market=d.get("market"))
+    out = []
+    for k, v in docs.items():
+        if v:
+            (Path(folder) / f"{k}.json").write_text(json.dumps(_clean(v), ensure_ascii=False), encoding="utf-8")
+            out.append(k)
+    return out

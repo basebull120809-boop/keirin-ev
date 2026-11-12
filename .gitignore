@@ -2,3 +2,4 @@ data/*.db
 data/html/
 __pycache__/
 *.pyc
+site/docs/

@@ -219,6 +219,9 @@ def main():
     elif a.cmd == "live":                        # 当日運用（締切前判定と通知）
         from keirin_ev.live import run
         run(max_minutes=float(a.args[0]) if a.args else 340)
+    elif a.cmd == "sitedocs":                    # ページ用の文書ファイルを書き出す
+        from keirin_ev.site import split_docs
+        print(" ".join(split_docs()))
     elif a.cmd == "report":                      # スマホで見るレポート(Markdown)
         cmd_report(con, a)
     elif a.cmd == "market":
