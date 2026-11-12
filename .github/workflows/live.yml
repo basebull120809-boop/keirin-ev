@@ -18,6 +18,7 @@ jobs:
     env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1", GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip }
       - run: pip install -r requirements.txt
@@ -29,4 +30,4 @@ jobs:
           python -c "from keirin_ev.site import export_live; export_live()" || true
           git add data/live site
           git commit -m "live $(date +%F_%H%M)" || exit 0
-          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done

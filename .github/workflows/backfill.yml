@@ -15,13 +15,17 @@ jobs:
     env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
     steps:
       - uses: actions/checkout@v4
+        with: { ref: main }
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip }
       - run: pip install -r requirements.txt
-      - run: python main.py backfill "${{ inputs.days || '7' }}" "$OLDEST" 2>&1 | tail -300
-      - name: 保存
+      - name: 1日ずつ取得して保存
         run: |
           git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
-          git add data/daily
-          git commit -m "backfill $(date +%F_%H%M)" || exit 0
-          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          for n in $(seq 1 ${{ inputs.days || '7' }}); do
+            git pull -q --rebase -X theirs || true
+            python main.py backfill 1 "$OLDEST" 2>&1 | tail -40
+            git add data/daily
+            git commit -qm "backfill $(date +%F_%H%M)" || break
+            for i in 1 2 3; do git pull -q --rebase -X theirs && git push -q && break; sleep 5; done
+          done
