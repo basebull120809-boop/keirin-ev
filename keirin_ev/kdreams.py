@@ -233,11 +233,72 @@ def parse_deadline(s):
     return None
 
 
-def parse_race(html, rid):
+def parse_finish(s, rid):
+    """全着順・着差・上がり・決まり手・S/B"""
+    t = s.find("table", class_="result_table")
+    rows = []
+    if t is None:
+        return pd.DataFrame(rows)
+    for tr in t.find_all("tr"):
+        num = tr.find("td", class_="num")
+        if not num:
+            continue
+        tds = [td.get_text(strip=True) for td in tr.find_all("td")]
+        i = [td for td in tr.find_all("td")].index(num)
+        rank = tds[i - 1] if i >= 1 else ""
+        rest = tds[i + 1:]
+        rows.append(dict(race_id=rid, car=int(num.get_text(strip=True)),
+                         rank=int(rank) if rank.isdigit() else None, rank_txt=rank,
+                         margin=rest[1] if len(rest) > 1 else None,
+                         agari=_num(rest[2]) if len(rest) > 2 else None,
+                         kimarite=rest[3] if len(rest) > 3 else None,
+                         sb=rest[4] if len(rest) > 4 else None))
+    return pd.DataFrame(rows)
+
+
+def parse_history(s, rid):
+    """今場所・前場所・前々場所の 日付/種目/着順/上がり（この日より前のものだけ）"""
+    t = s.find("table", class_="past_racecard_table")
+    rows = []
+    if t is None:
+        return pd.DataFrame(rows)
+    race_date = pd.Timestamp(f"{rid[2:6]}-{rid[6:8]}-{rid[8:10]}") + pd.Timedelta(days=int(rid[10:12]) - 1)
+    for tr in t.find_all("tr"):
+        num = tr.find("td", class_="num")
+        if not num:
+            continue
+        car = int(num.get_text(strip=True))
+        cells = tr.find_all("td")
+        for which, cell in zip(["今", "前", "前々"], cells[-3:]):
+            tok = [x for x in cell.get_text("|", strip=True).split("|") if x]
+            for k, x in enumerate(tok):
+                m = re.fullmatch(r"(\d{1,2})/(\d{1,2})", x)
+                if not m or k + 2 >= len(tok):
+                    continue
+                mo, dd = int(m.group(1)), int(m.group(2))
+                y = race_date.year - (1 if mo > race_date.month else 0)
+                try:
+                    d = pd.Timestamp(year=y, month=mo, day=dd)
+                except ValueError:
+                    continue
+                if d >= race_date:
+                    continue
+                rank = tok[k + 2]
+                ag = _num(tok[k + 3]) if k + 3 < len(tok) else None
+                rows.append(dict(race_id=rid, car=car, which=which, date=d.strftime("%Y-%m-%d"),
+                                 event=tok[k + 1], rank=int(re.sub(r"\D", "", rank)) if re.search(r"\d", rank) else None,
+                                 rank_txt=rank, agari=ag))
+    return pd.DataFrame(rows)
+
+
+def parse_race(html, rid, extra=False):
     s = soup(html)
     ent = parse_entries(s, rid)
     ent = ent.merge(parse_lines(s, ent), on=["race_id", "car"], how="left")
-    return ent, parse_odds(s, rid), parse_result(s, rid), parse_race_info(s)
+    out = (ent, parse_odds(s, rid), parse_result(s, rid), parse_race_info(s))
+    if extra:
+        return out + (parse_finish(s, rid), parse_history(s, rid))
+    return out
 
 
 # ---------------- 1日分 ----------------
@@ -261,15 +322,16 @@ class KdreamsCollector:
     name = "kdreams"
 
     def fetch_day(self, date, log=print):
-        R, E, RES, OD = [], [], [], []
+        R, E, RES, OD, FIN, HIS = [], [], [], [], [], []
         n_ok = 0
         ids = race_ids_of_day(date)
         for venue, rid in ids:
             try:
-                ent, od, res, info = parse_race(fetch(f"/{venue}/racedetail/{rid}/"), rid)
+                ent, od, res, info, fin, his = parse_race(fetch(f"/{venue}/racedetail/{rid}/"), rid, extra=True)
             except Exception as e:                     # 1レースの失敗で止めない
                 log(f"  ! {venue} {rid} 解析失敗: {e}")
                 continue
+            FIN.append(fin); HIS.append(his)
             ok, msg = check(rid, ent, od, res)
             n_ok += ok
             if not ok:
@@ -283,7 +345,8 @@ class KdreamsCollector:
         log(f"  {len(ids)}レース中 {n_ok} レース完全一致（オッズ×100＝払戻）")
         cat = lambda xs: pd.concat(xs, ignore_index=True) if xs else pd.DataFrame()
         return dict(races=pd.DataFrame(R), entries=cat(E),
-                    results=pd.DataFrame(RES), odds_trifecta=cat(OD))
+                    results=pd.DataFrame(RES), odds_trifecta=cat(OD),
+                    finish=cat(FIN), history=cat(HIS))
 
 
 def probe(dates, log=print):

@@ -50,13 +50,27 @@ def picks_and_paper():
         res = None
         if isinstance(r.get("win"), str):
             res = dict(combo=r["win"], payout=int(r["tri_payout"]) if r["tri_payout"] == r["tri_payout"] else None)
-        races.append(dict(venue=VENUE_JA.get(r["venue"], r["venue"]), race_no=int(r["race_no"]),
+        races.append(dict(venue=VENUE_JA.get(r["venue"], r["venue"]), venue_slug=r["venue"], race_no=int(r["race_no"]),
                           deadline=str(r.get("deadline", "") or ""), judged_at=str(r["taken_at"]),
                           result=res,
                           bets=[dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds),
                                      p=float(b.p), ev=float(b.ev),
                                      hit=None if b.hit != b.hit else bool(b.hit))
                                 for b in g.itertuples()]))
+    notes = {}
+    f = Path("data/live") / last / "notes.jsonl"
+    if f.exists():
+        for line in f.read_text(encoding="utf-8").splitlines():
+            try:
+                n = json.loads(line); notes[str(n["race_id"])] = n
+            except Exception:
+                pass
+    rid_of = {(r["venue"], r["race_no"]): rid for rid, r in
+              ((rid, g.iloc[0]) for rid, g in pb[pb["date"] == last].groupby("race_id"))}
+    for r in races:
+        n = notes.get(str(rid_of.get((r["venue_slug"], r["race_no"]), "")), {})
+        r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", [])
+        r.pop("venue_slug", None)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
     picks = dict(date=last, races=races)
     done = pb.dropna(subset=["hit"])
@@ -113,6 +127,13 @@ def export_report(con, days, dates, market=None, backtest=None):
                       for k, v in r2.iterrows()])
     if backtest is not None:
         d["backtest"] = backtest
+    try:
+        from .insights import build
+        ins = build()
+        if ins:
+            d["insight"] = ins
+    except Exception as e:
+        print("解説データ作成失敗:", e)
     picks, paper = picks_and_paper()
     if picks:
         d["picks"] = picks
@@ -127,7 +148,7 @@ def split_docs(folder="site/docs"):
     Path(folder).mkdir(parents=True, exist_ok=True)
     docs = dict(summary={k: d.get(k) for k in ("updated_at", "collect", "config", "model")},
                 picks=d.get("picks"), paper=d.get("paper"),
-                backtest=d.get("backtest"), market=d.get("market"))
+                backtest=d.get("backtest"), market=d.get("market"), insight=d.get("insight"))
     out = []
     for k, v in docs.items():
         if v:

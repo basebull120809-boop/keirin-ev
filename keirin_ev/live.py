@@ -97,7 +97,7 @@ def schedule(date):
 
 def judge(date, venue, rid, model, rules, bank, dl=None):
     html = kdreams.fetch(f"/{venue}/racedetail/{rid}/", refresh=True)
-    ent, od, _, info = kdreams.parse_race(html, rid)
+    ent, od, _, info, _, his = kdreams.parse_race(html, rid, extra=True)
     t = now()
     day = LIVE / date
     day.mkdir(parents=True, exist_ok=True)
@@ -123,9 +123,20 @@ def judge(date, venue, rid, model, rules, bank, dl=None):
                          deadline=dl.strftime("%H:%M") if dl is not None else "",
                          combo=f"{cars[i]}-{cars[j]}-{cars[k]}", stake=st, odds=o,
                          p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S")))
+    try:                                         # 一言解説（買い目の有無にかかわらず記録）
+        from .insights import race_notes
+        notes, line_probs = race_notes(P, X["T"], ent, his, od)
+    except Exception as e:
+        print("解説作成失敗", rid, e, flush=True); notes, line_probs = [], []
+    with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                                deadline=dl.strftime("%H:%M") if dl is not None else "",
+                                notes=notes, lines=line_probs, n_bets=len(bets)),
+                           ensure_ascii=False) + "\n")
     if bets:
         pd.DataFrame(bets).to_csv(day / "bets.csv", mode="a", index=False,
                                   header=not (day / "bets.csv").exists())
+        bets[0]["_notes"] = notes
     return bets, ent
 
 
@@ -144,6 +155,10 @@ def fmt(venue, rid, dl, bets, ent, mode):
         L.append("|---|---:|---:|---:|")
         for b in sorted(bs, key=lambda b: b["odds"]):
             L.append(f"| {b['combo']} | {b['stake']:,}円 | {b['odds']:.1f} | {b['ev']:.2f} |")
+        L.append("")
+    if bets[0].get("_notes"):
+        L.append("**ひとこと**")
+        L += [f"- {n}" for n in bets[0]["_notes"]]
         L.append("")
     L.append(f"判定時刻 {bets[0]['taken_at']}")
     return "\n".join(L)

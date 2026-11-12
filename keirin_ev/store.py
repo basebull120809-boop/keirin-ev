@@ -7,6 +7,7 @@ import pandas as pd
 
 ROOT = Path("data/daily")
 TABLES = ["races", "entries", "results", "odds_trifecta"]
+EXTRA = ["finish", "history"]          # 全着順・上がり / 前場所までの成績
 
 
 def day_dir(date):
@@ -15,20 +16,27 @@ def day_dir(date):
 
 
 def has_day(date):
-    return (day_dir(date) / "races.csv.gz").exists()
+    return (day_dir(date) / "finish.csv.gz").exists()
 
 
 def save_day(date, frames):
     d = day_dir(date)
     d.mkdir(parents=True, exist_ok=True)
     n = 0
-    for t in TABLES:
+    for t in TABLES + EXTRA:
         df = frames.get(t)
         if df is None:
             df = pd.DataFrame()
         df.to_csv(d / f"{t}.csv.gz", index=False, compression="gzip")
         n += len(df)
     return n
+
+
+def read(date, table):
+    try:
+        return pd.read_csv(day_dir(date) / f"{table}.csv.gz", dtype={"race_id": str})
+    except (FileNotFoundError, pd.errors.EmptyDataError):
+        return pd.DataFrame()
 
 
 def collected_dates():

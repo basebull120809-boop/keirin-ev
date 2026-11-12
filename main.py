@@ -192,6 +192,10 @@ def main():
         done = store.collected_dates()
         d = pd.Timestamp(done[0]) if done else pd.Timestamp.today().normalize()
         c, cnt = KdreamsCollector(), 0
+        for ds in [x for x in done if not store.has_day(x)][:n_days]:   # 着順・前場所が未取得の日を取り直す
+            print(ds, "（取り直し）", flush=True)
+            print(f"  → {store.save_day(ds, c.fetch_day(ds))} 行保存", flush=True)
+            cnt += 1
         while cnt < n_days and d > pd.Timestamp(stop):
             d -= pd.Timedelta(days=1)
             ds = d.strftime("%Y-%m-%d")
