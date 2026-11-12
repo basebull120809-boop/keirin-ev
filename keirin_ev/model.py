@@ -205,6 +205,7 @@ def build_tensors(con, race_ids=None, need_result=True):
     res = pd.read_sql("SELECT * FROM results", con)
     q, win = market_probs(odds)
     ok = set(q["race_id"])
+    ok -= set(entries.loc[entries["class"] == "L1", "race_id"])   # ガールズケイリンは対象外
     if need_result:
         ok &= set(res.dropna(subset=["first", "second", "third"])["race_id"])
     if race_ids is not None:

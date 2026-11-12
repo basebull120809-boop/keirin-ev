@@ -74,11 +74,19 @@ def _num(s):
 
 
 # ---------------- レース一覧 ----------------
+def _kaisai_date(kid):
+    """開催ID14 → その日の日付。場2+年月6+初日2+日目2+00"""
+    start = pd.Timestamp(f"{kid[2:6]}-{kid[6:8]}-{kid[8:10]}")
+    return start + pd.Timedelta(days=int(kid[10:12]) - 1)
+
+
 def race_ids_of_day(date):
-    """date 'YYYY-MM-DD' → [(場slug, レースID16)]"""
+    """date 'YYYY-MM-DD' → [(場slug, レースID16)]  その日に行われたレースだけ"""
     y, m, d = date.split("-")
     html = fetch(f"/kaisai/{y}/{m}/{d}/")
-    kaisai = set(re.findall(r"/([a-z]+)/(?:raceresult|racecard)/(\d{14})/", html))
+    target = pd.Timestamp(date)
+    kaisai = {(v, k) for v, k in re.findall(r"/([a-z]+)/(?:raceresult|racecard)/(\d{14})/", html)
+              if _kaisai_date(k) == target}
     out = []
     for venue, kid in sorted(kaisai):
         rhtml = fetch(f"/{venue}/raceresult/{kid}/")
@@ -87,171 +95,185 @@ def race_ids_of_day(date):
     return out
 
 
-# ---------------- 出走表 ----------------
-def parse_entries(html, rid):
-    s = soup(html)
-    tbl = None
-    for t in s.find_all("table"):
-        h = _txt(t)
-        if "競走得点" in h and "勝率" in h and "ギヤ" in h:
-            tbl = t
-            break
+# ---------------- レースページ（出走表・ライン・オッズ・結果が1ページに入っている） ----------------
+def parse_entries(s, rid):
+    tbl = s.find("table", class_="racecard_table")
     if tbl is None:
         raise ValueError("出走表テーブルが見つかりません")
     rows = []
     for tr in tbl.find_all("tr"):
-        cells = [_txt(td) for td in tr.find_all(["td", "th"])]
-        # 「選手名 府県/年齢/期別」のセルを探す
-        ci = next((i for i, c in enumerate(cells)
-                   if re.search(r"/\s?\d+\s?/\s?\d+", c)), None)
-        if ci is None:
+        num = tr.find("td", class_="num")
+        rider = tr.find("td", class_="rider")
+        if not num or not rider:
             continue
-        joined = " ".join(cells[ci:])
-        cls = re.search(r"\b([SA][1-3]|SS|L1)\b", joined)
-        style = re.search(r"\b(逃|両|追|自在)\b", joined)
-        # 車番 = 選手名セルの直前にある1桁数字（その前が枠番）
-        small = [c for c in cells[:ci] if re.fullmatch(r"[1-9]", c)]
-        head = cells[ci].split("/")[0].split()
-        name = "".join(head[:2]) if len(head) >= 3 else "".join(head)
-        pref = "".join(head[2:]) if len(head) >= 3 else None
-        after = re.sub(r"^.*?/\s?\d+\s?/\s?\d+", "", joined)
-        f = re.findall(r"\d+\.\d+|\d+", after)
-        # 期待並び: ギヤ 得点 S B 逃 捲 差 マ 1着 2着 3着 着外 勝率 2連対率 3連対率
-        if not small or len(f) < 15:
+        tds = tr.find_all("td")
+        i = tds.index(rider)
+        rest = [td.get_text(strip=True) for td in tds[i + 1:]]
+        parts = rider.get_text("|", strip=True).split("|")
+        info = parts[1].split("/") if len(parts) > 1 else [None, None, None]
+        # 級班 脚質 ギヤ 得点 S B 逃 捲 差 マ 1着 2着 3着 着外 勝率 2連対率 3連対率
+        if len(rest) < 17:
             continue
-        f = f[-15:]
-        rows.append(dict(race_id=rid, car=int(small[-1]), name=name,
-                         pref=pref, **{"class": cls.group(1) if cls else None},
-                         style=style.group(1) if style else None,
-                         gear=_num(f[0]), score=_num(f[1]), s_cnt=_num(f[2]),
-                         back_cnt=_num(f[3]), win_rate=_num(f[12]),
-                         ren_rate=_num(f[13]), san_rate=_num(f[14])))
-    df = pd.DataFrame(rows).drop_duplicates("car")
-    return df, parse_lines(s, df)
+        g = lambda k: _num(rest[k])
+        rows.append(dict(race_id=rid, car=int(num.get_text(strip=True)),
+                         name=parts[0].replace(" ", ""),
+                         pref=(info[0] or "").replace("\u3000", "").replace(" ", ""),
+                         age=_num(info[1]) if len(info) > 1 else None,
+                         term=_num(info[2]) if len(info) > 2 else None,
+                         **{"class": rest[0]}, style=rest[1], gear=g(2), score=g(3),
+                         s_cnt=g(4), back_cnt=g(5), nige=g(6), makuri=g(7), sashi=g(8),
+                         mark=g(9), n1=g(10), n2=g(11), n3=g(12), nout=g(13),
+                         win_rate=g(14), ren_rate=g(15), san_rate=g(16)))
+    if not rows:
+        raise ValueError("出走表の行が読めません")
+    return pd.DataFrame(rows).drop_duplicates("car")
 
 
 def parse_lines(s, entries):
-    """並び予想 → line_id / line_pos / line_size
-    DOM上のライン区切りが取れればそれを使い、取れなければ
-    「自力型の選手からラインが始まる」という規則で区切る。"""
-    node = s.find(string=re.compile("並び予想"))
-    seq = []
-    if node:
-        box = node.find_parent()
-        for _ in range(4):                          # 近い祖先から探す
-            t = _txt(box)
-            seq = re.findall(r"(?<!\d)([1-9])\s?(逃|先行|押え先|両|自在|まくり|捲|追込|追上|追)", t)
-            if len(seq) >= len(entries) - 1:
-                break
-            box = box.find_parent() or box
+    """並び予想: span.icon_p.space がライン区切り"""
+    box = s.find("div", class_="line_position")
     lines, cur = [], []
-    for car, kind in seq:
-        if cur and kind.startswith(JIRIKI):
-            lines.append(cur); cur = []
-        cur.append(int(car))
-    if cur:
-        lines.append(cur)
-    rec = {}
-    for li, ln in enumerate(lines):
-        for p, c in enumerate(ln, 1):
-            rec[c] = (li, p, len(ln))
+    if box:
+        for sp in box.find_all("span", class_="icon_p", recursive=False):
+            if "space" in (sp.get("class") or []):
+                if cur:
+                    lines.append(cur); cur = []
+                continue
+            inner = sp.find_all("span")
+            if inner and re.fullmatch(r"[1-9]", inner[0].get_text(strip=True)):
+                cur.append(int(inner[0].get_text(strip=True)))
+        if cur:
+            lines.append(cur)
+    rec = {c: (li, p, len(ln)) for li, ln in enumerate(lines) for p, c in enumerate(ln, 1)}
+    nxt = len(lines)
     out = entries[["race_id", "car"]].copy()
-    out["line_id"] = out["car"].map(lambda c: rec.get(c, (None,))[0])
-    out["line_pos"] = out["car"].map(lambda c: rec.get(c, (None, None))[1])
-    out["line_size"] = out["car"].map(lambda c: rec.get(c, (None, None, None))[2])
+    ids, pos, size = [], [], []
+    for c in out["car"]:
+        if c in rec:
+            l, p, z = rec[c]
+        else:                       # 並びに無い選手は単騎扱い
+            l, p, z = nxt, 1, 1; nxt += 1
+        ids.append(l); pos.append(p); size.append(z)
+    out["line_id"], out["line_pos"], out["line_size"] = ids, pos, size
     return out
 
 
-# ---------------- 結果 ----------------
-def parse_result(html, rid):
-    t = _txt(soup(html))
-    m = re.search(r"3連単\s*([1-9])\s*[-ー－=]\s*([1-9])\s*[-ー－=]\s*([1-9])\s*([\d,]+)\s*円", t)
-    if not m:
-        return None
-    return dict(race_id=rid, first=int(m.group(1)), second=int(m.group(2)),
-                third=int(m.group(3)), tri_payout=int(m.group(4).replace(",", "")))
-
-
-# ---------------- 3連単オッズ ----------------
-def parse_odds(html, rid, n_riders):
-    """1着ごとの格子表（行=2着, 列=3着）を読む"""
-    s = soup(html)
+def parse_odds(s, rid):
+    box = s.find(id="JS_ODDSCONTENTS_3rentan")
+    if box is None:
+        return pd.DataFrame(columns=["race_id", "combo", "odds", "snapshot"])
     rows = []
-    for t in s.find_all("table"):
-        grid = [[_txt(td) for td in tr.find_all(["td", "th"])] for tr in t.find_all("tr")]
-        grid = [g for g in grid if g]
-        if len(grid) < 3:
+    for t in box.find_all("table", class_="odds_table"):
+        num = t.find("span", class_="number")
+        if not num:
             continue
-        nums = sum(bool(re.fullmatch(r"\d+\.\d", c)) for g in grid for c in g)
-        if nums < (n_riders - 2) * 2:
-            continue
-        # 1着: 表の直前にある「車番+名前」見出し
-        head = t.find_previous(string=re.compile(r"^\s*[1-9]\s*\S+"))
-        mh = re.match(r"\s*([1-9])", head or "")
-        if not mh:
-            continue
-        first = int(mh.group(1))
-        cols = [int(c) for c in grid[0] if re.fullmatch(r"[1-9]", c)]
-        for g in grid[1:]:
-            if not g or not re.fullmatch(r"[1-9]", g[0]):
+        first = int(num.get_text(strip=True))
+        trs = t.find_all("tr")
+        cols = [int(th.get_text(strip=True)) for th in trs[1].find_all("th")
+                if re.fullmatch(r"[1-9]", th.get_text(strip=True))]
+        for tr in trs[3:]:
+            ths = tr.find_all("th")
+            if not ths or not re.fullmatch(r"[1-9]", ths[0].get_text(strip=True)):
                 continue
-            second = int(g[0])
-            vals = [c for c in g[1:]]
-            for third, v in zip(cols, vals):
-                o = _num(v)
+            third = int(ths[0].get_text(strip=True))      # 行=3着、列=2着
+            for second, td in zip(cols, tr.find_all("td")):
+                o = _num(td.get_text(strip=True))
                 if o and len({first, second, third}) == 3:
                     rows.append((rid, f"{first}-{second}-{third}", o, "final"))
-    return pd.DataFrame(rows, columns=["race_id", "combo", "odds", "snapshot"]).drop_duplicates(["combo"])
+    return pd.DataFrame(rows, columns=["race_id", "combo", "odds", "snapshot"]).drop_duplicates("combo")
+
+
+def parse_result(s, rid):
+    rt = s.find("table", class_="refund_table")
+    if rt is None:
+        return None
+    for dl in rt.find_all("dl"):
+        dt, dd = dl.find("dt"), dl.find("dd")
+        if not dt or not dd:
+            continue
+        m = re.fullmatch(r"([1-9])-([1-9])-([1-9])", dt.get_text(strip=True))
+        if m:
+            pay = re.search(r"([\d,]+)円", dd.get_text())
+            pop = re.search(r"\((\d+)\)", dd.get_text())
+            return dict(race_id=rid, first=int(m.group(1)), second=int(m.group(2)),
+                        third=int(m.group(3)),
+                        tri_payout=int(pay.group(1).replace(",", "")) if pay else None,
+                        tri_pop=int(pop.group(1)) if pop else None)
+    return None
+
+
+def parse_race_info(s):
+    t = _txt(s.find("p", class_="weather")) if s.find("p", class_="weather") else ""
+    w = re.search(r"風速\s*([\d.]+)", t)
+    wx = re.search(r"天候\s*(\S+?)/", t)
+    return dict(wind=float(w.group(1)) if w else None, weather=wx.group(1) if wx else None)
+
+
+def parse_race(html, rid):
+    s = soup(html)
+    ent = parse_entries(s, rid)
+    ent = ent.merge(parse_lines(s, ent), on=["race_id", "car"], how="left")
+    return ent, parse_odds(s, rid), parse_result(s, rid), parse_race_info(s)
 
 
 # ---------------- 1日分 ----------------
+def check(rid, ent, od, res):
+    n = len(ent); exp = n * (n - 1) * (n - 2)
+    msg = f"選手{n} ライン{ent['line_id'].nunique()} オッズ{len(od)}/{exp}"
+    ok = len(od) == exp
+    if res:
+        combo = f"{res['first']}-{res['second']}-{res['third']}"
+        hit = od.loc[od["combo"] == combo, "odds"]
+        o = float(hit.iloc[0]) if len(hit) else None
+        msg += f" 結果{combo} 払戻{res['tri_payout']}円 / 表のオッズ{o}"
+        if o and res["tri_payout"]:
+            ok &= abs(o * 100 - res["tri_payout"]) / res["tri_payout"] < 0.02
+    else:
+        msg += " 結果なし"; ok = False
+    return ok, msg
+
+
 class KdreamsCollector:
     name = "kdreams"
 
     def fetch_day(self, date, log=print):
         R, E, RES, OD = [], [], [], []
-        for venue, rid in race_ids_of_day(date):
-            path = f"/{venue}/racedetail/{rid}/"
+        n_ok = 0
+        ids = race_ids_of_day(date)
+        for venue, rid in ids:
             try:
-                ent, ln = parse_entries(fetch(path), rid)
-                ent = ent.merge(ln, on=["race_id", "car"], how="left")
-                res = parse_result(fetch(path + "?pageType=KS_RACE_CARD_PAGE_TYPE_SHOW_RESULT"), rid)
-                od = parse_odds(fetch(path + "?pageType=odds&kakeshikiType=3rentan"), rid, len(ent))
+                ent, od, res, info = parse_race(fetch(f"/{venue}/racedetail/{rid}/"), rid)
             except Exception as e:                     # 1レースの失敗で止めない
-                log(f"  ! {rid} 解析失敗: {e}")
+                log(f"  ! {venue} {rid} 解析失敗: {e}")
                 continue
-            n = len(ent)
-            exp = n * (n - 1) * (n - 2)
-            ok = "OK" if len(od) == exp and res else "要確認"
-            log(f"  {venue} {int(rid[-4:])}R 選手{n} ライン{ent['line_id'].nunique()} "
-                f"オッズ{len(od)}/{exp} 結果{'あり' if res else 'なし'} … {ok}")
+            ok, msg = check(rid, ent, od, res)
+            n_ok += ok
+            if not ok:
+                log(f"  要確認 {venue} {int(rid[-4:])}R {msg}")
             R.append(dict(race_id=rid, date=date, venue=venue, race_no=int(rid[-4:]),
-                          n_riders=n, bank_len=BANK.get(venue, 400)))
+                          grade=ent["class"].iloc[0] if len(ent) else None,
+                          n_riders=len(ent), bank_len=BANK.get(venue, 400), **info))
             E.append(ent); OD.append(od)
             if res:
                 RES.append(res)
+        log(f"  {len(ids)}レース中 {n_ok} レース完全一致（オッズ×100＝払戻）")
         cat = lambda xs: pd.concat(xs, ignore_index=True) if xs else pd.DataFrame()
         return dict(races=pd.DataFrame(R), entries=cat(E),
                     results=pd.DataFrame(RES), odds_trifecta=cat(OD))
 
 
 def probe(dates, log=print):
-    """何年前まで取れるかの確認。各日付の最初の1レースだけ取得して結果を表示"""
+    """何年前まで取れるかの確認。各日付の先頭3レースを取得して検証"""
     for d in dates:
         try:
             ids = race_ids_of_day(d)
         except Exception as e:
             log(f"{d}: 開催一覧が取得できません ({e})"); continue
-        if not ids:
-            log(f"{d}: レースなし"); continue
-        venue, rid = ids[0]
-        path = f"/{venue}/racedetail/{rid}/"
-        try:
-            ent, ln = parse_entries(fetch(path), rid)
-            od = parse_odds(fetch(path + "?pageType=odds&kakeshikiType=3rentan"), rid, len(ent))
-            res = parse_result(fetch(path + "?pageType=KS_RACE_CARD_PAGE_TYPE_SHOW_RESULT"), rid)
-            log(f"{d}: {len(ids)}レース / 例 {venue} {rid}: 選手{len(ent)} "
-                f"得点{'あり' if ent['score'].notna().any() else 'なし'} "
-                f"ライン{ln['line_id'].nunique()} オッズ{len(od)}点 結果{res}")
-        except Exception as e:
-            log(f"{d}: {len(ids)}レース / 解析失敗 {e}")
+        log(f"{d}: {len(ids)}レース")
+        for venue, rid in ids[:3]:
+            try:
+                ent, od, res, info = parse_race(fetch(f"/{venue}/racedetail/{rid}/"), rid)
+                ok, msg = check(rid, ent, od, res)
+                log(f"   {'OK ' if ok else 'NG '}{venue} {int(rid[-4:])}R {msg} 風{info['wind']}")
+            except Exception as e:
+                log(f"   NG {venue} {rid} 解析失敗 {e}")
