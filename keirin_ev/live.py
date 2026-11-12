@@ -95,7 +95,7 @@ def schedule(date):
     return sorted(out)
 
 
-def judge(date, venue, rid, model, rules, bank):
+def judge(date, venue, rid, model, rules, bank, dl=None):
     html = kdreams.fetch(f"/{venue}/racedetail/{rid}/", refresh=True)
     ent, od, _, info = kdreams.parse_race(html, rid)
     t = now()
@@ -120,6 +120,7 @@ def judge(date, venue, rid, model, rules, bank):
     for n, st, p, o, ev in pick_bets(P, X["O"][0], bank, rules):
         i, j, k = COMBOS[n]
         bets.append(dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                         deadline=dl.strftime("%H:%M") if dl is not None else "",
                          combo=f"{cars[i]}-{cars[j]}-{cars[k]}", stake=st, odds=o,
                          p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S")))
     if bets:
@@ -167,12 +168,17 @@ def run(max_minutes=340):
             if left < LEAD_MIN:
                 continue
             try:
-                bets, ent = judge(date, venue, rid, model, rules, bank)
+                bets, ent = judge(date, venue, rid, model, rules, bank, dl)
             except Exception as e:
                 print("判定失敗", rid, e, flush=True); continue
             print(f"{t:%H:%M} {venue} {int(rid[-4:])}R 締切{dl:%H:%M} 買い目{len(bets)}点", flush=True)
             if bets:
                 note.post(fmt(venue, rid, dl, bets, ent, mode))
+                try:
+                    from .site import export_live
+                    export_live()
+                except Exception as e:
+                    print("サイト用データ更新失敗:", e, flush=True)
         sched = [x for x in sched if x[2] not in done]
         time.sleep(30)
     print("終了", flush=True)

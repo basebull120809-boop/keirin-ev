@@ -75,8 +75,10 @@ def cmd_report(con, a):
     dates = store.collected_dates()
     if dates:
         L.append(f"- 期間: {dates[0]} 〜 {dates[-1]}")
+    market = backtest = None
     if nr >= 200:
         r1, r2 = market_report(con)
+        market = (r1, r2)
         L += ["", "## 人気帯別の回収率（100円均等買い）",
               "控除率25%なので、市場が正しければどこも約75%になる。偏りが歪み。", "",
               r1.to_markdown(), "", "## オッズ帯別の回収率", "", r2.to_markdown()]
@@ -85,6 +87,18 @@ def cmd_report(con, a):
         log, coefs = walk_forward(con, Rules(ev_min=a.ev, kelly_frac=a.kelly),
                                   bankroll0=a.bank, min_train_months=a.train_months)
         sm = summarize(log, a.bank)
+        mm = pd.DataFrame()
+        if not log.empty:
+            mm = log.groupby("month").agg(stake=("stake", "sum"), payout=("payout", "sum")).reset_index()
+            mm["roi"] = mm["payout"] / mm["stake"]
+        lo, hi = (None, None)
+        if "回収率95%区間" in sm:
+            lo, hi = (float(x) for x in sm["回収率95%区間"].split(" 〜 "))
+        backtest = dict(roi=sm.get("回収率"), lo=lo, hi=hi, bets=sm.get("購入点数", 0),
+                        races=sm.get("購入レース数", 0), hits=sm.get("的中数", 0),
+                        dd=sm.get("最大ドローダウン"), ev_min=a.ev,
+                        monthly=mm.to_dict("records"),
+                        blend=coefs.round(4).to_dict("records"))
         L += ["", f"## ウォークフォワード検証（期待値{a.ev}以上・1/4ケリー）", ""]
         L += [f"- {k}: **{v}**" for k, v in sm.items()]
         L += ["", "判定基準: 回収率95%区間の下限が1.0を超えるまで実弾は入れない。", "",
@@ -111,6 +125,8 @@ def cmd_report(con, a):
         pending = pb["hit"].isna().sum()
         if pending:
             L += ["", f"結果待ち {pending}点"]
+    from keirin_ev.site import export_report
+    export_report(con, days, dates, market, backtest)
     Path("reports").mkdir(exist_ok=True)
     Path("reports/latest.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))

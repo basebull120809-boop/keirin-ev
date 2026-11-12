@@ -1,0 +1,23 @@
+{
+ "collect": {
+  "days": 2,
+  "races": 167,
+  "months": 1,
+  "first": "2026-11-11",
+  "last": "2026-11-12",
+  "target_first": "2024-11-01"
+ },
+ "config": {
+  "mode": "paper",
+  "bankroll": 100000,
+  "ev_min": 1.2
+ },
+ "model": {
+  "n_races": 155,
+  "period": "2026-11-11〜2026-11-12",
+  "trained_at": "2026-11-13 07:44",
+  "a": 0.5403,
+  "b": 0.5033
+ },
+ "updated_at": "2026-11-13 08:23"
+}
