@@ -1,0 +1,35 @@
+name: collect（毎晩の取得とレポート）
+on:
+  schedule: [{ cron: "40 16 * * *" }]      # 毎日 01:40 JST
+  workflow_dispatch:
+    inputs:
+      start: { description: "開始日 YYYY-MM-DD（空なら昨日）", required: false }
+      end:   { description: "終了日 YYYY-MM-DD（空なら昨日）", required: false }
+concurrency: { group: data, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: 取得（昨日分）
+        if: ${{ inputs.start == '' }}
+        run: |
+          Y=$(date -d yesterday +%F); B=$(date -d '2 days ago' +%F)
+          python main.py collect "$B" "$Y" 2>&1 | tail -200
+      - name: 取得（期間指定）
+        if: ${{ inputs.start != '' }}
+        run: python main.py collect "${{ inputs.start }}" "${{ inputs.end || inputs.start }}" 2>&1 | tail -300
+      - name: レポート
+        run: python main.py report > /dev/null || echo "report failed"
+      - name: 保存
+        run: |
+          git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
+          git add data/daily reports
+          git commit -m "collect $(date +%F)" || exit 0
+          git pull --rebase && git push
