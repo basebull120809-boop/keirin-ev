@@ -27,7 +27,8 @@ pd.set_option("display.width", 160)
 
 
 def cmd_backtest(con, a):
-    rules = Rules(ev_min=a.ev, kelly_frac=a.kelly)
+    from keirin_ev.live import load_config
+    _, rules = load_config()
     log, coefs = walk_forward(con, rules, bankroll0=a.bank,
                               min_train_months=a.train_months)
     print("\n■ 市場ブレンド係数の推移（a=モデル, b=市場。aが0に近ければ優位性なし）")
@@ -52,7 +53,9 @@ def cmd_predict(con, a):
         sys.exit("出走表かオッズが未登録です")
     P = mdl.predict(X["T"], X["Q"])[0]
     O = X["O"][0]
-    bets = pick_bets(P, O, a.bank, Rules(ev_min=a.ev, kelly_frac=a.kelly))
+    from keirin_ev.live import load_config
+    _, rules = load_config()
+    bets = pick_bets(P, O, a.bank, rules)
     cars = X["T"].cars[0]
     print(f"■ {a.race_id}  （オッズは締切直前に再取得して再判定すること）")
     if not bets:
@@ -84,7 +87,9 @@ def cmd_report(con, a):
               r1.to_markdown(), "", "## オッズ帯別の回収率", "", r2.to_markdown()]
     months = con.execute("SELECT COUNT(DISTINCT substr(date,1,7)) FROM races").fetchone()[0]
     if months >= a.train_months + 1:
-        log, coefs = walk_forward(con, Rules(ev_min=a.ev, kelly_frac=a.kelly),
+        from keirin_ev.live import load_config
+        _, rules = load_config()
+        log, coefs = walk_forward(con, rules,
                                   bankroll0=a.bank, min_train_months=a.train_months)
         sm = summarize(log, a.bank)
         mm = pd.DataFrame()
@@ -96,10 +101,10 @@ def cmd_report(con, a):
             lo, hi = (float(x) for x in sm["回収率95%区間"].split(" 〜 "))
         backtest = dict(roi=sm.get("回収率"), lo=lo, hi=hi, bets=sm.get("購入点数", 0),
                         races=sm.get("購入レース数", 0), hits=sm.get("的中数", 0),
-                        dd=sm.get("最大ドローダウン"), ev_min=a.ev,
+                        dd=sm.get("最大ドローダウン"), ev_min=rules.race_ev_min,
                         monthly=mm.to_dict("records"),
                         blend=coefs.round(4).to_dict("records"))
-        L += ["", f"## ウォークフォワード検証（期待値{a.ev}以上・1/4ケリー）", ""]
+        L += ["", f"## ウォークフォワード検証（{rules.min_points}〜{rules.max_points}点・硬いレース{rules.hard_points}点・レース期待値{rules.race_ev_min}以上）", ""]
         L += [f"- {k}: **{v}**" for k, v in sm.items()]
         L += ["", "判定基準: 回収率95%区間の下限が1.0を超えるまで実弾は入れない。", "",
               "### 市場ブレンド係数（a=モデル b=市場）", "", coefs.round(3).to_markdown(index=False)]

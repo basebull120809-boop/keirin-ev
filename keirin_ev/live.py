@@ -130,15 +130,22 @@ def judge(date, venue, rid, model, rules, bank, dl=None):
 
 
 def fmt(venue, rid, dl, bets, ent, mode):
+    from .strategy import summary
     names = dict(zip(ent["car"], ent["name"]))
+    sm = summary([(0, b["stake"], b["p"], b["odds"], b["ev"]) for b in bets])
     L = [f"### {kdreams.VENUE_JA.get(venue, venue)} {int(rid[-4:])}R（締切 {dl:%H:%M}）{'【紙上運用】' if mode == 'paper' else ''}",
-         "| 買い目 | 金額 | 確率 | オッズ | 期待値 |", "|---|---:|---:|---:|---:|"]
+         f"**{len(bets)}点 {sm['total']:,}円**／合成オッズ {sm['synth']:.1f}倍／的中率 {sm['hit_p']:.0%}／期待値 {sm['race_ev']:.2f}", ""]
+    by_first = {}
     for b in bets:
-        L.append(f"| **{b['combo']}** | {b['stake']:,}円 | {b['p']:.1%} | {b['odds']:.1f} | {b['ev']:.2f} |")
-    first = sorted({int(b["combo"].split("-")[0]) for b in bets})
-    L.append("")
-    L.append("1着候補: " + "、".join(f"{c} {names.get(c, '')}" for c in first))
-    L.append(f"合計 {sum(b['stake'] for b in bets):,}円 ／ 判定時刻 {bets[0]['taken_at']}")
+        by_first.setdefault(int(b["combo"].split("-")[0]), []).append(b)
+    for f, bs in sorted(by_first.items(), key=lambda x: -sum(b["p"] for b in x[1])):
+        L.append(f"**1着 {f} {names.get(f, '')}**")
+        L.append("| 買い目 | 金額 | オッズ | 期待値 |")
+        L.append("|---|---:|---:|---:|")
+        for b in sorted(bs, key=lambda b: b["odds"]):
+            L.append(f"| {b['combo']} | {b['stake']:,}円 | {b['odds']:.1f} | {b['ev']:.2f} |")
+        L.append("")
+    L.append(f"判定時刻 {bets[0]['taken_at']}")
     return "\n".join(L)
 
 
