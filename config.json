@@ -1,0 +1,13 @@
+{
+  "mode": "paper",
+  "bankroll": 100000,
+  "rules": {
+    "ev_min": 1.2,
+    "p_min": 0.004,
+    "odds_max": 300,
+    "kelly_frac": 0.25,
+    "max_bet_pct": 0.01,
+    "max_race_pct": 0.03,
+    "max_points": 8
+  }
+}

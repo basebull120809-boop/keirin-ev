@@ -8,6 +8,7 @@
 最終的に 3連単全組み合わせの確率を返す。
 """
 from itertools import permutations
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
@@ -180,6 +181,24 @@ class TrifectaModel:
         u -= u.max(1, keepdims=True)
         p = np.where(valid, np.exp(u), 0)
         return p / p.sum(1, keepdims=True)
+
+    def to_json(self, path, **meta):
+        import json
+        d = dict(features=FEATURES, beta=list(self.beta), g=list(self.g),
+                 blend=list(self.blend), **meta)
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    @classmethod
+    def from_json(cls, path):
+        import json
+        d = json.loads(Path(path).read_text(encoding="utf-8"))
+        if d["features"] != FEATURES:
+            raise ValueError("特徴量の定義が変わっています。再学習してください")
+        m = cls()
+        m.beta, m.g, m.blend = (np.array(d[k]) for k in ("beta", "g", "blend"))
+        m.meta = d
+        return m
 
     def coef_table(self):
         t = pd.Series(self.beta, index=FEATURES).round(3).to_frame("1着係数")

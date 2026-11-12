@@ -30,6 +30,17 @@ BANK = {"matsudo": 333, "odawara": 333, "ito": 333, "nara": 333, "hofu": 333,
         "toyama": 333, "maebashi": 335, "utsunomiya": 500, "omiya": 500,
         "kochi": 500}
 
+VENUE_JA = dict(
+    hakodate="函館", aomori="青森", iwakitaira="いわき平", yahiko="弥彦", maebashi="前橋",
+    toride="取手", utsunomiya="宇都宮", omiya="大宮", seibuen="西武園", keiokaku="京王閣",
+    tachikawa="立川", matsudo="松戸", chiba="千葉", kawasaki="川崎", hiratsuka="平塚",
+    odawara="小田原", ito="伊東", shizuoka="静岡", nagoya="名古屋", gifu="岐阜",
+    ogaki="大垣", toyohashi="豊橋", toyama="富山", matsusaka="松阪", yokkaichi="四日市",
+    fukui="福井", nara="奈良", mukomachi="向日町", wakayama="和歌山", kishiwada="岸和田",
+    tamano="玉野", hiroshima="広島", hofu="防府", takamatsu="高松", komatsushima="小松島",
+    kochi="高知", matsuyama="松山", kokura="小倉", kurume="久留米", takeo="武雄",
+    sasebo="佐世保", beppu="別府", kumamoto="熊本")
+
 JIRIKI = ("逃", "先行", "押え先", "両", "自在", "まくり", "捲")   # 自力型
 _session = None
 
@@ -207,6 +218,19 @@ def parse_race_info(s):
     w = re.search(r"風速\s*([\d.]+)", t)
     wx = re.search(r"天候\s*(\S+?)/", t)
     return dict(wind=float(w.group(1)) if w else None, weather=wx.group(1) if wx else None)
+
+
+def parse_deadline(s):
+    """投票締切 'HH:MM'（ミッドナイトの 24:xx も可）→ (時, 分)"""
+    dl = s.find("dl", class_="time")
+    if not dl:
+        return None
+    for dt in dl.find_all("dt"):
+        if "締切" in dt.get_text():
+            m = re.search(r"(\d{1,2}):(\d{2})", dt.find_next("dd").get_text())
+            if m:
+                return int(m.group(1)), int(m.group(2))
+    return None
 
 
 def parse_race(html, rid):

@@ -1,0 +1,31 @@
+name: live（当日の締切前判定と通知）
+on:
+  schedule:
+    - { cron: "15 23 * * *" }   # 08:15 JST 〜
+    - { cron: "55 4 * * *" }    # 13:55 JST 〜
+    - { cron: "35 10 * * *" }   # 19:35 JST 〜（ミッドナイトまで）
+  workflow_dispatch:
+    inputs:
+      minutes: { description: "動かす分数（テストは15など）", required: false, default: "340" }
+concurrency: { group: live, cancel-in-progress: false }
+permissions: { contents: write, issues: write }
+jobs:
+  live:
+    # 非公開リポジトリでは無料枠を使い切るため、自動起動は公開リポジトリのときだけ
+    if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.private }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1", GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: python main.py live "${{ inputs.minutes || '340' }}"
+      - name: 記録を保存
+        if: always()
+        run: |
+          git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
+          git add data/live
+          git commit -m "live $(date +%F_%H%M)" || exit 0
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done

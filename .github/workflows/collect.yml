@@ -25,11 +25,13 @@ jobs:
       - name: 取得（期間指定）
         if: ${{ inputs.start != '' }}
         run: python main.py collect "${{ inputs.start }}" "${{ inputs.end || inputs.start }}" 2>&1 | tail -300
+      - name: 学習（当日運用のモデル更新）
+        run: python main.py train || echo "train skipped"
       - name: レポート
         run: python main.py report > /dev/null || echo "report failed"
       - name: 保存
         run: |
           git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
-          git add data/daily reports
+          git add data/daily reports models
           git commit -m "collect $(date +%F)" || exit 0
-          git pull --rebase && git push
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done

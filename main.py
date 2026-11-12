@@ -6,6 +6,8 @@
   python main.py collect <開始日> <終了日>      Kドリームスから取得し data/daily に保存
   python main.py backfill <日数> <最古日>       取得済みの最古日からさらに遡って取得
   python main.py builddb                      data/daily を SQLite に読み込む
+  python main.py train                        全データで学習し models/latest.json に保存
+  python main.py live [分]                     当日運用：締切前オッズで判定してIssueに通知
   python main.py market                       市場の歪みレポート（人気別・オッズ帯別回収率）
   python main.py backtest [--ev 1.2]          ウォークフォワード検証
   python main.py predict <race_id> [--bank 300000]   当日レースの推奨買い目
@@ -93,6 +95,22 @@ def cmd_report(con, a):
             L += ["", "### 月別", "", m.to_markdown()]
     else:
         L += ["", f"検証には{a.train_months + 1}ヶ月分以上のデータが必要です（現在{months}ヶ月）。"]
+    from keirin_ev.live import paper_results
+    pb = paper_results()
+    if pb is not None:
+        done = pb.dropna(subset=["hit"])
+        L += ["", "## 当日運用（締切前オッズで判定した買い目の実績）", ""]
+        if len(done):
+            st, py = done["stake"].sum(), done["payout"].sum()
+            L += [f"- 判定レース {done['race_id'].nunique()} / {len(done)}点 / 的中 {int(done['hit'].sum())}",
+                  f"- 投資 {int(st):,}円 → 払戻 {int(py):,}円  回収率 **{py / st:.1%}**", ""]
+            d = done.groupby("date").agg(点数=("combo", "size"), 投資=("stake", "sum"),
+                                         払戻=("payout", "sum"))
+            d["回収率"] = (d["払戻"] / d["投資"]).round(3)
+            L += [d.tail(14).to_markdown()]
+        pending = pb["hit"].isna().sum()
+        if pending:
+            L += ["", f"結果待ち {pending}点"]
     Path("reports").mkdir(exist_ok=True)
     Path("reports/latest.md").write_text("\n".join(L), encoding="utf-8")
     print("\n".join(L))
@@ -170,6 +188,21 @@ def main():
         probe([(today - pd.DateOffset(**k)).strftime("%Y-%m-%d") for k in
                [dict(days=1), dict(months=1), dict(years=1), dict(years=2),
                 dict(years=3), dict(years=5)]])
+    elif a.cmd == "train":                       # 全データで学習 → models/latest.json
+        from keirin_ev import store
+        store.load_into_db(con)
+        D = build_tensors(con)
+        n = len(D["T"].race_ids)
+        if n < 100:
+            sys.exit(f"学習データが少なすぎます（{n}レース）")
+        m = TrifectaModel().fit(D["T"], D["first"], D["second"], D["third"], D["Q"], D["win_combo"])
+        dates = D["races"]["date"]
+        m.to_json("models/latest.json", n_races=n, period=f"{dates.min()}〜{dates.max()}",
+                  trained_at=f"{pd.Timestamp.now(tz='Asia/Tokyo'):%Y-%m-%d %H:%M}")
+        print(f"学習完了 {n}レース  ブレンド a={m.blend[0]:.3f} b={m.blend[1]:.3f}")
+    elif a.cmd == "live":                        # 当日運用（締切前判定と通知）
+        from keirin_ev.live import run
+        run(max_minutes=float(a.args[0]) if a.args else 340)
     elif a.cmd == "report":                      # スマホで見るレポート(Markdown)
         cmd_report(con, a)
     elif a.cmd == "market":
