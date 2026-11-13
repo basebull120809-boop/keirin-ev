@@ -24,6 +24,9 @@ class Rules:
     min_firsts: int = 2          # 1着候補の最低人数
     race_ev_min: float = 1.10    # レース全体の期待値の下限（これ未満は見送り）
     race_budget: int = 3000      # 1レースの購入額
+    # --- 的中重視型 ---
+    synth_min: float = 1.5       # 合成オッズの下限（これ未満は妙味なしで見送り）
+    model_weight: float = 0.5    # モデル確率と市場確率の混ぜ具合（データが少ないうちは市場寄り）
     # --- 期待値型 ---
     ev_min: float = 1.20
     ev_points: int = 8
@@ -103,8 +106,48 @@ def pick_ev(p, odds, bankroll, rules):
     return out
 
 
+def shrink(p, odds, w):
+    """モデル確率を市場確率へ寄せる（確率の小さい目の過大評価を抑える）"""
+    ok = odds > 0
+    q = np.zeros_like(p); q[ok] = 1 / odds[ok]; q /= q.sum()
+    out = np.zeros_like(p)
+    out[ok] = np.exp(w * np.log(np.maximum(p[ok], 1e-12)) + (1 - w) * np.log(q[ok]))
+    return out / out.sum()
+
+
+def pick_hit(p, odds, rules, first_of):
+    """的中重視：当たる確率の高い順にN点。合成オッズ・レース期待値で見送り判定"""
+    p = shrink(p, odds, rules.model_weight)
+    ok = np.where((odds > 0) & (odds <= rules.odds_max))[0]
+    if not len(ok):
+        return []
+    N = min(n_points(odds, rules), len(ok))
+    order = ok[np.argsort(-p[ok])]
+    sel = list(order[:N])
+    firsts = {first_of[n] for n in sel}
+    if len(firsts) < rules.min_firsts:
+        for n in order[N:]:
+            if first_of[n] not in firsts:
+                sel[-1] = n; break
+    sel = np.array(sel)
+    synth = 1 / (1 / odds[sel]).sum()
+    if synth < rules.synth_min:
+        return []
+    stakes = _equal_payout(odds[sel], rules.race_budget, rules.unit)
+    ev = p * odds
+    race_ev = float((stakes * p[sel] * odds[sel]).sum() / stakes.sum())
+    if race_ev < rules.race_ev_min:
+        return []
+    keep = np.argsort(-p[sel])
+    return [(int(sel[i]), int(stakes[i]), float(p[sel[i]]), float(odds[sel[i]]), float(ev[sel[i]]))
+            for i in keep]
+
+
 def pick_bets(p, odds, bankroll, rules: Rules):
     """p, odds: 1レース分の (504,) 配列"""
+    if rules.mode == "hit":
+        from .model import COMBOS
+        return pick_hit(p, odds, rules, COMBOS[:, 0])
     if rules.mode == "points":
         from .model import COMBOS
         return pick_points(p, odds, rules, COMBOS[:, 0])

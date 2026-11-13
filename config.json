@@ -2,14 +2,16 @@
   "mode": "paper",
   "bankroll": 100000,
   "rules": {
-    "mode": "points",
+    "mode": "hit",
     "min_points": 10,
     "max_points": 20,
     "hard_points": 6,
     "hard_odds": 10,
     "wide_odds": 40,
     "min_firsts": 2,
-    "race_ev_min": 1.1,
-    "race_budget": 3000
+    "race_ev_min": 0.0,
+    "race_budget": 3000,
+    "synth_min": 1.5,
+    "model_weight": 0.5
   }
 }
