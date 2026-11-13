@@ -172,10 +172,6 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 n_bets=sum(b["kind"] == "yoso" for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why,
-                                patterns={k: [dict(name=x["name"], hit=round(x["hit"], 4), synth=round(x["synth"], 2),
-                                                   ev=round(x["ev"], 3), low=x["low"],
-                                                   bets=[[b["combo"], b["stake"], b["odds"], b["p"]] for b in x["bets"]])
-                                              for x in v] for k, v in pats.items()},
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason="" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため"),
                            ensure_ascii=False) + "\n")
@@ -212,26 +208,22 @@ def _fmt_block(bets, names):
 
 
 def fmt(venue, rid, dl, bets, ent, mode, notes=None):
+    """通知はシステムが選んだ1つの買い方だけ（券種・点数の選択肢は出さない）"""
     names = dict(zip(ent["car"], ent["name"]))
-    yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
-    inv = [b for b in bets if b.get("kind") == "invest"]
     head = f"### {kdreams.VENUE_JA.get(venue, venue)} {int(rid[-4:])}R（締切 {dl:%H:%M}）"
-    if inv:
-        head += " ★投資判定あり"
     L = [head + ("【紙上運用】" if mode == "paper" else ""), ""]
     rec = next((b["kind"] for b in bets if b.get("rec")), None)
     if rec in ("ex", "trio"):
         lab = {"ex": "2車単", "trio": "3連複"}[rec]
         rb = [b for b in bets if b.get("kind") == rec]
         hp = sum(b["p"] for b in rb); st = sum(b["stake"] for b in rb)
-        L += [f"#### ◎おすすめ：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
+        L += [f"#### ◎予想：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
         L += [f"- {b['combo'].replace('=', '-')}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(rb, key=lambda b: -b["p"])] + [""]
-    elif rec == "yoso":
-        L += ["#### ◎おすすめ：3連単（下の本命予想）", ""]
-    if yoso:
-        L += ["#### 本命予想（3連単・的中重視）"] + _fmt_block(yoso, names)
-    if inv:
-        L += ["#### ★投資判定（期待値で勝てる目）"] + _fmt_block(inv, names)
+    else:
+        yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
+        if not yoso:
+            return None
+        L += ["#### ◎予想：3連単"] + _fmt_block(yoso, names)
     if notes:
         L += ["**ひとこと**"] + [f"- {n}" for n in notes] + [""]
     L.append(f"判定時刻 {bets[0]['taken_at']}")
@@ -306,8 +298,9 @@ def run(max_minutes=340):
             except Exception as e:
                 print("判定失敗", rid, e, flush=True); continue
             print(f"{t:%H:%M} {venue} {int(rid[-4:])}R 締切{dl:%H:%M} 買い目{len(bets)}点", flush=True)
-            if bets:
-                note.post(fmt(venue, rid, dl, bets, ent, mode, notes))
+            msg = fmt(venue, rid, dl, bets, ent, mode, notes) if bets else None
+            if msg:
+                note.post(msg)
             try:                           # 買い・見送りにかかわらずページを更新
                 from .site import export_live
                 export_live(date)

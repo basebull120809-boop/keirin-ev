@@ -83,7 +83,6 @@ def day_races(pb, last):
         n = notes.get(str(rid_of.get((r["venue_slug"], r["race_no"]), "")), {})
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
         r["rec"] = n.get("rec"); r["rec_reason"] = n.get("rec_reason", ""); r["cand"] = n.get("cand", {})
-        r["patterns"] = n.get("patterns", {})
         r.pop("venue_slug", None)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
     return races

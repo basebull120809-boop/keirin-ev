@@ -131,12 +131,6 @@ header{position:sticky;top:0;z-index:20;background:rgba(7,9,13,.82);backdrop-fil
 .tk.hit .o b{color:var(--good)}
 .eq{color:var(--muted);font-size:11px;margin:0 1px}
 .ang{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 12px}
-.pats{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
-.pats button{flex:none;font:inherit;text-align:left;border:1px solid var(--line2);background:rgba(0,0,0,.2);color:var(--fg);border-radius:10px;padding:6px 10px;cursor:pointer;line-height:1.3}
-.pats button b{display:block;font-size:12px}
-.pats button span{font-family:var(--num);font-size:11px;color:var(--muted)}
-.pats button[aria-pressed="true"]{border-color:var(--lime);box-shadow:inset 0 0 0 1px var(--lime)}
-.pats button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 .ang .lb{width:100%;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--muted)}
 .ang button{font:inherit;font-size:12px;font-weight:700;padding:6px 11px;border-radius:999px;border:1px solid var(--line2);background:transparent;color:var(--fg);cursor:pointer}
 .ang button span{font-family:var(--num);color:var(--muted);margin-left:4px;font-weight:600}
@@ -297,7 +291,6 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);font-si
     <div id="hist-sum"></div>
     <div class="seg" role="group" aria-label="絞り込み" id="hist-filter">
       <button data-f="all" aria-pressed="true">すべて</button><button data-f="hit" aria-pressed="false">的中</button>
-      <button data-f="yoso" aria-pressed="false">本命</button><button data-f="invest" aria-pressed="false">★投資</button>
     </div>
     <div id="hist-body"><div class="empty"><span class="big">—</span><b>読み込み中</b></div></div>
   </section>
@@ -410,28 +403,6 @@ function planKV(bs) {
     <div><span>的中率（見込み）</span><b>${pct(sum(bs, b => b.p), 0)}</b></div>
     <div><span>当たれば</span><b style="font-size:14px">${Math.round(Math.min(...pays)).toLocaleString()}〜${Math.round(Math.max(...pays)).toLocaleString()}</b></div></div>`;
 }
-/* 同じ予想（確率の順番）で点数だけ変えた買い方 */
-const patOpen = new Map();
-function patList(r, k) { return r.patterns?.[k === "yoso" ? "tri" : k] || []; }
-function patternsHTML(r, k, id) {
-  const ps = patList(r, k);
-  if (!ps.length) return "";
-  const key = id + ":" + k;
-  let i = patOpen.get(key);
-  if (i == null || i >= ps.length) i = Math.max(0, ps.findIndex(x => x.name === "的中重視"));
-  const x = ps[i];
-  const res = resOf(r, k === "yoso" ? "tri" : k) || (k === "yoso" ? r.result : null);
-  const win = res?.combo;
-  const bs = x.bets.map(([combo, stake, odds, p]) => ({ combo, stake, odds, p, hit: win ? combo === win : null }));
-  return `<div class="pats" data-key="${esc(key)}">${ps.map((y, j) => `<button data-i="${j}" aria-pressed="${j === i}"><b>${esc(y.name)}${y.low ? ' <span class="tag warn" style="padding:0 5px">低配当</span>' : ""}</b>
-      <span>的中${pct(y.hit, 0)}・${y.synth.toFixed(1)}倍・${y.bets.length}点</span></button>`).join("")}</div>
-    ${planKV(bs)}${tixHTML(bs, k === "yoso" ? "tri" : k)}`;
-}
-document.addEventListener("click", e => {
-  const b = e.target.closest(".pats button[data-i]"); if (!b) return;
-  patOpen.set(b.parentElement.dataset.key, +b.dataset.i);
-  safe(renderToday); safe(renderHistory);
-});
 function planBody(r, k) {
   const bs = listOf(r, k);
   if (!bs.length) return "";
@@ -440,19 +411,18 @@ function planBody(r, k) {
 function recBlock(r) {
   const k = r.rec;
   if (!k || !listOf(r, k).length) return "";
-  return `<div class="rec"><div class="rec-h"><span class="mk">おすすめ</span><b>${TYPE[k]}</b>${k === "yoso" ? '<span class="tag lime">フォーメーション</span>' : ""}</div>
-    ${r.rec_reason ? `<p class="why">${esc(r.rec_reason)}</p>` : ""}${patList(r, k).length ? patternsHTML(r, k, "rec-" + r.venue + r.race_no) : planBody(r, k)}</div>`;
+  return `<div class="rec"><div class="rec-h"><span class="mk">予想</span><b>${TYPE[k]}</b>${k === "yoso" ? '<span class="tag lime">フォーメーション</span>' : ""}</div>
+    ${r.rec_reason ? `<p class="why">${esc(r.rec_reason)}</p>` : ""}${planBody(r, k)}</div>`;
 }
 const angleOpen = new Map();
 function anglesHTML(r, id) {
-  const ks = ["ex", "trio", "yoso", "invest"].filter(k => k !== r.rec && (listOf(r, k).length || (k !== "invest" && patList(r, k).length)));
+  const ks = ["ex", "trio", "yoso", "invest"].filter(k => k !== r.rec && listOf(r, k).length);
   if (!ks.length) return "";
   const open = angleOpen.get(id);
   return `<div class="ang" data-id="${esc(id)}"><span class="lb">${r.rec ? "ほかの角度" : "券種"}</span>${ks.map(k => {
     const bs = listOf(r, k);
-    const ps = patList(r, k);
-    return `<button data-k="${k}" aria-pressed="${open === k}">${TYPE[k]}<span>${ps.length ? ps.length + "通り" : bs.length + "点・" + pct(sum(bs, b => b.p), 0)}</span></button>`; }).join("")}</div>
-    ${open && ks.includes(open) ? (open === "invest" ? betBlock(r, open) : `<div class="blk">${patList(r, open).length ? patternsHTML(r, open, id) : open === "yoso" ? betBlock(r, open) : planBody(r, open)}</div>`) : ""}`;
+    return `<button data-k="${k}" aria-pressed="${open === k}">${TYPE[k]}<span>${bs.length + "点・" + pct(sum(bs, b => b.p), 0)}</span></button>`; }).join("")}</div>
+    ${open && ks.includes(open) ? (open === "invest" ? betBlock(r, open) : `<div class="blk">${open === "yoso" ? betBlock(r, open) : planBody(r, open)}</div>`) : ""}`;
 }
 document.addEventListener("click", e => {
   const b = e.target.closest(".ang button[data-k]"); if (!b) return;
@@ -543,7 +513,7 @@ function renderToday() {
       <div class="reason">${esc(r.reason || "買い目の基準（合成オッズ・期待値）を満たさなかったため")}</div></article>`;
     const id = "t-" + r.venue + r.race_no;
     const main = r.rec ? recBlock(r) : betBlock(r, "yoso");
-    return `<article class="card rc">${head}${main}${r.rec ? anglesHTML(r, id) : betBlock(r, "invest")}
+    return `<article class="card rc">${head}${main}
       ${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</article>`;
   }).join("")}</div>`;
 }
@@ -591,7 +561,7 @@ function renderHistory() {
   $("#dates").innerHTML = days.map(d => { const t = new Date(d.date + "T00:00:00+09:00");
     return `<button data-d="${d.date}" aria-pressed="${d.date === histDate}"><b>${t.getMonth() + 1}/${t.getDate()}</b><span>${WD[t.getDay()]}・${d.races.length}R</span></button>`; }).join("");
   const d = days.find(x => x.date === histDate);
-  $("#hist-sum").innerHTML = sumCard(daySummary(d, "rec"), "◎ おすすめ券種", "") + sumCard(daySummary(d, "yoso"), "3連単（本命）", "") + sumCard(daySummary(d, "invest"), "★ 投資判定", "");
+  $("#hist-sum").innerHTML = sumCard(daySummary(d, "rec"), "◎ 予想", "");
   let rs = [...d.races].sort((a, b) => (b.deadline || "").localeCompare(a.deadline || ""));
   const ALL = r => ["yoso", "invest", "ex", "trio"].flatMap(k => listOf(r, k));
   const isHit = r => ALL(r).some(b => b.hit);
@@ -607,7 +577,7 @@ function renderHistory() {
       <div class="mid"><b>${esc(r.venue)}</b> <span class="num" style="font-size:12px;color:var(--muted)">${esc(r.deadline || "")}</span>
         <div class="t">${r.rec ? `<span class="tag lime">◎${TYPE[r.rec]}${listOf(r, r.rec).some(b => b.hit) ? " 的中" : ""}</span>` : r.bets?.length ? `<span class="tag lime">本命 ${r.bets.length}点</span>` : ""}${r.invest?.length ? `<span class="tag hot">★ ${r.invest.length}点</span>` : ""}${hit ? '<span class="tag good">的中</span>' : r.result ? '<span class="tag bad">不的中</span>' : ""}</div></div>
       <div class="res">${res}</div></summary>
-      <div class="body">${r.rec ? recBlock(r) + anglesHTML(r, "h-" + d.date + r.venue + r.race_no) : betBlock(r, "yoso") + betBlock(r, "invest")}${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</div></details>`;
+      <div class="body">${r.rec ? recBlock(r) : betBlock(r, "yoso")}${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</div></details>`;
   }).join("")}</div>` : `<div class="empty"><b>該当するレースはありません</b></div>`;
 }
 $("#dates").addEventListener("click", e => { const b = e.target.closest("button[data-d]"); if (b) { histDate = b.dataset.d; renderHistory(); } });
@@ -650,7 +620,7 @@ function renderRecord() {
   const r = D.paper;
   if (!r) return;
   let html = "";
-  if (r.rec) html += recordBlock(r.rec, "◎ おすすめ券種", "レースごとに選んだ券種だけを買った場合");
+  if (r.rec) html += recordBlock(r.rec, "◎ 予想", "システムがレースごとに選んだ買い方だけを買った場合");
   if (r.ex) html += recordBlock(r.ex, "2車単", "1着・2着を絞って少点数");
   if (r.trio) html += recordBlock(r.trio, "3連複", "上位3人・着順は問わない");
   if (r.yoso) html += recordBlock(r.yoso, "3連単（本命予想）", "フォーメーション・毎レース");
