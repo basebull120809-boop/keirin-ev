@@ -255,7 +255,15 @@ def split_docs(folder="site/docs"):
     Path(folder).mkdir(parents=True, exist_ok=True)
     docs = dict(summary={k: d.get(k) for k in ("updated_at", "collect", "config", "model")},
                 picks=d.get("picks"), paper=d.get("paper"),
-                backtest=d.get("backtest"), market=d.get("market"), insight=d.get("insight"))
+                backtest=d.get("backtest"), market=d.get("market"), insight=d.get("insight"),
+                board=d.get("board"))
+    if HIST.exists():                            # 過去予想（直近14日・結果つき）
+        try:
+            h = json.loads(HIST.read_text(encoding="utf-8"))
+            h["days"] = h.get("days", [])[:14]
+            docs["history"] = h
+        except Exception as e:
+            print("過去予想の読み込み失敗:", e)
     out = []
     for k, v in docs.items():
         if v:

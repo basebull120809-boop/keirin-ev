@@ -1,9 +1,9 @@
 name: backfill（過去データの遡り取得）
 on:
-  schedule: [{ cron: "10 4,10 * * *" }]   # 毎日 13:10 / 19:10 JST
+  schedule: [{ cron: "10 0,6,12,18 * * *" }]   # 毎日 03:10 / 09:10 / 15:10 / 21:10 JST（collect の 01:40 と重ならない）
   workflow_dispatch:
     inputs:
-      days: { description: "1回で遡る日数", required: false, default: "7" }
+      days: { description: "1回で遡る日数", required: false, default: "20" }
 env:
   OLDEST: "2024-11-01"                       # ここまで遡ったら止まる
 concurrency: { group: data, cancel-in-progress: false }
@@ -11,7 +11,7 @@ permissions: { contents: write }
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 170
     env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
     steps:
       - uses: actions/checkout@v4
@@ -22,10 +22,19 @@ jobs:
       - name: 1日ずつ取得して保存
         run: |
           git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
-          for n in $(seq 1 ${{ inputs.days || '7' }}); do
+          for n in $(seq 1 ${{ inputs.days || '20' }}); do
             git pull -q --rebase -X theirs || true
             python main.py backfill 1 "$OLDEST" 2>&1 | tail -40
             git add data/daily
             git commit -qm "backfill $(date +%F_%H%M)" || break
             for i in 1 2 3; do git pull -q --rebase -X theirs && git push -q && break; sleep 5; done
           done
+      - name: 学習し直してレポート更新（増えたデータをすぐモデルに反映）
+        if: always()
+        run: |
+          git pull -q --rebase -X theirs || true
+          python main.py train || echo "train skipped"
+          python main.py report > /dev/null || echo "report failed"
+          git add models reports site
+          git commit -qm "backfill後の再学習 $(date +%F_%H%M)" || exit 0
+          for i in 1 2 3; do git pull -q --rebase -X theirs && git push -q && break; sleep 5; done
