@@ -39,6 +39,14 @@ def load_config():
     return cfg, rules
 
 
+def load_invest_rules(cfg):
+    """投資判定（期待値で勝てる目だけ）のルール。設定が無ければ使わない"""
+    r = cfg.get("invest_rules")
+    if not r:
+        return None
+    return Rules(**{k: v for k, v in r.items() if k in Rules.__dataclass_fields__})
+
+
 # ---------- 通知（GitHub Issue） ----------
 class Notifier:
     def __init__(self, date):
@@ -95,7 +103,7 @@ def schedule(date):
     return sorted(out)
 
 
-def judge(date, venue, rid, model, rules, bank, dl=None):
+def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     html = kdreams.fetch(f"/{venue}/racedetail/{rid}/", refresh=True)
     ent, od, _, info, _, his = kdreams.parse_race(html, rid, extra=True)
     t = now()
@@ -105,7 +113,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None):
     snap.to_csv(day / "odds_live.csv.gz", mode="a", index=False, compression="gzip",
                 header=not (day / "odds_live.csv.gz").exists())
     if model is None or od.empty:
-        return [], ent
+        return [], ent, []
     con = connect(":memory:")
     races = pd.DataFrame([dict(race_id=rid, date=date, venue=venue, race_no=int(rid[-4:]),
                                n_riders=len(ent), bank_len=kdreams.BANK.get(venue, 400),
@@ -113,16 +121,20 @@ def judge(date, venue, rid, model, rules, bank, dl=None):
     store(con, dict(races=races, entries=ent, odds_trifecta=od))
     X = build_tensors(con, race_ids=[rid], need_result=False)
     if not X["T"].race_ids:
-        return [], ent
+        return [], ent, []
     P = model.predict(X["T"], X["Q"])[0]
     cars = X["T"].cars[0]
     bets = []
-    for n, st, p, o, ev in pick_bets(P, X["O"][0], bank, rules):
-        i, j, k = COMBOS[n]
-        bets.append(dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
-                         deadline=dl.strftime("%H:%M") if dl is not None else "",
-                         combo=f"{cars[i]}-{cars[j]}-{cars[k]}", stake=st, odds=o,
-                         p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S")))
+    for kind, rl in (("yoso", rules), ("invest", inv_rules)):
+        if rl is None:
+            continue
+        for n, st, p, o, ev in pick_bets(P, X["O"][0], bank, rl):
+            i, j, k = COMBOS[n]
+            bets.append(dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                             deadline=dl.strftime("%H:%M") if dl is not None else "",
+                             combo=f"{cars[i]}-{cars[j]}-{cars[k]}", stake=st, odds=o,
+                             p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S"),
+                             kind=kind))
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od)
@@ -131,35 +143,44 @@ def judge(date, venue, rid, model, rules, bank, dl=None):
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
-                                notes=notes, lines=line_probs, n_bets=len(bets)),
+                                notes=notes, lines=line_probs,
+                                n_bets=sum(b["kind"] == "yoso" for b in bets),
+                                n_invest=sum(b["kind"] == "invest" for b in bets)),
                            ensure_ascii=False) + "\n")
     if bets:
         pd.DataFrame(bets).to_csv(day / "bets.csv", mode="a", index=False,
                                   header=not (day / "bets.csv").exists())
-        bets[0]["_notes"] = notes
-    return bets, ent
+    return bets, ent, notes
 
 
-def fmt(venue, rid, dl, bets, ent, mode):
+def _fmt_block(bets, names):
     from .strategy import summary
-    names = dict(zip(ent["car"], ent["name"]))
     sm = summary([(0, b["stake"], b["p"], b["odds"], b["ev"]) for b in bets])
-    L = [f"### {kdreams.VENUE_JA.get(venue, venue)} {int(rid[-4:])}R（締切 {dl:%H:%M}）{'【紙上運用】' if mode == 'paper' else ''}",
-         f"**{len(bets)}点 {sm['total']:,}円**／合成オッズ {sm['synth']:.1f}倍／的中率 {sm['hit_p']:.0%}／期待値 {sm['race_ev']:.2f}", ""]
+    L = [f"**{len(bets)}点 {sm['total']:,}円**／合成オッズ {sm['synth']:.1f}倍／的中率 {sm['hit_p']:.0%}／期待値 {sm['race_ev']:.2f}", ""]
     by_first = {}
     for b in bets:
         by_first.setdefault(int(b["combo"].split("-")[0]), []).append(b)
     for f, bs in sorted(by_first.items(), key=lambda x: -sum(b["p"] for b in x[1])):
-        L.append(f"**1着 {f} {names.get(f, '')}**")
-        L.append("| 買い目 | 金額 | オッズ | 期待値 |")
-        L.append("|---|---:|---:|---:|")
-        for b in sorted(bs, key=lambda b: b["odds"]):
-            L.append(f"| {b['combo']} | {b['stake']:,}円 | {b['odds']:.1f} | {b['ev']:.2f} |")
+        L += [f"1着 **{f} {names.get(f, '')}**", "| 買い目 | 金額 | オッズ |", "|---|---:|---:|"]
+        L += [f"| {b['combo']} | {b['stake']:,}円 | {b['odds']:.1f} |" for b in sorted(bs, key=lambda b: b["odds"])]
         L.append("")
-    if bets[0].get("_notes"):
-        L.append("**ひとこと**")
-        L += [f"- {n}" for n in bets[0]["_notes"]]
-        L.append("")
+    return L
+
+
+def fmt(venue, rid, dl, bets, ent, mode, notes=None):
+    names = dict(zip(ent["car"], ent["name"]))
+    yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
+    inv = [b for b in bets if b.get("kind") == "invest"]
+    head = f"### {kdreams.VENUE_JA.get(venue, venue)} {int(rid[-4:])}R（締切 {dl:%H:%M}）"
+    if inv:
+        head += " ★投資判定あり"
+    L = [head + ("【紙上運用】" if mode == "paper" else ""), ""]
+    if yoso:
+        L += ["#### 本命予想（的中重視）"] + _fmt_block(yoso, names)
+    if inv:
+        L += ["#### ★投資判定（期待値で勝てる目）"] + _fmt_block(inv, names)
+    if notes:
+        L += ["**ひとこと**"] + [f"- {n}" for n in notes] + [""]
     L.append(f"判定時刻 {bets[0]['taken_at']}")
     return "\n".join(L)
 
@@ -187,6 +208,7 @@ def run(max_minutes=340):
     if now().hour < 4:                         # 日付をまたいだミッドナイト
         date = (now() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
     cfg, rules = load_config()
+    inv_rules = load_invest_rules(cfg)
     mode, bank = cfg.get("mode", "paper"), cfg.get("bankroll", 100_000)
     try:
         model = TrifectaModel.from_json("models/latest.json")
@@ -217,12 +239,12 @@ def run(max_minutes=340):
             if left < LEAD_MIN:
                 continue
             try:
-                bets, ent = judge(date, venue, rid, model, rules, bank, dl)
+                bets, ent, notes = judge(date, venue, rid, model, rules, bank, dl, inv_rules)
             except Exception as e:
                 print("判定失敗", rid, e, flush=True); continue
             print(f"{t:%H:%M} {venue} {int(rid[-4:])}R 締切{dl:%H:%M} 買い目{len(bets)}点", flush=True)
             if bets:
-                note.post(fmt(venue, rid, dl, bets, ent, mode))
+                note.post(fmt(venue, rid, dl, bets, ent, mode, notes))
             try:                           # 買い・見送りにかかわらずページを更新
                 from .site import export_live
                 export_live(date)
@@ -243,6 +265,9 @@ def paper_results():
     if not bets:
         return None
     b = pd.concat(bets, ignore_index=True)
+    if "kind" not in b:
+        b["kind"] = np.nan
+    b["kind"] = b["kind"].fillna("invest")       # 区分導入前の買い目は期待値型
     res = []
     for d in b["date"].unique():
         f = st.day_dir(d) / "results.csv.gz"

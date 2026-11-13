@@ -56,7 +56,11 @@ def picks_and_paper():
                           bets=[dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds),
                                      p=float(b.p), ev=float(b.ev),
                                      hit=None if b.hit != b.hit else bool(b.hit))
-                                for b in g.itertuples()]))
+                                for b in g[g["kind"] == "yoso"].itertuples()],
+                          invest=[dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds),
+                                       p=float(b.p), ev=float(b.ev),
+                                       hit=None if b.hit != b.hit else bool(b.hit))
+                                  for b in g[g["kind"] == "invest"].itertuples()]))
     notes = {}
     f = Path("data/live") / last / "notes.jsonl"
     if f.exists():
@@ -73,18 +77,21 @@ def picks_and_paper():
         r.pop("venue_slug", None)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
     picks = dict(date=last, races=races)
-    done = pb.dropna(subset=["hit"])
-    paper = None
-    if len(done):
-        d = done.groupby("date").agg(stake=("stake", "sum"), payout=("payout", "sum"),
-                                     points=("combo", "size"), hits=("hit", "sum")).reset_index()
+    paper = {}
+    for kind, sub in pb.dropna(subset=["hit"]).groupby("kind"):
+        d = sub.groupby("date").agg(stake=("stake", "sum"), payout=("payout", "sum"),
+                                    points=("combo", "size"), hits=("hit", "sum"),
+                                    races=("race_id", "nunique")).reset_index()
+        hr = sub.groupby(["date", "race_id"])["hit"].max().groupby("date").sum()
+        d["race_hits"] = d["date"].map(hr).fillna(0).astype(int)
         d["roi"] = d["payout"] / d["stake"]
         d["cum"] = (d["payout"] - d["stake"]).cumsum()
-        st, py = done["stake"].sum(), done["payout"].sum()
-        paper = dict(total=dict(stake=st, payout=py, roi=py / st, points=len(done),
-                                hits=int(done["hit"].sum()), races=done["race_id"].nunique(),
-                                days=len(d)),
-                     daily=d.to_dict("records"))
+        st, py = sub["stake"].sum(), sub["payout"].sum()
+        paper[kind] = dict(total=dict(stake=st, payout=py, roi=py / st, points=len(sub),
+                                      hits=int(sub["hit"].sum()), races=sub["race_id"].nunique(),
+                                      race_hits=int(d["race_hits"].sum()), days=len(d)),
+                           daily=d.to_dict("records"))
+    paper = paper or None
     return picks, paper
 
 
@@ -109,7 +116,7 @@ def today_board(date):
         n = judged.get(str(r.race_id))
         st = "wait" if n is None else ("buy" if n.get("n_bets") else "skip")
         rows.append(dict(venue=VENUE_JA.get(r.venue, r.venue), race_no=int(r.race_no),
-                         deadline=r.deadline, status=st,
+                         deadline=r.deadline, status=st, invest=bool((n or {}).get("n_invest")),
                          notes=(n or {}).get("notes", []), lines=(n or {}).get("lines", [])))
     return dict(date=date, races=rows)
 

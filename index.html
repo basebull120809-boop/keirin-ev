@@ -75,6 +75,10 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0 0 4px;text
 .chip.buy{background:var(--good);color:#fff}
 .chip.skip{text-decoration:line-through;color:var(--muted)}
 .tally{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}
+.kind{font-weight:700;font-size:13px;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
+.kind:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.kind span{display:block;font-weight:400;font-size:11px;color:var(--muted)}
+.kind.inv{color:var(--sprint)}
 .result{font-size:12px;color:var(--muted);margin-top:6px}
 .result .w{color:var(--good);font-weight:700}
 /* 数字 */
@@ -152,7 +156,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
 
   <section id="picks">
     <h2 id="picks-title">今日の買い目</h2>
-    <p class="lede">締切の6〜1.5分前にオッズを取り直し、期待値（確率×オッズ）が基準を超えた目だけを出しています。基準を超えないレースは見送りです。</p>
+    <p class="lede">締切の6分前にオッズを取り直して判定します。<b>本命予想</b>は当たる確率の高い順に10〜20点（硬いレースは6点）。<b style="color:var(--sprint)">★投資判定</b>は、期待値で勝てると判断できたレースにだけ出ます。</p>
     <div id="board"></div>
     <div id="picks-body"><div class="empty"><b>まだ判定はありません。</b><br>レースの締切が近づくと、判定した買い目がここに並びます。</div></div>
   </section>
@@ -209,6 +213,17 @@ function renderHead() {
   $("#updated").textContent = D.summary?.updated_at ? `更新 ${D.summary.updated_at}` : "データ待ち";
 }
 
+const synth = bs => (1 / bs.reduce((a, b) => a + 1 / b.odds, 0)).toFixed(1);
+const raceEv = bs => bs.reduce((a, b) => a + b.stake * b.p * b.odds, 0) / bs.reduce((a, b) => a + b.stake, 0);
+function betRow(b, mode) {
+  const w = mode === "ev" ? Math.min(100, (b.ev - 1) / 2 * 100) : Math.min(100, b.p / .25 * 100);
+  const label = mode === "ev" ? `期待値 <b class="mono">${b.ev.toFixed(2)}</b>` : `確率 <b class="mono">${pct(b.p)}</b>`;
+  return `<div class="bet${b.hit ? " hit" : ""}">${combo(b.combo)}
+    <div><div class="evtxt"><span>${label}</span><span class="mono">${b.odds.toFixed(1)}倍</span></div>
+      <div class="evbar"><i style="width:${w}%;${mode === "ev" ? "background:var(--sprint)" : ""}"></i></div></div>
+    <div class="stake mono">${yen(b.stake)}</div></div>`;
+}
+
 function renderPicks() {
   const p = D.picks;
   if (!p || !p.races?.length) return;
@@ -222,16 +237,14 @@ function renderPicks() {
   $("#picks-title").textContent = `買い目 ${p.date.replaceAll("-", "/")}` + (open ? `（締切前 ${open}レース）` : "");
   $("#picks-body").innerHTML = `<div class="races">${list.map(r => {
     const isClosed = closed(r);
-    const total = r.bets.reduce((a, b) => a + b.stake, 0);
+    const total = r.bets.reduce((a, b) => a + b.stake, 0) + (r.invest || []).reduce((a, b) => a + b.stake, 0);
     const res = r.result ? `<div class="result">結果 <span class="w mono">${esc(r.result.combo)}</span>　払戻 <span class="mono">${yen(r.result.payout)}</span>／100円</div>` : "";
     return `<article class="race${isClosed ? " closed" : ""}">
       <div class="race-h"><strong>${esc(r.venue)} ${r.race_no}R ${isClosed ? '<span class="pill" style="color:var(--muted);font-size:11px;padding:1px 8px">締切済み</span>' : '<span class="pill good" style="font-size:11px;padding:1px 8px">締切前</span>'}</strong>
-        <span class="dl mono">締切 ${esc(r.deadline || "—")}・判定 ${esc((r.judged_at || "").slice(0, 5))}・${r.bets.length}点 ${yen(total)}</span></div>
-      ${r.bets.map(b => `<div class="bet${b.hit ? " hit" : ""}">
-        ${combo(b.combo)}
-        <div><div class="evtxt"><span>期待値 <b class="mono">${b.ev.toFixed(2)}</b></span><span class="mono">${pct(b.p)}・${b.odds.toFixed(1)}倍</span></div>
-          <div class="evbar"><i style="width:${Math.min(100, (b.ev - 1) / (maxEv - 1) * 100)}%"></i></div></div>
-        <div class="stake mono">${yen(b.stake)}</div></div>`).join("")}
+        <span class="dl mono">締切 ${esc(r.deadline || "—")}・判定 ${esc((r.judged_at || "").slice(0, 5))}・${r.bets.length + (r.invest?.length || 0)}点 ${yen(total)}</span></div>
+      ${r.bets.length ? `<div class="kind">本命予想<span>的中重視・合成オッズ ${synth(r.bets)}倍・見込み的中率 ${pct(r.bets.reduce((a, b) => a + b.p, 0), 0)}</span></div>` : ""}
+      ${r.bets.map(b => betRow(b, "p")).join("")}
+      ${r.invest?.length ? `<div class="kind inv">★ 投資判定<span>期待値で勝てる目・${r.invest.length}点 ${yen(r.invest.reduce((a, b) => a + b.stake, 0))}・期待値 ${raceEv(r.invest).toFixed(2)}</span></div>${r.invest.map(b => betRow(b, "ev")).join("")}` : ""}
       ${r.lines?.length ? `<div class="linebar" role="img" aria-label="ライン別の1着確率">${r.lines.map((l, i) => `<span style="width:${(l.p * 100).toFixed(1)}%;background:var(--c${l.cars[0]});color:var(--t${l.cars[0]})" title="${l.cars.join("-")} ${pct(l.p, 0)}">${l.p >= .12 ? l.cars.join("-") + " " + pct(l.p, 0) : ""}</span>`).join("")}</div>` : ""}
       ${r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       ${res}</article>`;
@@ -257,8 +270,8 @@ function renderBoard() {
   const recent = b.races.filter(r => r.status !== "wait").slice(-6);
   $("#board").innerHTML = `<div class="board">${next}
     <div class="chips">${upcoming.slice(1, 9).map(r => `<span class="chip">${esc(r.venue)}${r.race_no}R ${esc(r.deadline)}</span>`).join("")}</div>
-    ${recent.length ? `<div class="chips">${recent.map(r => `<span class="chip ${r.status}">${esc(r.venue)}${r.race_no}R ${r.status === "buy" ? "買い" : "見送り"}</span>`).join("")}</div>` : ""}
-    <div class="tally"><span>買い ${nb}</span><span>見送り ${ns}</span><span>判定待ち ${upcoming.length}</span></div></div>`;
+    ${recent.length ? `<div class="chips">${recent.map(r => `<span class="chip ${r.status}">${esc(r.venue)}${r.race_no}R ${r.status === "buy" ? "予想" : "見送り"}${r.invest ? "★" : ""}</span>`).join("")}</div>` : ""}
+    <div class="tally"><span>予想 ${nb}</span><span>見送り ${ns}</span><span>投資判定 ${b.races.filter(r => r.invest).length}</span><span>判定待ち ${upcoming.length}</span></div></div>`;
 }
 
 function spark(points) {
@@ -281,105 +294,30 @@ function spark(points) {
   </svg>`;
 }
 
+function recordBlock(r, title, note) {
+  const t = r.total, roiCls = t.roi >= 1 ? "var(--good)" : "var(--bad)";
+  const daily = (r.daily || []).slice(-10).reverse();
+  return `<h3 style="margin:18px 0 8px;font-size:15px">${title}<span style="display:block;font-size:12px;font-weight:400;color:var(--muted)">${note}</span></h3>
+    <div class="kpis">
+      <div class="kpi big"><div class="l">回収率</div><div class="v" style="color:${roiCls}">${pct(t.roi)}</div><div class="s">${t.days}日・${t.races}レース</div></div>
+      <div class="kpi"><div class="l">的中レース</div><div class="v">${t.race_hits ?? "—"}<span style="font-size:14px">/${t.races}</span></div><div class="s">${pct((t.race_hits || 0) / (t.races || 1), 0)}</div></div>
+      <div class="kpi"><div class="l">損益</div><div class="v">${(t.payout - t.stake >= 0 ? "+" : "") + Math.round(t.payout - t.stake).toLocaleString()}</div><div class="s">投資 ${yen(t.stake)}</div></div>
+    </div>
+    <div class="panel"><h3>累積損益</h3>${spark((r.daily || []).map(d => ({ d: d.date, v: d.cum }))) || '<div class="lede" style="margin:0">2日分以上たまるとグラフが出ます。</div>'}</div>
+    <div class="panel scroll"><h3>日別</h3><table class="tbl"><thead><tr><th>日付</th><th>レース</th><th>的中</th><th>投資</th><th>払戻</th><th>回収率</th></tr></thead><tbody>
+      ${daily.map(d => `<tr><td>${esc(d.date.slice(5))}</td><td>${d.races}</td><td>${d.race_hits ?? d.hits}</td><td>${Math.round(d.stake).toLocaleString()}</td><td>${Math.round(d.payout).toLocaleString()}</td><td style="color:${d.roi >= 1 ? "var(--good)" : "inherit"}">${pct(d.roi, 0)}</td></tr>`).join("")}
+    </tbody></table></div>`;
+}
 function renderRecord() {
   const r = D.paper;
   if (!r) return;
-  const t = r.total, roiCls = t.roi >= 1 ? "var(--good)" : "var(--bad)";
-  const daily = (r.daily || []).slice(-10).reverse();
-  $("#record-body").innerHTML = `
-    <div class="kpis">
-      <div class="kpi big"><div class="l">回収率</div><div class="v" style="color:${roiCls}">${pct(t.roi)}</div><div class="s">${t.days}日・${t.races}レース</div></div>
-      <div class="kpi"><div class="l">損益</div><div class="v">${(t.payout - t.stake >= 0 ? "+" : "") + Math.round(t.payout - t.stake).toLocaleString()}</div><div class="s">投資 ${yen(t.stake)}</div></div>
-      <div class="kpi"><div class="l">的中</div><div class="v">${t.hits}<span style="font-size:14px">/${t.points}</span></div><div class="s">点</div></div>
-    </div>
-    <div class="panel"><h3>累積損益</h3>${spark((r.daily || []).map(d => ({ d: d.date, v: d.cum }))) || '<div class="lede" style="margin:0">2日分以上たまるとグラフが出ます。</div>'}</div>
-    <div class="panel scroll"><h3>日別</h3><table class="tbl"><thead><tr><th>日付</th><th>点数</th><th>的中</th><th>投資</th><th>払戻</th><th>回収率</th></tr></thead><tbody>
-      ${daily.map(d => `<tr><td>${esc(d.date.slice(5))}</td><td>${d.points}</td><td>${d.hits}</td><td>${Math.round(d.stake).toLocaleString()}</td><td>${Math.round(d.payout).toLocaleString()}</td><td style="color:${d.roi >= 1 ? "var(--good)" : "inherit"}">${pct(d.roi, 0)}</td></tr>`).join("")}
-    </tbody></table></div>`;
-}
-
-function renderVerify() {
-  const c = D.summary?.collect, b = D.backtest;
   let html = "";
-  if (c) {
-    const start = new Date(c.target_first), end = new Date(c.last || Date.now());
-    const need = Math.max(1, Math.round((end - start) / 864e5) + 1);
-    const ratio = Math.min(1, c.days / need);
-    html += `<div class="panel" style="margin-top:0"><h3>過去データの取得</h3>
-      <div class="progress"><i style="width:${(ratio * 100).toFixed(1)}%"></i></div>
-      <div class="mono" style="font-size:13px">${c.days}日 / ${need}日（${pct(ratio, 0)}）・結果あり ${(c.races || 0).toLocaleString()}レース</div>
-      <div class="lede" style="margin:4px 0 0">${esc(c.first || "")} 〜 ${esc(c.last || "")} を取得済み。${esc(c.target_first)} まで自動で遡ります。</div></div>`;
-  }
-  if (b && b.roi != null) {
-    const pass = b.lo != null && b.lo > 1;
-    const lo = Math.min(0.4, b.lo ?? 0.4), hi = Math.max(1.6, b.hi ?? 1.6);
-    const X = v => ((v - lo) / (hi - lo) * 100).toFixed(1) + "%";
-    html += `<div class="panel"><h3>ウォークフォワード検証（期待値${b.ev_min}以上）</h3>
-      <div class="verdict"><span class="pill ${pass ? "good" : "bad"}">${pass ? "基準クリア：下限が100%超え" : "基準未達：実運用はまだ"}</span>
-        <span class="mono">回収率 ${pct(b.roi)}</span></div>
-      <div class="ci" role="img" aria-label="回収率の95%区間">
-        <div style="position:absolute;top:18px;left:0;right:0;height:2px;background:var(--line)"></div>
-        <div style="position:absolute;top:13px;height:12px;left:${X(b.lo)};width:calc(${X(b.hi)} - ${X(b.lo)});background:color-mix(in srgb,var(--band) 30%,transparent);border-radius:6px"></div>
-        <div style="position:absolute;top:9px;left:${X(b.roi)};width:4px;height:20px;margin-left:-2px;background:var(--band);border-radius:2px"></div>
-        <div style="position:absolute;top:6px;bottom:12px;left:${X(1)};width:2px;background:var(--fg);opacity:.5"></div>
-        <div class="mono" style="position:absolute;bottom:-4px;left:${X(1)};transform:translateX(-50%);font-size:10px;color:var(--muted)">100%</div>
-      </div>
-      <div class="kpis" style="margin-top:14px">
-        <div class="kpi"><div class="l">95%区間</div><div class="v" style="font-size:16px">${pct(b.lo, 0)}〜${pct(b.hi, 0)}</div></div>
-        <div class="kpi"><div class="l">購入</div><div class="v" style="font-size:16px">${b.races}R/${b.bets}点</div><div class="s">的中 ${b.hits}</div></div>
-        <div class="kpi"><div class="l">最大DD</div><div class="v" style="font-size:16px">${pct(b.dd, 0)}</div></div>
-      </div></div>`;
-    if (b.monthly?.length) html += `<div class="panel scroll"><h3>月別</h3><table class="tbl"><thead><tr><th>月</th><th>投資</th><th>払戻</th><th>回収率</th></tr></thead><tbody>
-      ${b.monthly.map(m => `<tr><td>${esc(m.month)}</td><td>${Math.round(m.stake).toLocaleString()}</td><td>${Math.round(m.payout).toLocaleString()}</td><td style="color:${m.roi >= 1 ? "var(--good)" : "inherit"}">${pct(m.roi, 0)}</td></tr>`).join("")}</tbody></table></div>`;
-  } else if (c) {
-    html += `<div class="empty" style="margin-top:12px"><b>検証待ち（${c.months}/7ヶ月）</b><br>7ヶ月分のデータがそろうと、ここに回収率と95%区間が出ます。</div>`;
-  }
-  if (html) $("#verify-body").innerHTML = html;
+  if (r.yoso) html += recordBlock(r.yoso, "本命予想", "当たる確率の高い順。毎レース出す予想");
+  if (r.invest) html += recordBlock(r.invest, "★ 投資判定", "期待値で勝てると判断した目だけ");
+  if (r.total) html += recordBlock(r, "記録", "");
+  if (html) $("#record-body").innerHTML = html;
 }
 
-function bars(rows, title) {
-  const max = Math.max(1.6, ...rows.map(r => r.roi || 0));
-  const X = v => (Math.min(v, max) / max * 100).toFixed(1) + "%";
-  return `<div class="panel"><h3>${title}</h3><div class="bars">${rows.map(r => `
-    <div class="brow"><span class="mono">${esc(r.band)}</span>
-      <div class="btrack"><i class="${r.roi > 1 ? "over" : ""}" style="width:${X(r.roi || 0)}"></i><span class="ref" style="left:${X(.75)}"></span><span class="ref one" style="left:${X(1)}"></span></div>
-      <span class="mono" style="text-align:right">${pct(r.roi, 0)}</span></div>`).join("")}</div>
-    <div class="legend"><span>理論値75%</span><span class="one">損益分岐100%</span></div></div>`;
-}
-
-function renderMarket() {
-  const m = D.market;
-  if (!m) return;
-  $("#market-body").innerHTML = bars(m.popularity, "人気順（1番人気〜）") + bars(m.oddsband, "オッズ帯（倍）");
-}
-
-function renderModel() {
-  const m = D.summary?.model;
-  if (!m) return;
-  const share = m.a / ((m.a + m.b) || 1);
-  $("#model-body").innerHTML = `<div class="panel" style="margin-top:0"><dl class="facts">
-    <dt>学習データ</dt><dd class="mono">${(m.n_races || 0).toLocaleString()}レース（${esc(m.period || "")}）</dd>
-    <dt>学習日時</dt><dd class="mono">${esc(m.trained_at || "")}</dd>
-    <dt>独自情報の重み</dt><dd><span class="mono">a=${(+m.a).toFixed(2)}／市場 b=${(+m.b).toFixed(2)}</span>
-      <div class="progress"><i style="width:${(share * 100).toFixed(0)}%"></i></div>
-      <span class="lede">aが0に近いほど、オッズ以上の情報を持てていないことを意味します。</span></dd>
-    <dt>判定基準</dt><dd>期待値 ${esc(D.summary?.config?.ev_min ?? 1.2)} 以上・1/4ケリー・1レース資金の3%まで</dd>
-  </dl></div>`;
-}
-
-let insMetric = "top3";
-function cmpRows(rows, key, label) {
-  const mk = key === "top3" ? "mkt_top3" : "mkt_win", se = key === "top3" ? "se_top3" : "se_win";
-  const max = Math.max(.6, ...rows.map(r => Math.max(r[key], r[mk]) + (r[se] || 0)));
-  const X = v => (Math.max(0, Math.min(v, max)) / max * 100).toFixed(1) + "%";
-  return rows.map(r => {
-    const d = r[key] - r[mk], sig = r[se] ? Math.abs(d) > 2 * r[se] : false;
-    const cls = Math.abs(d) < .005 ? "flat" : d > 0 ? "up" : "down";
-    return `<div class="cmp"><span><b>${esc(r[label])}</b><br><span class="mono" style="color:var(--muted)">${r.n}人</span></span>
-      <div class="tr"><i class="act" style="width:${X(r[key])}"></i>${r[se] ? `<i class="err" style="left:${X(r[key] - 2 * r[se])};width:calc(${X(r[key] + 2 * r[se])} - ${X(r[key] - 2 * r[se])})"></i>` : ""}<i class="mk" style="left:${X(r[mk])}"></i></div>
-      <span class="diff ${cls}">${d > 0 ? "+" : ""}${(d * 100).toFixed(1)}<small>pt</small>${sig ? "＊" : ""}</span></div>`;
-  }).join("");
-}
 function renderInsight() {
   const s = D.insight;
   if (!s) return;

@@ -60,6 +60,7 @@ def _equal_payout(odds_sel, budget, unit):
 
 def pick_points(p, odds, rules, first_of):
     """戻り値 [(combo_idx, stake, p, odds, ev)]、見送りは []"""
+    p = shrink(p, odds, rules.model_weight)
     ev = p * odds
     ok = np.where((odds > 0) & (odds <= rules.odds_max) & (p >= rules.p_min))[0]
     if not len(ok):
