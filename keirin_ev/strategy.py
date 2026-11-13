@@ -25,7 +25,7 @@ class Rules:
     race_ev_min: float = 1.10    # レース全体の期待値の下限（これ未満は見送り）
     race_budget: int = 3000      # 1レースの購入額
     # --- 的中重視型 ---
-    synth_min: float = 1.5       # 合成オッズの下限（これ未満は妙味なしで見送り）
+    synth_min: float = 2.0       # 合成オッズの下限。当たっても投資額の2倍に届かない組み方はしない（届かなければ見送り）
     model_weight: float = 0.5    # モデル確率と市場確率の混ぜ具合（データが少ないうちは市場寄り）
     # --- 期待値型 ---
     ev_min: float = 1.20
@@ -58,6 +58,23 @@ def _equal_payout(odds_sel, budget, unit):
     return st.astype(int)
 
 
+def enforce_synth(sel, odds, p, rules, min_n=3):
+    """合成オッズが下限（rules.synth_min）に届くまで、オッズの一番低い目から外す。
+    さらに、配分の端数でどれかが当たっても投資額を下回る目があれば外す。届かなければ []（見送り）"""
+    sel = list(sel)
+    while len(sel) > min_n and 1 / (1 / odds[np.array(sel)]).sum() < rules.synth_min:
+        sel.remove(min(sel, key=lambda n: odds[n]))
+    if not sel or 1 / (1 / odds[np.array(sel)]).sum() < rules.synth_min:
+        return None, None
+    for _ in range(len(sel)):
+        st = _equal_payout(odds[np.array(sel)], rules.race_budget, rules.unit)
+        pay = st * odds[np.array(sel)]
+        if pay.min() >= st.sum() * min(rules.synth_min, 1.5) or len(sel) <= 1:
+            return np.array(sel), st
+        sel.pop(int(np.argmin(pay)))
+    return None, None
+
+
 def pick_points(p, odds, rules, first_of):
     """戻り値 [(combo_idx, stake, p, odds, ev)]、見送りは []"""
     p = shrink(p, odds, rules.model_weight)
@@ -77,8 +94,9 @@ def pick_points(p, odds, rules, first_of):
                 firsts = {first_of[m] for m in sel}
                 if len(firsts) >= rules.min_firsts:
                     break
-    sel = np.array(sel)
-    stakes = _equal_payout(odds[sel], rules.race_budget, rules.unit)
+    sel, stakes = enforce_synth(sel, odds, p, rules)
+    if sel is None:
+        return []
     race_ev = float((stakes * p[sel] * odds[sel]).sum() / stakes.sum())
     if race_ev < rules.race_ev_min:
         return []
@@ -133,8 +151,9 @@ def pick_hit(p, odds, rules, first_of):
     # 合成オッズが下限未満なら、確率の低い目から削る（最少3点）。それでも届かなければそのまま出す
     while len(sel) > 3 and 1 / (1 / odds[np.array(sel)]).sum() < rules.synth_min:
         sel.pop()
-    sel = np.array(sel)
-    stakes = _equal_payout(odds[sel], rules.race_budget, rules.unit)
+    sel, stakes = enforce_synth(sel, odds, p, rules)
+    if sel is None:
+        return []
     ev = p * odds
     race_ev = float((stakes * p[sel] * odds[sel]).sum() / stakes.sum())
     if race_ev < rules.race_ev_min:
@@ -192,9 +211,9 @@ def pick_formation(p, odds, rules, combos):
             picked += best[1]
     if not picked:
         return []
-    sel = [P[x][0] for x in picked]
-    sel = np.array(sel)
-    stakes = _equal_payout(odds[sel], rules.race_budget, rules.unit)
+    sel, stakes = enforce_synth([P[x][0] for x in picked], odds, p, rules)
+    if sel is None:
+        return []
     ev = p * odds
     keep = np.argsort(-p[sel])
     return [(int(sel[i]), int(stakes[i]), float(p[sel[i]]), float(odds[sel[i]]), float(ev[sel[i]]))
