@@ -19,7 +19,7 @@
   "a": 0.5403,
   "b": 0.5033
  },
- "updated_at": "2026-11-13 11:24",
+ "updated_at": "2026-11-13 11:30",
  "picks": {
   "date": "2026-11-13",
   "races": [
@@ -589,6 +589,148 @@
      }
     ],
     "names": {}
+   },
+   {
+    "venue": "立川",
+    "race_no": 2,
+    "deadline": "11:36",
+    "judged_at": "11:30:07",
+    "result": null,
+    "bets": [
+     {
+      "combo": "3-4-2",
+      "stake": 500,
+      "odds": 12.1,
+      "p": 0.0527,
+      "ev": 0.637,
+      "hit": null
+     },
+     {
+      "combo": "2-3-4",
+      "stake": 300,
+      "odds": 19.4,
+      "p": 0.0383,
+      "ev": 0.743,
+      "hit": null
+     },
+     {
+      "combo": "3-4-1",
+      "stake": 300,
+      "odds": 18.1,
+      "p": 0.036,
+      "ev": 0.652,
+      "hit": null
+     },
+     {
+      "combo": "3-2-4",
+      "stake": 300,
+      "odds": 22.1,
+      "p": 0.0299,
+      "ev": 0.661,
+      "hit": null
+     },
+     {
+      "combo": "2-4-3",
+      "stake": 200,
+      "odds": 28.2,
+      "p": 0.0268,
+      "ev": 0.757,
+      "hit": null
+     },
+     {
+      "combo": "2-7-3",
+      "stake": 100,
+      "odds": 41.1,
+      "p": 0.023,
+      "ev": 0.946,
+      "hit": null
+     },
+     {
+      "combo": "4-3-2",
+      "stake": 200,
+      "odds": 33.8,
+      "p": 0.0223,
+      "ev": 0.755,
+      "hit": null
+     },
+     {
+      "combo": "2-3-7",
+      "stake": 100,
+      "odds": 43.9,
+      "p": 0.0198,
+      "ev": 0.867,
+      "hit": null
+     },
+     {
+      "combo": "2-3-1",
+      "stake": 200,
+      "odds": 33.5,
+      "p": 0.0195,
+      "ev": 0.653,
+      "hit": null
+     },
+     {
+      "combo": "3-4-5",
+      "stake": 100,
+      "odds": 40.6,
+      "p": 0.0189,
+      "ev": 0.769,
+      "hit": null
+     },
+     {
+      "combo": "2-7-1",
+      "stake": 100,
+      "odds": 53.0,
+      "p": 0.0184,
+      "ev": 0.975,
+      "hit": null
+     }
+    ],
+    "invest": [],
+    "notes": [
+     "1着が出るライン：7-2 が 42%",
+     "上がり最速：4 伊東翔貴（直近平均 10.6秒、2位と0.1秒差）"
+    ],
+    "lines": [
+     {
+      "cars": [
+       7,
+       2
+      ],
+      "p": 0.422
+     },
+     {
+      "cars": [
+       4,
+       3
+      ],
+      "p": 0.3798
+     },
+     {
+      "cars": [
+       5,
+       1
+      ],
+      "p": 0.168
+     },
+     {
+      "cars": [
+       8,
+       6
+      ],
+      "p": 0.0302
+     }
+    ],
+    "names": {
+     "1": "片折亮太",
+     "2": "本郷雄三",
+     "3": "佐々木雄一",
+     "4": "伊東翔貴",
+     "5": "柿本大貴",
+     "6": "伊藤勝太",
+     "7": "森本桂太郎",
+     "8": "福元啓太"
+    }
    }
   ]
  },
@@ -601,7 +743,6 @@
     "deadline": "08:45",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -611,7 +752,6 @@
     "deadline": "09:05",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -621,7 +761,6 @@
     "deadline": "09:26",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -631,7 +770,6 @@
     "deadline": "09:47",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -641,7 +779,6 @@
     "deadline": "10:08",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -651,7 +788,6 @@
     "deadline": "11:00",
     "status": "buy",
     "invest": false,
-    "reason": "",
     "notes": [
      "1着が出るライン：4-2 が 47%",
      "上がり最速：3 有馬雄二（直近平均 11.9秒、2位と0.1秒差）"
@@ -685,7 +821,6 @@
     "deadline": "11:12",
     "status": "buy",
     "invest": false,
-    "reason": "",
     "notes": [
      "1着が出るライン：3-6 が 46%",
      "番手 6 佐川翔吾：3着内 47%（市場 41%）で過小評価",
@@ -728,7 +863,6 @@
     "deadline": "11:24",
     "status": "skip",
     "invest": false,
-    "reason": "合成オッズ1.5倍未満で見送り（修正前のルール。現在は点数を絞って予想を出します）",
     "notes": [
      "1着が出るライン：1-5-3 が 80%",
      "上がり最速：5 星島太（直近平均 11.7秒、2位と0.0秒差）"
@@ -755,11 +889,42 @@
     "venue": "立川",
     "race_no": 2,
     "deadline": "11:36",
-    "status": "wait",
+    "status": "buy",
     "invest": false,
-    "reason": "",
-    "notes": [],
-    "lines": []
+    "notes": [
+     "1着が出るライン：7-2 が 42%",
+     "上がり最速：4 伊東翔貴（直近平均 10.6秒、2位と0.1秒差）"
+    ],
+    "lines": [
+     {
+      "cars": [
+       7,
+       2
+      ],
+      "p": 0.422
+     },
+     {
+      "cars": [
+       4,
+       3
+      ],
+      "p": 0.3798
+     },
+     {
+      "cars": [
+       5,
+       1
+      ],
+      "p": 0.168
+     },
+     {
+      "cars": [
+       8,
+       6
+      ],
+      "p": 0.0302
+     }
+    ]
    },
    {
     "venue": "福井",
@@ -767,7 +932,6 @@
     "deadline": "11:49",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -777,7 +941,6 @@
     "deadline": "12:02",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -787,7 +950,6 @@
     "deadline": "12:15",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -797,7 +959,6 @@
     "deadline": "12:28",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -807,7 +968,6 @@
     "deadline": "12:41",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -817,7 +977,6 @@
     "deadline": "12:54",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -827,7 +986,6 @@
     "deadline": "13:07",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -837,7 +995,6 @@
     "deadline": "13:20",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -847,7 +1004,6 @@
     "deadline": "13:33",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -857,7 +1013,6 @@
     "deadline": "13:46",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -867,7 +1022,6 @@
     "deadline": "14:00",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -877,7 +1031,6 @@
     "deadline": "14:14",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -887,7 +1040,6 @@
     "deadline": "14:28",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -897,7 +1049,6 @@
     "deadline": "14:42",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -907,7 +1058,6 @@
     "deadline": "14:56",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -917,7 +1067,6 @@
     "deadline": "15:10",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -927,7 +1076,6 @@
     "deadline": "15:26",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -937,7 +1085,6 @@
     "deadline": "15:42",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -947,7 +1094,6 @@
     "deadline": "15:49",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -957,7 +1103,6 @@
     "deadline": "15:57",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -967,7 +1112,6 @@
     "deadline": "16:04",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -977,7 +1121,6 @@
     "deadline": "16:12",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -987,7 +1130,6 @@
     "deadline": "16:20",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -997,7 +1139,6 @@
     "deadline": "16:27",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1007,7 +1148,6 @@
     "deadline": "16:37",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1017,7 +1157,6 @@
     "deadline": "16:50",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1027,7 +1166,6 @@
     "deadline": "17:02",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1037,7 +1175,6 @@
     "deadline": "17:14",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1047,7 +1184,6 @@
     "deadline": "17:38",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1057,7 +1193,6 @@
     "deadline": "17:50",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1067,7 +1202,6 @@
     "deadline": "18:02",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1077,7 +1211,6 @@
     "deadline": "18:14",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1087,7 +1220,6 @@
     "deadline": "18:26",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1097,7 +1229,6 @@
     "deadline": "18:38",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1107,7 +1238,6 @@
     "deadline": "18:50",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1117,7 +1247,6 @@
     "deadline": "19:03",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1127,7 +1256,6 @@
     "deadline": "19:16",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1137,7 +1265,6 @@
     "deadline": "19:42",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1147,7 +1274,6 @@
     "deadline": "19:56",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1157,7 +1283,6 @@
     "deadline": "20:10",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1167,7 +1292,6 @@
     "deadline": "20:25",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1177,7 +1301,6 @@
     "deadline": "20:35",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1187,7 +1310,6 @@
     "deadline": "20:55",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1197,7 +1319,6 @@
     "deadline": "21:05",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1207,7 +1328,6 @@
     "deadline": "21:15",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1217,7 +1337,6 @@
     "deadline": "21:25",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1227,7 +1346,6 @@
     "deadline": "21:35",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1237,7 +1355,6 @@
     "deadline": "21:45",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1247,7 +1364,6 @@
     "deadline": "21:55",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1257,7 +1373,6 @@
     "deadline": "22:05",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1267,7 +1382,6 @@
     "deadline": "22:15",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1277,7 +1391,6 @@
     "deadline": "22:25",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1287,7 +1400,6 @@
     "deadline": "22:35",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1297,7 +1409,6 @@
     "deadline": "22:45",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1307,7 +1418,6 @@
     "deadline": "22:55",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1317,7 +1427,6 @@
     "deadline": "23:15",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    },
@@ -1327,7 +1436,6 @@
     "deadline": "23:25",
     "status": "wait",
     "invest": false,
-    "reason": "",
     "notes": [],
     "lines": []
    }
