@@ -25,7 +25,7 @@ class Rules:
     race_ev_min: float = 1.10    # レース全体の期待値の下限（これ未満は見送り）
     race_budget: int = 3000      # 1レースの購入額
     # --- 的中重視型 ---
-    synth_min: float = 2.0       # 合成オッズの下限。当たっても投資額の2倍に届かない組み方はしない（届かなければ見送り）
+    synth_min: float = 2.0       # 合成オッズの目安。届かなければ確率の低い目から外して点数を絞る（予想の順番は変えない）
     model_weight: float = 0.5    # モデル確率と市場確率の混ぜ具合（データが少ないうちは市場寄り）
     # --- 期待値型 ---
     ev_min: float = 1.20
@@ -58,21 +58,21 @@ def _equal_payout(odds_sel, budget, unit):
     return st.astype(int)
 
 
-def enforce_synth(sel, odds, p, rules, min_n=3):
-    """合成オッズが下限（rules.synth_min）に届くまで、オッズの一番低い目から外す。
-    さらに、配分の端数でどれかが当たっても投資額を下回る目があれば外す。届かなければ []（見送り）"""
-    sel = list(sel)
+def enforce_synth(sel, odds, p, rules, min_n=1):
+    """予想（確率）の順番は変えずに点数を絞る。
+    合成オッズが下限（rules.synth_min）に届くまで、当たる確率の一番低い目から外す。
+    1点まで絞っても届かない（本命が安すぎる）ときは、確率の高い1点だけを残す（低配当として扱う）。
+    配分の端数で当たっても投資額を割る目が出たら、それも確率の低い方から外す。"""
+    sel = sorted(sel, key=lambda n: -p[n])
     while len(sel) > min_n and 1 / (1 / odds[np.array(sel)]).sum() < rules.synth_min:
-        sel.remove(min(sel, key=lambda n: odds[n]))
-    if not sel or 1 / (1 / odds[np.array(sel)]).sum() < rules.synth_min:
+        sel.pop()                                    # 確率の一番低い目
+    if not sel:
         return None, None
-    for _ in range(len(sel)):
+    while True:
         st = _equal_payout(odds[np.array(sel)], rules.race_budget, rules.unit)
-        pay = st * odds[np.array(sel)]
-        if pay.min() >= st.sum() * min(rules.synth_min, 1.5) or len(sel) <= 1:
+        if (st * odds[np.array(sel)]).min() >= st.sum() or len(sel) <= 1:
             return np.array(sel), st
-        sel.pop(int(np.argmin(pay)))
-    return None, None
+        sel.pop()
 
 
 def pick_points(p, odds, rules, first_of):
