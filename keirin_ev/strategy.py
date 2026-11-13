@@ -130,10 +130,10 @@ def pick_hit(p, odds, rules, first_of):
         for n in order[N:]:
             if first_of[n] not in firsts:
                 sel[-1] = n; break
+    # 合成オッズが下限未満なら、確率の低い目から削る（最少3点）。それでも届かなければそのまま出す
+    while len(sel) > 3 and 1 / (1 / odds[np.array(sel)]).sum() < rules.synth_min:
+        sel.pop()
     sel = np.array(sel)
-    synth = 1 / (1 / odds[sel]).sum()
-    if synth < rules.synth_min:
-        return []
     stakes = _equal_payout(odds[sel], rules.race_budget, rules.unit)
     ev = p * odds
     race_ev = float((stakes * p[sel] * odds[sel]).sum() / stakes.sum())

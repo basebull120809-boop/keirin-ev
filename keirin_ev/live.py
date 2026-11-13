@@ -161,7 +161,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
 def _fmt_block(bets, names):
     from .strategy import summary, formations
     sm = summary([(0, b["stake"], b["p"], b["odds"], b["ev"]) for b in bets])
-    L = [f"**{len(bets)}点 {sm['total']:,}円**／合成オッズ {sm['synth']:.1f}倍／的中率 {sm['hit_p']:.0%}／期待値 {sm['race_ev']:.2f}", ""]
+    L = [f"**{len(bets)}点 {sm['total']:,}円**／合成オッズ {sm['synth']:.1f}倍／的中率 {sm['hit_p']:.0%}／期待値 {sm['race_ev']:.2f}"
+         + ("　⚠妙味薄" if sm["synth"] < 1.5 else ""), ""]
     order = {}
     for b in bets:
         f = int(b["combo"].split("-")[0]); order[f] = order.get(f, 0) + b["p"]

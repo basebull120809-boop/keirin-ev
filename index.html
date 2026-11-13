@@ -279,7 +279,7 @@ function renderPicks() {
     return `<article class="race${isClosed ? " closed" : ""}">
       <div class="race-h"><strong>${esc(r.venue)} ${r.race_no}R ${isClosed ? '<span class="pill" style="color:var(--muted);font-size:11px;padding:1px 8px">締切済み</span>' : '<span class="pill good" style="font-size:11px;padding:1px 8px">締切前</span>'}</strong>
         <span class="dl mono">締切 ${esc(r.deadline || "—")}・判定 ${esc((r.judged_at || "").slice(0, 5))}・${r.bets.length + (r.invest?.length || 0)}点 ${yen(total)}</span></div>
-      ${r.bets.length ? `<div class="kind">本命予想<span>的中重視・合成オッズ ${synth(r.bets)}倍・見込み的中率 ${pct(r.bets.reduce((a, b) => a + b.p, 0), 0)}</span></div>` : ""}
+      ${r.bets.length ? `<div class="kind">本命予想${+synth(r.bets) < 1.5 ? ' <span class="pill" style="display:inline-flex;color:var(--warn);font-size:11px;padding:0 8px">妙味薄</span>' : ""}<span>的中重視・合成オッズ ${synth(r.bets)}倍・見込み的中率 ${pct(r.bets.reduce((a, b) => a + b.p, 0), 0)}</span></div>` : ""}
       ${r.bets.length ? formationHTML(r.bets, r.names) : ""}
       ${r.invest?.length ? `<div class="kind inv">★ 投資判定<span>期待値で勝てる目・${r.invest.length}点 ${yen(r.invest.reduce((a, b) => a + b.stake, 0))}・期待値 ${raceEv(r.invest).toFixed(2)}</span></div>${formationHTML(r.invest, r.names)}` : ""}
       ${r.lines?.length ? `<div class="linebar" role="img" aria-label="ライン別の1着確率">${r.lines.map((l, i) => `<span style="width:${(l.p * 100).toFixed(1)}%;background:var(--c${l.cars[0]});color:var(--t${l.cars[0]})" title="${l.cars.join("-")} ${pct(l.p, 0)}">${l.p >= .12 ? l.cars.join("-") + " " + pct(l.p, 0) : ""}</span>`).join("")}</div>` : ""}
