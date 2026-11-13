@@ -141,13 +141,14 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                              combo=f"{cars[i]}-{cars[j]}-{cars[k]}", stake=st, odds=o,
                              p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S"),
                              kind=kind))
-    rec, why, cand = None, "", {}
+    rec, why, cand, pats = None, "", {}, {}
     try:                                         # 券種の使い分け（2車単・3連複・3連単）
         from .bettypes import plans, recommend
         sp = kdreams.soup(html)
         exo = dict(kdreams.parse_odds_exacta(sp, rid)[["combo", "odds"]].values)
         tro = dict(kdreams.parse_odds_trio(sp, rid)[["combo", "odds"]].values)
-        pl, win = plans(P, cars, COMBOS, exo, tro)
+        tri_o = {c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {}
+        pl, win, pats = plans(P, cars, COMBOS, exo, tro, tri_odds=tri_o)
         base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                     deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
         for kind, plan in pl.items():
@@ -171,6 +172,10 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 n_bets=sum(b["kind"] == "yoso" for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why,
+                                patterns={k: [dict(name=x["name"], hit=round(x["hit"], 4), synth=round(x["synth"], 2),
+                                                   ev=round(x["ev"], 3), low=x["low"],
+                                                   bets=[[b["combo"], b["stake"], b["odds"], b["p"]] for b in x["bets"]])
+                                              for x in v] for k, v in pats.items()},
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason="" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため"),
                            ensure_ascii=False) + "\n")

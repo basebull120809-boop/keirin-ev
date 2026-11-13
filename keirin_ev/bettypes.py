@@ -66,37 +66,92 @@ def _stakes(odds_sel, budget, unit):
     return np.maximum(unit, np.floor(raw / unit) * unit).astype(int)
 
 
-def _plan(pm, odds, kmax, synth_min, r: TypeRules):
-    """確率の高い順に最大 kmax 点。合成オッズが下限を割る手前で止める"""
-    p = _blend(pm, odds, r.model_weight)
-    if not p:
-        return None
-    order = sorted(p, key=p.get, reverse=True)
-    sel = []
-    for k in order[:kmax * 3]:                       # 確率の高い順に、合成オッズの下限を割らない目だけ足す
-        if len(sel) >= kmax:
-            break
-        trial = sel + [k]
-        if 1 / sum(1 / odds[x] for x in trial) >= synth_min:
-            sel = trial
-    if not sel:
-        return None                                  # 妙味のある目がない
+def _build(sel, p, odds, r: TypeRules, name=""):
     o = np.array([odds[x] for x in sel]); pp = np.array([p[x] for x in sel])
     st = _stakes(o, r.budget, r.unit)
-    return dict(bets=[dict(combo=x, stake=int(s), odds=float(oo), p=round(float(q), 5), ev=round(float(q * oo), 3))
+    return dict(name=name,
+                bets=[dict(combo=x, stake=int(s), odds=float(oo), p=round(float(q), 5), ev=round(float(q * oo), 3))
                       for x, s, oo, q in zip(sel, st, o, pp)],
                 hit=float(pp.sum()), synth=float(1 / (1 / o).sum()),
-                ev=float((st * pp * o).sum() / st.sum()))
+                ev=float((st * pp * o).sum() / st.sum()), low=bool(1 / (1 / o).sum() < 2.0))
 
 
-def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules()):
+def _prefix(order, odds, kmax, synth_min):
+    """確率の高い順に上から何点まで買えるか（合成オッズが synth_min 以上を保てる最大の点数）"""
+    k, inv = 0, 0.0
+    for i, x in enumerate(order[:kmax]):
+        inv += 1 / odds[x]
+        if 1 / inv >= synth_min:
+            k = i + 1
+        else:
+            break
+    return k
+
+
+PATTERNS = [("的中重視", 2.0), ("バランス", 4.0), ("高配当", 8.0)]
+
+
+def patterns(pm, odds, kmax, r: TypeRules, blended=False):
+    """予想（確率）の順番はそのままに、点数を変えた買い方を的中率の高い順に並べる。
+      的中重視 : 合成オッズ2倍を保てるところまで広げる（本命が安すぎるときは1点・低配当）
+      バランス : 合成オッズ4倍を保てるところまで
+      高配当   : 合成オッズ8倍を保てるところまで
+      穴狙い   : 30倍以上の目だけを、確率の高い順に
+      手堅く   : 配当は気にせず、的中率60%に届くまで広げる（先頭に置く。おすすめ判定には使わない）
+    """
+    p = pm if blended else _blend(pm, odds, r.model_weight)
+    if not p:
+        return []
+    order = sorted(p, key=p.get, reverse=True)
+    out, seen = [], set()
+    # 手堅く：配当は気にせず、的中率60%に届くまで確率の高い順に広げる（点数の上限まで）
+    acc, k60 = 0.0, 0
+    for i, x in enumerate(order[:kmax]):
+        acc += p[x]; k60 = i + 1
+        if acc >= 0.60:
+            break
+    wide = tuple(order[:k60])
+    for name, sm in PATTERNS:
+        k = _prefix(order, odds, kmax, sm)
+        if k == 0:
+            if name != "的中重視":
+                continue
+            k = 1                                       # 予想が安い本命なら、それ1点
+        key = tuple(order[:k])
+        if key in seen:
+            continue
+        seen.add(key); out.append(_build(list(key), p, odds, r, name))
+    if wide and wide not in seen:
+        out.insert(0, _build(list(wide), p, odds, r, "手堅く")); seen.add(wide)
+    ana = [x for x in order if odds[x] >= 30][: max(2, kmax // 3)]
+    if ana and tuple(ana) not in seen:
+        out.append(_build(ana, p, odds, r, "穴狙い"))
+    return out
+
+
+def _plan(pm, odds, kmax, synth_min, r: TypeRules):
+    """おすすめ判定用：的中重視のパターン"""
+    ps = [x for x in patterns(pm, odds, kmax, r) if x["name"] == "的中重視"]
+    return ps[0] if ps else None
+
+
+def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_odds=None):
+    """戻り値: (券種ごとの的中重視プラン, 1着確率, 券種ごとのパターン一覧)"""
     ex, trio, win = marginals(P, cars, combos)
-    out = {}
+    pats = {}
     if ex_odds:
-        out["ex"] = _plan(ex, ex_odds, r.ex_max, r.ex_synth_min, r)
+        pats["ex"] = patterns(ex, ex_odds, r.ex_max, r)
     if trio_odds:
-        out["trio"] = _plan(trio, trio_odds, r.trio_max, r.trio_synth_min, r)
-    return {k: v for k, v in out.items() if v}, win
+        pats["trio"] = patterns(trio, trio_odds, r.trio_max, r)
+    if tri_odds:
+        tri = {}
+        for idx, (i, j, k) in enumerate(combos):
+            if max(i, j, k) < len(cars) and P[idx] > 0:
+                tri[f"{int(cars[i])}-{int(cars[j])}-{int(cars[k])}"] = float(P[idx])
+        pats["tri"] = patterns(tri, tri_odds, 20, r)
+    out = {k: next(x for x in v if x["name"] == "的中重視") for k, v in pats.items()
+           if k in ("ex", "trio") and any(x["name"] == "的中重視" for x in v)}
+    return out, win, {k: v for k, v in pats.items() if v}
 
 
 def _summ(bets):
@@ -112,7 +167,7 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
     """おすすめ券種と理由。pl: plans() の戻り値, yoso_bets: 3連単フォーメーションの買い目"""
     cand = {k: dict(hit=v["hit"], synth=v["synth"], ev=v["ev"]) for k, v in pl.items()}
     ys = _summ(yoso_bets)
-    if ys and ys["synth"] >= 1.5:
+    if ys:
         cand["yoso"] = ys
     ok = {k: v for k, v in cand.items() if v["hit"] >= r.hit_min}
     if not ok:
@@ -123,6 +178,8 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
     top = sorted(win.items(), key=lambda x: -x[1])
     a, pa = top[0] if top else (None, 0)
     c = cand[rec]
+    if rec in pl and pl[rec].get("low"):
+        return rec, f"予想どおりの本命で配当は安め（合成{c['synth']:.1f}倍）。点数を{len(pl[rec]['bets'])}点に絞っています", cand
     if rec == "ex":
         why = f"1着は{a}番が{pa:.0%}で抜けていて、2着まで絞れる。2車単なら{len(pl['ex']['bets'])}点で的中率{c['hit']:.0%}"
     elif rec == "trio":
