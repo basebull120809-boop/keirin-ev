@@ -142,6 +142,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                              p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S"),
                              kind=kind))
     rec, why, cand, pats = None, "", {}, {}
+    skip_reason = ""
     try:                                         # 券種の使い分け（2車単・3連複・3連単）
         from .bettypes import plans, recommend
         sp = kdreams.soup(html)
@@ -155,6 +156,9 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             for b in plan["bets"]:
                 bets.append(dict(base, **b, kind=kind))
         rec, why, cand = recommend(pl, [b for b in bets if b["kind"] == "yoso"], win)
+        if rec is None:                          # どの券種も釣り合わない → 見送り（買い目を出さない）
+            skip_reason = why
+            bets = []
         for b in bets:
             b["rec"] = b["kind"] == rec
     except Exception as e:
@@ -169,11 +173,11 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
-                                n_bets=sum(b["kind"] == "yoso" for b in bets),
+                                n_bets=sum(b["kind"] in ("yoso", "ex", "trio") for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
-                                reason="" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため"),
+                                reason=skip_reason or ("" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),
                            ensure_ascii=False) + "\n")
     if bets:
         f = day / "bets.csv"
