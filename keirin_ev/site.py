@@ -35,15 +35,9 @@ def save(d):
     OUT.write_text(json.dumps(_clean(d), ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def picks_and_paper():
-    """当日（最新日）の買い目と、紙上運用の通算成績"""
-    from .live import paper_results
+def day_races(pb, last):
+    """指定日の買い目（レースごと・結果つき）"""
     from .kdreams import VENUE_JA
-    pb = paper_results()
-    if pb is None:
-        return None, None
-    pb["race_id"] = pb["race_id"].astype(str)
-    last = pb["date"].max()
     races = []
     for rid, g in pb[pb["date"] == last].groupby("race_id", sort=False):
         r = g.iloc[0]
@@ -76,7 +70,19 @@ def picks_and_paper():
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
         r.pop("venue_slug", None)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
-    picks = dict(date=last, races=races)
+    return races
+
+
+def picks_and_paper():
+    """当日（最新日）の買い目と、紙上運用の通算成績"""
+    from .live import paper_results
+    from .kdreams import VENUE_JA
+    pb = paper_results()
+    if pb is None:
+        return None, None
+    pb["race_id"] = pb["race_id"].astype(str)
+    last = pb["date"].max()
+    picks = dict(date=last, races=day_races(pb, last))
     paper = {}
     for kind, sub in pb.dropna(subset=["hit"]).groupby("kind"):
         d = sub.groupby("date").agg(stake=("stake", "sum"), payout=("payout", "sum"),
@@ -122,7 +128,39 @@ def today_board(date):
     return dict(date=date, races=rows)
 
 
+HIST = Path("site/history.json")
+
+
+def export_history(days=30):
+    """過去の予想（日付ごと・結果つき）を site/history.json に書き出す。過去予想ページ用"""
+    from .live import paper_results
+    pb = paper_results()
+    if pb is None:
+        return
+    pb["race_id"] = pb["race_id"].astype(str)
+    out = []
+    for day in sorted(pb["date"].unique(), reverse=True)[:days]:
+        races = day_races(pb, day)
+        sub = pb[pb["date"] == day]
+        summ = {}
+        for kind, g in sub.groupby("kind"):
+            done = g.dropna(subset=["hit"])
+            summ[kind] = dict(races=int(g["race_id"].nunique()), stake=int(g["stake"].sum()),
+                              settled=int(done["race_id"].nunique()),
+                              race_hits=int(done.groupby("race_id")["hit"].max().sum()) if len(done) else 0,
+                              payout=float(done["payout"].sum()) if len(done) else 0.0,
+                              settled_stake=int(done["stake"].sum()) if len(done) else 0)
+        out.append(dict(date=day, summary=summ, races=races))
+    HIST.parent.mkdir(parents=True, exist_ok=True)
+    HIST.write_text(json.dumps(_clean(dict(updated_at=f"{pd.Timestamp.now(tz='Asia/Tokyo'):%Y-%m-%d %H:%M}", days=out)),
+                               ensure_ascii=False), encoding="utf-8")
+
+
 def export_live(date=None):
+    try:
+        export_history()
+    except Exception as e:
+        print("過去予想の書き出し失敗:", e)
     d = load()
     picks, paper = picks_and_paper()
     if picks:
@@ -178,6 +216,10 @@ def export_report(con, days, dates, market=None, backtest=None):
     if paper:
         d["paper"] = paper
     save(d)
+    try:
+        export_history()
+    except Exception as e:
+        print("過去予想の書き出し失敗:", e)
 
 
 def split_docs(folder="site/docs"):
