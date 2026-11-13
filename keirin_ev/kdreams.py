@@ -194,6 +194,97 @@ def parse_odds(s, rid):
     return pd.DataFrame(rows, columns=["race_id", "combo", "odds", "snapshot"]).drop_duplicates("combo")
 
 
+def parse_odds_exacta(s, rid):
+    """2車単オッズ。表は 列=1着・行=2着"""
+    box = s.find(id="JS_ODDSCONTENTS_2shatan")
+    rows = []
+    t = box.find("table", class_="odds_table") if box else None
+    if t is not None:
+        trs = t.find_all("tr")
+        cols = [int(th.get_text(strip=True)) for th in trs[0].find_all("th")
+                if re.fullmatch(r"[1-9]", th.get_text(strip=True))]
+        for tr in trs[2:]:
+            th = tr.find("th")
+            if not th or not re.fullmatch(r"[1-9]", th.get_text(strip=True)):
+                continue
+            second = int(th.get_text(strip=True))
+            for first, td in zip(cols, tr.find_all("td")):
+                o = _num(td.get_text(strip=True))
+                if o and first != second:
+                    rows.append((rid, f"{first}-{second}", o))
+    return pd.DataFrame(rows, columns=["race_id", "combo", "odds"]).drop_duplicates("combo")
+
+
+def parse_odds_trio(s, rid):
+    """3連複オッズ。1番小さい車番ごとの表に 2番目(rowspan)×3番目"""
+    box = s.find(id="JS_ODDSCONTENTS_3renhuku")
+    rows = []
+    for t in (box.find_all("table", class_="odds_table") if box else []):
+        trs = t.find_all("tr")
+        if not trs:
+            continue
+        a = _num(trs[0].get_text(strip=True))
+        if not a:
+            continue
+        b = None
+        for tr in trs[2:]:
+            ths = tr.find_all("th")
+            td = tr.find("td")
+            if not ths or td is None:
+                continue
+            if len(ths) == 2:
+                b = int(ths[0].get_text(strip=True)); c = int(ths[1].get_text(strip=True))
+            else:
+                c = int(ths[0].get_text(strip=True))
+            o = _num(td.get_text(strip=True))
+            if o and b and len({int(a), b, c}) == 3:
+                x = sorted((int(a), b, c))
+                rows.append((rid, f"{x[0]}={x[1]}={x[2]}", o))
+    return pd.DataFrame(rows, columns=["race_id", "combo", "odds"]).drop_duplicates("combo")
+
+
+def parse_refunds(s):
+    """払戻表から 2車単・3連複 の組と払戻（100円あたり）。同着などで複数あれば最初の1つ
+    表は1行目に 見出し(th)＋複、2行目に同じ順で 単 が並ぶ（2行目には見出しが無い）"""
+    rt = s.find("table", class_="refund_table")
+    out = {}
+    if rt is None:
+        return out
+    trs = rt.find_all("tr")
+    heads, cells = [], {}
+    for i, tr in enumerate(trs[:2]):
+        head, k = None, 0
+        for el in tr.find_all(["th", "td"], recursive=False):
+            if el.name == "th":
+                head = el.get_text("", strip=True)
+                if i == 0:
+                    heads.append(head)
+                continue
+            dls = el.find_all("dl")
+            if not dls or "wide" in (el.get("class") or []):
+                continue
+            g = head if i == 0 else (heads[k] if k < len(heads) else "")
+            k += 1
+            cells[(g, "複" if i == 0 else "単")] = dls
+    def first(dls, pat):
+        for dl in dls:
+            dt, dd = dl.find("dt"), dl.find("dd")
+            if dt and dd and re.fullmatch(pat, dt.get_text(strip=True)):
+                pay = re.search(r"([\d,]+)円", dd.get_text())
+                return dt.get_text(strip=True), int(pay.group(1).replace(",", "")) if pay else None
+        return None
+    for (g, sub), dls in cells.items():
+        if "車" in g and sub == "単":
+            r = first(dls, r"[1-9]-[1-9]")
+            if r:
+                out.update(ex_combo=r[0], ex_payout=r[1])
+        if "3" in g and sub == "複":
+            r = first(dls, r"[1-9]=[1-9]=[1-9]")
+            if r:
+                out.update(trio_combo=r[0], trio_payout=r[1])
+    return out
+
+
 def parse_result(s, rid):
     rt = s.find("table", class_="refund_table")
     if rt is None:
@@ -209,7 +300,7 @@ def parse_result(s, rid):
             return dict(race_id=rid, first=int(m.group(1)), second=int(m.group(2)),
                         third=int(m.group(3)),
                         tri_payout=int(pay.group(1).replace(",", "")) if pay else None,
-                        tri_pop=int(pop.group(1)) if pop else None)
+                        tri_pop=int(pop.group(1)) if pop else None, **parse_refunds(s))
     return None
 
 
@@ -322,12 +413,15 @@ class KdreamsCollector:
     name = "kdreams"
 
     def fetch_day(self, date, log=print):
-        R, E, RES, OD, FIN, HIS = [], [], [], [], [], []
+        R, E, RES, OD, FIN, HIS, OX, OT = [], [], [], [], [], [], [], []
         n_ok = 0
         ids = race_ids_of_day(date)
         for venue, rid in ids:
             try:
-                ent, od, res, info, fin, his = parse_race(fetch(f"/{venue}/racedetail/{rid}/"), rid, extra=True)
+                html = fetch(f"/{venue}/racedetail/{rid}/")
+                ent, od, res, info, fin, his = parse_race(html, rid, extra=True)
+                sp = soup(html)
+                OX.append(parse_odds_exacta(sp, rid)); OT.append(parse_odds_trio(sp, rid))
             except Exception as e:                     # 1レースの失敗で止めない
                 log(f"  ! {venue} {rid} 解析失敗: {e}")
                 continue
@@ -346,7 +440,8 @@ class KdreamsCollector:
         cat = lambda xs: pd.concat(xs, ignore_index=True) if xs else pd.DataFrame()
         return dict(races=pd.DataFrame(R), entries=cat(E),
                     results=pd.DataFrame(RES), odds_trifecta=cat(OD),
-                    finish=cat(FIN), history=cat(HIS))
+                    finish=cat(FIN), history=cat(HIS),
+                    odds_exacta=cat(OX), odds_trio=cat(OT))
 
 
 def probe(dates, log=print):
