@@ -144,8 +144,68 @@ def pick_hit(p, odds, rules, first_of):
             for i in keep]
 
 
+def pick_formation(p, odds, rules, combos):
+    """的中重視（フォーメーション型）：頭（1着）を2〜3人に絞り、2着・3着は広めに流す。
+    頭ごとに、点数の枠内で「当たる確率の合計」が最大になる 2着×3着 の組を選ぶ。"""
+    p = shrink(p, odds, rules.model_weight)
+    valid = odds > 0
+    if not valid.any():
+        return []
+    N = n_points(odds, rules)
+    P = {}
+    for n, (a, b, c) in enumerate(combos):
+        if valid[n]:
+            P[(a, b, c)] = (n, p[n])
+    heads = {}
+    for (a, b, c), (_, v) in P.items():
+        heads[a] = heads.get(a, 0) + v
+    hs = sorted(heads, key=heads.get, reverse=True)
+    use = hs[:2]
+    if len(hs) > 2 and heads[hs[2]] >= 0.6 * heads[hs[1]]:   # 3番手の頭が2番手に近ければ3頭
+        use = hs[:3]
+    tot = sum(heads[h] for h in use)
+    picked = []
+    for h in use:
+        budget = max(3, int(round(N * heads[h] / tot)))
+        sec = {}
+        for (a, b, c), (_, v) in P.items():
+            if a == h:
+                sec[b] = sec.get(b, 0) + v
+        sec_order = sorted(sec, key=sec.get, reverse=True)
+        best = None
+        for k2 in range(1, min(4, len(sec_order)) + 1):
+            S = sec_order[:k2]
+            thr = {}
+            for (a, b, c), (_, v) in P.items():
+                if a == h and b in S:
+                    thr[c] = thr.get(c, 0) + v
+            t_order = sorted(thr, key=thr.get, reverse=True)
+            for k3 in range(2, len(t_order) + 1):
+                T = t_order[:k3]
+                cs = [(h, b, c) for b in S for c in T if b != c and (h, b, c) in P]
+                if len(cs) > budget:
+                    break
+                cover = sum(P[x][1] for x in cs)
+                if best is None or cover > best[0] + 1e-12:
+                    best = (cover, cs)
+        if best:
+            picked += best[1]
+    if not picked:
+        return []
+    sel = [P[x][0] for x in picked]
+    sel = np.array(sel)
+    stakes = _equal_payout(odds[sel], rules.race_budget, rules.unit)
+    ev = p * odds
+    keep = np.argsort(-p[sel])
+    return [(int(sel[i]), int(stakes[i]), float(p[sel[i]]), float(odds[sel[i]]), float(ev[sel[i]]))
+            for i in keep]
+
+
 def pick_bets(p, odds, bankroll, rules: Rules):
     """p, odds: 1レース分の (504,) 配列"""
+    if rules.mode == "formation":
+        from .model import COMBOS
+        return pick_formation(p, odds, rules, [tuple(c) for c in COMBOS])
     if rules.mode == "hit":
         from .model import COMBOS
         return pick_hit(p, odds, rules, COMBOS[:, 0])
