@@ -114,7 +114,7 @@ def build():
 
 
 # ---------- レースごとの一言解説（当日運用で使う） ----------
-def race_notes(P, T, ent, his, odds):
+def race_notes(P, T, ent, his, odds, date=None, venue=None):
     """P: このレースの3連単確率(504,)  T: RaceTensor(1レース)  ent: 出走表  his: 前場所までの成績"""
     from .model import COMBOS, MAXN
     notes = []
@@ -149,6 +149,11 @@ def race_notes(P, T, ent, his, odds):
         a = a.sort_values("agari_avg")
         c = int(a.iloc[0]["car"]); gap = a.iloc[1]["agari_avg"] - a.iloc[0]["agari_avg"]
         notes.append(f"上がり最速：{c} {e.loc[c, 'name'] if c in e.index else ''}（直近平均 {a.iloc[0]['agari_avg']:.1f}秒、2位と{gap:.1f}秒差）")
+    # いろんな視点（S・B・番手巧者・調子・地元）
+    try:
+        notes += view_notes(ent, his, date, venue, p1, p3, cars, k)
+    except Exception as ex:
+        print("視点の解説失敗:", ex, flush=True)
     # 単騎の過大評価
     for idx in range(k):
         c = int(cars[idx])
@@ -157,3 +162,45 @@ def race_notes(P, T, ent, his, odds):
             if d <= -0.04:
                 notes.append(f"単騎 {c} {e.loc[c, 'name']}：1着は市場ほど高くない（{p1[idx]:.0%}／市場 {mk.loc[c, 'mkt_win']:.0%}）")
     return notes, line_probs
+
+
+def view_notes(ent, his, date, venue, p1, p3, cars, k):
+    """S・B・前の先行力・番手巧者・調子・地元 の一言"""
+    from .perspectives import rider_key, banate_skill, history_stats, VENUE_PREF
+    e = ent.copy()
+    for c in ("s_cnt", "back_cnt"):
+        e[c] = pd.to_numeric(e.get(c), errors="coerce")
+    e = e.set_index("car")
+    nm = lambda c: f"{c} {e.loc[c, 'name']}"
+    idx_of = {int(cars[i]): i for i in range(k)}
+    out = []
+    s = e["s_cnt"].dropna().sort_values(ascending=False)
+    if len(s) >= 2 and s.iloc[0] >= 3 and s.iloc[0] - s.iloc[1] >= 2:
+        out.append(f"S（スタート）は {nm(s.index[0])} が取りやすい（S {int(s.iloc[0])}回、次点 {int(s.iloc[1])}回）")
+    b = e["back_cnt"].dropna().sort_values(ascending=False)
+    if len(b) >= 2 and b.iloc[0] >= 3:
+        c = int(b.index[0]); msg = f"B（バック）最多 {nm(c)}（{int(b.iloc[0])}回）＝主導権を取りやすい"
+        if e.loc[c, "line_pos"] == 1 and e.loc[c, "line_size"] > 1:
+            fol = e[(e["line_id"] == e.loc[c, "line_id"]) & (e["line_pos"] == 2)]
+            if len(fol):
+                f = int(fol.index[0]); msg += f"。番手 {nm(f)} に展開が向く"
+                if f in idx_of:
+                    msg += f"（3着内 {p3[idx_of[f]]:.0%}）"
+        out.append(msg)
+    if date and {"name", "pref"} <= set(e.columns):
+        x = e.reset_index()
+        x["banate_plus"] = banate_skill(pd.DataFrame({"rider": rider_key(x), "date": date}, index=x.index))
+        for r in x[(x["line_pos"] == 2) & (x["banate_plus"] >= 0.03)].itertuples():
+            out.append(f"番手巧者 {r.car} {r.name}：番手で市場の見積もりより1走あたり+{r.banate_plus:.2f}回 3着内に来ている")
+    hs = history_stats(his)
+    if len(hs) >= 3:
+        hs = hs.dropna(subset=["form_avg"]).sort_values("form_avg")
+        if len(hs) >= 2 and hs.iloc[1]["form_avg"] - hs.iloc[0]["form_avg"] >= 0.8:
+            c = int(hs.iloc[0]["car"])
+            if c in e.index:
+                out.append(f"調子が良い {nm(c)}（直近の平均 {hs.iloc[0]['form_avg']:.1f}着）")
+    if venue in VENUE_PREF:
+        loc = [int(c) for c in e.index if str(e.loc[c, "pref"]) == VENUE_PREF[venue]]
+        if loc:
+            out.append("地元：" + "・".join(nm(c) for c in loc))
+    return out

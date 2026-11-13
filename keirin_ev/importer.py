@@ -6,6 +6,7 @@ TABLES = {
               "n_riders", "bank_len", "straight", "wind", "note"],
     "entries": ["race_id", "car", "name", "pref", "class", "style", "score",
                 "win_rate", "ren_rate", "san_rate", "back_cnt",
+                "age", "term", "gear", "s_cnt", "nige", "makuri", "sashi", "mark",
                 "line_id", "line_pos", "line_size"],
     "results": ["race_id", "first", "second", "third", "tri_payout"],
     "odds_trifecta": ["race_id", "combo", "odds", "snapshot"],

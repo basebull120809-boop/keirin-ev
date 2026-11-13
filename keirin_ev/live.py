@@ -125,7 +125,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                n_riders=len(ent), bank_len=kdreams.BANK.get(venue, 400),
                                wind=info["wind"])])
     store(con, dict(races=races, entries=ent, odds_trifecta=od))
-    X = build_tensors(con, race_ids=[rid], need_result=False)
+    X = build_tensors(con, race_ids=[rid], need_result=False, history=his)
     if not X["T"].race_ids:
         return [], ent, []
     P = model.predict(X["T"], X["Q"])[0]
@@ -161,7 +161,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         print("券種の判定失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
-        notes, line_probs = race_notes(P, X["T"], ent, his, od)
+        notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
     except Exception as e:
         print("解説作成失敗", rid, e, flush=True); notes, line_probs = [], []
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:

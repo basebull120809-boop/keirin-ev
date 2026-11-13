@@ -12,6 +12,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
+from .perspectives import P_FEATURES, add as add_perspectives
 
 MAXN = 9
 COMBOS = np.array(list(permutations(range(MAXN), 3)))   # 504通り (0始まり)
@@ -21,7 +22,7 @@ FEATURES = [
     "z_score", "z_win", "z_ren", "is_head", "is_2nd", "is_3rd",
     "is_single", "line_size", "head_x_short", "head_x_wind",
     "style_nige", "style_oi", "log_mkt_win",
-]
+] + P_FEATURES
 
 
 # ---------- 特徴量 ----------
@@ -31,8 +32,11 @@ def _z(s):
 
 
 def build_features(entries: pd.DataFrame, races: pd.DataFrame,
-                   mkt_win: pd.DataFrame) -> pd.DataFrame:
-    df = entries.merge(races[["race_id", "bank_len", "wind"]], on="race_id", how="left")
+                   mkt_win: pd.DataFrame, history=None) -> pd.DataFrame:
+    df = add_perspectives(entries, races, history)       # S・B・番手巧者・上がり・調子・地元など
+    races = races.assign(race_id=races["race_id"].astype(str))
+    mkt_win = mkt_win.assign(race_id=mkt_win["race_id"].astype(str))
+    df = df.merge(races[["race_id", "bank_len", "wind"]], on="race_id", how="left")
     df = df.merge(mkt_win, on=["race_id", "car"], how="left")
     g = df.groupby("race_id")
     df["z_score"] = g["score"].transform(_z).fillna(0)
@@ -106,8 +110,9 @@ def _logsoftmax(u, mask, axis=-1):
 
 # ---------- モデル本体 ----------
 class TrifectaModel:
-    def __init__(self, l2=0.05):
+    def __init__(self, l2=0.05, l2_view=None):
         self.l2 = l2
+        self.l2_view = l2_view          # 視点（p_*）の縮め具合。None ならデータ量に応じて自動
         self.beta = np.zeros(len(FEATURES))
         self.g = np.array([1.0, 0.5, 1.0, 0.3])   # g2, d2, g3, d3
         self.blend = np.array([1.0, 0.0])         # a(モデル), b(市場)
@@ -119,11 +124,15 @@ class TrifectaModel:
     def fit(self, T: RaceTensor, first, second, third, q_tensor=None, win_combo=None):
         R = len(T.race_ids)
         rr = np.arange(R)
+        # 市場の1着確率は縮めない。視点はデータが少ないうちは強めに縮める（約5,000レースで基本と同じ強さ）
+        lv = self.l2_view if self.l2_view is not None else self.l2 * max(1.0, 5000 / max(R, 1))
+        pen = np.array([0.0 if f == "log_mkt_win" else
+                        np.sqrt(lv / self.l2) if f.startswith("p_") else 1.0 for f in FEATURES])
 
         def nll1(b):
             s = T.X @ b
             ls = _logsoftmax(s, T.mask)
-            return -ls[rr, first].sum() / R + self.l2 * (b[:-1] ** 2).sum()
+            return -ls[rr, first].sum() / R + self.l2 * ((b * pen) ** 2).sum()
         self.beta = minimize(nll1, self.beta, method="L-BFGS-B").x
         s = self.strength(T)
 
@@ -217,7 +226,7 @@ def combo_index(T, rid, combo_str):
     return pos
 
 
-def build_tensors(con, race_ids=None, need_result=True):
+def build_tensors(con, race_ids=None, need_result=True, history=None):
     races = pd.read_sql("SELECT * FROM races", con)
     entries = pd.read_sql("SELECT * FROM entries", con)
     odds = pd.read_sql("SELECT * FROM odds_trifecta", con)
@@ -231,7 +240,7 @@ def build_tensors(con, race_ids=None, need_result=True):
         ok &= set(race_ids)
     races = races[races["race_id"].isin(ok)].sort_values(["date", "race_id"])
     rids = races["race_id"].tolist()
-    feat = build_features(entries[entries["race_id"].isin(ok)], races, win)
+    feat = build_features(entries[entries["race_id"].isin(ok)], races, win, history)
     T = RaceTensor(feat, rids)
     R = len(rids)
     # 市場確率・オッズを (R,504) に

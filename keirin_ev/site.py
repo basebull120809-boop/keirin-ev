@@ -219,6 +219,9 @@ def export_report(con, days, dates, market=None, backtest=None):
         m = _j.loads(Path("models/latest.json").read_text(encoding="utf-8"))
         d["model"] = dict(n_races=m.get("n_races"), period=m.get("period"),
                           trained_at=m.get("trained_at"), a=m["blend"][0], b=m["blend"][1])
+        from .perspectives import P_LABEL
+        beta = dict(zip(m["features"], m["beta"]))
+        d["model"]["views"] = [dict(key=f, label=lab, coef=beta[f]) for f, lab in P_LABEL.items() if f in beta]
     except Exception:
         pass
     if market is not None:

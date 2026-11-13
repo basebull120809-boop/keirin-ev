@@ -28,6 +28,9 @@ CREATE TABLE IF NOT EXISTS entries (
     ren_rate  REAL,                  -- 連対率(%)
     san_rate  REAL,                  -- 3連対率(%)
     back_cnt  INTEGER,               -- B回数
+    age       REAL, term REAL, gear REAL,
+    s_cnt     INTEGER,               -- S回数
+    nige INTEGER, makuri INTEGER, sashi INTEGER, mark INTEGER,   -- 決まり手の回数
     line_id   INTEGER,               -- 同じラインは同じ番号（単騎は固有番号）
     line_pos  INTEGER,               -- ライン内の位置 1=先頭 2=番手 3=3番手
     line_size INTEGER,               -- ラインの人数
@@ -60,4 +63,11 @@ def connect(path="data/keirin.db"):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(path)
     con.executescript(SCHEMA)
+    from .importer import TABLES               # 古いDBに後から増えた列を足す
+    for t, cols in TABLES.items():
+        have = {r[1] for r in con.execute(f"PRAGMA table_info({t})")}
+        for c in cols:
+            if c not in have:
+                con.execute(f"ALTER TABLE {t} ADD COLUMN {c}")
+    con.commit()
     return con
