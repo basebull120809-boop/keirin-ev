@@ -164,6 +164,23 @@ def fmt(venue, rid, dl, bets, ent, mode):
     return "\n".join(L)
 
 
+def push_now(msg):
+    """買い目を出すたびにリポジトリへ保存（ページへの反映を早くするため）"""
+    if not os.environ.get("GITHUB_ACTIONS"):
+        return
+    import subprocess
+    sh = lambda c: subprocess.run(c, shell=True, capture_output=True, text=True)
+    sh('git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"')
+    sh("git add data/live site")
+    if sh(f'git commit -qm "{msg}"').returncode != 0:
+        return
+    for _ in range(3):
+        if sh("git pull -q --rebase -X theirs && git push -q").returncode == 0:
+            return
+        time.sleep(5)
+    print("保存失敗（実行の最後にまとめて保存します）", flush=True)
+
+
 def run(max_minutes=340):
     t0 = time.time()
     date = now().strftime("%Y-%m-%d")
@@ -201,6 +218,7 @@ def run(max_minutes=340):
                     export_live()
                 except Exception as e:
                     print("サイト用データ更新失敗:", e, flush=True)
+                push_now(f"live {venue} {int(rid[-4:])}R")
         sched = [x for x in sched if x[2] not in done]
         time.sleep(30)
     print("終了", flush=True)
