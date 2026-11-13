@@ -1,0 +1,526 @@
+== fukui 5120261111020001 (detail) len=215643
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=25 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 32.9 2 3 38.6 14.3 3 4 98.7 8.4 35.8 4 5 103.3 29.6 8.4 82.2 5 6 5.7 2.5 6.3 14.8 11.0 6 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 52.3 85.6 132.1 185.6 7.0 1 2 121.8 38.4 18.7 66.6 5.2 2 3 169.5 26.8 81.2 15.9 11.0 3 4 149.9 8.0 68.4 169.5 27.2 4 5 205.2 38.9 13.4 155.9 13.5 5 6 31.4 7.5 20.1 50.9 24.8 6 
+  [JS_ODDSCONTENTS_3renhuku] tables=8 classes=['', 'odds_table']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 56.1 4 21.9 5 96.8 6 7.6 3 4 90.3 5 37.6 6 11.9 4 5 139.6 6 24.2 5 6 13.1 
+  [JS_ODDSCONTENTS_3rentan] tables=8 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 1 2 3.5～ 4.7 2 3 6.9～ 8.1 3.1～ 3.9 3 4 7.7～ 9.1 2.2～ 2.7 6.6～ 7.4 4 5 9.2～ 11.0 6.4～ 8.0 4.6～ 5.2 14.8～ 16.6 5 6 2.0～ 2.3 1.5～ 1.6 2.4～ 2.9 2.8～ 3.5 2.9～ 3.4 6 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+  refund:  2 枠 連 複 未発売 2 車 連 複 2=4 840円 (5) 3 連 勝 複 1=2=4 2,190円 (10) ワ イ ド 1=2 440円 (8) 1=4 800円 (13) 2=4 260円 (3) 単 未発売 単 2-4 800円 (4) 単 2-4-1 4,960円 (22) 
+  refund html: <table class="refund_table">
+<tr>
+<th rowspan="2">2<br/>枠<br/>連</th>
+<td>複</td>
+<td>
+<dl class="cf">
+<dt>未発売</dt>
+</dl>
+</td>
+<th rowspan="2">2<br/>車<br/>連</th>
+<td>複</td>
+<td>
+<dl class="cf">
+<dt>2=4</dt>
+<dd>840円<span>(5)</span></dd>
+</dl>
+</td>
+<th rowspan="2">3<br/>連<br/>勝</th>
+<td>複</td>
+<td>
+<dl class="cf">
+<dt>1=2=4</dt>
+<dd>2,190円<span>(10)</span></dd>
+</dl>
+</td>
+<th rowspan="2">ワ<br/>イ<br/>ド</th>
+<td class="wide" rowspan="2">
+<dl class="cf">
+<dt>1=2</dt>
+<dd>440円<span>(8)</span></dd>
+</dl>
+<dl class="cf">
+<dt>1=4</dt>
+<dd>800円<span>(13)</span></dd>
+</dl>
+<dl class="cf">
+<dt>2=4</dt>
+<dd>260円<span>(3)</span></dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>単</td>
+<td>
+<dl class="cf">
+<dt>未発売</dt>
+</dl>
+</td>
+<td>単</td>
+<td>
+<dl class="cf">
+<dt>2-4</dt>
+<dd>800円<span>(4)</span></dd>
+</dl>
+</td>
+<td>単</td>
+<td>
+<dl class="cf">
+<dt>2-4-1</dt>
+<dd>4,960円<span>(22)</span></dd>
+</dl>
+</td>
+</tr>
+</table>
+== fukui 5120261111020001 ?pageType=odds&kakeshikiType=3rentan len=215647
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=25 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 32.9 2 3 38.6 14.3 3 4 98.7 8.4 35.8 4 5 103.3 29.6 8.4 82.2 5 6 5.7 2.5 6.3 14.8 11.0 6 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 52.3 85.6 132.1 185.6 7.0 1 2 121.8 38.4 18.7 66.6 5.2 2 3 169.5 26.8 81.2 15.9 11.0 3 4 149.9 8.0 68.4 169.5 27.2 4 5 205.2 38.9 13.4 155.9 13.5 5 6 31.4 7.5 20.1 50.9 24.8 6 
+  [JS_ODDSCONTENTS_3renhuku] tables=8 classes=['', 'odds_table']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 56.1 4 21.9 5 96.8 6 7.6 3 4 90.3 5 37.6 6 11.9 4 5 139.6 6 24.2 5 6 13.1 
+  [JS_ODDSCONTENTS_3rentan] tables=8 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 1 2 3.5～ 4.7 2 3 6.9～ 8.1 3.1～ 3.9 3 4 7.7～ 9.1 2.2～ 2.7 6.6～ 7.4 4 5 9.2～ 11.0 6.4～ 8.0 4.6～ 5.2 14.8～ 16.6 5 6 2.0～ 2.3 1.5～ 1.6 2.4～ 2.9 2.8～ 3.5 2.9～ 3.4 6 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020001 ?pageType=odds&kakeshikiType=2rentan len=215647
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=25 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 32.9 2 3 38.6 14.3 3 4 98.7 8.4 35.8 4 5 103.3 29.6 8.4 82.2 5 6 5.7 2.5 6.3 14.8 11.0 6 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 52.3 85.6 132.1 185.6 7.0 1 2 121.8 38.4 18.7 66.6 5.2 2 3 169.5 26.8 81.2 15.9 11.0 3 4 149.9 8.0 68.4 169.5 27.2 4 5 205.2 38.9 13.4 155.9 13.5 5 6 31.4 7.5 20.1 50.9 24.8 6 
+  [JS_ODDSCONTENTS_3renhuku] tables=8 classes=['', 'odds_table']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 56.1 4 21.9 5 96.8 6 7.6 3 4 90.3 5 37.6 6 11.9 4 5 139.6 6 24.2 5 6 13.1 
+  [JS_ODDSCONTENTS_3rentan] tables=8 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 1 2 3.5～ 4.7 2 3 6.9～ 8.1 3.1～ 3.9 3 4 7.7～ 9.1 2.2～ 2.7 6.6～ 7.4 4 5 9.2～ 11.0 6.4～ 8.0 4.6～ 5.2 14.8～ 16.6 5 6 2.0～ 2.3 1.5～ 1.6 2.4～ 2.9 2.8～ 3.5 2.9～ 3.4 6 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020001 ?pageType=odds&kakeshikiType=3renpuku len=215647
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=25 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 32.9 2 3 38.6 14.3 3 4 98.7 8.4 35.8 4 5 103.3 29.6 8.4 82.2 5 6 5.7 2.5 6.3 14.8 11.0 6 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 52.3 85.6 132.1 185.6 7.0 1 2 121.8 38.4 18.7 66.6 5.2 2 3 169.5 26.8 81.2 15.9 11.0 3 4 149.9 8.0 68.4 169.5 27.2 4 5 205.2 38.9 13.4 155.9 13.5 5 6 31.4 7.5 20.1 50.9 24.8 6 
+  [JS_ODDSCONTENTS_3renhuku] tables=8 classes=['', 'odds_table']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 56.1 4 21.9 5 96.8 6 7.6 3 4 90.3 5 37.6 6 11.9 4 5 139.6 6 24.2 5 6 13.1 
+  [JS_ODDSCONTENTS_3rentan] tables=8 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 1 2 3.5～ 4.7 2 3 6.9～ 8.1 3.1～ 3.9 3 4 7.7～ 9.1 2.2～ 2.7 6.6～ 7.4 4 5 9.2～ 11.0 6.4～ 8.0 4.6～ 5.2 14.8～ 16.6 5 6 2.0～ 2.3 1.5～ 1.6 2.4～ 2.9 2.8～ 3.5 2.9～ 3.4 6 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020001 ?pageType=odds&kakeshikiType=2renpuku len=215647
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=25 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 32.9 2 3 38.6 14.3 3 4 98.7 8.4 35.8 4 5 103.3 29.6 8.4 82.2 5 6 5.7 2.5 6.3 14.8 11.0 6 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 52.3 85.6 132.1 185.6 7.0 1 2 121.8 38.4 18.7 66.6 5.2 2 3 169.5 26.8 81.2 15.9 11.0 3 4 149.9 8.0 68.4 169.5 27.2 4 5 205.2 38.9 13.4 155.9 13.5 5 6 31.4 7.5 20.1 50.9 24.8 6 
+  [JS_ODDSCONTENTS_3renhuku] tables=8 classes=['', 'odds_table']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 56.1 4 21.9 5 96.8 6 7.6 3 4 90.3 5 37.6 6 11.9 4 5 139.6 6 24.2 5 6 13.1 
+  [JS_ODDSCONTENTS_3rentan] tables=8 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 1 2 3.5～ 4.7 2 3 6.9～ 8.1 3.1～ 3.9 3 4 7.7～ 9.1 2.2～ 2.7 6.6～ 7.4 4 5 9.2～ 11.0 6.4～ 8.0 4.6～ 5.2 14.8～ 16.6 5 6 2.0～ 2.3 1.5～ 1.6 2.4～ 2.9 2.8～ 3.5 2.9～ 3.4 6 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020001 ?pageType=odds&kakeshikiType=wide len=215644
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=25 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 32.9 2 3 38.6 14.3 3 4 98.7 8.4 35.8 4 5 103.3 29.6 8.4 82.2 5 6 5.7 2.5 6.3 14.8 11.0 6 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 52.3 85.6 132.1 185.6 7.0 1 2 121.8 38.4 18.7 66.6 5.2 2 3 169.5 26.8 81.2 15.9 11.0 3 4 149.9 8.0 68.4 169.5 27.2 4 5 205.2 38.9 13.4 155.9 13.5 5 6 31.4 7.5 20.1 50.9 24.8 6 
+  [JS_ODDSCONTENTS_3renhuku] tables=8 classes=['', 'odds_table']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 56.1 4 21.9 5 96.8 6 7.6 3 4 90.3 5 37.6 6 11.9 4 5 139.6 6 24.2 5 6 13.1 
+  [JS_ODDSCONTENTS_3rentan] tables=8 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 田川 辰二 【熊 本 72期】 2 3 4 5 6 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 2 748.6 522.8 1004.1 69.1 2 3 545.3 805.8 790.7 112.3 3 4 218.1 884.7 1081.4 136.1 4 5 866.6 735.6 1072.2 195.5 5 6 211.9 384.5 450.2 504.0 6 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 田川 辰二 熊 本 72期 善利 裕生 滋 賀 82期 増田 利明 静 岡 81期 有馬 雄二 奈 良 90期 齋藤 友幸 静 岡 90期 火島 裕輝 愛 媛 123期 1 1 2 3.5～ 4.7 2 3 6.9～ 8.1 3.1～ 3.9 3 4 7.7～ 9.1 2.2～ 2.7 6.6～ 7.4 4 5 9.2～ 11.0 6.4～ 8.0 4.6～ 5.2 14.8～ 16.6 5 6 2.0～ 2.3 1.5～ 1.6 2.4～ 2.9 2.8～ 3.5 2.9～ 3.4 6 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020002 (detail) len=244445
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=27 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 52.7 2 3 207.1 34.0 3 4 12.7 1.3 28.0 4 5 36.3 47.2 299.1 30.2 5 6 336.5 34.5 299.1 24.4 448.7 6 7 128.2 15.5 37.9 6.6 207.1 99.7 7 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 108.4 440.6 17.6 135.5 440.6 243.1 1 2 125.8 235.0 1.7 138.2 88.1 43.5 2 3 542.3 195.8 20.4 306.5 470.0 63.5 3 4 108.4 3.9 125.8 135.5 105.2 33.0 4 5 150.0 167.8 352.5 32.7 2350.0 306.5 5 6 705.0 53.4 503.5 40.0 881.2 213.6 6 7 243.1 45.7 83.9 10.2 335.7 282.0 7 
+  [JS_ODDSCONTENTS_3renhuku] tables=9 classes=['', 'odds_table']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 156.2 4 6.9 5 94.0 6 196.1 7 80.8 3 4 68.2 5 133.6 6 576.1 7 91.2 4 5 33.4 6 101.3 7 32.6 5 6 279.3 7 156.2 6 7 542.2 
+  [JS_ODDSCONTENTS_3rentan] tables=9 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 1 2 6.9～ 9.8 2 3 31.1～ 34.1 6.6～ 9.2 3 4 3.6～ 4.8 1.1～ 1.3 4.4～ 6.0 4 5 24.3～ 26.2 7.8～ 10.6 33.2～ 35.3 7.1～ 9.4 5 6 38.6～ 46.8 1.7～ 2.5 34.3～ 41.1 1.6～ 2.3 52.2～ 61.3 6 7 19.9～ 23.6 2.6～ 3.9 16.7～ 19.5 1.8～ 2.5 27.7～ 31.8 21.6～ 28.3 7 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+  refund:  2 枠 連 複 未発売 2 車 連 複 2=4 130円 (1) 3 連 勝 複 1=2=4 690円 (3) ワ イ ド 1=2 690円 (10) 1=4 360円 (6) 2=4 130円 (1) 単 未発売 単 4-2 170円 (1) 単 4-2-1 1,120円 (4) 
+  refund html: <table class="refund_table">
+<tr>
+<th rowspan="2">2<br/>枠<br/>連</th>
+<td>複</td>
+<td>
+<dl class="cf">
+<dt>未発売</dt>
+</dl>
+</td>
+<th rowspan="2">2<br/>車<br/>連</th>
+<td>複</td>
+<td>
+<dl class="cf">
+<dt>2=4</dt>
+<dd>130円<span>(1)</span></dd>
+</dl>
+</td>
+<th rowspan="2">3<br/>連<br/>勝</th>
+<td>複</td>
+<td>
+<dl class="cf">
+<dt>1=2=4</dt>
+<dd>690円<span>(3)</span></dd>
+</dl>
+</td>
+<th rowspan="2">ワ<br/>イ<br/>ド</th>
+<td class="wide" rowspan="2">
+<dl class="cf">
+<dt>1=2</dt>
+<dd>690円<span>(10)</span></dd>
+</dl>
+<dl class="cf">
+<dt>1=4</dt>
+<dd>360円<span>(6)</span></dd>
+</dl>
+<dl class="cf">
+<dt>2=4</dt>
+<dd>130円<span>(1)</span></dd>
+</dl>
+</td>
+</tr>
+<tr>
+<td>単</td>
+<td>
+<dl class="cf">
+<dt>未発売</dt>
+</dl>
+</td>
+<td>単</td>
+<td>
+<dl class="cf">
+<dt>4-2</dt>
+<dd>170円<span>(1)</span></dd>
+</dl>
+</td>
+<td>単</td>
+<td>
+<dl class="cf">
+<dt>4-2-1</dt>
+<dd>1,120円<span>(4)</span></dd>
+</dl>
+</td>
+</tr>
+</table>
+== fukui 5120261111020002 ?pageType=odds&kakeshikiType=3rentan len=244449
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=27 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 52.7 2 3 207.1 34.0 3 4 12.7 1.3 28.0 4 5 36.3 47.2 299.1 30.2 5 6 336.5 34.5 299.1 24.4 448.7 6 7 128.2 15.5 37.9 6.6 207.1 99.7 7 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 108.4 440.6 17.6 135.5 440.6 243.1 1 2 125.8 235.0 1.7 138.2 88.1 43.5 2 3 542.3 195.8 20.4 306.5 470.0 63.5 3 4 108.4 3.9 125.8 135.5 105.2 33.0 4 5 150.0 167.8 352.5 32.7 2350.0 306.5 5 6 705.0 53.4 503.5 40.0 881.2 213.6 6 7 243.1 45.7 83.9 10.2 335.7 282.0 7 
+  [JS_ODDSCONTENTS_3renhuku] tables=9 classes=['', 'odds_table']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 156.2 4 6.9 5 94.0 6 196.1 7 80.8 3 4 68.2 5 133.6 6 576.1 7 91.2 4 5 33.4 6 101.3 7 32.6 5 6 279.3 7 156.2 6 7 542.2 
+  [JS_ODDSCONTENTS_3rentan] tables=9 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 1 2 6.9～ 9.8 2 3 31.1～ 34.1 6.6～ 9.2 3 4 3.6～ 4.8 1.1～ 1.3 4.4～ 6.0 4 5 24.3～ 26.2 7.8～ 10.6 33.2～ 35.3 7.1～ 9.4 5 6 38.6～ 46.8 1.7～ 2.5 34.3～ 41.1 1.6～ 2.3 52.2～ 61.3 6 7 19.9～ 23.6 2.6～ 3.9 16.7～ 19.5 1.8～ 2.5 27.7～ 31.8 21.6～ 28.3 7 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020002 ?pageType=odds&kakeshikiType=2rentan len=244449
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=27 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 52.7 2 3 207.1 34.0 3 4 12.7 1.3 28.0 4 5 36.3 47.2 299.1 30.2 5 6 336.5 34.5 299.1 24.4 448.7 6 7 128.2 15.5 37.9 6.6 207.1 99.7 7 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 108.4 440.6 17.6 135.5 440.6 243.1 1 2 125.8 235.0 1.7 138.2 88.1 43.5 2 3 542.3 195.8 20.4 306.5 470.0 63.5 3 4 108.4 3.9 125.8 135.5 105.2 33.0 4 5 150.0 167.8 352.5 32.7 2350.0 306.5 5 6 705.0 53.4 503.5 40.0 881.2 213.6 6 7 243.1 45.7 83.9 10.2 335.7 282.0 7 
+  [JS_ODDSCONTENTS_3renhuku] tables=9 classes=['', 'odds_table']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 156.2 4 6.9 5 94.0 6 196.1 7 80.8 3 4 68.2 5 133.6 6 576.1 7 91.2 4 5 33.4 6 101.3 7 32.6 5 6 279.3 7 156.2 6 7 542.2 
+  [JS_ODDSCONTENTS_3rentan] tables=9 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 1 2 6.9～ 9.8 2 3 31.1～ 34.1 6.6～ 9.2 3 4 3.6～ 4.8 1.1～ 1.3 4.4～ 6.0 4 5 24.3～ 26.2 7.8～ 10.6 33.2～ 35.3 7.1～ 9.4 5 6 38.6～ 46.8 1.7～ 2.5 34.3～ 41.1 1.6～ 2.3 52.2～ 61.3 6 7 19.9～ 23.6 2.6～ 3.9 16.7～ 19.5 1.8～ 2.5 27.7～ 31.8 21.6～ 28.3 7 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020002 ?pageType=odds&kakeshikiType=3renpuku len=244449
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=27 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 52.7 2 3 207.1 34.0 3 4 12.7 1.3 28.0 4 5 36.3 47.2 299.1 30.2 5 6 336.5 34.5 299.1 24.4 448.7 6 7 128.2 15.5 37.9 6.6 207.1 99.7 7 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 108.4 440.6 17.6 135.5 440.6 243.1 1 2 125.8 235.0 1.7 138.2 88.1 43.5 2 3 542.3 195.8 20.4 306.5 470.0 63.5 3 4 108.4 3.9 125.8 135.5 105.2 33.0 4 5 150.0 167.8 352.5 32.7 2350.0 306.5 5 6 705.0 53.4 503.5 40.0 881.2 213.6 6 7 243.1 45.7 83.9 10.2 335.7 282.0 7 
+  [JS_ODDSCONTENTS_3renhuku] tables=9 classes=['', 'odds_table']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 156.2 4 6.9 5 94.0 6 196.1 7 80.8 3 4 68.2 5 133.6 6 576.1 7 91.2 4 5 33.4 6 101.3 7 32.6 5 6 279.3 7 156.2 6 7 542.2 
+  [JS_ODDSCONTENTS_3rentan] tables=9 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 1 2 6.9～ 9.8 2 3 31.1～ 34.1 6.6～ 9.2 3 4 3.6～ 4.8 1.1～ 1.3 4.4～ 6.0 4 5 24.3～ 26.2 7.8～ 10.6 33.2～ 35.3 7.1～ 9.4 5 6 38.6～ 46.8 1.7～ 2.5 34.3～ 41.1 1.6～ 2.3 52.2～ 61.3 6 7 19.9～ 23.6 2.6～ 3.9 16.7～ 19.5 1.8～ 2.5 27.7～ 31.8 21.6～ 28.3 7 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020002 ?pageType=odds&kakeshikiType=2renpuku len=244449
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=27 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 52.7 2 3 207.1 34.0 3 4 12.7 1.3 28.0 4 5 36.3 47.2 299.1 30.2 5 6 336.5 34.5 299.1 24.4 448.7 6 7 128.2 15.5 37.9 6.6 207.1 99.7 7 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 108.4 440.6 17.6 135.5 440.6 243.1 1 2 125.8 235.0 1.7 138.2 88.1 43.5 2 3 542.3 195.8 20.4 306.5 470.0 63.5 3 4 108.4 3.9 125.8 135.5 105.2 33.0 4 5 150.0 167.8 352.5 32.7 2350.0 306.5 5 6 705.0 53.4 503.5 40.0 881.2 213.6 6 7 243.1 45.7 83.9 10.2 335.7 282.0 7 
+  [JS_ODDSCONTENTS_3renhuku] tables=9 classes=['', 'odds_table']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 156.2 4 6.9 5 94.0 6 196.1 7 80.8 3 4 68.2 5 133.6 6 576.1 7 91.2 4 5 33.4 6 101.3 7 32.6 5 6 279.3 7 156.2 6 7 542.2 
+  [JS_ODDSCONTENTS_3rentan] tables=9 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 1 2 6.9～ 9.8 2 3 31.1～ 34.1 6.6～ 9.2 3 4 3.6～ 4.8 1.1～ 1.3 4.4～ 6.0 4 5 24.3～ 26.2 7.8～ 10.6 33.2～ 35.3 7.1～ 9.4 5 6 38.6～ 46.8 1.7～ 2.5 34.3～ 41.1 1.6～ 2.3 52.2～ 61.3 6 7 19.9～ 23.6 2.6～ 3.9 16.7～ 19.5 1.8～ 2.5 27.7～ 31.8 21.6～ 28.3 7 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
+== fukui 5120261111020002 ?pageType=odds&kakeshikiType=wide len=244446
+  ids: JS_CONTENTS_ODDS, JS_NAV_ODDS, JS_ODDSCONTENTS_2shahuku, JS_ODDSCONTENTS_2shatan, JS_ODDSCONTENTS_3renhuku, JS_ODDSCONTENTS_3rentan, JS_ODDSCONTENTS_wide, JS_ODDSNAV_2shahuku, JS_ODDSNAV_2shatan, JS_ODDSNAV_3renhuku, JS_ODDSNAV_3rentan, JS_ODDSNAV_wide, JS_ODDSSTATUS_2shahuku, JS_ODDSSTATUS_2shatan, JS_ODDSSTATUS_3renhuku, JS_ODDSSTATUS_3rentan, JS_ODDSSTATUS_wide, JS_ODDSTYPE_2shahuku, JS_ODDSTYPE_2shatan, JS_ODDSTYPE_3renhuku, JS_ODDSTYPE_3rentan, JS_ODDSTYPE_wide, ODDS_CAUTION, ODDS_TABLE, YOSOU_ODDS_RESULT_NAV
+  [JS_CONTENTS_ODDS] tables=27 classes=['', 'odds_table', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_NAV_ODDS] tables=0 classes=[]
+  [JS_ODDSCONTENTS_2shahuku] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 52.7 2 3 207.1 34.0 3 4 12.7 1.3 28.0 4 5 36.3 47.2 299.1 30.2 5 6 336.5 34.5 299.1 24.4 448.7 6 7 128.2 15.5 37.9 6.6 207.1 99.7 7 
+  [JS_ODDSCONTENTS_2shatan] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 108.4 440.6 17.6 135.5 440.6 243.1 1 2 125.8 235.0 1.7 138.2 88.1 43.5 2 3 542.3 195.8 20.4 306.5 470.0 63.5 3 4 108.4 3.9 125.8 135.5 105.2 33.0 4 5 150.0 167.8 352.5 32.7 2350.0 306.5 5 6 705.0 53.4 503.5 40.0 881.2 213.6 6 7 243.1 45.7 83.9 10.2 335.7 282.0 7 
+  [JS_ODDSCONTENTS_3renhuku] tables=9 classes=['', 'odds_table']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 156.2 4 6.9 5 94.0 6 196.1 7 80.8 3 4 68.2 5 133.6 6 576.1 7 91.2 4 5 33.4 6 101.3 7 32.6 5 6 279.3 7 156.2 6 7 542.2 
+  [JS_ODDSCONTENTS_3rentan] tables=9 classes=['', 'odds_table bt5', 'odds_table bt5 none']
+    first table text:  1 佐野 洋継 【京 都 97期】 2 3 4 5 6 7 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 2 3108.6 317.8 534.8 3552.6 1776.3 2 3 1604.4 929.6 1036.2 7651.9 1401.0 3 4 454.2 2210.5 456.3 3684.2 865.0 4 5 726.0 2925.7 305.1 3014.4 1381.6 5 6 1130.4 7105.3 1047.1 1198.5 2763.2 6 7 1243.4 1745.1 529.1 912.6 3552.6 7 
+  [JS_ODDSCONTENTS_wide] tables=3 classes=['', 'odds_table']
+    first table text:  1 2 3 4 5 6 7 佐野 洋継 京 都 97期 河上 陽一 千 葉 99期 星島 太 岡 山 66期 荻原 寿嗣 北海道 119期 武田 哲二 京 都 65期 大橋 直人 埼 玉 77期 高鍋 邦彰 福 岡 95期 1 1 2 6.9～ 9.8 2 3 31.1～ 34.1 6.6～ 9.2 3 4 3.6～ 4.8 1.1～ 1.3 4.4～ 6.0 4 5 24.3～ 26.2 7.8～ 10.6 33.2～ 35.3 7.1～ 9.4 5 6 38.6～ 46.8 1.7～ 2.5 34.3～ 41.1 1.6～ 2.3 52.2～ 61.3 6 7 19.9～ 23.6 2.6～ 3.9 16.7～ 19.5 1.8～ 2.5 27.7～ 31.8 21.6～ 28.3 7 
+  [JS_ODDSNAV_2shahuku] tables=0 classes=[]
+  [JS_ODDSNAV_2shatan] tables=0 classes=[]
+  [JS_ODDSNAV_3renhuku] tables=0 classes=[]
+  [JS_ODDSNAV_3rentan] tables=0 classes=[]
+  [JS_ODDSNAV_wide] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shahuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_2shatan] tables=0 classes=[]
+  [JS_ODDSSTATUS_3renhuku] tables=0 classes=[]
+  [JS_ODDSSTATUS_3rentan] tables=0 classes=[]
+  [JS_ODDSSTATUS_wide] tables=0 classes=[]
+  [JS_ODDSTYPE_2shahuku] tables=0 classes=[]
+  [JS_ODDSTYPE_2shatan] tables=0 classes=[]
+  [JS_ODDSTYPE_3renhuku] tables=0 classes=[]
+  [JS_ODDSTYPE_3rentan] tables=0 classes=[]
+  [JS_ODDSTYPE_wide] tables=0 classes=[]
+  [ODDS_CAUTION] tables=0 classes=[]
+  [ODDS_TABLE] tables=0 classes=[]
+  [YOSOU_ODDS_RESULT_NAV] tables=0 classes=[]
