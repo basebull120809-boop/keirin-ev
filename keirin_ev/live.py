@@ -148,8 +148,12 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 n_invest=sum(b["kind"] == "invest" for b in bets)),
                            ensure_ascii=False) + "\n")
     if bets:
-        pd.DataFrame(bets).to_csv(day / "bets.csv", mode="a", index=False,
-                                  header=not (day / "bets.csv").exists())
+        f = day / "bets.csv"
+        new = pd.DataFrame(bets)
+        if f.exists():                   # 列構成が変わっても壊れないよう、全体を読み直して書く
+            old = pd.read_csv(f, dtype={"race_id": str}, on_bad_lines="skip")
+            new = pd.concat([old, new], ignore_index=True)
+        new.to_csv(f, index=False)
     return bets, ent, notes
 
 
