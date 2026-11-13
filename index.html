@@ -758,11 +758,26 @@ addEventListener("hashchange", route);
 const safe = f => { try { f(); } catch (e) { console.error(e); } };
 function renderAll() { [renderHead, renderToday, renderHistory, renderRecord, renderInsight, renderVerify, renderMarket, renderModel].forEach(safe); }
 
+/* データはリポジトリから直接読む（GitHub Pagesの再公開は数分かかり、続けて保存すると取り消されるため）。
+   読めなければ Pages 上のコピーを使う */
+const RAW = "https://raw.githubusercontent.com/basebull120809-boop/keirin-ev/main/";
+async function getJSON(path) {
+  const one = async base => {
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 8000);
+    try {
+      const r = await fetch(base + path + "?t=" + Date.now(), { cache: "no-store", signal: ctl.signal });
+      return r.ok ? await r.json() : null;
+    } catch (e) { return null; } finally { clearTimeout(tm); }
+  };
+  const got = (await Promise.all([one(RAW), one("")])).filter(Boolean);   // 両方読んで新しい方
+  if (!got.length) throw new Error("load failed");
+  return got.sort((a, b) => String(b.updated_at || "").localeCompare(String(a.updated_at || "")))[0];
+}
 async function load() {
   try {
-    const r = await fetch("site/dashboard.json?t=" + Date.now(), { cache: "no-store" });
-    if (!r.ok) throw new Error(r.status);
-    D = await r.json();
+    const nd = await getJSON("site/dashboard.json");
+    if (D.updated_at && nd.updated_at && nd.updated_at < D.updated_at) return;   // 古いコピーで戻さない
+    D = nd;
     renderAll();
   } catch (e) {
     if (!D.updated_at) $("#updated").textContent = "読み込めませんでした";
@@ -773,8 +788,7 @@ async function loadHistory(force) {
   if (!force && Date.now() - histAt < 60000) return;
   histAt = Date.now();
   try {
-    const r = await fetch("site/history.json?t=" + Date.now(), { cache: "no-store" });
-    if (r.ok) H = await r.json();
+    H = await getJSON("site/history.json");
   } catch (e) {}
   safe(renderHistory);
 }
