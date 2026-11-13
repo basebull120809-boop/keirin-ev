@@ -19,7 +19,7 @@
   "a": 0.5403,
   "b": 0.5033
  },
- "updated_at": "2026-11-13 10:24",
+ "updated_at": "2026-11-13 10:27",
  "picks": {
   "date": "2026-11-13",
   "races": [
@@ -328,6 +328,539 @@
       "hit": null
      }
     ],
+    "notes": [],
+    "lines": []
+   }
+  ]
+ },
+ "board": {
+  "date": "2026-11-13",
+  "races": [
+   {
+    "venue": "松戸",
+    "race_no": 1,
+    "deadline": "08:45",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松戸",
+    "race_no": 2,
+    "deadline": "09:05",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松戸",
+    "race_no": 3,
+    "deadline": "09:26",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松戸",
+    "race_no": 4,
+    "deadline": "09:47",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松戸",
+    "race_no": 5,
+    "deadline": "10:08",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 1,
+    "deadline": "11:00",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 1,
+    "deadline": "11:12",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 2,
+    "deadline": "11:24",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 2,
+    "deadline": "11:36",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 3,
+    "deadline": "11:49",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 3,
+    "deadline": "12:02",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 4,
+    "deadline": "12:15",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 4,
+    "deadline": "12:28",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 5,
+    "deadline": "12:41",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 5,
+    "deadline": "12:54",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 6,
+    "deadline": "13:07",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 6,
+    "deadline": "13:20",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 7,
+    "deadline": "13:33",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 7,
+    "deadline": "13:46",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 8,
+    "deadline": "14:00",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 8,
+    "deadline": "14:14",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 9,
+    "deadline": "14:28",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 9,
+    "deadline": "14:42",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 10,
+    "deadline": "14:56",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 10,
+    "deadline": "15:10",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 11,
+    "deadline": "15:26",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 11,
+    "deadline": "15:42",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 1,
+    "deadline": "15:49",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "福井",
+    "race_no": 12,
+    "deadline": "15:57",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 1,
+    "deadline": "16:04",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 2,
+    "deadline": "16:12",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "立川",
+    "race_no": 12,
+    "deadline": "16:20",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 2,
+    "deadline": "16:27",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 3,
+    "deadline": "16:37",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 3,
+    "deadline": "16:50",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 4,
+    "deadline": "17:02",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 4,
+    "deadline": "17:14",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 5,
+    "deadline": "17:38",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 6,
+    "deadline": "17:50",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 6,
+    "deadline": "18:02",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 7,
+    "deadline": "18:14",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 7,
+    "deadline": "18:26",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 8,
+    "deadline": "18:38",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 8,
+    "deadline": "18:50",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 9,
+    "deadline": "19:03",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 9,
+    "deadline": "19:16",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 10,
+    "deadline": "19:42",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 11,
+    "deadline": "19:56",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "玉野",
+    "race_no": 11,
+    "deadline": "20:10",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "四日市",
+    "race_no": 12,
+    "deadline": "20:25",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 1,
+    "deadline": "20:35",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 2,
+    "deadline": "20:55",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 2,
+    "deadline": "21:05",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 3,
+    "deadline": "21:15",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 3,
+    "deadline": "21:25",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 4,
+    "deadline": "21:35",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 4,
+    "deadline": "21:45",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 5,
+    "deadline": "21:55",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 5,
+    "deadline": "22:05",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 6,
+    "deadline": "22:15",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 6,
+    "deadline": "22:25",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 7,
+    "deadline": "22:35",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 7,
+    "deadline": "22:45",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 8,
+    "deadline": "22:55",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "佐世保",
+    "race_no": 9,
+    "deadline": "23:15",
+    "status": "wait",
+    "notes": [],
+    "lines": []
+   },
+   {
+    "venue": "松阪",
+    "race_no": 9,
+    "deadline": "23:25",
+    "status": "wait",
     "notes": [],
     "lines": []
    }
