@@ -144,6 +144,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
+                                names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
                                 n_bets=sum(b["kind"] == "yoso" for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets)),
                            ensure_ascii=False) + "\n")
@@ -158,16 +159,23 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
 
 
 def _fmt_block(bets, names):
-    from .strategy import summary
+    from .strategy import summary, formations
     sm = summary([(0, b["stake"], b["p"], b["odds"], b["ev"]) for b in bets])
     L = [f"**{len(bets)}点 {sm['total']:,}円**／合成オッズ {sm['synth']:.1f}倍／的中率 {sm['hit_p']:.0%}／期待値 {sm['race_ev']:.2f}", ""]
-    by_first = {}
+    order = {}
     for b in bets:
-        by_first.setdefault(int(b["combo"].split("-")[0]), []).append(b)
-    for f, bs in sorted(by_first.items(), key=lambda x: -sum(b["p"] for b in x[1])):
-        L += [f"1着 **{f} {names.get(f, '')}**", "| 買い目 | 金額 | オッズ |", "|---|---:|---:|"]
-        L += [f"| {b['combo']} | {b['stake']:,}円 | {b['odds']:.1f} |" for b in sorted(bs, key=lambda b: b["odds"])]
+        f = int(b["combo"].split("-")[0]); order[f] = order.get(f, 0) + b["p"]
+    rows = formations([b["combo"] for b in bets])
+    for f in sorted({r[0] for r in rows}, key=lambda f: -order.get(f, 0)):
+        L.append(f"**軸 {f} {names.get(f, '')}**")
+        for a, bs, cs in [r for r in rows if r[0] == f]:
+            n = len(bs) * len(cs) - sum(1 for x in bs for y in cs if x == y)
+            L.append(f"- {a} → {'・'.join(map(str, bs))} → {'・'.join(map(str, cs))}（{n}点）")
         L.append("")
+    L.append("<details><summary>金額の内訳</summary>\n")
+    L += ["| 買い目 | 金額 | オッズ |", "|---|---:|---:|"]
+    L += [f"| {b['combo']} | {b['stake']:,}円 | {b['odds']:.1f} |" for b in sorted(bets, key=lambda b: b["odds"])]
+    L += ["", "</details>", ""]
     return L
 
 

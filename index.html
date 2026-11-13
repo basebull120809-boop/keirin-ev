@@ -75,6 +75,19 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0 0 4px;text
 .chip.buy{background:var(--good);color:#fff}
 .chip.skip{text-decoration:line-through;color:var(--muted)}
 .tally{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}
+.forms{display:grid;gap:8px;margin-top:6px}
+.axis{background:var(--sunk);border-radius:10px;padding:8px 10px}
+.axis-h{display:flex;align-items:center;gap:6px;font-weight:700;font-size:13px;margin-bottom:4px}
+.axis-h span{font-weight:400;color:var(--muted)}
+.frow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-block:4px}
+.fcol{display:flex;gap:3px;flex-wrap:wrap}
+.farr{color:var(--muted);font-size:12px}
+.fn{margin-left:auto;font-size:12px;color:var(--muted)}
+.car.sm{width:24px;height:24px;font-size:13px;border-radius:5px}
+.detail{font-size:12px;color:var(--muted)}
+.detail summary{cursor:pointer;padding-block:4px}
+.drow{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding-block:3px;border-top:1px solid var(--line)}
+.drow.hit{color:var(--good);font-weight:700}
 .kind{font-weight:700;font-size:13px;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
 .kind:first-of-type{border-top:0;margin-top:0;padding-top:0}
 .kind span{display:block;font-weight:400;font-size:11px;color:var(--muted)}
@@ -215,6 +228,30 @@ function renderHead() {
 
 const synth = bs => (1 / bs.reduce((a, b) => a + 1 / b.odds, 0)).toFixed(1);
 const raceEv = bs => bs.reduce((a, b) => a + b.stake * b.p * b.odds, 0) / bs.reduce((a, b) => a + b.stake, 0);
+function formations(bs) {
+  const by = new Map(), w = new Map();
+  for (const b of bs) {
+    const [a, x, y] = b.combo.split("-").map(Number);
+    if (!by.has(a)) by.set(a, new Map());
+    const m = by.get(a); if (!m.has(x)) m.set(x, new Set()); m.get(x).add(y);
+    w.set(a, (w.get(a) || 0) + b.p);
+  }
+  const out = [];
+  for (const a of [...by.keys()].sort((p, q) => w.get(q) - w.get(p))) {
+    const groups = new Map();
+    for (const [x, ys] of by.get(a)) { const k = [...ys].sort((p, q) => p - q).join(","); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(x); }
+    const rows = [...groups.entries()].map(([k, xs]) => ({ a, xs: xs.sort((p, q) => p - q), ys: k.split(",").map(Number) }))
+      .sort((p, q) => q.xs.length * q.ys.length - p.xs.length * p.ys.length);
+    out.push({ a, rows });
+  }
+  return out;
+}
+const carList = ns => ns.map(n => `<span class="car sm" style="background:var(--c${n});color:var(--t${n})">${n}</span>`).join("");
+function formationHTML(bs, names) {
+  return `<div class="forms">${formations(bs).map(g => `<div class="axis"><div class="axis-h">軸 ${carList([g.a])}<span>${esc(names?.[g.a] || "")}</span></div>
+    ${g.rows.map(r => `<div class="frow"><span class="fcol">${carList([r.a])}</span><span class="farr">→</span><span class="fcol">${carList(r.xs)}</span><span class="farr">→</span><span class="fcol">${carList(r.ys)}</span><span class="fn mono">${r.xs.length * r.ys.length}点</span></div>`).join("")}</div>`).join("")}
+    <details class="detail"><summary>買い目と金額の内訳</summary>${[...bs].sort((p, q) => p.odds - q.odds).map(b => `<div class="drow${b.hit ? " hit" : ""}"><span class="mono">${esc(b.combo)}</span><span class="mono">${b.odds.toFixed(1)}倍</span><span class="mono">${yen(b.stake)}</span></div>`).join("")}</details></div>`;
+}
 function betRow(b, mode) {
   const w = mode === "ev" ? Math.min(100, (b.ev - 1) / 2 * 100) : Math.min(100, b.p / .25 * 100);
   const label = mode === "ev" ? `期待値 <b class="mono">${b.ev.toFixed(2)}</b>` : `確率 <b class="mono">${pct(b.p)}</b>`;
@@ -243,8 +280,8 @@ function renderPicks() {
       <div class="race-h"><strong>${esc(r.venue)} ${r.race_no}R ${isClosed ? '<span class="pill" style="color:var(--muted);font-size:11px;padding:1px 8px">締切済み</span>' : '<span class="pill good" style="font-size:11px;padding:1px 8px">締切前</span>'}</strong>
         <span class="dl mono">締切 ${esc(r.deadline || "—")}・判定 ${esc((r.judged_at || "").slice(0, 5))}・${r.bets.length + (r.invest?.length || 0)}点 ${yen(total)}</span></div>
       ${r.bets.length ? `<div class="kind">本命予想<span>的中重視・合成オッズ ${synth(r.bets)}倍・見込み的中率 ${pct(r.bets.reduce((a, b) => a + b.p, 0), 0)}</span></div>` : ""}
-      ${r.bets.map(b => betRow(b, "p")).join("")}
-      ${r.invest?.length ? `<div class="kind inv">★ 投資判定<span>期待値で勝てる目・${r.invest.length}点 ${yen(r.invest.reduce((a, b) => a + b.stake, 0))}・期待値 ${raceEv(r.invest).toFixed(2)}</span></div>${r.invest.map(b => betRow(b, "ev")).join("")}` : ""}
+      ${r.bets.length ? formationHTML(r.bets, r.names) : ""}
+      ${r.invest?.length ? `<div class="kind inv">★ 投資判定<span>期待値で勝てる目・${r.invest.length}点 ${yen(r.invest.reduce((a, b) => a + b.stake, 0))}・期待値 ${raceEv(r.invest).toFixed(2)}</span></div>${formationHTML(r.invest, r.names)}` : ""}
       ${r.lines?.length ? `<div class="linebar" role="img" aria-label="ライン別の1着確率">${r.lines.map((l, i) => `<span style="width:${(l.p * 100).toFixed(1)}%;background:var(--c${l.cars[0]});color:var(--t${l.cars[0]})" title="${l.cars.join("-")} ${pct(l.p, 0)}">${l.p >= .12 ? l.cars.join("-") + " " + pct(l.p, 0) : ""}</span>`).join("")}</div>` : ""}
       ${r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       ${res}</article>`;

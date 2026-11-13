@@ -166,3 +166,20 @@ def summary(bets):
                 synth=float(1 / (1 / oo).sum()),
                 pay_min=int(pay.min()), pay_max=int(pay.max()),
                 race_ev=float((st * pp * oo).sum() / st.sum()))
+
+
+def formations(combos):
+    """['3-6-1','3-6-2','3-1-6',...] → 軸ごとのフォーメーション [(1着, [2着...], [3着...]), ...]
+    各行の 1着×2着×3着 の全組み合わせが、選んだ目とぴったり一致するようにまとめる"""
+    by_first = {}
+    for c in combos:
+        a, b, c3 = (int(x) for x in c.split("-"))
+        by_first.setdefault(a, {}).setdefault(b, set()).add(c3)
+    rows = []
+    for a, seconds in by_first.items():
+        groups = {}
+        for b, thirds in seconds.items():
+            groups.setdefault(tuple(sorted(thirds)), []).append(b)
+        for thirds, bs in sorted(groups.items(), key=lambda x: (-len(x[0]) * len(x[1]), x[1])):
+            rows.append((a, sorted(bs), list(thirds)))
+    return rows
