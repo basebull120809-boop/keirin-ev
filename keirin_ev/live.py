@@ -249,6 +249,16 @@ def run(max_minutes=340):
         print("締切一覧の保存失敗:", e, flush=True)
     note = Notifier(date)
     done = set()
+    nf = LIVE / date / "notes.jsonl"          # 前の実行で判定済みのレースは判定し直さない
+    if nf.exists():
+        for line in nf.read_text(encoding="utf-8").splitlines():
+            try:
+                done.add(str(json.loads(line)["race_id"]))
+            except Exception:
+                pass
+    sched = [x for x in sched if x[2] not in done]
+    if not sched:
+        print("判定するレースが残っていません", flush=True)
     while sched and time.time() - t0 < max_minutes * 60:
         t = now()
         for dl, venue, rid in sched:

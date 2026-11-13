@@ -1,9 +1,9 @@
 name: live（当日の締切前判定と通知）
 on:
   schedule:
-    - { cron: "15 23 * * *" }   # 08:15 JST 〜
-    - { cron: "55 4 * * *" }    # 13:55 JST 〜
-    - { cron: "35 10 * * *" }   # 19:35 JST 〜（ミッドナイトまで）
+    # 08:00〜23:30 JST に30分ごと起動。動いている間は1本だけ待機し、終わりしだい引き継ぐ
+    # （GitHubの定時起動は遅れたり抜けたりするので、1日3回だと判定が数時間止まることがある）
+    - { cron: "*/30 23,0-14 * * *" }
   workflow_dispatch:
     inputs:
       minutes: { description: "動かす分数（テストは15など）", required: false, default: "340" }

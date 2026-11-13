@@ -389,12 +389,21 @@ const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `
 function renderHead() {
   const n = nowJST(), b = D.board;
   const active = b && b.date === n.date && b.races.some(r => r.status === "wait" && r.deadline > n.hm);
-  const l = $("#live");
-  l.className = "live" + (active ? "" : " off");
-  l.innerHTML = `<i></i>${active ? "LIVE" : "STANDBY"}`;
+  const l = $("#live"), st = stalled();
+  l.className = "live" + (active && !st ? "" : " off");
+  l.innerHTML = `<i></i>${st ? "停止中" : active ? "LIVE" : "STANDBY"}`;
   $("#updated").textContent = D.updated_at ? `更新 ${D.updated_at.slice(5).replace("-", "/")}` : "データ待ち";
   const c = D.config || {};
   $("#mode").innerHTML = c.mode === "real" ? '<span class="tag good">実運用</span>' : '<span class="tag warn">紙上運用</span>';
+}
+
+/* 判定が止まっていないか：判定時刻（締切6分前）を5分以上過ぎても「判定待ち」のまま、かつ更新が10分以上ない */
+function stalled() {
+  const n = nowJST(), b = D.board;
+  if (!b || b.date !== n.date || !D.updated_at) return false;
+  const late = b.races.some(r => r.status === "wait" && mins(r.deadline) - 6 + 5 <= mins(n.hm) && r.deadline > n.hm);
+  const upd = D.updated_at.slice(0, 10) === n.date ? mins(D.updated_at.slice(11, 16)) : -1e9;
+  return late && mins(n.hm) - upd >= 10;
 }
 
 /* ---- 今日 ---- */
@@ -411,7 +420,7 @@ function renderToday() {
       const r = up[0], left = Math.max(0, mins(r.deadline) - mins(n.hm) - 6);
       nextHTML = `<div class="card next"><div class="lb">NEXT JUDGE</div>
         <div class="row"><div class="race">${esc(r.venue)} ${r.race_no}R<span>締切 ${esc(r.deadline)}・判定 ${String(Math.floor((mins(r.deadline) - 6) / 60)).padStart(2, "0")}:${String((mins(r.deadline) - 6) % 60).padStart(2, "0")}</span></div>
-          <div class="cd">${left ? `<b>${left}</b><span>分後</span>` : `<b style="font-size:30px">判定中</b>`}</div></div>
+          <div class="cd">${left ? `<b>${left}</b><span>分後</span>` : stalled() ? `<b style="font-size:22px;color:var(--muted)">判定停止中</b><span>自動で再開します</span>` : `<b style="font-size:30px">判定中</b>`}</div></div>
         ${up.length > 1 ? `<div class="queue">${up.slice(1, 12).map(q => `<span class="q">${esc(q.venue)}${q.race_no}R<span class="num">${esc(q.deadline)}</span></span>`).join("")}</div>` : ""}</div>`;
     } else nextHTML = `<div class="card next"><div class="lb">FINISHED</div><div class="row"><div class="race">本日の判定終了<span>おつかれさまでした。結果は「過去の予想」へ</span></div></div></div>`;
     nextHTML += `<div class="stats"><div class="st lime"><b>${nb}</b><span>予想</span></div><div class="st hot"><b>${ni}</b><span>★投資</span></div><div class="st"><b>${ns}</b><span>見送り</span></div><div class="st"><b>${up.length}</b><span>判定待ち</span></div></div>`;
