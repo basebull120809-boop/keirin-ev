@@ -3,9 +3,9 @@
   "bankroll": 100000,
   "rules": {
     "mode": "formation",
-    "min_points": 12,
+    "min_points": 20,
     "max_points": 20,
-    "hard_points": 10,
+    "hard_points": 15,
     "hard_odds": 10,
     "wide_odds": 40,
     "min_firsts": 2,
@@ -28,7 +28,7 @@
     "model_weight": 0.5
   },
   "_説明": {
-    "rules": "本命予想（的中重視・フォーメーション）：頭2〜3人、2着・3着を広めに。硬いレース10点、通常12〜20点",
+    "rules": "本命予想（的中重視・フォーメーション）：頭2〜3人、2着・3着を広めに。硬いレース15点、通常20点",
     "invest_rules": "投資判定：期待値の高い順。レース期待値1.10以上のときだけ"
   }
 }
