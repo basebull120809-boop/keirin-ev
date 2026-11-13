@@ -113,6 +113,12 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     snap.to_csv(day / "odds_live.csv.gz", mode="a", index=False, compression="gzip",
                 header=not (day / "odds_live.csv.gz").exists())
     if model is None or od.empty:
+        with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                                    deadline=dl.strftime("%H:%M") if dl is not None else "",
+                                    notes=[], lines=[], n_bets=0, n_invest=0,
+                                    reason="オッズが取得できなかったため" if od.empty else "予測モデルが未学習のため"),
+                               ensure_ascii=False) + "\n")
         return [], ent, []
     con = connect(":memory:")
     races = pd.DataFrame([dict(race_id=rid, date=date, venue=venue, race_no=int(rid[-4:]),
@@ -146,7 +152,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
                                 n_bets=sum(b["kind"] == "yoso" for b in bets),
-                                n_invest=sum(b["kind"] == "invest" for b in bets)),
+                                n_invest=sum(b["kind"] == "invest" for b in bets),
+                                reason="" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため"),
                            ensure_ascii=False) + "\n")
     if bets:
         f = day / "bets.csv"

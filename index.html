@@ -65,6 +65,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0 0 4px;text
 .stake{text-align:right;font-size:14px;font-weight:600}
 .bet.hit{background:linear-gradient(90deg,color-mix(in srgb,var(--good) 14%,transparent),transparent)}
 .race.closed{opacity:.55}
+.race.skip{border-style:dashed;background:transparent}
 .race.closed:has(.bet.hit){opacity:1}
 .board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
 .next{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
@@ -262,7 +263,15 @@ function betRow(b, mode) {
 }
 
 function renderPicks() {
-  const p = D.picks;
+  let p = D.picks;
+  const bd = D.board;
+  if (bd && (!p || p.date !== bd.date)) p = { date: bd.date, races: [] };
+  if (bd && p) {
+    const have = new Set(p.races.map(r => r.venue + r.race_no));
+    const skips = bd.races.filter(r => r.status === "skip" && !have.has(r.venue + r.race_no))
+      .map(r => ({ ...r, bets: [], invest: [], skipped: true }));
+    p = { ...p, races: [...p.races, ...skips] };
+  }
   if (!p || !p.races?.length) return;
   $("#picks-title").textContent = `買い目 ${p.date.replaceAll("-", "/")}`;
   const maxEv = 3;
@@ -274,6 +283,11 @@ function renderPicks() {
   $("#picks-title").textContent = `買い目 ${p.date.replaceAll("-", "/")}` + (open ? `（締切前 ${open}レース）` : "");
   $("#picks-body").innerHTML = `<div class="races">${list.map(r => {
     const isClosed = closed(r);
+    if (r.skipped) return `<article class="race skip${isClosed ? " closed" : ""}">
+      <div class="race-h"><strong>${esc(r.venue)} ${r.race_no}R <span class="pill" style="color:var(--warn);font-size:11px;padding:1px 8px">見送り</span></strong>
+        <span class="dl mono">締切 ${esc(r.deadline || "—")}</span></div>
+      <div class="lede" style="margin:0">理由：${esc(r.reason || "買い目の基準（合成オッズ・期待値）を満たさなかったため")}</div>
+      ${r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}</article>`;
     const total = r.bets.reduce((a, b) => a + b.stake, 0) + (r.invest || []).reduce((a, b) => a + b.stake, 0);
     const res = r.result ? `<div class="result">結果 <span class="w mono">${esc(r.result.combo)}</span>　払戻 <span class="mono">${yen(r.result.payout)}</span>／100円</div>` : "";
     return `<article class="race${isClosed ? " closed" : ""}">

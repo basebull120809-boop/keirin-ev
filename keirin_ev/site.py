@@ -117,6 +117,7 @@ def today_board(date):
         st = "wait" if n is None else ("buy" if n.get("n_bets") else "skip")
         rows.append(dict(venue=VENUE_JA.get(r.venue, r.venue), race_no=int(r.race_no),
                          deadline=r.deadline, status=st, invest=bool((n or {}).get("n_invest")),
+                         reason=(n or {}).get("reason", ""),
                          notes=(n or {}).get("notes", []), lines=(n or {}).get("lines", [])))
     return dict(date=date, races=rows)
 
