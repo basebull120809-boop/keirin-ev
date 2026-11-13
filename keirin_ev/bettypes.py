@@ -181,7 +181,8 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
     if rec in pl and pl[rec].get("low"):
         return rec, f"予想どおりの本命で配当は安め（合成{c['synth']:.1f}倍）。点数を{len(pl[rec]['bets'])}点に絞っています", cand
     if rec == "ex":
-        why = f"1着は{a}番が{pa:.0%}で抜けていて、2着まで絞れる。2車単なら{len(pl['ex']['bets'])}点で的中率{c['hit']:.0%}"
+        head = f"1着は{a}番が{pa:.0%}で抜けていて" if pa >= 0.45 else f"1着候補の筆頭は{a}番（{pa:.0%}）。上位の1・2着の組み合わせが絞れていて"
+        why = f"{head}、2車単なら{len(pl['ex']['bets'])}点で的中率{c['hit']:.0%}"
     elif rec == "trio":
         why = f"上位3人で決まる見込みが高い一方、着順は読みにくい。3連複{len(pl['trio']['bets'])}点で的中率{c['hit']:.0%}"
     else:
