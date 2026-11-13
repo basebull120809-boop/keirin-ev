@@ -88,13 +88,43 @@ def picks_and_paper():
     return picks, paper
 
 
-def export_live():
+def today_board(date):
+    """今日の締切一覧と判定状況（買い・見送り・判定待ち）"""
+    from .kdreams import VENUE_JA
+    day = Path("data/live") / date
+    f = day / "schedule.csv"
+    if not f.exists():
+        return None
+    sc = pd.read_csv(f, dtype={"race_id": str})
+    judged = {}
+    nf = day / "notes.jsonl"
+    if nf.exists():
+        for line in nf.read_text(encoding="utf-8").splitlines():
+            try:
+                n = json.loads(line); judged[str(n["race_id"])] = n
+            except Exception:
+                pass
+    rows = []
+    for r in sc.sort_values("deadline").itertuples():
+        n = judged.get(str(r.race_id))
+        st = "wait" if n is None else ("buy" if n.get("n_bets") else "skip")
+        rows.append(dict(venue=VENUE_JA.get(r.venue, r.venue), race_no=int(r.race_no),
+                         deadline=r.deadline, status=st,
+                         notes=(n or {}).get("notes", []), lines=(n or {}).get("lines", [])))
+    return dict(date=date, races=rows)
+
+
+def export_live(date=None):
     d = load()
     picks, paper = picks_and_paper()
     if picks:
         d["picks"] = picks
     if paper:
         d["paper"] = paper
+    if date:
+        b = today_board(date)
+        if b:
+            d["board"] = b
     save(d)
 
 

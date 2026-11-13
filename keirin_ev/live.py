@@ -193,8 +193,18 @@ def run(max_minutes=340):
     except Exception as e:
         print("モデルなし（オッズの記録のみ行います）:", e); model = None
     kdreams.SLEEP_SEC = 1.0
-    sched = [x for x in schedule(date) if x[0] > now() + pd.Timedelta(minutes=LEAD_MIN)]
+    full = schedule(date)
+    sched = [x for x in full if x[0] > now() + pd.Timedelta(minutes=LEAD_MIN)]
     print(f"{date}: 判定対象 {len(sched)} レース", flush=True)
+    try:                                   # 今日の締切一覧をページへ
+        day = LIVE / date; day.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame([dict(venue=v, race_no=int(r[-4:]), race_id=r, deadline=d.strftime("%H:%M"))
+                      for d, v, r in full]).to_csv(day / "schedule.csv", index=False)
+        from .site import export_live
+        export_live(date)
+        push_now("live 締切一覧")
+    except Exception as e:
+        print("締切一覧の保存失敗:", e, flush=True)
     note = Notifier(date)
     done = set()
     while sched and time.time() - t0 < max_minutes * 60:
@@ -213,12 +223,12 @@ def run(max_minutes=340):
             print(f"{t:%H:%M} {venue} {int(rid[-4:])}R 締切{dl:%H:%M} 買い目{len(bets)}点", flush=True)
             if bets:
                 note.post(fmt(venue, rid, dl, bets, ent, mode))
-                try:
-                    from .site import export_live
-                    export_live()
-                except Exception as e:
-                    print("サイト用データ更新失敗:", e, flush=True)
-                push_now(f"live {venue} {int(rid[-4:])}R")
+            try:                           # 買い・見送りにかかわらずページを更新
+                from .site import export_live
+                export_live(date)
+            except Exception as e:
+                print("サイト用データ更新失敗:", e, flush=True)
+            push_now(f"live {venue} {int(rid[-4:])}R {'買い' if bets else '見送り'}")
         sched = [x for x in sched if x[2] not in done]
         time.sleep(30)
     print("終了", flush=True)

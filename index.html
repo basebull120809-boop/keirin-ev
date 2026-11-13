@@ -66,6 +66,15 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;margin:0 0 4px;text
 .bet.hit{background:linear-gradient(90deg,color-mix(in srgb,var(--good) 14%,transparent),transparent)}
 .race.closed{opacity:.55}
 .race.closed:has(.bet.hit){opacity:1}
+.board{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.next{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.next b{font-size:18px}
+.count{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--band)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.chip{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--sunk);font-family:var(--mono);white-space:nowrap}
+.chip.buy{background:var(--good);color:#fff}
+.chip.skip{text-decoration:line-through;color:var(--muted)}
+.tally{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:8px}
 .result{font-size:12px;color:var(--muted);margin-top:6px}
 .result .w{color:var(--good);font-weight:700}
 /* 数字 */
@@ -144,6 +153,7 @@ footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font-si
   <section id="picks">
     <h2 id="picks-title">今日の買い目</h2>
     <p class="lede">締切の6〜1.5分前にオッズを取り直し、期待値（確率×オッズ）が基準を超えた目だけを出しています。基準を超えないレースは見送りです。</p>
+    <div id="board"></div>
     <div id="picks-body"><div class="empty"><b>まだ判定はありません。</b><br>レースの締切が近づくと、判定した買い目がここに並びます。</div></div>
   </section>
 
@@ -226,6 +236,29 @@ function renderPicks() {
       ${r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
       ${res}</article>`;
   }).join("")}</div>`;
+}
+
+function renderBoard() {
+  const b = D.board;
+  if (!b || !b.races?.length) { $("#board").innerHTML = ""; return; }
+  const now = new Date(), today = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
+  const hm = now.toLocaleTimeString("en-GB", { timeZone: "Asia/Tokyo", hour: "2-digit", minute: "2-digit" });
+  if (b.date !== today) { $("#board").innerHTML = ""; return; }
+  const upcoming = b.races.filter(r => r.status === "wait" && r.deadline > hm);
+  const nb = b.races.filter(r => r.status === "buy").length, ns = b.races.filter(r => r.status === "skip").length;
+  let next = "";
+  if (upcoming.length) {
+    const r = upcoming[0];
+    const [h, m] = r.deadline.split(":").map(Number), [ch, cm] = hm.split(":").map(Number);
+    const left = Math.max(0, (h * 60 + m) - (ch * 60 + cm) - 6);
+    next = `<div class="next"><span>次の判定<br><b>${esc(r.venue)} ${r.race_no}R</b>　<span class="mono" style="color:var(--muted)">締切 ${esc(r.deadline)}</span></span>
+      <span style="text-align:right"><span class="count">${left}</span> 分後</span></div>`;
+  } else next = `<div class="lede" style="margin:0">今日の判定はすべて終わりました。</div>`;
+  const recent = b.races.filter(r => r.status !== "wait").slice(-6);
+  $("#board").innerHTML = `<div class="board">${next}
+    <div class="chips">${upcoming.slice(1, 9).map(r => `<span class="chip">${esc(r.venue)}${r.race_no}R ${esc(r.deadline)}</span>`).join("")}</div>
+    ${recent.length ? `<div class="chips">${recent.map(r => `<span class="chip ${r.status}">${esc(r.venue)}${r.race_no}R ${r.status === "buy" ? "買い" : "見送り"}</span>`).join("")}</div>` : ""}
+    <div class="tally"><span>買い ${nb}</span><span>見送り ${ns}</span><span>判定待ち ${upcoming.length}</span></div></div>`;
 }
 
 function spark(points) {
@@ -370,7 +403,7 @@ function renderInsight() {
   $("#ins-win").onclick = () => { insMetric = "win"; renderInsight(); };
 }
 
-function renderAll() { renderHead(); renderPicks(); renderRecord(); renderInsight(); renderVerify(); renderMarket(); renderModel(); }
+function renderAll() { renderHead(); renderBoard(); renderPicks(); renderRecord(); renderInsight(); renderVerify(); renderMarket(); renderModel(); }
 
 async function load() {
   try {
@@ -378,7 +411,7 @@ async function load() {
     if (!r.ok) throw new Error(r.status);
     const d = await r.json();
     D = { summary: { updated_at: d.updated_at, collect: d.collect, config: d.config, model: d.model },
-          picks: d.picks, paper: d.paper, backtest: d.backtest, market: d.market, insight: d.insight };
+          picks: d.picks, board: d.board, paper: d.paper, backtest: d.backtest, market: d.market, insight: d.insight };
     renderAll();
   } catch (e) {
     if (!D.summary) $("#updated").textContent = "データを読み込めませんでした";
