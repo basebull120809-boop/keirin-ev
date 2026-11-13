@@ -278,8 +278,13 @@ function renderPicks() {
   const now = new Date(), today = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
   const hm = now.toLocaleTimeString("en-GB", { timeZone: "Asia/Tokyo", hour: "2-digit", minute: "2-digit" });
   const closed = r => p.date < today || (p.date === today && (r.deadline || "99:99") <= hm);
-  const list = [...p.races].sort((a, b) => (closed(a) - closed(b)) || (a.deadline || "").localeCompare(b.deadline || ""));
-  const open = list.filter(r => !closed(r)).length;
+  const list = [...p.races].filter(r => !closed(r)).sort((a, b) => (a.deadline || "").localeCompare(b.deadline || ""));
+  const open = list.length;
+  if (!open) {
+    $("#picks-title").textContent = "今日の買い目";
+    $("#picks-body").innerHTML = `<div class="empty"><b>締切前の予想はありません。</b><br>次のレースの締切6分前に、ここへ予想が出ます。</div>`;
+    return;
+  }
   $("#picks-title").textContent = `買い目 ${p.date.replaceAll("-", "/")}` + (open ? `（締切前 ${open}レース）` : "");
   $("#picks-body").innerHTML = `<div class="races">${list.map(r => {
     const isClosed = closed(r);
@@ -321,7 +326,6 @@ function renderBoard() {
   const recent = b.races.filter(r => r.status !== "wait").slice(-6);
   $("#board").innerHTML = `<div class="board">${next}
     <div class="chips">${upcoming.slice(1, 9).map(r => `<span class="chip">${esc(r.venue)}${r.race_no}R ${esc(r.deadline)}</span>`).join("")}</div>
-    ${recent.length ? `<div class="chips">${recent.map(r => `<span class="chip ${r.status}">${esc(r.venue)}${r.race_no}R ${r.status === "buy" ? "予想" : "見送り"}${r.invest ? "★" : ""}</span>`).join("")}</div>` : ""}
     <div class="tally"><span>予想 ${nb}</span><span>見送り ${ns}</span><span>投資判定 ${b.races.filter(r => r.invest).length}</span><span>判定待ち ${upcoming.length}</span></div></div>`;
 }
 
