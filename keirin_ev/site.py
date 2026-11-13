@@ -35,6 +35,19 @@ def save(d):
     OUT.write_text(json.dumps(_clean(d), ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def _int(v):
+    try:
+        return None if v != v or v is None else int(v)
+    except Exception:
+        return None
+
+
+def _bl(g, kind):
+    return [dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds), p=float(b.p), ev=float(b.ev),
+                 hit=None if b.hit != b.hit else bool(b.hit))
+            for b in g[g["kind"] == kind].itertuples()]
+
+
 def day_races(pb, last):
     """指定日の買い目（レースごと・結果つき）"""
     from .kdreams import VENUE_JA
@@ -51,10 +64,11 @@ def day_races(pb, last):
                                      p=float(b.p), ev=float(b.ev),
                                      hit=None if b.hit != b.hit else bool(b.hit))
                                 for b in g[g["kind"] == "yoso"].itertuples()],
-                          invest=[dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds),
-                                       p=float(b.p), ev=float(b.ev),
-                                       hit=None if b.hit != b.hit else bool(b.hit))
-                                  for b in g[g["kind"] == "invest"].itertuples()]))
+                          invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"),
+                          ex_result=dict(combo=r["ex_combo"], payout=_int(r.get("ex_payout")))
+                          if isinstance(r.get("ex_combo"), str) else None,
+                          trio_result=dict(combo=r["trio_combo"], payout=_int(r.get("trio_payout")))
+                          if isinstance(r.get("trio_combo"), str) else None))
     notes = {}
     f = Path("data/live") / last / "notes.jsonl"
     if f.exists():
@@ -68,6 +82,7 @@ def day_races(pb, last):
     for r in races:
         n = notes.get(str(rid_of.get((r["venue_slug"], r["race_no"]), "")), {})
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
+        r["rec"] = n.get("rec"); r["rec_reason"] = n.get("rec_reason", ""); r["cand"] = n.get("cand", {})
         r.pop("venue_slug", None)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
     return races
@@ -84,7 +99,13 @@ def picks_and_paper():
     last = pb["date"].max()
     picks = dict(date=last, races=day_races(pb, last))
     paper = {}
-    for kind, sub in pb.dropna(subset=["hit"]).groupby("kind"):
+    done = pb.dropna(subset=["hit"])
+    groups = list(done.groupby("kind"))
+    if "rec" in done:                          # おすすめ券種だけを買った場合
+        rr = done[done["rec"].astype(str).str.lower().isin(["true", "1"])]
+        if len(rr):
+            groups.append(("rec", rr))
+    for kind, sub in groups:
         d = sub.groupby("date").agg(stake=("stake", "sum"), payout=("payout", "sum"),
                                     points=("combo", "size"), hits=("hit", "sum"),
                                     races=("race_id", "nunique")).reset_index()
@@ -143,7 +164,12 @@ def export_history(days=30):
         races = day_races(pb, day)
         sub = pb[pb["date"] == day]
         summ = {}
-        for kind, g in sub.groupby("kind"):
+        kg = list(sub.groupby("kind"))
+        if "rec" in sub:
+            rr = sub[sub["rec"].astype(str).str.lower().isin(["true", "1"])]
+            if len(rr):
+                kg.append(("rec", rr))
+        for kind, g in kg:
             done = g.dropna(subset=["hit"])
             summ[kind] = dict(races=int(g["race_id"].nunique()), stake=int(g["stake"].sum()),
                               settled=int(done["race_id"].nunique()),

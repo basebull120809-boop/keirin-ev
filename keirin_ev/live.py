@@ -141,6 +141,23 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                              combo=f"{cars[i]}-{cars[j]}-{cars[k]}", stake=st, odds=o,
                              p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S"),
                              kind=kind))
+    rec, why, cand = None, "", {}
+    try:                                         # 券種の使い分け（2車単・3連複・3連単）
+        from .bettypes import plans, recommend
+        sp = kdreams.soup(html)
+        exo = dict(kdreams.parse_odds_exacta(sp, rid)[["combo", "odds"]].values)
+        tro = dict(kdreams.parse_odds_trio(sp, rid)[["combo", "odds"]].values)
+        pl, win = plans(P, cars, COMBOS, exo, tro)
+        base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                    deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+        for kind, plan in pl.items():
+            for b in plan["bets"]:
+                bets.append(dict(base, **b, kind=kind))
+        rec, why, cand = recommend(pl, [b for b in bets if b["kind"] == "yoso"], win)
+        for b in bets:
+            b["rec"] = b["kind"] == rec
+    except Exception as e:
+        print("券種の判定失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od)
@@ -153,6 +170,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
                                 n_bets=sum(b["kind"] == "yoso" for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
+                                rec=rec, rec_reason=why,
+                                cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason="" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため"),
                            ensure_ascii=False) + "\n")
     if bets:
@@ -195,8 +214,17 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
     if inv:
         head += " ★投資判定あり"
     L = [head + ("【紙上運用】" if mode == "paper" else ""), ""]
+    rec = next((b["kind"] for b in bets if b.get("rec")), None)
+    if rec in ("ex", "trio"):
+        lab = {"ex": "2車単", "trio": "3連複"}[rec]
+        rb = [b for b in bets if b.get("kind") == rec]
+        hp = sum(b["p"] for b in rb); st = sum(b["stake"] for b in rb)
+        L += [f"#### ◎おすすめ：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
+        L += [f"- {b['combo'].replace('=', '-')}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(rb, key=lambda b: -b["p"])] + [""]
+    elif rec == "yoso":
+        L += ["#### ◎おすすめ：3連単（下の本命予想）", ""]
     if yoso:
-        L += ["#### 本命予想（的中重視）"] + _fmt_block(yoso, names)
+        L += ["#### 本命予想（3連単・的中重視）"] + _fmt_block(yoso, names)
     if inv:
         L += ["#### ★投資判定（期待値で勝てる目）"] + _fmt_block(inv, names)
     if notes:
@@ -297,8 +325,17 @@ def paper_results():
         return b.assign(hit=np.nan, payout=np.nan)
     r = pd.concat(res)
     r["win"] = r["first"].astype(str) + "-" + r["second"].astype(str) + "-" + r["third"].astype(str)
-    b = b.merge(r[["race_id", "win", "tri_payout"]], on="race_id", how="left")
-    b["hit"] = b["combo"] == b["win"]
-    b["payout"] = np.where(b["hit"], b["stake"] / 100 * b["tri_payout"], 0)
-    b.loc[b["win"].isna(), ["hit", "payout"]] = np.nan
+    for c in ("ex_combo", "ex_payout", "trio_combo", "trio_payout"):
+        if c not in r:
+            r[c] = np.nan
+    b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout"]],
+                on="race_id", how="left")
+    is_ex, is_trio = b["kind"] == "ex", b["kind"] == "trio"
+    target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"], b["win"]))
+    pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"], b["tri_payout"]))
+    b["hit"] = (b["combo"] == target).astype(object)
+    b["payout"] = np.where(b["hit"], b["stake"] / 100 * pd.to_numeric(pay, errors="coerce"), 0)
+    b.loc[pd.isna(target), ["hit", "payout"]] = np.nan
+    if "rec" not in b:
+        b["rec"] = False
     return b
