@@ -216,6 +216,9 @@ def main():
     elif a.cmd == "probepages":                  # 独自データのタブ調査（debug/pages に保存）
         from keirin_ev.kdreams import probe_pages
         probe_pages(a.args[0] if a.args else pd.Timestamp.today().strftime("%Y-%m-%d"))
+    elif a.cmd == "nkprobe":                     # netkeirin「データ分析」の作り調査（debug/netkeirin に保存）
+        from keirin_ev.netkeirin import probe as nk_probe
+        nk_probe(a.args[0] if a.args else None)
     elif a.cmd == "yosoufill":                   # 取得済みの日に記者予想を足す（新しい日から）
         from keirin_ev.kdreams import yosou_fill
         print(yosou_fill(int(a.args[0]) if a.args else 2), "日分に記者予想を追加")
