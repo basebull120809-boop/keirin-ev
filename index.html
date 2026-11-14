@@ -385,15 +385,16 @@ function formationHTML(bs, names, kind) {
     </details>`;
 }
 /* ---- 券種 ---- */
-const TYPE = { ex: "2車単", trio: "3連複", yoso: "3連単", invest: "★投資" };
+const TYPE = { qn: "2車複", ex: "2車単", trio: "3連複", yoso: "3連単", invest: "★投資" };
 const listOf = (r, k) => (k === "yoso" ? r.bets : r[k]) || [];
-const resOf = (r, k) => k === "ex" ? r.ex_result : k === "trio" ? r.trio_result : r.result;
+const resOf = (r, k) => k === "ex" ? r.ex_result : k === "trio" ? r.trio_result : k === "qn" ? r.qn_result : r.result;
+const isBox = k => k === "trio" || k === "qn";   /* 着順を問わない券種（車番を「・」でつなぐ） */
 function payOf(r, k) { const res = resOf(r, k); return res ? sum(listOf(r, k), b => b.hit ? b.stake / 100 * (res.payout || 0) : 0) : 0; }
 function tixHTML(bs, k) {
   const maxP = Math.max(...bs.map(b => b.p));
   return `<div class="tix">${[...bs].sort((a, b) => b.p - a.p).map(b => {
     const ns = b.combo.split(/[-=]/);
-    const c = k === "trio" ? `<span class="combo">${ns.map(n => car(n, "sm")).join('<span class="eq">・</span>')}</span>` : combo(b.combo);
+    const c = isBox(k) ? `<span class="combo">${ns.map(n => car(n, "sm")).join('<span class="eq">・</span>')}</span>` : combo(b.combo);
     return `<div class="tk${b.hit ? " hit" : ""}">${c}<span class="pb"><i style="width:${(b.p / maxP * 100).toFixed(0)}%"></i></span>
       <span class="o"><b>${b.stake.toLocaleString()}円</b>${b.odds.toFixed(1)}倍</span></div>`; }).join("")}</div>`;
 }
@@ -406,7 +407,7 @@ function planKV(bs) {
 function planBody(r, k) {
   const bs = listOf(r, k);
   if (!bs.length) return "";
-  return planKV(bs) + (k === "ex" || k === "trio" ? tixHTML(bs, k) : formationHTML(bs, r.names, k));
+  return planKV(bs) + (k === "ex" || isBox(k) ? tixHTML(bs, k) : formationHTML(bs, r.names, k));
 }
 function recBlock(r) {
   const k = r.rec;
@@ -416,7 +417,7 @@ function recBlock(r) {
 }
 const angleOpen = new Map();
 function anglesHTML(r, id) {
-  const ks = ["ex", "trio", "yoso", "invest"].filter(k => k !== r.rec && listOf(r, k).length);
+  const ks = ["qn", "ex", "trio", "yoso", "invest"].filter(k => k !== r.rec && listOf(r, k).length);
   if (!ks.length) return "";
   const open = angleOpen.get(id);
   return `<div class="ang" data-id="${esc(id)}"><span class="lb">${r.rec ? "ほかの角度" : "券種"}</span>${ks.map(k => {
@@ -572,7 +573,7 @@ function renderHistory() {
   $("#hist-body").innerHTML = rs.length ? `<div class="hl">${rs.map(r => {
     const k = kOf(r), hit = isHit(r), st = sum(listOf(r, k), b => b.stake), rr = resOf(r, k);
     const pay = rr ? payOf(r, k) : 0;
-    const res = rr ? `${k === "trio" ? `<span class="combo">${rr.combo.split("=").map(n => car(n, "sm")).join('<span class="eq">・</span>')}</span>` : combo(rr.combo)}<span class="pay${hit ? " w" : ""}">${hit ? `払戻 ${Math.round(pay).toLocaleString()}円` : "払戻 0円"}</span><span class="pay">投資 ${st.toLocaleString()}円</span>`
+    const res = rr ? `${isBox(k) ? `<span class="combo">${rr.combo.split("=").map(n => car(n, "sm")).join('<span class="eq">・</span>')}</span>` : combo(rr.combo)}<span class="pay${hit ? " w" : ""}">${hit ? `払戻 ${Math.round(pay).toLocaleString()}円` : "払戻 0円"}</span><span class="pay">投資 ${st.toLocaleString()}円</span>`
       : `<span class="tag mute">結果待ち</span><span class="pay">投資 ${st.toLocaleString()}円</span>`;
     return `<details class="hr${hit ? " win" : ""}"><summary><div class="rno">${r.race_no}<small>R</small></div>
       <div class="mid"><b>${esc(r.venue)}</b> <span class="num" style="font-size:12px;color:var(--muted)">${esc(r.deadline || "")}</span>
@@ -622,6 +623,7 @@ function renderRecord() {
   if (!r) return;
   let html = "";
   if (r.rec) html += recordBlock(r.rec, "◎ 予想", "システムがレースごとに選んだ買い方だけを買った場合");
+  if (r.qn) html += recordBlock(r.qn, "2車複", "強い2人・着順は問わない");
   if (r.ex) html += recordBlock(r.ex, "2車単", "1着・2着を絞って少点数");
   if (r.trio) html += recordBlock(r.trio, "3連複", "上位3人・着順は問わない");
   if (r.yoso) html += recordBlock(r.yoso, "3連単（本命予想）", "フォーメーション・毎レース");
