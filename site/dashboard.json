@@ -15,58 +15,98 @@
  "model": {
   "n_races": 1689,
   "period": "2026-10-21〜2026-11-13",
-  "trained_at": "2026-11-14 07:08",
-  "a": 0.1052,
-  "b": 0.962,
+  "trained_at": "2026-11-14 15:11",
+  "a": 0.113,
+  "b": 0.9543,
   "views": [
    {
     "key": "p_s",
     "label": "S（スタート）",
-    "coef": -0.0097
+    "coef": -0.0098
    },
    {
     "key": "p_b",
     "label": "B（バック）",
-    "coef": -0.0107
+    "coef": -0.0146
    },
    {
     "key": "p_head_b",
     "label": "前の先行力（番手から）",
-    "coef": -0.0302
+    "coef": -0.0287
    },
    {
     "key": "p_jiriki_head",
     "label": "自力型×先頭",
-    "coef": 0.0153
+    "coef": 0.0148
    },
    {
     "key": "p_oikomi_2nd",
     "label": "差し型×番手",
-    "coef": -0.02
+    "coef": -0.0179
    },
    {
     "key": "p_banate",
     "label": "番手巧者",
-    "coef": -0.0059
+    "coef": -0.0064
    },
    {
     "key": "p_agari",
     "label": "上がりタイム",
-    "coef": 0.0079
+    "coef": 0.0076
    },
    {
     "key": "p_form",
     "label": "調子（直近の着順）",
-    "coef": -0.0024
+    "coef": -0.0059
    },
    {
     "key": "p_local",
     "label": "地元",
-    "coef": 0.023
+    "coef": 0.0234
+   },
+   {
+    "key": "p_meet",
+    "label": "今場所の調子",
+    "coef": 0.0128
+   },
+   {
+    "key": "p_gear",
+    "label": "ギヤ変更",
+    "coef": -0.0005
+   },
+   {
+    "key": "p_head_rival",
+    "label": "先行争い（先頭）",
+    "coef": -0.0109
+   },
+   {
+    "key": "p_2nd_rival",
+    "label": "先行争い（番手）",
+    "coef": -0.0204
+   },
+   {
+    "key": "p_line_back",
+    "label": "ラインの厚み",
+    "coef": 0.0088
+   },
+   {
+    "key": "p_2nd_gap",
+    "label": "番手の格上度",
+    "coef": 0.0111
+   },
+   {
+    "key": "p_today_head",
+    "label": "今日のバンク（先頭）",
+    "coef": 0.036
+   },
+   {
+    "key": "p_today_2nd",
+    "label": "今日のバンク（番手）",
+    "coef": -0.0065
    }
   ]
  },
- "updated_at": "2026-11-14 14:10",
+ "updated_at": "2026-11-14 15:12",
  "picks": {
   "date": "2026-11-14",
   "races": [

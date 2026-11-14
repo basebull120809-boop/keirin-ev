@@ -459,3 +459,29 @@ def probe(dates, log=print):
                 log(f"   {'OK ' if ok else 'NG '}{venue} {int(rid[-4:])}R {msg} 風{info['wind']}")
             except Exception as e:
                 log(f"   NG {venue} {rid} 解析失敗 {e}")
+
+
+def probe_pages(date, out="debug/pages", log=print):
+    """Kドリームスのレースページにある「独自データ」のタブを調べる。
+    1レース分のページと、そこから辿れるタブ（pageType=...）・関連ページを保存し、一覧を出す"""
+    out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    ids = race_ids_of_day(date)
+    if not ids:
+        log(f"{date}: レースなし"); return
+    venue, rid = ids[len(ids) // 2]
+    base = f"/{venue}/racedetail/{rid}/"
+    html = fetch(base, refresh=True)
+    (out / "racedetail.html").write_text(html, encoding="utf-8")
+    links = sorted(set(re.findall(r'href="([^"#]*(?:pageType=|/' + venue + r'/)[^"#]*)"', html)))
+    tabs = sorted(set(re.findall(r"pageType=([A-Za-z_0-9]+)", html)))
+    log(f"{venue} {rid}  タブ: {', '.join(tabs)}")
+    (out / "links.txt").write_text("\n".join(links), encoding="utf-8")
+    for t in tabs[:15]:
+        try:
+            h = fetch(f"{base}?pageType={t}", refresh=True)
+            (out / f"tab_{t}.html").write_text(h, encoding="utf-8")
+            sp = soup(h)
+            heads = [_txt(x)[:40] for x in sp.find_all(["h2", "h3", "h4"])][:12]
+            log(f"  {t}: {len(h)//1024}KB  見出し: {' / '.join(heads)}")
+        except Exception as e:
+            log(f"  {t}: 失敗 {e}")

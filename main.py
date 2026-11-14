@@ -213,6 +213,9 @@ def main():
         probe([(today - pd.DateOffset(**k)).strftime("%Y-%m-%d") for k in
                [dict(days=1), dict(months=1), dict(years=1), dict(years=2),
                 dict(years=3), dict(years=5)]])
+    elif a.cmd == "probepages":                  # 独自データのタブ調査（debug/pages に保存）
+        from keirin_ev.kdreams import probe_pages
+        probe_pages(a.args[0] if a.args else pd.Timestamp.today().strftime("%Y-%m-%d"))
     elif a.cmd == "train":                       # 全データで学習 → models/latest.json
         from keirin_ev import store
         store.load_into_db(con)
