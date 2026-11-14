@@ -441,7 +441,7 @@ function betBlock(r, kind) {
       ${formationHTML(bs, r.names, kind)}</div>`;
   const so = synth(bs);
   return `<div class="blk">
-      <div class="blk-h"><b>本命予想</b>${so < 1.5 ? '<span class="tag warn">妙味薄</span>' : '<span class="tag lime">的中重視</span>'}</div>
+      <div class="blk-h"><b>本命予想</b>${so < 2.0 ? '<span class="tag warn">妙味薄</span>' : '<span class="tag lime">的中重視</span>'}</div>
       <div class="kv"><div><span>点数 / 金額</span><b>${bs.length}<small style="font-size:11px">点</small> ${st.toLocaleString()}</b></div><div><span>合成オッズ</span><b>${so.toFixed(1)}倍</b></div><div><span>見込み的中率</span><b>${pct(sum(bs, b => b.p), 0)}</b></div></div>
       ${formationHTML(bs, r.names, kind)}</div>`;
 }
