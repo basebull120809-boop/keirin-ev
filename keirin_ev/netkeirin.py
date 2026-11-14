@@ -175,7 +175,7 @@ def check_asof(kaisai="2026110984", days=("20261109", "20261110", "20261111"), o
                 log(f"  {rid}: 失敗 {e}"); continue
             if df.empty:
                 continue
-            g = df.groupby(["senshu", "name"], as_index=False)["n"].sum()
+            g = df.groupby(["senshu", "name", "car"], as_index=False)[["n", "first", "second", "third"]].sum()
             g["date"], g["race_id"] = d, rid
             D.append(g)
     if not D:
