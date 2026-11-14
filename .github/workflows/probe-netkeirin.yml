@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: ["claude/**"]
-    paths: [".github/workflows/probe-netkeirin.yml", "keirin_ev/netkeirin.py"]
+    paths: [".github/workflows/probe-netkeirin.yml"]
 permissions: { contents: write }
 jobs:
   probe:

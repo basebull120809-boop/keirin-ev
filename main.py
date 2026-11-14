@@ -219,6 +219,9 @@ def main():
     elif a.cmd == "nkprobe":                     # netkeirin「データ分析」の作り調査（debug/netkeirin に保存）
         from keirin_ev.netkeirin import probe as nk_probe
         nk_probe(a.args[0] if a.args else None)
+    elif a.cmd == "nkasof":                      # netkeirin データ分析が時点集計かの確認
+        from keirin_ev.netkeirin import check_asof
+        check_asof()
     elif a.cmd == "wtprobe":                     # WINTICKET「データ分析」の作り調査（debug/winticket に保存）
         from keirin_ev.winticket import probe as wt_probe
         wt_probe()
