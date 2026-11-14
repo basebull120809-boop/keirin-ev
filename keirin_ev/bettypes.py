@@ -6,8 +6,9 @@
   - 3連複 : 上位3人は絞れるが着順が読みにくいレース向き
   - 3連単 : 混戦。フォーメーションで配当を取りにいく（既存の本命予想）
   どの券種も「モデル確率（市場オッズで補正）×その券種の実オッズ」で期待回収を計算し、
-  的中率の下限を満たすものの中から期待回収が一番高い券種を「おすすめ」にする。
-  差が小さいときは的中率の高い券種を優先（見やすさ・使いやすさ重視）。
+  おすすめは「とにかく当てる」：券種ごとに確率の高い順に的中率60%まで広げ、
+  的中率が一番高い券種を選ぶ（期待値では選ばない）。
+  ただし当たっても損になる組み方（合成オッズ synth_floor 未満）は避ける。
 """
 from dataclasses import dataclass
 import numpy as np
@@ -19,11 +20,14 @@ class TypeRules:
     unit: int = 100
     ex_max: int = 5            # 2車単の最大点数
     ex_synth_min: float = 2.0  # 2車単の合成オッズ下限
-    trio_max: int = 6          # 3連複の最大点数
+    trio_max: int = 10         # 3連複の最大点数
     trio_synth_min: float = 2.5
     model_weight: float = 0.5  # モデルと市場の混ぜ具合（0=市場のみ）
     hit_min: float = 0.20      # おすすめにする的中率の下限
-    ev_tie: float = 0.03       # 期待回収の差がこれ以内なら的中率で選ぶ
+    ev_tie: float = 0.03       # （旧）期待回収の差がこれ以内なら的中率で選ぶ
+    hit_target: float = 0.60   # おすすめで狙う的中率（ここまで点数を広げる）
+    synth_floor: float = 1.2   # 当たったときに投資の1.2倍は戻る組み方まで（トリガミ防止）
+    hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
 
 
 LABEL = {"ex": "2車単", "trio": "3連複", "yoso": "3連単"}
@@ -129,6 +133,23 @@ def patterns(pm, odds, kmax, r: TypeRules, blended=False):
     return out
 
 
+def hit_plan(pm, odds, kmax, r: TypeRules, blended=False):
+    """とにかく当てる：確率の高い順に、的中率 hit_target に届くまで広げる。
+    合成オッズが synth_floor を割る（当たっても損に近い）手前で止める。最低1点"""
+    p = pm if blended else _blend(pm, odds, r.model_weight)
+    if not p:
+        return None
+    order = sorted(p, key=p.get, reverse=True)
+    k, acc, inv = 0, 0.0, 0.0
+    for i, x in enumerate(order[:kmax]):
+        if i and 1 / (inv + 1 / odds[x]) < r.synth_floor:
+            break
+        inv += 1 / odds[x]; acc += p[x]; k = i + 1
+        if acc >= r.hit_target:
+            break
+    return _build(order[:max(1, k)], p, odds, r, "的中最優先")
+
+
 def _plan(pm, odds, kmax, synth_min, r: TypeRules):
     """おすすめ判定用：的中重視のパターン"""
     ps = [x for x in patterns(pm, odds, kmax, r) if x["name"] == "的中重視"]
@@ -149,8 +170,12 @@ def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_o
             if max(i, j, k) < len(cars) and P[idx] > 0:
                 tri[f"{int(cars[i])}-{int(cars[j])}-{int(cars[k])}"] = float(P[idx])
         pats["tri"] = patterns(tri, tri_odds, 20, r)
-    out = {k: next(x for x in v if x["name"] == "的中重視") for k, v in pats.items()
-           if k in ("ex", "trio") and any(x["name"] == "的中重視" for x in v)}
+    out = {}
+    if ex_odds:
+        out["ex"] = hit_plan(ex, ex_odds, r.ex_max, r)
+    if trio_odds:
+        out["trio"] = hit_plan(trio, trio_odds, r.trio_max, r)
+    out = {k: v for k, v in out.items() if v}
     return out, win, {k: v for k, v in pats.items() if v}
 
 
@@ -169,21 +194,23 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
     ys = _summ(yoso_bets)
     if ys:
         cand["yoso"] = ys
-    ok = {k: v for k, v in cand.items() if v["hit"] >= r.hit_min}
+    for k, v in cand.items():
+        v["n"] = len(pl[k]["bets"]) if k in pl else len(yoso_bets)
+    ok = {k: v for k, v in cand.items() if v["synth"] >= r.synth_floor}
     if not ok:
-        return None, "どの券種も的中率と配当の釣り合いが取れないため、無理に買わないレースです", cand
-    best_ev = max(v["ev"] for v in ok.values())
-    near = {k: v for k, v in ok.items() if v["ev"] >= best_ev - r.ev_tie}
-    rec = max(near, key=lambda k: near[k]["hit"])
+        return None, "どの券種も当たったときの払戻が投資を下回る（トリガミ）ため見送り", cand
+    best = max(v["hit"] for v in ok.values())
+    near = {k: v for k, v in ok.items() if v["hit"] >= best - r.hit_tie}
+    rec = min(near, key=lambda k: (near[k]["n"], -near[k]["hit"]))
     top = sorted(win.items(), key=lambda x: -x[1])
     a, pa = top[0] if top else (None, 0)
     c = cand[rec]
     if rec in pl and pl[rec].get("low"):
-        return rec, f"予想どおりの本命で配当は安め（合成{c['synth']:.1f}倍）。点数を{len(pl[rec]['bets'])}点に絞っています", cand
+        return rec, f"{LABEL[rec]}{c['n']}点で的中率{c['hit']:.0%}。本命なので配当は安め（合成{c['synth']:.1f}倍）", cand
     if rec == "ex":
         why = f"1着は{a}番が{pa:.0%}で抜けていて、2着まで絞れる。2車単なら{len(pl['ex']['bets'])}点で的中率{c['hit']:.0%}"
     elif rec == "trio":
         why = f"上位3人で決まる見込みが高い一方、着順は読みにくい。3連複{len(pl['trio']['bets'])}点で的中率{c['hit']:.0%}"
     else:
-        why = f"混戦（1着候補の最上位でも{pa:.0%}）。3連単のフォーメーションで配当を取りにいく"
+        why = f"3連単フォーメーション{c['n']}点が一番当たりやすい（的中率{c['hit']:.0%}）"
     return rec, why, cand
