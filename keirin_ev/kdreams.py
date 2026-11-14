@@ -169,6 +169,43 @@ def parse_lines(s, entries):
     return out
 
 
+TIP_SCORE = {"◎": 3.0, "○": 2.0, "▲": 1.5, "△": 1.0, "注": 1.0, "×": 0.5}
+
+
+def parse_yosou(s, rid):
+    """アオケイ記者の予想（Kドリームス独自）：予想印・総評・好気合・展開予想の戦法・選手コメント"""
+    cols = ["race_id", "car", "tip", "evaluation", "kiai", "tactic", "comment"]
+    rec = {}
+    tbl = s.find("table", class_="racecard_table")
+    for tr in (tbl.find_all("tr") if tbl else []):
+        num = tr.find("td", class_="num")
+        if not num or not re.fullmatch(r"\d", num.get_text(strip=True)):
+            continue
+        c = int(num.get_text(strip=True))
+        tip = _txt(tr.find("td", class_="tip"))
+        ev = _num(_txt(tr.find("td", class_="evaluation")))
+        kiai = tr.find("td", class_="kiai")
+        rec[c] = dict(race_id=rid, car=c, tip=tip or None, evaluation=ev,
+                      kiai=1.0 if kiai and (_txt(kiai) or kiai.find(["span", "img", "i"])) else 0.0)
+    box = s.find("div", class_="line_position")
+    if box:
+        for sp in box.find_all("span", class_="icon_p", recursive=False):
+            inner = sp.find_all("span")
+            if inner and re.fullmatch(r"[1-9]", inner[0].get_text(strip=True)):
+                c = int(inner[0].get_text(strip=True))
+                tac = " ".join(x.get_text(strip=True) for x in inner[1:]).strip() or None
+                rec.setdefault(c, dict(race_id=rid, car=c))["tactic"] = tac
+    tt = s.find("table", class_="tipster_table")
+    if tt:
+        nums = tt.find("tr", class_="num"); com = tt.find("tr", class_="comment")
+        if nums and com:
+            cars = [int(td.get_text(strip=True)) for td in nums.find_all("td") if td.get_text(strip=True).isdigit()]
+            texts = [_txt(td) for td in com.find_all("td")]
+            for c, t in zip(cars, texts):
+                rec.setdefault(c, dict(race_id=rid, car=c))["comment"] = t or None
+    return pd.DataFrame(list(rec.values()), columns=cols)
+
+
 def parse_odds(s, rid):
     box = s.find(id="JS_ODDSCONTENTS_3rentan")
     if box is None:
@@ -386,6 +423,10 @@ def parse_race(html, rid, extra=False):
     s = soup(html)
     ent = parse_entries(s, rid)
     ent = ent.merge(parse_lines(s, ent), on=["race_id", "car"], how="left")
+    try:
+        ent = ent.merge(parse_yosou(s, rid).drop(columns="race_id"), on="car", how="left")
+    except Exception:                          # 予想欄が無い・形が変わったときも出走表は使う
+        pass
     out = (ent, parse_odds(s, rid), parse_result(s, rid), parse_race_info(s))
     if extra:
         return out + (parse_finish(s, rid), parse_history(s, rid))
@@ -459,3 +500,58 @@ def probe(dates, log=print):
                 log(f"   {'OK ' if ok else 'NG '}{venue} {int(rid[-4:])}R {msg} 風{info['wind']}")
             except Exception as e:
                 log(f"   NG {venue} {rid} 解析失敗 {e}")
+
+
+def probe_pages(date, out="debug/pages", log=print):
+    """Kドリームスのレースページにある「独自データ」のタブを調べる。
+    1レース分のページと、そこから辿れるタブ（pageType=...）・関連ページを保存し、一覧を出す"""
+    out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    ids = race_ids_of_day(date)
+    if not ids:
+        log(f"{date}: レースなし"); return
+    venue, rid = ids[len(ids) // 2]
+    base = f"/{venue}/racedetail/{rid}/"
+    html = fetch(base, refresh=True)
+    (out / "racedetail.html").write_text(html, encoding="utf-8")
+    links = sorted(set(re.findall(r'href="([^"#]*(?:pageType=|/' + venue + r'/)[^"#]*)"', html)))
+    tabs = sorted(set(re.findall(r"pageType=([A-Za-z_0-9]+)", html)))
+    log(f"{venue} {rid}  タブ: {', '.join(tabs)}")
+    (out / "links.txt").write_text("\n".join(links), encoding="utf-8")
+    for t in tabs[:15]:
+        try:
+            h = fetch(f"{base}?pageType={t}", refresh=True)
+            (out / f"tab_{t}.html").write_text(h, encoding="utf-8")
+            sp = soup(h)
+            heads = [_txt(x)[:40] for x in sp.find_all(["h2", "h3", "h4"])][:12]
+            log(f"  {t}: {len(h)//1024}KB  見出し: {' / '.join(heads)}")
+        except Exception as e:
+            log(f"  {t}: 失敗 {e}")
+
+
+def yosou_fill(n_days=2, log=print):
+    """取得済みの日のうち記者予想（tip）が無い日を新しい順に n_days 日分、取り直して entries に足す"""
+    from . import store
+    done = 0
+    for d in sorted(store.collected_dates(), reverse=True):
+        if done >= n_days:
+            break
+        e = store.read(d, "entries")
+        if e.empty or ("tip" in e and e["tip"].notna().any()):
+            continue
+        rc = store.read(d, "races")
+        Y = []
+        for venue, rid in rc[["venue", "race_id"]].astype(str).values:
+            try:
+                Y.append(parse_yosou(soup(fetch(f"/{venue}/racedetail/{rid}/")), rid))
+            except Exception as ex:
+                log(f"  ! {rid} 予想の取得失敗: {ex}")
+        if not Y:
+            continue
+        y = pd.concat(Y, ignore_index=True)
+        y["race_id"] = y["race_id"].astype(str)
+        e = e.drop(columns=[c for c in y.columns if c not in ("race_id", "car") and c in e])
+        e = e.merge(y, on=["race_id", "car"], how="left")
+        e.to_csv(store.day_dir(d) / "entries.csv.gz", index=False, compression="gzip")
+        log(f"{d}: 記者予想 {y['tip'].notna().sum()}件 / {len(e)}選手")
+        done += 1
+    return done

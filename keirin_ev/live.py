@@ -25,6 +25,9 @@ JST = "Asia/Tokyo"
 LIVE = Path("data/live")
 LEAD_MAX = float(os.environ.get("LEAD_MAX", "6"))   # 締切何分前から判定するか
 LEAD_MIN = float(os.environ.get("LEAD_MIN", "1.5"))  # これより締切に近ければ見送り
+RES_AFTER = float(os.environ.get("RES_AFTER", "8"))   # 締切何分後から結果を見に行くか
+RES_GIVEUP = 90                                       # 締切からこの分数たっても出なければ諦める（翌朝のcollectで入る）
+RES_EVERY = 3                                         # 結果待ちの再確認間隔（分）
 
 
 def now():
@@ -286,9 +289,25 @@ def run(max_minutes=340):
             except Exception:
                 pass
     sched = [x for x in sched if x[2] not in done]
+    have = set()
+    rf = LIVE / date / "results.csv"
+    if rf.exists():
+        have = set(pd.read_csv(rf, dtype={"race_id": str})["race_id"])
+    # 結果待ち：締切を過ぎた（これから過ぎる）全レース。今日のバンク傾向にも使う
+    pending = {rid: [dl, venue, dl + pd.Timedelta(minutes=RES_AFTER)]
+               for dl, venue, rid in full if rid not in have}
     if not sched:
         print("判定するレースが残っていません", flush=True)
-    while sched and time.time() - t0 < max_minutes * 60:
+    while (sched or pending) and time.time() - t0 < max_minutes * 60:
+        got = check_results(date, pending, lambda m: print(m, flush=True))
+        if got:
+            print(f"{now():%H:%M} 結果取り込み {len(got)}レース", flush=True)
+            try:
+                from .site import export_live
+                export_live(date)
+            except Exception as e:
+                print("サイト用データ更新失敗:", e, flush=True)
+            push_now(f"live 結果 {len(got)}R")
         t = now()
         for dl, venue, rid in sched:
             left = (dl - t).total_seconds() / 60
@@ -316,6 +335,56 @@ def run(max_minutes=340):
     print("終了", flush=True)
 
 
+# ---------- 当日の結果（レース後すぐ取り込む） ----------
+def fetch_result(date, venue, rid):
+    """締切後のレースページから結果を読み、data/live/日付/ に追記する。取れたら True"""
+    html = kdreams.fetch(f"/{venue}/racedetail/{rid}/", refresh=True)
+    ent, _, res, _, fin, _ = kdreams.parse_race(html, rid, extra=True)
+    if not res:
+        return False
+    day = LIVE / date
+    day.mkdir(parents=True, exist_ok=True)
+    _append(day / "results.csv", pd.DataFrame([res]))
+    # 今日のバンク傾向（perspectives.today_bias）用：勝者のライン位置
+    w = ent[ent["car"] == res["first"]]
+    if len(w):
+        w = w.iloc[0]
+        kim = fin.loc[fin["car"] == res["first"], "kimarite"] if len(fin) and "kimarite" in fin else []
+        _append(day / "today.csv", pd.DataFrame([dict(
+            race_id=rid, venue=venue, race_no=int(rid[-4:]), first=res["first"],
+            w_head=float(w["line_pos"] == 1 and (w["line_size"] or 1) > 1),
+            w_2nd=float(w["line_pos"] == 2),
+            kimarite=kim.iloc[0] if len(kim) else None)]))
+    return True
+
+
+def _append(f, df):
+    if f.exists():
+        old = pd.read_csv(f, dtype={"race_id": str}, on_bad_lines="skip")
+        df = pd.concat([old[~old["race_id"].isin(df["race_id"].astype(str))], df], ignore_index=True)
+    df.to_csv(f, index=False)
+
+
+def check_results(date, pending, log=print):
+    """pending: {rid: [締切, 場, 次に見る時刻]} 結果の出たレースを取り込み、取れたレースIDを返す"""
+    got = []
+    t = now()
+    for rid, (dl, venue, nxt) in list(pending.items()):
+        if t < nxt:
+            continue
+        if t > dl + pd.Timedelta(minutes=RES_GIVEUP):
+            pending.pop(rid); continue
+        try:
+            ok = fetch_result(date, venue, rid)
+        except Exception as e:
+            log(f"結果取得失敗 {rid} {e}"); ok = False
+        if ok:
+            pending.pop(rid); got.append(rid)
+        else:
+            pending[rid][2] = t + pd.Timedelta(minutes=RES_EVERY)
+    return got
+
+
 # ---------- 紙上運用の成績 ----------
 def paper_results():
     from . import store as st
@@ -331,8 +400,11 @@ def paper_results():
     res = []
     for d in b["date"].unique():
         f = st.day_dir(d) / "results.csv.gz"
+        lf = LIVE / str(d) / "results.csv"          # 確定データが来るまでは当日取り込んだ結果を使う
         if f.exists():
             res.append(pd.read_csv(f, dtype={"race_id": str}))
+        elif lf.exists():
+            res.append(pd.read_csv(lf, dtype={"race_id": str}))
     if not res:
         return b.assign(hit=np.nan, payout=np.nan)
     r = pd.concat(res)

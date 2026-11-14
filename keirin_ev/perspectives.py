@@ -10,6 +10,20 @@
   上がり         : 前場所までの「最後の200m」の平均タイム（速いほど＋）
   調子           : 前場所までの直近の着順の平均（良いほど＋）
   地元           : 選手の府県と競輪場の府県が同じ
+  ── 独自の視点（2026/11 追加） ──
+  今場所の調子   : 同じ開催の前日までの着順（場所の中での上り調子・下り調子）
+  ギヤ変更       : 前に出走したときからのギヤ倍数の変化（上げた選手は勝負気配）
+  先行争い       : 他ラインの先頭の B（主導権争いが激しいほど先頭は苦しく、番手・まくりに展開が向く）
+  ラインの厚み   : 先頭から見た、後ろの選手の競走得点（強い番手を連れた先行は残りやすい）
+  番手の格上度   : 番手の競走得点 − 前の選手の競走得点（番手が格上なら差しやすい）
+  今日のバンク   : 同じ場・同じ日のそれまでのレースで、先頭・番手のどちらが勝っているか
+                   （当日の風・バンク状態の傾向。レース後に取り込む当日結果を使う）
+  ── Kドリームスの記者予想（アオケイ） ──
+  記者の印       : ◎○▲△注× を点数化（市場もこの印を見ているので、市場との差だけが効く）
+  総評           : 記者の評価（数字が小さいほど上）
+  先行予想       : 展開予想で「先行」とされた選手（主導権を取る予想）
+  押え先行予想   : 展開予想で「押え先」とされた選手
+  好気合         : 気合マーク
 
 ※ H（ホーム線の先頭通過回数）はKドリームスの出走表に無いため使っていない。
 """
@@ -145,11 +159,176 @@ def add(entries: pd.DataFrame, races: pd.DataFrame, history=None) -> pd.DataFram
     df["p_form"] = -g["form_avg"].transform(_z).fillna(0)
     # 地元
     df["p_local"] = (df["pref"].astype(str) == df["venue"].map(VENUE_PREF)).astype(float)
+    df = add_original(df, history)
     return df.drop(columns=["_hb"])
 
 
+# ---------- 独自の視点 ----------
+TODAY_K = 4           # 今日のバンク傾向の縮め具合（この数のレースぶん平均に寄せる）
+
+
+@lru_cache(maxsize=4)
+def _gear_table(dates_key):
+    """選手ごと・日付ごとのギヤ倍数（前回出走のギヤを引くため）"""
+    from . import store
+    E = []
+    for d in dates_key:
+        e = store.read(d, "entries")
+        if len(e) and "gear" in e:
+            E.append(e.assign(date=d)[["name", "pref", "term", "date", "gear"]])
+    if not E:
+        return pd.DataFrame(columns=["rider", "date", "prev_gear"])
+    e = pd.concat(E, ignore_index=True)
+    e["rider"] = rider_key(e)
+    e["gear"] = pd.to_numeric(e["gear"], errors="coerce")
+    g = e.dropna(subset=["gear"]).groupby(["rider", "date"])["gear"].last().reset_index()
+    g["date"] = pd.to_datetime(g["date"])
+    return g.rename(columns={"gear": "prev_gear"}).sort_values("date")
+
+
+def gear_change(df):
+    from . import store
+    out = pd.Series(0.0, index=df.index)
+    if "gear" not in df or "name" not in df:
+        return out
+    tab = _gear_table(tuple(store.collected_dates()))
+    if tab.empty:
+        return out
+    k = pd.DataFrame({"rider": rider_key(df), "date": pd.to_datetime(df["date"]),
+                      "gear": pd.to_numeric(df["gear"], errors="coerce"), "_i": df.index}).dropna(subset=["date"])
+    m = pd.merge_asof(k.sort_values("date"), tab, on="date", by="rider",
+                      allow_exact_matches=False, direction="backward")
+    v = (m["gear"] - m["prev_gear"]).fillna(0).clip(-0.2, 0.2) * 10
+    out.loc[m["_i"].values] = v.values
+    return out
+
+
+def meet_form(history):
+    """今場所（which=今）の着順の平均"""
+    if history is None or history.empty or "which" not in history:
+        return pd.DataFrame(columns=["race_id", "car", "meet_avg"])
+    h = history[(history["which"] == "今")].dropna(subset=["rank"])
+    h = h[h["rank"] <= 9]
+    a = h.assign(race_id=h["race_id"].astype(str)).groupby(["race_id", "car"])["rank"].mean()
+    return a.rename("meet_avg").reset_index()
+
+
+_TODAY = {}
+
+
+def today_winners(date):
+    """その日の各レースの勝者の位置（race_id, venue, race_no, w_head, w_2nd）
+    確定データ（data/daily）が無ければ、当日運用で取り込んだ結果（data/live/日付/today.csv）を使う"""
+    from . import store
+    from pathlib import Path
+    if date in _TODAY:
+        return _TODAY[date]
+    out = pd.DataFrame(columns=["race_id", "venue", "race_no", "w_head", "w_2nd"])
+    res, ent, rc = store.read(date, "results"), store.read(date, "entries"), store.read(date, "races")
+    if len(res) and len(ent) and len(rc):
+        w = res[["race_id", "first"]].merge(ent[["race_id", "car", "line_pos", "line_size"]],
+                                           left_on=["race_id", "first"], right_on=["race_id", "car"])
+        w = w.merge(rc[["race_id", "venue", "race_no"]], on="race_id")
+        w["w_head"] = ((w["line_pos"] == 1) & (w["line_size"] > 1)).astype(float)
+        w["w_2nd"] = (w["line_pos"] == 2).astype(float)
+        out = w[out.columns]
+    else:
+        f = Path("data/live") / date / "today.csv"
+        if f.exists():
+            t = pd.read_csv(f, dtype={"race_id": str}).drop_duplicates("race_id", keep="last")
+            out = t[out.columns]
+    out = out.assign(race_id=out["race_id"].astype(str))
+    if date < pd.Timestamp.now(tz="Asia/Tokyo").strftime("%Y-%m-%d"):
+        _TODAY[date] = out                      # 当日分は増えていくのでキャッシュしない
+    return out
+
+
+def today_bias(df):
+    """同じ場・同じ日のそれまでのレースの「先頭の勝ち」「番手の勝ち」の偏り（全体平均との差）"""
+    zero = pd.DataFrame({"tb_head": 0.0, "tb_2nd": 0.0}, index=df.index)
+    if "date" not in df or df["date"].isna().all():
+        return zero
+    rno = df["race_id"].astype(str).str[-4:].astype(int)
+    out = zero.copy()
+    BASE_H, BASE_2 = 0.48, 0.36                 # 先頭・番手が勝つ割合（全体）
+    for (d, v), idx in df.groupby(["date", "venue"]).groups.items():
+        w = today_winners(str(d))
+        w = w[w["venue"] == v]
+        if w.empty:
+            continue
+        for r in rno.loc[idx].unique():
+            p = w[w["race_no"] < r]
+            n = len(p)
+            if n == 0:
+                continue
+            ii = rno.loc[idx][rno.loc[idx] == r].index
+            out.loc[ii, "tb_head"] = (p["w_head"].sum() + TODAY_K * BASE_H) / (n + TODAY_K) - BASE_H
+            out.loc[ii, "tb_2nd"] = (p["w_2nd"].sum() + TODAY_K * BASE_2) / (n + TODAY_K) - BASE_2
+    return out
+
+
+def add_original(df, history):
+    g = df.groupby("race_id")
+    is_head = (df["line_pos"] == 1) & (df["line_size"].fillna(1) > 1)
+    is_2nd = df["line_pos"] == 2
+    # 今場所の調子
+    mf = meet_form(history)
+    df = df.merge(mf, on=["race_id", "car"], how="left")
+    df["p_meet"] = -df.groupby("race_id")["meet_avg"].transform(_z).fillna(0)
+    # ギヤ変更
+    df["p_gear"] = gear_change(df)
+    # 先行争い：自分以外のライン先頭（単騎の逃げ型も含む）の B の最大
+    sc = pd.to_numeric(df["score"], errors="coerce")
+    df["_zs"] = sc.groupby(df["race_id"]).transform(_z).fillna(0)
+    lead = is_head | ((df["line_size"].fillna(1) <= 1) & df["style"].fillna("").str.contains("逃"))
+    hb = df["p_b"].where(lead)
+    mx1 = hb.groupby(df["race_id"]).transform("max")
+    # 自分が最大のときは2番目を使う
+    def second_max(s):
+        v = s.dropna().sort_values(ascending=False).values
+        return v[1] if len(v) > 1 else np.nan
+    mx2 = hb.groupby(df["race_id"]).transform(second_max)
+    rival = np.where(lead & (hb == mx1), mx2, mx1)
+    rival = pd.Series(rival, index=df.index).fillna(-1.0)
+    df["p_head_rival"] = np.where(is_head, rival, 0.0)
+    df["p_2nd_rival"] = np.where(is_2nd, rival, 0.0)
+    # ラインの厚み（先頭から見た後ろの得点）
+    back = df[df["line_pos"] >= 2].groupby(["race_id", "line_id"])["_zs"].mean().rename("_back").reset_index()
+    df = df.merge(back, on=["race_id", "line_id"], how="left")
+    df["p_line_back"] = np.where(is_head.values, df["_back"].fillna(0), 0.0)
+    # 番手の格上度
+    hz = df[df["line_pos"] == 1][["race_id", "line_id", "_zs"]].rename(columns={"_zs": "_hz"})
+    df = df.merge(hz.drop_duplicates(["race_id", "line_id"]), on=["race_id", "line_id"], how="left")
+    df["p_2nd_gap"] = np.where(is_2nd.values, (df["_zs"] - df["_hz"]).fillna(0), 0.0)
+    # 今日のバンク
+    tb = today_bias(df)
+    df["p_today_head"] = np.where(is_head.values, tb["tb_head"].values * 10, 0.0)
+    df["p_today_2nd"] = np.where(is_2nd.values, tb["tb_2nd"].values * 10, 0.0)
+    # Kドリームスの記者予想（列が無い古いデータは0）
+    TIP = {"◎": 3.0, "○": 2.0, "▲": 1.5, "△": 1.0, "注": 1.0, "×": 0.5}
+    has = df["tip"].notna().groupby(df["race_id"]).transform("any") if "tip" in df else pd.Series(False, index=df.index)
+    tip = df["tip"].map(TIP).fillna(0) if "tip" in df else pd.Series(0.0, index=df.index)
+    df["p_tip"] = np.where(has, tip.groupby(df["race_id"]).transform(_z).fillna(0), 0.0)
+    ev = pd.to_numeric(df["evaluation"], errors="coerce") if "evaluation" in df else pd.Series(np.nan, index=df.index)
+    df["p_eval"] = -ev.groupby(df["race_id"]).transform(_z).fillna(0)
+    tac = df["tactic"].fillna("").astype(str) if "tactic" in df else pd.Series("", index=df.index)
+    df["p_lead_pred"] = (tac == "先行").astype(float)
+    df["p_osae_pred"] = tac.str.contains("押").astype(float)
+    df["p_kiai"] = pd.to_numeric(df["kiai"], errors="coerce").fillna(0) if "kiai" in df else 0.0
+    return df.drop(columns=["_zs", "_back", "_hz"])
+
+
+ORIG_FEATURES = ["p_meet", "p_gear", "p_head_rival", "p_2nd_rival", "p_line_back",
+                 "p_2nd_gap", "p_today_head", "p_today_2nd",
+                 "p_tip", "p_eval", "p_lead_pred", "p_osae_pred", "p_kiai"]
+
 P_FEATURES = ["p_s", "p_b", "p_head_b", "p_jiriki_head", "p_oikomi_2nd",
-              "p_banate", "p_agari", "p_form", "p_local"]
+              "p_banate", "p_agari", "p_form", "p_local"] + ORIG_FEATURES
 P_LABEL = dict(p_s="S（スタート）", p_b="B（バック）", p_head_b="前の先行力（番手から）",
                p_jiriki_head="自力型×先頭", p_oikomi_2nd="差し型×番手", p_banate="番手巧者",
-               p_agari="上がりタイム", p_form="調子（直近の着順）", p_local="地元")
+               p_agari="上がりタイム", p_form="調子（直近の着順）", p_local="地元",
+               p_meet="今場所の調子", p_gear="ギヤ変更", p_head_rival="先行争い（先頭）",
+               p_2nd_rival="先行争い（番手）", p_line_back="ラインの厚み", p_2nd_gap="番手の格上度",
+               p_today_head="今日のバンク（先頭）", p_today_2nd="今日のバンク（番手）",
+               p_tip="記者の印", p_eval="記者の総評", p_lead_pred="先行予想", p_osae_pred="押え先行予想",
+               p_kiai="好気合")
