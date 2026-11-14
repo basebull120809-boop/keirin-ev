@@ -1,0 +1,29 @@
+name: nk-backfill（ネット競輪データ分析の遡り取得）
+on:
+  schedule: [{ cron: "40 1,7,13,19 * * *" }]   # 毎日 04:40 / 10:40 / 16:40 / 22:40 JST
+  workflow_dispatch:
+    inputs:
+      days: { description: "1回で取る日数（1日 約40分）", required: false, default: "3" }
+concurrency: { group: nk, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  nk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1", NETKEIRIN_CACHE: /tmp/html_nk }
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: 未取得の日を新しい順に1日ずつ取得して保存（全日そろったら何もしない）
+        run: |
+          git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
+          for n in $(seq 1 ${{ inputs.days || '3' }}); do
+            git pull -q --rebase -X theirs || true
+            python main.py nkbackfill 1 2>&1 | grep -v "^  " | tail -5
+            git add data/daily
+            git commit -qm "nk-backfill $(date +%F_%H%M)" || break
+            for i in 1 2 3; do git pull -q --rebase -X theirs && git push -q && break; sleep 5; done
+          done

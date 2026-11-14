@@ -192,3 +192,113 @@ def check_asof(kaisai="2026110984", days=("20261109", "20261110", "20261111"), o
         log(f"日ごとに出走回数が増えた選手 {inc:.0%} ／ 3日とも同じ {same:.0%}")
         log("→ 時点集計（学習に使える）" if inc >= 0.8 else
             "→ 今の集計の可能性が高い（学習に使うとカンニング）" if same >= 0.8 else "→ 判断できず（要確認）")
+
+
+# ---------------- 収集（日別に data/daily/.../nk_data.csv.gz） ----------------
+# 取得するカテゴリ（1レース9回のアクセス）。車番別は中身が空、同一ライン・グレード×種目は今回の行の目印が無いので使わない
+NK_CATS = ["class", "perimeter", "deemed", "jyo", "position", "time", "schedule", "grade", "samepref"]
+
+
+def nk_race_id(rid, race_no, date):
+    """Kドリームスのレース番号（場コードはJKAの場コードで共通）→ netkeirin の race_id"""
+    return f"{str(date).replace('-', '')}{str(rid)[:2]}{int(race_no):02d}"
+
+
+def fetch_race(rid, race_no, date, refresh=False, log=print):
+    """1レース分のデータ分析（行 = 選手×カテゴリ×項目）。race_id は Kドリームスの ID に揃える"""
+    import pandas as pd
+    nid = nk_race_id(rid, race_no, date)
+    F = []
+    for cat in NK_CATS:
+        try:
+            df = parse_data(fetch_data(nid, cat, refresh=refresh), str(rid), cat)
+        except Exception as e:
+            log(f"  {nid} {cat}: 失敗 {e}"); continue
+        if not df.empty:
+            F.append(df)
+    return pd.concat(F, ignore_index=True) if F else pd.DataFrame()
+
+
+def nk_path(date):
+    from .store import day_dir
+    return day_dir(date) / "nk_data.csv.gz"
+
+
+def has_nk(date):
+    return nk_path(date).exists()
+
+
+def collect_day(date, log=print):
+    """取得済みの日（races / entries あり）の全レースのデータ分析を取って保存。ガールズは対象外"""
+    import pandas as pd
+    from . import store
+    rc, en = store.read(date, "races"), store.read(date, "entries")
+    if rc.empty:
+        log(f"{date}: レース一覧なし"); return 0
+    girls = set(en.loc[en.get("class", pd.Series(dtype=str)) == "L1", "race_id"].astype(str)) if not en.empty else set()
+    F = []
+    for rid, no in rc[["race_id", "race_no"]].astype({"race_id": str}).values:
+        if rid in girls:
+            continue
+        df = fetch_race(rid, no, date, log=log)
+        if not df.empty:
+            F.append(df)
+    out = pd.concat(F, ignore_index=True) if F else pd.DataFrame(columns=["race_id"])
+    nk_path(date).parent.mkdir(parents=True, exist_ok=True)
+    out.drop(columns=["name"], errors="ignore").to_csv(nk_path(date), index=False, compression="gzip")
+    log(f"{date}: {out['race_id'].nunique() if len(out) else 0} レース / {len(out)} 行")
+    return len(out)
+
+
+def read_nk(dates):
+    import pandas as pd
+    F = []
+    for d in sorted(set(dates)):
+        try:
+            F.append(pd.read_csv(nk_path(d), dtype={"race_id": str, "senshu": str}))
+        except (FileNotFoundError, pd.errors.EmptyDataError):
+            pass
+    return pd.concat(F, ignore_index=True) if F else pd.DataFrame()
+
+
+# ---------------- 特徴量（1着モデル） ----------------
+NK_LABEL = dict(p_nk_class="ネット競輪:レース種目別の勝率", p_nk_perimeter="ネット競輪:周長別の勝率",
+                p_nk_deemed="ネット競輪:見なし直線別の勝率", p_nk_jyo="ネット競輪:この場の勝率",
+                p_nk_position="ネット競輪:今回の位置での勝率", p_nk_time="ネット競輪:時間帯別の勝率",
+                p_nk_schedule="ネット競輪:日程別の勝率", p_nk_grade="ネット競輪:グレード別の勝率",
+                p_nk_samepref="ネット競輪:同県同乗時の勝率")
+NK_FEATURES = list(NK_LABEL)
+SHRINK_K = 10.0          # 出走が少ないほど平均（1/7）に寄せる。10走で半々
+POS_ITEM = {1: "ラインの先頭", 2: "番手", 3: "3番手以降", 0: "単騎"}
+
+
+def add_features(df, nk):
+    """出走表（line_pos・line_size あり）に p_nk_* を足す。
+    今回の条件に当たる行（位置は自前の並びから）の1着率を、出走数で縮めてからレース内で標準化する。
+    データが無い選手・レースは 0（＝平均扱い）"""
+    import numpy as np
+    import pandas as pd
+    for f in NK_FEATURES:
+        df[f] = 0.0
+    if nk is None or nk.empty:
+        return df
+    nk = nk.assign(race_id=nk["race_id"].astype(str), car=pd.to_numeric(nk["car"], errors="coerce"))
+    lp = df["line_pos"].fillna(0).astype(int).clip(upper=3)
+    lp = lp.where(df["line_size"].fillna(1) > 1, 0)
+    want = pd.DataFrame({"race_id": df["race_id"].astype(str), "car": df["car"].astype(float),
+                         "item": lp.map(POS_ITEM)})
+    main = nk[(nk["category"] != "position") & nk["main"].astype(str).isin(["True", "true", "1"])]
+    pos = nk[nk["category"] == "position"].merge(want, on=["race_id", "car", "item"])
+    sel = pd.concat([main, pos], ignore_index=True).drop_duplicates(["race_id", "car", "category"])
+    p0 = 1 / 7
+    sel["rate"] = (sel["first"].fillna(0) + SHRINK_K * p0) / (sel["n"].fillna(0) + SHRINK_K)
+    wide = sel.pivot_table(index=["race_id", "car"], columns="category", values="rate").reset_index()
+    key = df[["race_id", "car"]].astype({"race_id": str, "car": float})
+    m = key.merge(wide, on=["race_id", "car"], how="left")
+    for cat in NK_CATS:
+        if cat not in m:
+            continue
+        s = m[cat]
+        z = s.groupby(m["race_id"]).transform(lambda x: (x - x.mean()) / x.std(ddof=0) if x.std(ddof=0) > 0 else x * 0)
+        df[f"p_nk_{cat}"] = z.fillna(0).values
+    return df
