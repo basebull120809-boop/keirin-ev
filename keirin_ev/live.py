@@ -151,8 +151,9 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         sp = kdreams.soup(html)
         exo = dict(kdreams.parse_odds_exacta(sp, rid)[["combo", "odds"]].values)
         tro = dict(kdreams.parse_odds_trio(sp, rid)[["combo", "odds"]].values)
+        qno = dict(kdreams.parse_odds_quinella(sp, rid)[["combo", "odds"]].values)
         tri_o = {c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {}
-        pl, win, pats = plans(P, cars, COMBOS, exo, tro, tri_odds=tri_o)
+        pl, win, pats = plans(P, cars, COMBOS, exo, tro, tri_odds=tri_o, qn_odds=qno)
         base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                     deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
         for kind, plan in pl.items():
@@ -176,7 +177,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
-                                n_bets=sum(b["kind"] in ("yoso", "ex", "trio") for b in bets),
+                                n_bets=sum(b["kind"] in ("yoso", "ex", "trio", "qn") for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
@@ -220,8 +221,8 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
     head = f"### {kdreams.VENUE_JA.get(venue, venue)} {int(rid[-4:])}R（締切 {dl:%H:%M}）"
     L = [head + ("【紙上運用】" if mode == "paper" else ""), ""]
     rec = next((b["kind"] for b in bets if b.get("rec")), None)
-    if rec in ("ex", "trio"):
-        lab = {"ex": "2車単", "trio": "3連複"}[rec]
+    if rec in ("ex", "trio", "qn"):
+        lab = {"ex": "2車単", "trio": "3連複", "qn": "2車複"}[rec]
         rb = [b for b in bets if b.get("kind") == rec]
         hp = sum(b["p"] for b in rb); st = sum(b["stake"] for b in rb)
         L += [f"#### ◎予想：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
@@ -409,14 +410,16 @@ def paper_results():
         return b.assign(hit=np.nan, payout=np.nan)
     r = pd.concat(res)
     r["win"] = r["first"].astype(str) + "-" + r["second"].astype(str) + "-" + r["third"].astype(str)
-    for c in ("ex_combo", "ex_payout", "trio_combo", "trio_payout"):
+    for c in ("ex_combo", "ex_payout", "trio_combo", "trio_payout", "qn_combo", "qn_payout"):
         if c not in r:
             r[c] = np.nan
-    b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout"]],
-                on="race_id", how="left")
-    is_ex, is_trio = b["kind"] == "ex", b["kind"] == "trio"
-    target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"], b["win"]))
-    pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"], b["tri_payout"]))
+    b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
+                   "qn_combo", "qn_payout"]], on="race_id", how="left")
+    is_ex, is_trio, is_qn = b["kind"] == "ex", b["kind"] == "trio", b["kind"] == "qn"
+    target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
+                      np.where(is_qn, b["qn_combo"], b["win"])))
+    pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],
+                   np.where(is_qn, b["qn_payout"], b["tri_payout"])))
     b["hit"] = (b["combo"] == target).astype(object)
     b["payout"] = np.where(b["hit"], b["stake"] / 100 * pd.to_numeric(pay, errors="coerce"), 0)
     b.loc[pd.isna(target), ["hit", "payout"]] = np.nan
