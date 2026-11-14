@@ -29,6 +29,7 @@ class TypeRules:
     ev_tie: float = 0.03       # （旧）期待回収の差がこれ以内なら的中率で選ぶ
     hit_target: float = 0.60   # おすすめで狙う的中率（ここまで点数を広げる）
     synth_floor: float = 1.2   # 当たったときに投資の1.2倍は戻る組み方まで（トリガミ防止）
+    qn_synth_floor: float = 1.5  # 2車複は当たっても安すぎることが多いので、投資の1.5倍に届かなければ選ばない
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
 
 
@@ -137,16 +138,17 @@ def patterns(pm, odds, kmax, r: TypeRules, blended=False):
     return out
 
 
-def hit_plan(pm, odds, kmax, r: TypeRules, blended=False):
+def hit_plan(pm, odds, kmax, r: TypeRules, blended=False, floor=None):
     """とにかく当てる：確率の高い順に、的中率 hit_target に届くまで広げる。
     合成オッズが synth_floor を割る（当たっても損に近い）手前で止める。最低1点"""
     p = pm if blended else _blend(pm, odds, r.model_weight)
     if not p:
         return None
+    floor = r.synth_floor if floor is None else floor
     order = sorted(p, key=p.get, reverse=True)
     k, acc, inv = 0, 0.0, 0.0
     for i, x in enumerate(order[:kmax]):
-        if i and 1 / (inv + 1 / odds[x]) < r.synth_floor:
+        if i and 1 / (inv + 1 / odds[x]) < floor:
             break
         inv += 1 / odds[x]; acc += p[x]; k = i + 1
         if acc >= r.hit_target:
@@ -178,7 +180,7 @@ def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_o
         pats["tri"] = patterns(tri, tri_odds, 20, r)
     out = {}
     if qn_odds:
-        out["qn"] = hit_plan(qn, qn_odds, r.qn_max, r)
+        out["qn"] = hit_plan(qn, qn_odds, r.qn_max, r, floor=r.qn_synth_floor)
     if ex_odds:
         out["ex"] = hit_plan(ex, ex_odds, r.ex_max, r)
     if trio_odds:
@@ -204,7 +206,8 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
         cand["yoso"] = ys
     for k, v in cand.items():
         v["n"] = len(pl[k]["bets"]) if k in pl else len(yoso_bets)
-    ok = {k: v for k, v in cand.items() if v["synth"] >= r.synth_floor}
+    ok = {k: v for k, v in cand.items()
+          if v["synth"] >= (r.qn_synth_floor if k == "qn" else r.synth_floor)}
     if not ok:
         return None, "どの券種も当たったときの払戻が投資を下回る（トリガミ）ため見送り", cand
     best = max(v["hit"] for v in ok.values())
