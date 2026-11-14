@@ -123,7 +123,8 @@ def add(entries: pd.DataFrame, races: pd.DataFrame, history=None) -> pd.DataFram
     """出走表に視点の列（p_*）を足して返す"""
     df = entries.copy()
     df["race_id"] = df["race_id"].astype(str)
-    r = races[["race_id", "date", "venue"]].copy()
+    r = races[["race_id", "date", "venue"] + (["wind"] if "wind" in races else [])].copy()
+    r = r.rename(columns={"wind": "_wind"})
     r["race_id"] = r["race_id"].astype(str)
     df = df.drop(columns=[c for c in ("date", "venue") if c in df]).merge(r, on="race_id", how="left")
     for c in NUM_COLS:
@@ -160,7 +161,88 @@ def add(entries: pd.DataFrame, races: pd.DataFrame, history=None) -> pd.DataFram
     # 地元
     df["p_local"] = (df["pref"].astype(str) == df["venue"].map(VENUE_PREF)).astype(float)
     df = add_original(df, history)
-    return df.drop(columns=["_hb"])
+    df = add_bank(df)
+    return df.drop(columns=["_hb"] + (["_wind"] if "_wind" in df else []))
+
+
+# ---------- バンク特性 ----------
+# 見なし直線(m)・カント(度)。出典: 各場の公表値（centresource.com/field 一覧）。熊本は改修後の値が未確認のため空欄
+STRAIGHT = dict(hakodate=51.3, aomori=58.9, iwakitaira=62.7, yahiko=63.1, maebashi=46.7, toride=54.8,
+                utsunomiya=63.3, omiya=66.7, seibuen=47.6, keiokaku=51.5, tachikawa=58.0, matsudo=38.2,
+                kawasaki=58.0, hiratsuka=54.2, odawara=36.1, ito=46.6, shizuoka=56.4, nagoya=58.8,
+                gifu=59.3, ogaki=56.0, toyohashi=60.3, toyama=43.0, matsusaka=61.5, yokkaichi=62.4,
+                fukui=52.8, nara=38.0, mukomachi=47.3, wakayama=59.9, kishiwada=56.7, tamano=47.9,
+                hiroshima=57.9, hofu=42.5, takamatsu=54.8, komatsushima=55.5, kochi=52.0, matsuyama=58.6,
+                kokura=56.9, kurume=50.7, takeo=64.4, sasebo=40.2, beppu=59.9)
+CANT = dict(hakodate=30.61, aomori=32.25, iwakitaira=32.91, yahiko=32.40, maebashi=36.0, toride=31.51,
+            utsunomiya=25.80, omiya=26.28, seibuen=29.45, keiokaku=32.18, tachikawa=31.22, matsudo=29.75,
+            kawasaki=32.17, hiratsuka=31.48, odawara=35.57, ito=34.69, shizuoka=30.72, nagoya=34.03,
+            gifu=32.25, ogaki=30.62, toyohashi=33.84, toyama=33.69, matsusaka=34.42, yokkaichi=32.25,
+            fukui=31.48, nara=33.43, mukomachi=30.49, wakayama=32.25, kishiwada=30.93, tamano=30.63,
+            hiroshima=30.79, hofu=34.69, takamatsu=33.26, komatsushima=29.77, kochi=24.50, matsuyama=34.03,
+            kokura=34.03, kurume=31.48, takeo=32.01, sasebo=31.48, beppu=33.69)
+VENUE_K = 60          # 場ごとの決まり傾向の縮め具合（このレース数ぶん全体平均に寄せる）
+
+
+@lru_cache(maxsize=2)
+def _venue_cum(dates_key):
+    """日付ごと・場ごとの「先頭が勝った数・番手が勝った数・レース数」の、その日より前までの累計"""
+    rows = []
+    for d in dates_key:
+        w = today_winners(d)
+        if len(w):
+            g = w.groupby("venue").agg(n=("race_id", "size"), h=("w_head", "sum"), s=("w_2nd", "sum")).reset_index()
+            rows.append(g.assign(date=d))
+    if not rows:
+        return pd.DataFrame(columns=["venue", "date", "cn", "ch", "cs"])
+    t = pd.concat(rows, ignore_index=True).sort_values(["venue", "date"])
+    for a, b in (("n", "cn"), ("h", "ch"), ("s", "cs")):
+        t[b] = t.groupby("venue")[a].cumsum()
+    t["date"] = pd.to_datetime(t["date"])
+    return t[["venue", "date", "cn", "ch", "cs"]]
+
+
+def venue_bias(df):
+    """その場で先頭・番手が勝ちやすいか（その日より前のデータだけで計算、全体平均との差）"""
+    from . import store
+    zero = pd.DataFrame({"vb_head": 0.0, "vb_2nd": 0.0}, index=df.index)
+    if "date" not in df or df["date"].isna().all():
+        return zero
+    cum = _venue_cum(tuple(store.collected_dates()))
+    if cum.empty:
+        return zero
+    BASE_H, BASE_2 = 0.48, 0.36
+    k = pd.DataFrame({"venue": df["venue"], "date": pd.to_datetime(df["date"]), "_i": df.index}).dropna()
+    m = pd.merge_asof(k.sort_values("date"), cum.sort_values("date"), on="date", by="venue",
+                      allow_exact_matches=False, direction="backward")
+    n = m["cn"].fillna(0)
+    zero.loc[m["_i"].values, "vb_head"] = ((m["ch"].fillna(0) + VENUE_K * BASE_H) / (n + VENUE_K) - BASE_H).values
+    zero.loc[m["_i"].values, "vb_2nd"] = ((m["cs"].fillna(0) + VENUE_K * BASE_2) / (n + VENUE_K) - BASE_2).values
+    return zero
+
+
+def add_bank(df):
+    """バンク特性の視点：見なし直線・カント・場の決まり傾向・風・B×周長"""
+    from .kdreams import BANK
+    is_head = ((df["line_pos"] == 1) & (df["line_size"].fillna(1) > 1)).values
+    is_2nd = (df["line_pos"] == 2).values
+    st = df["venue"].map(STRAIGHT)
+    st = st.fillna(st.mean() if st.notna().any() else 55.0)
+    ct = df["venue"].map(CANT)
+    ct = ct.fillna(ct.mean() if ct.notna().any() else 32.0)
+    zs = ((st - 55.0) / 7.0).values        # 直線の長さ（全国平均55m、±7mで±1）
+    zc = ((ct - 32.0) / 2.5).values        # カントのきつさ
+    df["p_straight_head"] = np.where(is_head, zs, 0.0)
+    df["p_straight_2nd"] = np.where(is_2nd, zs, 0.0)
+    df["p_cant_head"] = np.where(is_head, zc, 0.0)
+    vb = venue_bias(df)
+    df["p_venue_head"] = np.where(is_head, vb["vb_head"].values * 10, 0.0)
+    df["p_venue_2nd"] = np.where(is_2nd, vb["vb_2nd"].values * 10, 0.0)
+    wind = pd.to_numeric(df["_wind"], errors="coerce").fillna(0).values if "_wind" in df else 0.0
+    df["p_wind_2nd"] = np.where(is_2nd, wind, 0.0)
+    short = ((400 - df["venue"].map(BANK).fillna(400)) / 67.0).values   # 333m→+1, 500m→-1.5
+    df["p_b_short"] = df["p_b"].values * short
+    return df
 
 
 # ---------- 独自の視点 ----------
@@ -320,7 +402,9 @@ def add_original(df, history):
 
 ORIG_FEATURES = ["p_meet", "p_gear", "p_head_rival", "p_2nd_rival", "p_line_back",
                  "p_2nd_gap", "p_today_head", "p_today_2nd",
-                 "p_tip", "p_eval", "p_lead_pred", "p_osae_pred", "p_kiai"]
+                 "p_tip", "p_eval", "p_lead_pred", "p_osae_pred", "p_kiai",
+                 "p_straight_head", "p_straight_2nd", "p_cant_head", "p_venue_head", "p_venue_2nd",
+                 "p_wind_2nd", "p_b_short"]
 
 P_FEATURES = ["p_s", "p_b", "p_head_b", "p_jiriki_head", "p_oikomi_2nd",
               "p_banate", "p_agari", "p_form", "p_local"] + ORIG_FEATURES
@@ -331,4 +415,6 @@ P_LABEL = dict(p_s="S（スタート）", p_b="B（バック）", p_head_b="前�
                p_2nd_rival="先行争い（番手）", p_line_back="ラインの厚み", p_2nd_gap="番手の格上度",
                p_today_head="今日のバンク（先頭）", p_today_2nd="今日のバンク（番手）",
                p_tip="記者の印", p_eval="記者の総評", p_lead_pred="先行予想", p_osae_pred="押え先行予想",
-               p_kiai="好気合")
+               p_kiai="好気合", p_straight_head="直線の長さ（先頭）", p_straight_2nd="直線の長さ（番手）",
+               p_cant_head="カント（先頭）", p_venue_head="場の傾向（先頭）", p_venue_2nd="場の傾向（番手）",
+               p_wind_2nd="風×番手", p_b_short="B×短いバンク")
