@@ -1,0 +1,847 @@
+<!-- block=ajax_data (cp) -->
+<style>
+#RaceDataList tr span.Highest {
+    color: #c53131;
+}
+.DataTable_Wrap .Horse_Select {
+    padding: 8px 0;
+    font-size: 66.67%;
+    height: 42px;
+    min-width: 46px;
+}
+</style>
+
+<div class="DataTable_WrapScroll">
+
+    
+    <div class="DataTable_Wrap tableFixed RaceCard_Simple_Table_Fixed">
+        <table cellspacing="0" cellpadding="0" border="0" sumarry="出馬表" class="Data01_Table Default Data01_Table_top RaceCard_Table" id="RaceCard_Table_Fixed">
+            <thead>
+                <tr>
+                    <th class="carNum" style="height: 33px;">車<span class="sort_icon"></span></th>
+                    <th class="CheckMark"><span class="On_CheckMode"></span><span class="modeChangeCheck"><input type="button" value="切替" class="Shutuba_Table_Btn01" id = "btn_markmode_change"></span></th>
+                    <th class="txt_l th_01">選手名<span class="sort_icon"></span></th>
+                    
+                    <th class="SortSyncData GroupLeft">項目</th>
+                    <th class="SortSyncData GroupLeft" style="width:2em"><span class="RaceCard_Th02_Txt">1着</span></th>
+                    <th class="SortSyncData" style="width:2em"><span class="RaceCard_Th02_Txt">2着</span></th>
+                    <th class="SortSyncData" style="width:2em"><span class="RaceCard_Th02_Txt">3着</span></th>
+                    <th class="SortSyncData" style="width:2em"><span class="RaceCard_Th02_Txt">着外</span></th>
+                    <th class="SortSyncData GroupLeft">出走<br>回数</th>
+                    <th class="SortSyncData GroupLeft" style="white-space:nowrap"><span class="RaceCard_Th02_Txt">勝率</span></th>
+                    <th class="SortSyncData" style="white-space:nowrap"><span class=" RaceCard_Th02_Txt">2連対率</span></th>
+                    <th class="SortSyncData" style="white-space:nowrap"><span class=" RaceCard_Th02_Txt">3連対率</span></th>
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku1">
+                            <div>1</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_1" name="1" id="mode_mark_1" style="display: none;">
+                            
+                            <option data-html-text="--" value="1_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="1_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="1_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="1_3" >▲</option>
+                            
+                            <option data-html-text="△" value="1_4" >△</option>
+                            
+                            <option data-html-text="☆" value="1_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="1_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="1_99" >消</option>
+                            
+                            <input type="checkbox" name="1" id = "mode_check_1" class="HorseCheck_Select" value="1_98" style="display:none;">
+                            <label for="mode_check_1" class="HorseCheckBtn" id = "check_label_1" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_14047_202611118412">山田英明</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>11</td>
+                        <td>2</td>
+                        <td>4</td>
+                        <td>17</td>
+                        <td>34</td>
+                        <td>32.4%</td>
+                        <td>38.2%</td>
+                        <td>50.0%</td>
+                    </tr>
+                    
+                    
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku2">
+                            <div>2</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_2" name="2" id="mode_mark_2" style="display: none;">
+                            
+                            <option data-html-text="--" value="2_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="2_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="2_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="2_3" >▲</option>
+                            
+                            <option data-html-text="△" value="2_4" >△</option>
+                            
+                            <option data-html-text="☆" value="2_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="2_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="2_99" >消</option>
+                            
+                            <input type="checkbox" name="2" id = "mode_check_2" class="HorseCheck_Select" value="2_98" style="display:none;">
+                            <label for="mode_check_2" class="HorseCheckBtn" id = "check_label_2" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_15006_202611118412">石塚輪太郎</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>25</td>
+                        <td>34</td>
+                        <td>25</td>
+                        <td>110</td>
+                        <td>194</td>
+                        <td>12.9%</td>
+                        <td>30.4%</td>
+                        <td>43.3%</td>
+                    </tr>
+                    
+                    
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku3">
+                            <div>3</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_3" name="3" id="mode_mark_3" style="display: none;">
+                            
+                            <option data-html-text="--" value="3_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="3_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="3_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="3_3" >▲</option>
+                            
+                            <option data-html-text="△" value="3_4" >△</option>
+                            
+                            <option data-html-text="☆" value="3_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="3_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="3_99" >消</option>
+                            
+                            <input type="checkbox" name="3" id = "mode_check_3" class="HorseCheck_Select" value="3_98" style="display:none;">
+                            <label for="mode_check_3" class="HorseCheckBtn" id = "check_label_3" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_15037_202611118412">鈴木竜士</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>28</td>
+                        <td>26</td>
+                        <td>19</td>
+                        <td>70</td>
+                        <td>143</td>
+                        <td>19.6%</td>
+                        <td>37.8%</td>
+                        <td>51.0%</td>
+                    </tr>
+                    
+                    
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku4">
+                            <div>4</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_4" name="4" id="mode_mark_4" style="display: none;">
+                            
+                            <option data-html-text="--" value="4_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="4_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="4_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="4_3" >▲</option>
+                            
+                            <option data-html-text="△" value="4_4" >△</option>
+                            
+                            <option data-html-text="☆" value="4_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="4_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="4_99" >消</option>
+                            
+                            <input type="checkbox" name="4" id = "mode_check_4" class="HorseCheck_Select" value="4_98" style="display:none;">
+                            <label for="mode_check_4" class="HorseCheckBtn" id = "check_label_4" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_15464_202611118412">町田太我</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>69</td>
+                        <td>56</td>
+                        <td>23</td>
+                        <td>109</td>
+                        <td>257</td>
+                        <td>26.8%</td>
+                        <td>48.6%</td>
+                        <td>57.6%</td>
+                    </tr>
+                    
+                    
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku5">
+                            <div>5</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_5" name="5" id="mode_mark_5" style="display: none;">
+                            
+                            <option data-html-text="--" value="5_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="5_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="5_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="5_3" >▲</option>
+                            
+                            <option data-html-text="△" value="5_4" >△</option>
+                            
+                            <option data-html-text="☆" value="5_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="5_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="5_99" >消</option>
+                            
+                            <input type="checkbox" name="5" id = "mode_check_5" class="HorseCheck_Select" value="5_98" style="display:none;">
+                            <label for="mode_check_5" class="HorseCheckBtn" id = "check_label_5" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_15297_202611118412">上野優太</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>7</td>
+                        <td>16</td>
+                        <td>12.5%</td>
+                        <td>25.0%</td>
+                        <td>56.2%</td>
+                    </tr>
+                    
+                    
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku6">
+                            <div>6</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_6" name="6" id="mode_mark_6" style="display: none;">
+                            
+                            <option data-html-text="--" value="6_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="6_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="6_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="6_3" >▲</option>
+                            
+                            <option data-html-text="△" value="6_4" >△</option>
+                            
+                            <option data-html-text="☆" value="6_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="6_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="6_99" >消</option>
+                            
+                            <input type="checkbox" name="6" id = "mode_check_6" class="HorseCheck_Select" value="6_98" style="display:none;">
+                            <label for="mode_check_6" class="HorseCheckBtn" id = "check_label_6" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_15822_202611118412">谷内健太</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>87</td>
+                        <td>29</td>
+                        <td>23</td>
+                        <td>38</td>
+                        <td>177</td>
+                        <td>49.2%</td>
+                        <td>65.5%</td>
+                        <td>78.5%</td>
+                    </tr>
+                    
+                    
+                
+                    
+                    <tr class="PlayerList">
+                        <td class="Num Waku7">
+                            <div>7</div>
+                        </td>
+                        <td class="Horse_Select">
+                            <select class="makeMeFancy_7" name="7" id="mode_mark_7" style="display: none;">
+                            
+                            <option data-html-text="--" value="7_0" selected>--</option>
+                            
+                            <option data-html-text="◎" value="7_1" >◎</option>
+                            
+                            <option data-html-text="◯" value="7_2" >◯</option>
+                            
+                            <option data-html-text="▲" value="7_3" >▲</option>
+                            
+                            <option data-html-text="△" value="7_4" >△</option>
+                            
+                            <option data-html-text="☆" value="7_5" >☆</option>
+                            
+                            <option data-html-text="&#10003" value="7_98" >&#10003</option>
+                            
+                            <option data-html-text="消" value="7_99" >消</option>
+                            
+                            <input type="checkbox" name="7" id = "mode_check_7" class="HorseCheck_Select" value="7_98" style="display:none;">
+                            <label for="mode_check_7" class="HorseCheckBtn" id = "check_label_7" >
+                                <div class="markBox"></div>
+                            </label>
+                            </select>
+                        </td>
+                        <td class="Horse_Info Player_Info" style="width:80px;">
+                            <dl>
+                                <dt class="Player_Link">
+                                    
+                                    <a href="javascript:void(0);" class="Player01" id="names_15213_202611118412">山崎賢人</a>
+                                    
+                                    
+                                </dt>
+                            </dl>
+                        </td>
+                        <td class="Data_Title"></td>
+                        <td>29</td>
+                        <td>30</td>
+                        <td>19</td>
+                        <td>54</td>
+                        <td>132</td>
+                        <td>22.0%</td>
+                        <td>44.7%</td>
+                        <td>59.1%</td>
+                    </tr>
+                    
+                    
+                
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="DataTable_Wrap RaceCard_Simple_Table_Static">
+        <table cellspacing="0" cellpadding="0" border="0" sumarry="出馬表" class="Data01_Table Default RaceCard_Table" id="RaceCard_Table_Static" role="grid">
+                <thead>
+                    <tr role="row" class="tablesorter-headerRow">
+                        <th class="carNum tablesorter-header tablesorter-headerUnSorted" data-column="0" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="車: No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner">車<span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th class="CheckMark tablesorter-header sorter-false tablesorter-headerUnSorted" data-column="1" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label=": No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner"> <span class="On_CheckMode"></span><br>
+                        <input type="button" value="切替" class="Shutuba_Table_Btn01" id="btn_markmode_change">
+                        </div></th><th class="txt_l th_01 tablesorter-header tablesorter-headerUnSorted" data-column="2" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="選手名: No sort applied, activate to apply an ascending sort" style="user-select: none;"><div class="tablesorter-header-inner">選手名<span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="3" class="tablesorter-header sorter-false tablesorter-headerUnSorted" scope="col" role="columnheader" aria-disabled="true" unselectable="on" aria-sort="none" aria-label="項目: No sort applied, sorting is disabled" style="user-select: none;"><div class="tablesorter-header-inner">項目</div></th>
+                        <th data-column="4" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="1着: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">1<br>着<span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="5" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="2着: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">2<br>着<span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="6" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="3着: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">3<br>着<span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="7" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="着外: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">着外<br><span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="8" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="出走回数: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">出走<br>回数<br><span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="9" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="勝率: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">勝率<br><span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="10" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="2連対率: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">2連対率<br><span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <th data-column="11" class="tablesorter-header tablesorter-headerUnSorted" tabindex="0" scope="col" role="columnheader" aria-disabled="false" aria-controls="RaceDataList" unselectable="on" aria-sort="none" aria-label="3連対率: No sort applied, activate to apply a descending sort" style="user-select: none;"><div class="tablesorter-header-inner">3連対率<br><span class="sort_icon"><i class="fas fa-sort"></i></span></div></th>
+                        <!--<th>1着<br>回収率</th>-->
+                        <!--<th>車券内<br>回収率</th>-->
+                    </tr>
+                </thead>
+
+                <tbody aria-live="polite" aria-relevant="all">
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku1">
+                                <div>1</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_14047_202611118412">山田英明</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="">11</span></td>
+                            <td><span class="">2</span></td>
+                            <td><span class="">4</span></td>
+                            <td>17</td>
+                            <td>34</td>
+                            <td><span class="">32.4%</span></td>
+                            <td><span class="">38.2%</span></td>
+                            <td><span class="">50.0%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku2">
+                                <div>2</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_15006_202611118412">石塚輪太郎</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="">25</span></td>
+                            <td><span class="">34</span></td>
+                            <td><span class="Highest">25</span></td>
+                            <td>110</td>
+                            <td>194</td>
+                            <td><span class="">12.9%</span></td>
+                            <td><span class="">30.4%</span></td>
+                            <td><span class="">43.3%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku3">
+                                <div>3</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_15037_202611118412">鈴木竜士</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="">28</span></td>
+                            <td><span class="">26</span></td>
+                            <td><span class="">19</span></td>
+                            <td>70</td>
+                            <td>143</td>
+                            <td><span class="">19.6%</span></td>
+                            <td><span class="">37.8%</span></td>
+                            <td><span class="">51.0%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku4">
+                                <div>4</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_15464_202611118412">町田太我</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="">69</span></td>
+                            <td><span class="Highest">56</span></td>
+                            <td><span class="">23</span></td>
+                            <td>109</td>
+                            <td>257</td>
+                            <td><span class="">26.8%</span></td>
+                            <td><span class="">48.6%</span></td>
+                            <td><span class="">57.6%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku5">
+                                <div>5</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_15297_202611118412">上野優太</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="">2</span></td>
+                            <td><span class="">2</span></td>
+                            <td><span class="">5</span></td>
+                            <td>7</td>
+                            <td>16</td>
+                            <td><span class="">12.5%</span></td>
+                            <td><span class="">25.0%</span></td>
+                            <td><span class="">56.2%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku6">
+                                <div>6</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_15822_202611118412">谷内健太</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="Highest">87</span></td>
+                            <td><span class="">29</span></td>
+                            <td><span class="">23</span></td>
+                            <td>38</td>
+                            <td>177</td>
+                            <td><span class="Highest">49.2%</span></td>
+                            <td><span class="Highest">65.5%</span></td>
+                            <td><span class="Highest">78.5%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                        <tr class="PlayerList " role="row">
+                            <td class="Num Waku7">
+                                <div>7</div>
+                            </td>
+                            <td class="Horse_Select"></td>
+                            <td class="Horse_Info Player_Info" style="width:80px;">
+                                
+                                <a href="javascript:void(0);" class="Player01" id="names_15213_202611118412">山崎賢人</a>
+                                
+                                
+                            </td>
+                            <td class="Data_Title">ラインの先頭</td>
+                            <td><span class="">29</span></td>
+                            <td><span class="">30</span></td>
+                            <td><span class="">19</span></td>
+                            <td>54</td>
+                            <td>132</td>
+                            <td><span class="">22.0%</span></td>
+                            <td><span class="">44.7%</span></td>
+                            <td><span class="">59.1%</span></td>
+                            <!--<td>-</td>-->
+                            <!--<td class="Good_Data">-</td>-->
+                        </tr>
+                    
+                </tbody>
+        </table>
+    </div>
+</div>
+<p class="RaceInfo_Notice01">
+※集計期間:過去3年間
+
+</p>
+
+<div class="Modal_Racer"></div>
+
+<script type="text/javascript">
+	// 横スライド簡略表示
+	$(function () {
+		console.log("slideTable");
+		var FixedTable01 = $('.RaceCard_Simple_Table_Fixed');
+        var name3Only = $('.RaceCard_Simple_Table_Fixed td.Player_Info .Player_Link a');
+		var StaticScrollLeft = $('.RaceCard_Simple_Table_Static').scrollLeft();
+
+		$('.RaceCard_Simple_Table_Static').scroll(function () {
+			var StaticScrollLeft = $('.RaceCard_Simple_Table_Static').scrollLeft();
+			if (StaticScrollLeft > 120) {
+				FixedTable01.addClass('stickyTable');
+			} else {
+				FixedTable01.removeClass('stickyTable');
+			}
+		});
+
+        name3Only.each(function() {
+            const originText = $(this).text();
+            const truncatedText = originText.slice(0, 3);
+            $(this).text(truncatedText);
+        });
+	});
+</script>
+
+<script>
+$(function() {
+  tableSortAction();
+});
+
+function tableSortAction() {
+  const $icons = $('.sort_icon');
+  const icon = $('<i></i>', { class: 'fas fa-sort' });
+  $icons.append(icon);
+  $icons.show();
+  const t_sort_headers = get_sort_headers();
+  const $fixed  = $('#RaceCard_Table_Fixed');
+  const $static = $('#RaceCard_Table_Static');
+
+  $fixed .tablesorter({ headers: t_sort_headers });
+  $static.tablesorter({ headers: t_sort_headers });
+
+  let isSyncing = false;
+
+  $fixed.on('sortEnd', function(evt, sorter) {
+    if (isSyncing) return;
+    isSyncing = true;
+    $static.trigger('sorton', [ sorter.config.sortList ]);
+    isSyncing = false;
+  });
+
+  $static.on('sortEnd', function(evt, sorter) {
+    if (isSyncing) return;
+    isSyncing = true;
+    $fixed.trigger('sorton', [ sorter.config.sortList ]);
+    isSyncing = false;
+  });
+}
+
+function get_sort_headers() {
+  return {
+    0:  { sorter: 'true'   },  // 車番
+    1:  { sorter: 'false'  },  // 予想印
+    2:  { sorter: 'text'   },  // 選手名
+    3:  { sorter: 'false'  },  // 項目
+    4:  { sorter: 'true',  sortInitialOrder: 'desc' }, // 1着
+    5:  { sorter: 'true',  sortInitialOrder: 'desc' }, // 2着
+    6:  { sorter: 'true',  sortInitialOrder: 'desc' }, // 3着
+    7:  { sorter: 'true',  sortInitialOrder: 'desc' }, // 着外
+    8:  { sorter: 'true',  sortInitialOrder: 'desc' }, // 出走回数
+    9:  { sorter: 'true',  sortInitialOrder: 'desc' }, // 勝率
+    10: { sorter: 'true',  sortInitialOrder: 'desc' }, // 2連対率
+    11: { sorter: 'true',  sortInitialOrder: 'desc' }  // 3連対率
+  };
+}
+</script>
+
+<script>
+$(function(){
+    var mark_dom_name = {
+        makefcy : 'makeMeFancy',
+        fancy   : 'tzSelect',
+        change  : 'btn_markmode_change',
+        check   : 'mode_check',
+        label   : 'check_label',
+        mark    : 'mode_mark'
+    };
+    var objEntry = new MarkSession(
+                        '202611118412',
+                        'https://keirin.netkeiba.com/api',
+                        mark_dom_name
+                   );
+
+    // モーダル表示
+    var request = [ { url: '/race/entry/api_get_modal_racer.html'}
+                   ,{ url: '/race/entry/api_get_narabi_yoso.html'}
+                  ];
+
+    var ret_list = [];
+    var _data = {
+        input : 'UTF-8',
+        race_id : '202611118412',
+    };
+    for( var i = 0; i < request.length; i++ ) {
+        ret_list.push(
+            $.ajax({
+                url: request[i].url,
+                data: _data,
+                type : 'GET',
+                dataType :'json',
+            })
+        );
+    }
+    $.when.apply($, ret_list).done(function(){
+        for( var i = 0; i < arguments.length; i++ ) {
+            var result = arguments[i];
+            if( i == 0 ){
+                $('.Modal_Racer').html(result[0]);
+            } else if ( i == 1 ) {
+                $('.Modal_Narabi').html(result[0]);
+            }
+        }
+    });
+
+    $('.Tab_Col3 > li').click(function() {
+        if( $(this).prop('class') == 'Active' ){
+            return false;
+        }
+    });
+
+    var url = new URL(window.location.href);
+    var params = url.searchParams;
+
+    // プルダウン付け替え
+    var type = '1';
+    var category = 'position';
+
+    var ary_type = '';
+    if(category == 'class') {
+        ary_type = 'null';
+    }else if(category == 'perimeter') {
+        ary_type = 'null';
+    }else if(category == 'deemed') {
+        ary_type = 'null';
+    }else if(category == 'jyo') {
+        ary_type = 'null';
+    }else if(category == 'position') {
+        ary_type = '{"1":"\u30e9\u30a4\u30f3\u306e\u5148\u982d","2":"\u756a\u624b","3":"3\u756a\u624b\u4ee5\u964d","4":"\u5358\u9a0e","5":"\u7af6\u308a","0":"\u307e\u3068\u3081"}';
+    }else if(category == 'time') {
+        ary_type = 'null';
+    }else if(category == 'schedule') {
+        ary_type = 'null';
+    }else if(category == 'grade') {
+        ary_type = 'null';
+    }else if(category == 'gradeclass') {
+        ary_type = 'null';
+    }else if(category == 'samepref') {
+        ary_type = 'null';
+    }
+    var select_type_json = JSON.parse(ary_type);
+    var innerHTML = '';
+    $.each(select_type_json,function (k,v){
+        var type_seleted = '';
+        if(k == type){
+            type_seleted = 'Selected';
+        }
+        innerHTML += '<option value="'+k+'"'+type_seleted+'><span>'+v+'</span></option>';
+    });
+    $('#select_type_'+category).html(innerHTML);
+    // $("#select_type_" + category + " option").attr("selected", false);
+    // $("#select_type_" + category + " option[value=" + type + "]").attr("selected", "selected");
+    // $("#select_type_" + category + " option[value=" + type + "]").prop('selected', true);
+    var sel_text = ' > '+$("#select_type_"+category+" option:selected").text();
+    params.set('type', type);
+
+    var type2 = '';
+    var ary_type2 = '';
+    if(category =='gradeclass') {
+        ary_type2 = 'null';
+        var select_type_json = JSON.parse(ary_type2);
+        var innerHTML = '';
+        $.each(select_type_json,function (k,v){
+            var type_seleted = '';
+            if(k == type2){
+                type_seleted = 'Selected';
+            }
+            innerHTML += '<option value="'+k+'"'+type_seleted+'><span>'+v+'</span></option>';
+        });
+        $('#select_type2_'+category).html(innerHTML);
+        // $("#select_type2_" + category + " option").attr("selected", false);
+        // $("#select_type2_" + category + " option[value=" + type2 + "]").attr("selected", "selected");
+        // $("#select_type2_" + category + " option[value=" + type2 + "]").prop('selected', true);
+        sel_text += ' × ' + $("#select_type2_" + category + " option:selected").text();
+        params.set('type2', type2);
+    }else{
+        params.delete('type2', type2);
+    }
+
+    var mtitle = $('#h3_subtitle_'+category).data('subtitle');
+    $('#h3_subtitle_'+category).html(mtitle+sel_text);
+    params.set('category', category);
+
+    // URLパラメータ書き換え
+    changeUrl(url);
+});
+function update_yoso_mark(){
+    var mark_dom_name = {
+        makefcy: 'makeMeFancy',
+        fancy: 'tzSelect',
+        change: 'btn_markmode_change',
+        check: 'mode_check',
+        label: 'check_label',
+        mark: 'mode_mark'
+    };
+    var objEntry = new MarkSession(
+        '202611118412',
+        'https://keirin.netkeiba.com/api',
+        mark_dom_name
+    );
+    objEntry.update_mark_session();
+}
+
+</script>
+
+
+
+
+
+
