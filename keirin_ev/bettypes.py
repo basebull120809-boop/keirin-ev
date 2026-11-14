@@ -2,6 +2,7 @@
 レースごとに「どの券種で買うのが一番良いか」を選ぶ。
 
 考え方
+  - 2車複 : 強い2人が絞れるレース向き。着順を問わないので2車単より当たりやすい
   - 2車単 : 1着・2着が絞れるレース向き。少ない点数で的中率を取りにいく
   - 3連複 : 上位3人は絞れるが着順が読みにくいレース向き
   - 3連単 : 混戦。フォーメーションで配当を取りにいく（既存の本命予想）
@@ -19,6 +20,7 @@ class TypeRules:
     budget: int = 3000
     unit: int = 100
     ex_max: int = 5            # 2車単の最大点数
+    qn_max: int = 4            # 2車複の最大点数
     ex_synth_min: float = 2.0  # 2車単の合成オッズ下限
     trio_max: int = 10         # 3連複の最大点数
     trio_synth_min: float = 2.5
@@ -30,13 +32,13 @@ class TypeRules:
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
 
 
-LABEL = {"ex": "2車単", "trio": "3連複", "yoso": "3連単"}
+LABEL = {"qn": "2車複", "ex": "2車単", "trio": "3連複", "yoso": "3連単"}
 
 
 def marginals(P, cars, combos):
     """P: (504,) 3連単確率, cars: 位置→車番, combos: (504,3) 位置の組
-    → ({'a-b': p}, {'a=b=c': p}, {a: 1着確率})"""
-    ex, trio, win = {}, {}, {}
+    → ({'a-b': p}, {'a=b=c': p}, {a: 1着確率}, {'a=b': p})"""
+    ex, trio, win, qn = {}, {}, {}, {}
     n = len(cars)
     for idx, (i, j, k) in enumerate(combos):
         if i >= n or j >= n or k >= n:
@@ -49,7 +51,9 @@ def marginals(P, cars, combos):
         key = "=".join(map(str, sorted((a, b, c))))
         trio[key] = trio.get(key, 0) + p
         win[a] = win.get(a, 0) + p
-    return ex, trio, win
+        q = "=".join(map(str, sorted((a, b))))
+        qn[q] = qn.get(q, 0) + p
+    return ex, trio, win, qn
 
 
 def _blend(pm, odds, w):
@@ -156,10 +160,12 @@ def _plan(pm, odds, kmax, synth_min, r: TypeRules):
     return ps[0] if ps else None
 
 
-def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_odds=None):
-    """戻り値: (券種ごとの的中重視プラン, 1着確率, 券種ごとのパターン一覧)"""
-    ex, trio, win = marginals(P, cars, combos)
+def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_odds=None, qn_odds=None):
+    """戻り値: (券種ごとの的中最優先プラン, 1着確率, 券種ごとのパターン一覧)"""
+    ex, trio, win, qn = marginals(P, cars, combos)
     pats = {}
+    if qn_odds:
+        pats["qn"] = patterns(qn, qn_odds, r.qn_max, r)
     if ex_odds:
         pats["ex"] = patterns(ex, ex_odds, r.ex_max, r)
     if trio_odds:
@@ -171,6 +177,8 @@ def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_o
                 tri[f"{int(cars[i])}-{int(cars[j])}-{int(cars[k])}"] = float(P[idx])
         pats["tri"] = patterns(tri, tri_odds, 20, r)
     out = {}
+    if qn_odds:
+        out["qn"] = hit_plan(qn, qn_odds, r.qn_max, r)
     if ex_odds:
         out["ex"] = hit_plan(ex, ex_odds, r.ex_max, r)
     if trio_odds:
@@ -207,7 +215,9 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
     c = cand[rec]
     if rec in pl and pl[rec].get("low"):
         return rec, f"{LABEL[rec]}{c['n']}点で的中率{c['hit']:.0%}。本命なので配当は安め（合成{c['synth']:.1f}倍）", cand
-    if rec == "ex":
+    if rec == "qn":
+        why = f"強い2人で決まる見込みが高い。着順を問わない2車複{c['n']}点で的中率{c['hit']:.0%}"
+    elif rec == "ex":
         why = f"1着は{a}番が{pa:.0%}で抜けていて、2着まで絞れる。2車単なら{len(pl['ex']['bets'])}点で的中率{c['hit']:.0%}"
     elif rec == "trio":
         why = f"上位3人で決まる見込みが高い一方、着順は読みにくい。3連複{len(pl['trio']['bets'])}点で的中率{c['hit']:.0%}"
