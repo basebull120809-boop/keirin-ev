@@ -52,6 +52,12 @@ PROBE_RACES = ["202611118412",   # 武雄 2026/11/11 12R 決勝
                "202611074812"]   # 四日市 2026/11/07 12R 準決勝
 
 
+# データ分析のカテゴリ（ページの左メニュー data_menu_*）と、type=0（まとめ）以外に見ておく区分
+CATEGORIES = ["pickup", "class", "perimeter", "deemed", "jyo", "position", "time", "schedule",
+              "grade", "gradeclass", "syaban", "samepref", "line", "special"]
+EXTRA_TYPES = {"position": ("1", "2"), "perimeter": ("1",)}
+
+
 def probe(date=None, out="debug/netkeirin", log=print):
     """データ分析ページの作りを調べる。
     レースのタブ一式・場の開催ページ・データ分析ページが読み込む JS / API を保存し、一覧を出す。
@@ -85,6 +91,14 @@ def probe(date=None, out="debug/netkeirin", log=print):
         for i, j in enumerate([x for x in js if "netkeiba" in x or x.startswith("/")][:8]):
             u = j if j.startswith("http") else (("https:" + j) if j.startswith("//") else BASE + j)
             save(f"{rid}_js{i}", u)
+        # データ分析の中身（ページ表示後に読み込まれる部分）
+        top = save(f"{rid}_ajax_top", f"/race/data/ajax_race_data_top.html?race_id={rid}")
+        for cat in CATEGORIES:
+            for typ in ("0",) + EXTRA_TYPES.get(cat, ()):
+                save(f"{rid}_ajax_{cat}_{typ}", "/race/data/ajax_race_data.html",
+                     params=dict(pid="ajax_race_data", input="UTF-8", output="html", race_id=rid,
+                                 category=cat, type=typ, type2="2" if cat == "gradeclass" else "",
+                                 select_matome_flag="true" if typ == "0" else "false"))
     save("course_84", "/race/course/?jyo_cd=84")
     save("race_top", "/race/")
     if date:
