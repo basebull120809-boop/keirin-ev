@@ -216,6 +216,9 @@ def main():
     elif a.cmd == "probepages":                  # 独自データのタブ調査（debug/pages に保存）
         from keirin_ev.kdreams import probe_pages
         probe_pages(a.args[0] if a.args else pd.Timestamp.today().strftime("%Y-%m-%d"))
+    elif a.cmd == "yosoufill":                   # 取得済みの日に記者予想を足す（新しい日から）
+        from keirin_ev.kdreams import yosou_fill
+        print(yosou_fill(int(a.args[0]) if a.args else 2), "日分に記者予想を追加")
     elif a.cmd == "train":                       # 全データで学習 → models/latest.json
         from keirin_ev import store
         store.load_into_db(con)

@@ -18,6 +18,12 @@
   番手の格上度   : 番手の競走得点 − 前の選手の競走得点（番手が格上なら差しやすい）
   今日のバンク   : 同じ場・同じ日のそれまでのレースで、先頭・番手のどちらが勝っているか
                    （当日の風・バンク状態の傾向。レース後に取り込む当日結果を使う）
+  ── Kドリームスの記者予想（アオケイ） ──
+  記者の印       : ◎○▲△注× を点数化（市場もこの印を見ているので、市場との差だけが効く）
+  総評           : 記者の評価（数字が小さいほど上）
+  先行予想       : 展開予想で「先行」とされた選手（主導権を取る予想）
+  押え先行予想   : 展開予想で「押え先」とされた選手
+  好気合         : 気合マーク
 
 ※ H（ホーム線の先頭通過回数）はKドリームスの出走表に無いため使っていない。
 """
@@ -298,11 +304,23 @@ def add_original(df, history):
     tb = today_bias(df)
     df["p_today_head"] = np.where(is_head.values, tb["tb_head"].values * 10, 0.0)
     df["p_today_2nd"] = np.where(is_2nd.values, tb["tb_2nd"].values * 10, 0.0)
+    # Kドリームスの記者予想（列が無い古いデータは0）
+    TIP = {"◎": 3.0, "○": 2.0, "▲": 1.5, "△": 1.0, "注": 1.0, "×": 0.5}
+    has = df["tip"].notna().groupby(df["race_id"]).transform("any") if "tip" in df else pd.Series(False, index=df.index)
+    tip = df["tip"].map(TIP).fillna(0) if "tip" in df else pd.Series(0.0, index=df.index)
+    df["p_tip"] = np.where(has, tip.groupby(df["race_id"]).transform(_z).fillna(0), 0.0)
+    ev = pd.to_numeric(df["evaluation"], errors="coerce") if "evaluation" in df else pd.Series(np.nan, index=df.index)
+    df["p_eval"] = -ev.groupby(df["race_id"]).transform(_z).fillna(0)
+    tac = df["tactic"].fillna("").astype(str) if "tactic" in df else pd.Series("", index=df.index)
+    df["p_lead_pred"] = (tac == "先行").astype(float)
+    df["p_osae_pred"] = tac.str.contains("押").astype(float)
+    df["p_kiai"] = pd.to_numeric(df["kiai"], errors="coerce").fillna(0) if "kiai" in df else 0.0
     return df.drop(columns=["_zs", "_back", "_hz"])
 
 
 ORIG_FEATURES = ["p_meet", "p_gear", "p_head_rival", "p_2nd_rival", "p_line_back",
-                 "p_2nd_gap", "p_today_head", "p_today_2nd"]
+                 "p_2nd_gap", "p_today_head", "p_today_2nd",
+                 "p_tip", "p_eval", "p_lead_pred", "p_osae_pred", "p_kiai"]
 
 P_FEATURES = ["p_s", "p_b", "p_head_b", "p_jiriki_head", "p_oikomi_2nd",
               "p_banate", "p_agari", "p_form", "p_local"] + ORIG_FEATURES
@@ -311,4 +329,6 @@ P_LABEL = dict(p_s="S（スタート）", p_b="B（バック）", p_head_b="前�
                p_agari="上がりタイム", p_form="調子（直近の着順）", p_local="地元",
                p_meet="今場所の調子", p_gear="ギヤ変更", p_head_rival="先行争い（先頭）",
                p_2nd_rival="先行争い（番手）", p_line_back="ラインの厚み", p_2nd_gap="番手の格上度",
-               p_today_head="今日のバンク（先頭）", p_today_2nd="今日のバンク（番手）")
+               p_today_head="今日のバンク（先頭）", p_today_2nd="今日のバンク（番手）",
+               p_tip="記者の印", p_eval="記者の総評", p_lead_pred="先行予想", p_osae_pred="押え先行予想",
+               p_kiai="好気合")

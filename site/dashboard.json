@@ -15,7 +15,7 @@
  "model": {
   "n_races": 1689,
   "period": "2026-10-21〜2026-11-13",
-  "trained_at": "2026-11-14 15:11",
+  "trained_at": "2026-11-14 15:18",
   "a": 0.113,
   "b": 0.9543,
   "views": [
@@ -103,10 +103,35 @@
     "key": "p_today_2nd",
     "label": "今日のバンク（番手）",
     "coef": -0.0065
+   },
+   {
+    "key": "p_tip",
+    "label": "記者の印",
+    "coef": -0.0
+   },
+   {
+    "key": "p_eval",
+    "label": "記者の総評",
+    "coef": -0.0
+   },
+   {
+    "key": "p_lead_pred",
+    "label": "先行予想",
+    "coef": -0.0
+   },
+   {
+    "key": "p_osae_pred",
+    "label": "押え先行予想",
+    "coef": -0.0
+   },
+   {
+    "key": "p_kiai",
+    "label": "好気合",
+    "coef": -0.0
    }
   ]
  },
- "updated_at": "2026-11-14 15:12",
+ "updated_at": "2026-11-14 15:18",
  "picks": {
   "date": "2026-11-14",
   "races": [
