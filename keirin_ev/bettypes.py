@@ -9,7 +9,9 @@
   どの券種も「モデル確率（市場オッズで補正）×その券種の実オッズ」で期待回収を計算し、
   おすすめは「とにかく当てる」：券種ごとに確率の高い順に的中率60%まで広げ、
   的中率が一番高い券種を選ぶ（期待値では選ばない）。
-  ただし当たっても損になる組み方（合成オッズ synth_floor 未満）は避ける。
+  ただし合成オッズ synth_floor（1.5倍）未満になる組み方は出さない。
+  3連単は「自信があるとき」だけおすすめにする：確率の高い順に tri_max 点まで
+  （合成1.5倍以上を保って）広げて的中率 tri_conf_hit 以上に届くなら、3連単を最優先。
 """
 from dataclasses import dataclass
 import numpy as np
@@ -28,9 +30,11 @@ class TypeRules:
     hit_min: float = 0.20      # おすすめにする的中率の下限
     ev_tie: float = 0.03       # （旧）期待回収の差がこれ以内なら的中率で選ぶ
     hit_target: float = 0.60   # おすすめで狙う的中率（ここまで点数を広げる）
-    synth_floor: float = 1.2   # 当たったときに投資の1.2倍は戻る組み方まで（トリガミ防止）
+    synth_floor: float = 1.5   # 合成オッズ1.5倍未満のおすすめは出さない
     qn_synth_floor: float = 1.5  # 2車複は当たっても安すぎることが多いので、投資の1.5倍に届かなければ選ばない
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
+    tri_max: int = 10          # 自信ありの3連単の最大点数
+    tri_conf_hit: float = 0.40 # この点数・合成1.5倍以上でこの的中率に届けば「自信あり」の3連単
 
 
 LABEL = {"qn": "2車複", "ex": "2車単", "trio": "3連複", "yoso": "3連単"}
@@ -140,12 +144,14 @@ def patterns(pm, odds, kmax, r: TypeRules, blended=False):
 
 def hit_plan(pm, odds, kmax, r: TypeRules, blended=False, floor=None):
     """とにかく当てる：確率の高い順に、的中率 hit_target に届くまで広げる。
-    合成オッズが synth_floor を割る（当たっても損に近い）手前で止める。最低1点"""
+    合成オッズが synth_floor を割る手前で止める。1点目から割るなら買わない（None）"""
     p = pm if blended else _blend(pm, odds, r.model_weight)
     if not p:
         return None
     floor = r.synth_floor if floor is None else floor
     order = sorted(p, key=p.get, reverse=True)
+    if odds[order[0]] < floor:
+        return None
     k, acc, inv = 0, 0.0, 0.0
     for i, x in enumerate(order[:kmax]):
         if i and 1 / (inv + 1 / odds[x]) < floor:
@@ -185,6 +191,8 @@ def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_o
         out["ex"] = hit_plan(ex, ex_odds, r.ex_max, r)
     if trio_odds:
         out["trio"] = hit_plan(trio, trio_odds, r.trio_max, r)
+    if tri_odds:
+        out["tri"] = hit_plan(tri, tri_odds, r.tri_max, r)
     out = {k: v for k, v in out.items() if v}
     return out, win, {k: v for k, v in pats.items() if v}
 
@@ -198,14 +206,25 @@ def _summ(bets):
                 ev=float((st * pp * oo).sum() / st.sum()))
 
 
-def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules()):
+def confident_tri(pl, r: TypeRules = TypeRules()):
+    """自信ありの3連単プラン（なければ None）。pl から "tri" を取り除く"""
+    t = pl.pop("tri", None)
+    if t and t["synth"] >= r.synth_floor and t["hit"] >= r.tri_conf_hit:
+        return t
+    return None
+
+
+def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
     """おすすめ券種と理由。pl: plans() の戻り値, yoso_bets: 3連単フォーメーションの買い目"""
-    cand = {k: dict(hit=v["hit"], synth=v["synth"], ev=v["ev"]) for k, v in pl.items()}
+    cand = {k: dict(hit=v["hit"], synth=v["synth"], ev=v["ev"]) for k, v in pl.items() if k != "tri"}
     ys = _summ(yoso_bets)
     if ys:
         cand["yoso"] = ys
     for k, v in cand.items():
         v["n"] = len(pl[k]["bets"]) if k in pl else len(yoso_bets)
+    if tri_conf is not None:                     # 自信ありの3連単は最優先
+        c = cand["yoso"]
+        return "yoso", f"着順まで読める自信あり。3連単{c['n']}点で的中率{c['hit']:.0%}（合成{c['synth']:.1f}倍）", cand
     ok = {k: v for k, v in cand.items()
           if v["synth"] >= (r.qn_synth_floor if k == "qn" else r.synth_floor)}
     if not ok:
