@@ -131,7 +131,7 @@
    }
   ]
  },
- "updated_at": "2026-11-14 22:59",
+ "updated_at": "2026-11-14 23:06",
  "picks": {
   "date": "2026-11-14",
   "races": [
@@ -9708,7 +9708,10 @@
     "race_no": 8,
     "deadline": "22:55",
     "judged_at": "22:49:04",
-    "result": null,
+    "result": {
+     "combo": "1-2-4",
+     "payout": 150
+    },
     "bets": [
      {
       "combo": "1-2-4",
@@ -9716,16 +9719,25 @@
       "odds": 1.8,
       "p": 0.4292,
       "ev": 0.773,
-      "hit": null
+      "hit": true
      }
     ],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 100
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 120
+    },
+    "trio_result": {
+     "combo": "1=2=4",
+     "payout": 120
+    },
     "notes": [
      "1着が出るライン：1-2-4-7 が 95%",
      "上がり最速：3 山田雅之（直近平均 11.0秒、2位と0.1秒差）",
@@ -12530,13 +12542,13 @@
   },
   "yoso": {
    "total": {
-    "stake": 216900,
-    "payout": 186010.0,
-    "roi": 0.8576,
-    "points": 913,
-    "hits": 41,
-    "races": 81,
-    "race_hits": 41,
+    "stake": 219900,
+    "payout": 190510.0,
+    "roi": 0.8663,
+    "points": 914,
+    "hits": 42,
+    "races": 82,
+    "race_hits": 42,
     "days": 2
    },
    "daily": [
@@ -12553,26 +12565,26 @@
     },
     {
      "date": "2026-11-14",
-     "stake": 70000,
-     "payout": 51740.0,
-     "points": 171,
-     "hits": 12,
-     "races": 26,
-     "race_hits": 12,
-     "roi": 0.7391,
-     "cum": -30890.0
+     "stake": 73000,
+     "payout": 56240.0,
+     "points": 172,
+     "hits": 13,
+     "races": 27,
+     "race_hits": 13,
+     "roi": 0.7704,
+     "cum": -29390.0
     }
    ]
   },
   "rec": {
    "total": {
-    "stake": 108700,
-    "payout": 98370.0,
-    "roi": 0.905,
-    "points": 173,
-    "hits": 22,
-    "races": 39,
-    "race_hits": 22,
+    "stake": 111700,
+    "payout": 102870.0,
+    "roi": 0.9209,
+    "points": 174,
+    "hits": 23,
+    "races": 40,
+    "race_hits": 23,
     "days": 2
    },
    "daily": [
@@ -12589,14 +12601,14 @@
     },
     {
      "date": "2026-11-14",
-     "stake": 73100,
-     "payout": 67350.0,
-     "points": 100,
-     "hits": 16,
-     "races": 26,
-     "race_hits": 16,
-     "roi": 0.9213,
-     "cum": -10330.0
+     "stake": 76100,
+     "payout": 71850.0,
+     "points": 101,
+     "hits": 17,
+     "races": 27,
+     "race_hits": 17,
+     "roi": 0.9442,
+     "cum": -8830.0
     }
    ]
   }
