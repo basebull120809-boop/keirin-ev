@@ -165,14 +165,15 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     rec, why, cand, pats = None, "", {}, {}
     skip_reason = ""
     try:                                         # 券種の使い分け（2車単・3連複・3連単）
-        from .bettypes import plans, recommend, confident_tri
+        from .bettypes import plans, recommend, confident_tri, load_rules
+        tr = load_rules()
         sp = kdreams.soup(html)
         exo = dict(kdreams.parse_odds_exacta(sp, rid)[["combo", "odds"]].values)
         tro = dict(kdreams.parse_odds_trio(sp, rid)[["combo", "odds"]].values)
         qno = dict(kdreams.parse_odds_quinella(sp, rid)[["combo", "odds"]].values)
         tri_o = {c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {}
-        pl, win, pats = plans(P, cars, COMBOS, exo, tro, tri_odds=tri_o, qn_odds=qno)
-        tconf = confident_tri(pl)
+        pl, win, pats = plans(P, cars, COMBOS, exo, tro, tr, tri_odds=tri_o, qn_odds=qno)
+        tconf = confident_tri(pl, tr)
         base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                     deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
         for kind, plan in pl.items():
@@ -180,7 +181,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                 bets.append(dict(base, **b, kind=kind))
         if tconf is not None:                    # 自信ありの3連単：フォーメーションを確率上位の買い目に差し替え
             bets = [b for b in bets if b["kind"] != "yoso"] + [dict(base, **b, kind="yoso") for b in tconf["bets"]]
-        rec, why, cand = recommend(pl, [b for b in bets if b["kind"] == "yoso"], win, tri_conf=tconf)
+        rec, why, cand = recommend(pl, [b for b in bets if b["kind"] == "yoso"], win, tr, tri_conf=tconf)
         if rec is None:                          # どの券種も釣り合わない → 見送り（買い目を出さない）
             skip_reason = why
             bets = []

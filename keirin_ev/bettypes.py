@@ -8,6 +8,7 @@
   - 3連単 : 混戦。フォーメーションで配当を取りにいく（既存の本命予想）
   どの券種も「モデル確率（市場オッズで補正）×その券種の実オッズ」で期待回収を計算し、
   おすすめは「とにかく当てる」：券種ごとに確率の高い順に的中率60%まで広げ、
+  （ただし 確率×オッズ が ev_floor（95%）未満の目は使わず、期待回収95%未満の券種はおすすめにしない）
   的中率が一番高い券種を選ぶ（期待値では選ばない）。
   ただし合成オッズ synth_floor（2倍）未満になる組み方は出さない。
   3連単は「自信があるとき」だけおすすめにする：確率の高い順に tri_max 点まで
@@ -35,6 +36,18 @@ class TypeRules:
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
     tri_max: int = 10          # 自信ありの3連単の最大点数
     tri_conf_hit: float = 0.40 # この点数・合成2倍以上でこの的中率に届けば「自信あり」の3連単
+    ev_floor: float = 0.95     # おすすめの期待回収の下限。1点ごとに 確率×オッズ がこれ未満の目は買わない
+
+
+def load_rules(path="config.json"):
+    """config.json の "type_rules" で TypeRules を上書き（ev_floor など）"""
+    import json
+    from pathlib import Path
+    try:
+        cfg = json.loads(Path(path).read_text(encoding="utf-8")).get("type_rules", {})
+    except Exception:
+        cfg = {}
+    return TypeRules(**{k: v for k, v in cfg.items() if k in TypeRules.__dataclass_fields__})
 
 
 LABEL = {"qn": "2車複", "ex": "2車単", "trio": "3連複", "yoso": "3連単"}
@@ -149,8 +162,8 @@ def hit_plan(pm, odds, kmax, r: TypeRules, blended=False, floor=None):
     if not p:
         return None
     floor = r.synth_floor if floor is None else floor
-    order = sorted(p, key=p.get, reverse=True)
-    if odds[order[0]] < floor:
+    order = [x for x in sorted(p, key=p.get, reverse=True) if p[x] * odds[x] >= r.ev_floor]
+    if not order or odds[order[0]] < floor:
         return None
     k, acc, inv = 0, 0.0, 0.0
     for i, x in enumerate(order[:kmax]):
@@ -209,7 +222,7 @@ def _summ(bets):
 def confident_tri(pl, r: TypeRules = TypeRules()):
     """自信ありの3連単プラン（なければ None）。pl から "tri" を取り除く"""
     t = pl.pop("tri", None)
-    if t and t["synth"] >= r.synth_floor and t["hit"] >= r.tri_conf_hit:
+    if t and t["synth"] >= r.synth_floor and t["hit"] >= r.tri_conf_hit and t["ev"] >= r.ev_floor:
         return t
     return None
 
@@ -226,9 +239,10 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
         c = cand["yoso"]
         return "yoso", f"着順まで読める自信あり。3連単{c['n']}点で的中率{c['hit']:.0%}（合成{c['synth']:.1f}倍）", cand
     ok = {k: v for k, v in cand.items()
-          if v["synth"] >= (r.qn_synth_floor if k == "qn" else r.synth_floor)}
+          if v["synth"] >= (r.qn_synth_floor if k == "qn" else r.synth_floor)
+          and v["ev"] >= r.ev_floor and v["hit"] >= r.hit_min}
     if not ok:
-        return None, "どの券種も当たったときの払戻が投資を下回る（トリガミ）ため見送り", cand
+        return None, (f"期待回収{r.ev_floor:.0%}以上・的中率{r.hit_min:.0%}以上・合成2倍以上を満たす券種がないため見送り"), cand
     best = max(v["hit"] for v in ok.values())
     near = {k: v for k, v in ok.items() if v["hit"] >= best - r.hit_tie}
     rec = min(near, key=lambda k: (near[k]["n"], -near[k]["hit"]))
