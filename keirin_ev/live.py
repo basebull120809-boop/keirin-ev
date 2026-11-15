@@ -133,6 +133,13 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         return [], ent, []
     P = model.predict(X["T"], X["Q"])[0]
     cars = X["T"].cars[0]
+    sim = None
+    try:                                         # 予想前に1000回シミュレーション → あらゆる展開を混ぜた確率で組む
+        from .simulate import simulate
+        sim = simulate(P, X["T"], 0, X["O"][0], seed=int(rid[-8:]))
+        P = sim["P"]
+    except Exception as e:
+        print("シミュレーション失敗（元の確率で判定）", rid, e, flush=True)
     bets = []
     for kind, rl in (("yoso", rules), ("invest", inv_rules)):
         if rl is None:
@@ -175,6 +182,15 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
     except Exception as e:
         print("解説作成失敗", rid, e, flush=True); notes, line_probs = [], []
+    sim_ev = None
+    if sim is not None:                          # 出す買い目を1000回のレースで採点
+        try:
+            from .simulate import evaluate, lead_lines, summary_text
+            shown = [b for b in bets if b.get("rec")] or [b for b in bets if b["kind"] == "yoso"]
+            sim_ev = evaluate(sim, cars, shown)
+            notes = summary_text(sim_ev, lead_lines(sim, X["T"], 0, cars)) + notes
+        except Exception as e:
+            print("シミュレーション採点失敗", rid, e, flush=True)
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
@@ -182,7 +198,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
                                 n_bets=sum(b["kind"] in ("yoso", "ex", "trio", "qn") for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
-                                rec=rec, rec_reason=why,
+                                rec=rec, rec_reason=why, sim=sim_ev,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason=skip_reason or ("" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),
                            ensure_ascii=False) + "\n")
