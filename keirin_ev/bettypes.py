@@ -8,9 +8,8 @@
   - 3連単 : 混戦。フォーメーションで配当を取りにいく（既存の本命予想）
   どの券種も「モデル確率（市場オッズで補正）×その券種の実オッズ」で期待回収を計算し、
   おすすめは「とにかく当てる」：券種ごとに確率の高い順に的中率60%まで広げ、
-  （ただし 確率×オッズ が ev_floor（95%）未満の目は使わず、期待回収95%未満の券種はおすすめにしない）
+  合成オッズ1.5倍以上・買い方全体の期待回収 ev_floor（80%）以上を保てる目だけを足していく
   的中率が一番高い券種を選ぶ（期待値では選ばない）。
-  ただし合成オッズ synth_floor（2倍）未満になる組み方は出さない。
   3連単は「自信があるとき」だけおすすめにする：確率の高い順に tri_max 点まで
   （合成2倍以上を保って）広げて的中率 tri_conf_hit 以上に届くなら、3連単を最優先。
 """
@@ -22,21 +21,21 @@ import numpy as np
 class TypeRules:
     budget: int = 3000
     unit: int = 100
-    ex_max: int = 5            # 2車単の最大点数
-    qn_max: int = 4            # 2車複の最大点数
+    ex_max: int = 8            # 2車単の最大点数
+    qn_max: int = 6            # 2車複の最大点数
     ex_synth_min: float = 2.0  # 2車単の合成オッズ下限
-    trio_max: int = 10         # 3連複の最大点数
+    trio_max: int = 15         # 3連複の最大点数
     trio_synth_min: float = 2.5
     model_weight: float = 0.5  # モデルと市場の混ぜ具合（0=市場のみ）
     hit_min: float = 0.20      # おすすめにする的中率の下限
     ev_tie: float = 0.03       # （旧）期待回収の差がこれ以内なら的中率で選ぶ
-    hit_target: float = 0.60   # おすすめで狙う的中率（ここまで点数を広げる）
-    synth_floor: float = 2.0   # 合成オッズ2倍未満のおすすめは出さない
-    qn_synth_floor: float = 2.0  # 2車複は当たっても安すぎることが多いので、投資の2倍に届かなければ選ばない
+    hit_target: float = 0.75   # おすすめで狙う的中率（ここまで点数を広げる）
+    synth_floor: float = 1.5   # 合成オッズ1.5倍未満のおすすめは出さない
+    qn_synth_floor: float = 1.5  # 2車複も同じ
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
-    tri_max: int = 10          # 自信ありの3連単の最大点数
+    tri_max: int = 15          # 自信ありの3連単の最大点数
     tri_conf_hit: float = 0.40 # この点数・合成2倍以上でこの的中率に届けば「自信あり」の3連単
-    ev_floor: float = 0.95     # おすすめの期待回収の下限。1点ごとに 確率×オッズ がこれ未満の目は買わない
+    ev_floor: float = 0.80     # おすすめの期待回収の下限（買い方全体の 的中率×合成オッズ）
 
 
 def load_rules(path="config.json"):
@@ -157,22 +156,21 @@ def patterns(pm, odds, kmax, r: TypeRules, blended=False):
 
 def hit_plan(pm, odds, kmax, r: TypeRules, blended=False, floor=None):
     """とにかく当てる：確率の高い順に、的中率 hit_target に届くまで広げる。
-    合成オッズが synth_floor を割る手前で止める。1点目から割るなら買わない（None）"""
+    足すと 合成オッズが floor を割る目・買い方全体の期待回収（的中率×合成オッズ）が ev_floor を割る目は飛ばす。
+    1点目から満たせないなら買わない（None）"""
     p = pm if blended else _blend(pm, odds, r.model_weight)
     if not p:
         return None
     floor = r.synth_floor if floor is None else floor
-    order = [x for x in sorted(p, key=p.get, reverse=True) if p[x] * odds[x] >= r.ev_floor]
-    if not order or odds[order[0]] < floor:
-        return None
-    k, acc, inv = 0, 0.0, 0.0
-    for i, x in enumerate(order[:kmax]):
-        if i and 1 / (inv + 1 / odds[x]) < floor:
+    sel, acc, inv = [], 0.0, 0.0
+    for x in sorted(p, key=p.get, reverse=True):
+        if len(sel) >= kmax or acc >= r.hit_target:
             break
-        inv += 1 / odds[x]; acc += p[x]; k = i + 1
-        if acc >= r.hit_target:
-            break
-    return _build(order[:max(1, k)], p, odds, r, "的中最優先")
+        a2, i2 = acc + p[x], inv + 1 / odds[x]
+        if 1 / i2 < floor or a2 / i2 < r.ev_floor:
+            continue
+        sel.append(x); acc, inv = a2, i2
+    return _build(sel, p, odds, r, "的中最優先") if sel else None
 
 
 def _plan(pm, odds, kmax, synth_min, r: TypeRules):
@@ -242,7 +240,7 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
           if v["synth"] >= (r.qn_synth_floor if k == "qn" else r.synth_floor)
           and v["ev"] >= r.ev_floor and v["hit"] >= r.hit_min}
     if not ok:
-        return None, (f"期待回収{r.ev_floor:.0%}以上・的中率{r.hit_min:.0%}以上・合成2倍以上を満たす券種がないため見送り"), cand
+        return None, (f"期待回収{r.ev_floor:.0%}以上・的中率{r.hit_min:.0%}以上・合成{r.synth_floor:g}倍以上を満たす券種がないため見送り"), cand
     best = max(v["hit"] for v in ok.values())
     near = {k: v for k, v in ok.items() if v["hit"] >= best - r.hit_tie}
     rec = min(near, key=lambda k: (near[k]["n"], -near[k]["hit"]))
