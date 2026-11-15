@@ -1,0 +1,3 @@
+  robots_api: 失敗 HTTP 477: https://api.winticket.jp/robots.txt
+  racecard_top: 失敗 HTTP 403: https://www.winticket.jp/keirin/racecard
+レースへのリンク 0件: 

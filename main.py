@@ -216,6 +216,28 @@ def main():
     elif a.cmd == "probepages":                  # 独自データのタブ調査（debug/pages に保存）
         from keirin_ev.kdreams import probe_pages
         probe_pages(a.args[0] if a.args else pd.Timestamp.today().strftime("%Y-%m-%d"))
+    elif a.cmd == "nkprobe":                     # netkeirin「データ分析」の作り調査（debug/netkeirin に保存）
+        from keirin_ev.netkeirin import probe as nk_probe
+        nk_probe(a.args[0] if a.args else None)
+    elif a.cmd == "nkcollect":                   # ネット競輪のデータ分析を日別に保存（取得済みの日だけ）
+        from keirin_ev import netkeirin as nkr, store
+        for d in pd.date_range(a.args[0], a.args[1] if len(a.args) > 1 else a.args[0]):
+            ds = d.strftime("%Y-%m-%d")
+            if nkr.has_nk(ds):
+                print(ds, "取得済み"); continue
+            nkr.collect_day(ds)
+    elif a.cmd == "nkbackfill":                  # データ分析が未取得の日を新しい順に N日分
+        from keirin_ev import netkeirin as nkr, store
+        todo = [d for d in sorted(store.collected_dates(), reverse=True) if not nkr.has_nk(d)]
+        print(f"未取得 {len(todo)}日", flush=True)
+        for ds in todo[:int(a.args[0]) if a.args else 1]:
+            nkr.collect_day(ds)
+    elif a.cmd == "nkasof":                      # netkeirin データ分析が時点集計かの確認
+        from keirin_ev.netkeirin import check_asof
+        check_asof()
+    elif a.cmd == "wtprobe":                     # WINTICKET「データ分析」の作り調査（debug/winticket に保存）
+        from keirin_ev.winticket import probe as wt_probe
+        wt_probe()
     elif a.cmd == "yosoufill":                   # 取得済みの日に記者予想を足す（新しい日から）
         from keirin_ev.kdreams import yosou_fill
         print(yosou_fill(int(a.args[0]) if a.args else 2), "日分に記者予想を追加")

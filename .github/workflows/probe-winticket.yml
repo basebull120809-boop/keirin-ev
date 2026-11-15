@@ -1,0 +1,26 @@
+name: probe-winticket（データ分析調査）
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [".github/workflows/probe-winticket.yml", "keirin_ev/winticket.py"]
+permissions: { contents: write }
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: { TZ: Asia/Tokyo, WINTICKET_CACHE: /tmp/html_wt, PYTHONUNBUFFERED: "1" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: |
+          mkdir -p debug/winticket
+          python main.py wtprobe 2>&1 | tee debug/winticket/log.txt
+      - name: 結果を保存（このブランチに）
+        run: |
+          git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
+          git add debug/winticket
+          git commit -m "probe-winticket $(date +%F_%H%M)" || exit 0
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done

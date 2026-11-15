@@ -1,0 +1,155 @@
+race_id=202611118412
+  202611118412_data: 136KB  %の数=37
+  202611118412_entry: 206KB  %の数=127
+  202611118412_results: 401KB  %の数=43
+  202611118412_match: 131KB  %の数=26
+  JS 26件 / API候補 37件: 
+var api_url =  
+});
+campaignCommon.api.getCampaign({
+method:   + response.status);
+}
+return response.json();
+})
+.then((data) => {
+try {
+// 現在時間との比較はここでやる
+const target = data[  + type;
+}
+/**
+* モーダル初期化処理（ajax_data.htmlと同じ処理を共通化）
+* @param  race_id レースID
+*/
+function initModal(race_id) {
+var request = [
+{ url:   == json.live) {
+$( #live-video_html5_api ) {
+disp_senshu_result(senchu_cd);
+}
+return false;
+});
+// モーダル閉じる処理（api_get_modal_racer.htmlと同じロジック）
+$(document).on( ) {
+initModal(plp_raceid);
+}
+// Reactで動的に生成されたPlayer01要素にも対応するため、イベント委譲を使用
+// api_get_modal_racer.htmlの処理と同じロジックを実装
+var current_scrollY;
+$(document).off( ).slideToggle();
+});
+// キャンペーンバッジ対応
+var campaignCommon = createCampaignCommon({
+apiURL:  ).val();
+}
+}
+}
+// モーダル初期化（ajax_data.htmlの処理を利用）
+// ajax_data.htmlが読み込まれるとモーダルが初期化されるが、
+// 「データ分析」タブの初期表示ではajax_data.htmlが読み込まれないため、
+// ここで初期化処理を実行
+if(category==
+  202611118412_js0: 失敗 HTTP 400: https://www.googletagmanager.com/gtm.js?id=
+  202611118412_js1: 0KB  %の数=0
+  202611118412_js2: 1KB  %の数=0
+  202611118412_js3: 5KB  %の数=0
+  202611118412_js4: 12KB  %の数=0
+  202611118412_js5: 3KB  %の数=0
+  202611118412_js6: 50KB  %の数=0
+  202611118412_js7: 65KB  %の数=0
+  202611118412_ajax_top: 2KB  %の数=0
+  202611118412_ajax_pickup_0: 27KB  %の数=85
+  202611118412_ajax_class_0: 27KB  %の数=85
+  202611118412_ajax_perimeter_0: 25KB  %の数=64
+  202611118412_ajax_perimeter_1: 24KB  %の数=43
+  202611118412_ajax_deemed_0: 25KB  %の数=64
+  202611118412_ajax_jyo_0: 25KB  %の数=64
+  202611118412_ajax_position_0: 30KB  %の数=106
+  202611118412_ajax_position_1: 24KB  %の数=43
+  202611118412_ajax_position_2: 24KB  %の数=43
+  202611118412_ajax_time_0: 27KB  %の数=85
+  202611118412_ajax_schedule_0: 25KB  %の数=64
+  202611118412_ajax_grade_0: 30KB  %の数=106
+  202611118412_ajax_gradeclass_0: 20KB  %の数=22
+  202611118412_ajax_syaban_0: 24KB  %の数=43
+  202611118412_ajax_samepref_0: 23KB  %の数=43
+  202611118412_ajax_line_0: 21KB  %の数=31
+  202611118412_ajax_special_0: 27KB  %の数=85
+race_id=202611074812
+  202611074812_data: 136KB  %の数=39
+  202611074812_entry: 216KB  %の数=139
+  202611074812_results: 478KB  %の数=43
+  202611074812_match: 137KB  %の数=26
+  JS 26件 / API候補 37件: 
+var api_url =  
+});
+campaignCommon.api.getCampaign({
+method:   + response.status);
+}
+return response.json();
+})
+.then((data) => {
+try {
+// 現在時間との比較はここでやる
+const target = data[  + type;
+}
+/**
+* モーダル初期化処理（ajax_data.htmlと同じ処理を共通化）
+* @param  race_id レースID
+*/
+function initModal(race_id) {
+var request = [
+{ url:   == json.live) {
+$( #live-video_html5_api ) {
+disp_senshu_result(senchu_cd);
+}
+return false;
+});
+// モーダル閉じる処理（api_get_modal_racer.htmlと同じロジック）
+$(document).on( ) {
+initModal(plp_raceid);
+}
+// Reactで動的に生成されたPlayer01要素にも対応するため、イベント委譲を使用
+// api_get_modal_racer.htmlの処理と同じロジックを実装
+var current_scrollY;
+$(document).off( ).slideToggle();
+});
+// キャンペーンバッジ対応
+var campaignCommon = createCampaignCommon({
+apiURL:  ).val();
+}
+}
+}
+// モーダル初期化（ajax_data.htmlの処理を利用）
+// ajax_data.htmlが読み込まれるとモーダルが初期化されるが、
+// 「データ分析」タブの初期表示ではajax_data.htmlが読み込まれないため、
+// ここで初期化処理を実行
+if(category==
+  202611074812_js0: 失敗 HTTP 400: https://www.googletagmanager.com/gtm.js?id=
+  202611074812_js1: 0KB  %の数=0
+  202611074812_js2: 1KB  %の数=0
+  202611074812_js3: 5KB  %の数=0
+  202611074812_js4: 12KB  %の数=0
+  202611074812_js5: 3KB  %の数=0
+  202611074812_js6: 50KB  %の数=0
+  202611074812_js7: 65KB  %の数=0
+  202611074812_ajax_top: 2KB  %の数=0
+  202611074812_ajax_pickup_0: 33KB  %の数=109
+  202611074812_ajax_class_0: 33KB  %の数=109
+  202611074812_ajax_perimeter_0: 30KB  %の数=82
+  202611074812_ajax_perimeter_1: 27KB  %の数=55
+  202611074812_ajax_deemed_0: 30KB  %の数=82
+  202611074812_ajax_jyo_0: 30KB  %の数=82
+  202611074812_ajax_position_0: 36KB  %の数=136
+  202611074812_ajax_position_1: 28KB  %の数=55
+  202611074812_ajax_position_2: 28KB  %の数=55
+  202611074812_ajax_time_0: 33KB  %の数=109
+  202611074812_ajax_schedule_0: 30KB  %の数=82
+  202611074812_ajax_grade_0: 36KB  %の数=136
+  202611074812_ajax_gradeclass_0: 24KB  %の数=28
+  202611074812_ajax_syaban_0: 27KB  %の数=55
+  202611074812_ajax_samepref_0: 27KB  %の数=55
+  202611074812_ajax_line_0: 24KB  %の数=28
+  202611074812_ajax_special_0: 33KB  %の数=109
+  course_84: 116KB  %の数=4
+  race_top: 68KB  %の数=6
+  race_list_20261114: 48KB  %の数=5

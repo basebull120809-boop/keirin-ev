@@ -12,7 +12,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
-from .perspectives import P_FEATURES, add as add_perspectives
+from .perspectives import P_FEATURES, P_LABEL, add as add_perspectives
+from .netkeirin import NK_FEATURES, NK_LABEL, add_features as add_netkeirin, read_nk
+P_LABEL.update(NK_LABEL)
 
 MAXN = 9
 COMBOS = np.array(list(permutations(range(MAXN), 3)))   # 504通り (0始まり)
@@ -22,7 +24,7 @@ FEATURES = [
     "z_score", "z_win", "z_ren", "is_head", "is_2nd", "is_3rd",
     "is_single", "line_size", "head_x_short", "head_x_wind",
     "style_nige", "style_oi", "log_mkt_win",
-] + P_FEATURES
+] + P_FEATURES + NK_FEATURES
 
 
 # ---------- 特徴量 ----------
@@ -32,8 +34,11 @@ def _z(s):
 
 
 def build_features(entries: pd.DataFrame, races: pd.DataFrame,
-                   mkt_win: pd.DataFrame, history=None) -> pd.DataFrame:
+                   mkt_win: pd.DataFrame, history=None, nk=None) -> pd.DataFrame:
     df = add_perspectives(entries, races, history)       # S・B・番手巧者・上がり・調子・地元など
+    if nk is None:                                         # ネット競輪のデータ分析（日別に保存したもの）
+        nk = read_nk(races["date"].dropna().astype(str).unique())
+    df = add_netkeirin(df, nk)
     races = races.assign(race_id=races["race_id"].astype(str))
     mkt_win = mkt_win.assign(race_id=mkt_win["race_id"].astype(str))
     df = df.merge(races[["race_id", "bank_len", "wind"]], on="race_id", how="left")
@@ -202,10 +207,15 @@ class TrifectaModel:
     def from_json(cls, path):
         import json
         d = json.loads(Path(path).read_text(encoding="utf-8"))
-        if d["features"] != FEATURES:
-            raise ValueError("特徴量の定義が変わっています。再学習してください")
         m = cls()
-        m.beta, m.g, m.blend = (np.array(d[k]) for k in ("beta", "g", "blend"))
+        m.g, m.blend = (np.array(d[k]) for k in ("g", "blend"))
+        if d["features"] == FEATURES:
+            m.beta = np.array(d["beta"])
+        elif set(d["features"]) <= set(FEATURES):      # 特徴量を足した直後：新しい特徴量は再学習まで 0（使わない）
+            b = dict(zip(d["features"], d["beta"]))
+            m.beta = np.array([b.get(f, 0.0) for f in FEATURES])
+        else:
+            raise ValueError("特徴量の定義が変わっています。再学習してください")
         m.meta = d
         return m
 
@@ -226,7 +236,7 @@ def combo_index(T, rid, combo_str):
     return pos
 
 
-def build_tensors(con, race_ids=None, need_result=True, history=None):
+def build_tensors(con, race_ids=None, need_result=True, history=None, nk=None):
     races = pd.read_sql("SELECT * FROM races", con)
     entries = pd.read_sql("SELECT * FROM entries", con)
     odds = pd.read_sql("SELECT * FROM odds_trifecta", con)
@@ -240,7 +250,7 @@ def build_tensors(con, race_ids=None, need_result=True, history=None):
         ok &= set(race_ids)
     races = races[races["race_id"].isin(ok)].sort_values(["date", "race_id"])
     rids = races["race_id"].tolist()
-    feat = build_features(entries[entries["race_id"].isin(ok)], races, win, history)
+    feat = build_features(entries[entries["race_id"].isin(ok)], races, win, history, nk)
     T = RaceTensor(feat, rids)
     R = len(rids)
     # 市場確率・オッズを (R,504) に

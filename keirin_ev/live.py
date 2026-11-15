@@ -128,7 +128,18 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                n_riders=len(ent), bank_len=kdreams.BANK.get(venue, 400),
                                wind=info["wind"])])
     store(con, dict(races=races, entries=ent, odds_trifecta=od))
-    X = build_tensors(con, race_ids=[rid], need_result=False, history=his)
+    nk = pd.DataFrame()
+    try:                                         # ネット競輪のデータ分析（取れなければ使わずに判定）
+        from . import netkeirin
+        netkeirin.SLEEP_SEC = 0.7
+        nk = netkeirin.fetch_race(rid, int(rid[-4:]), date)
+        if not nk.empty:
+            f = day / "nk_data.csv.gz"
+            nk.drop(columns=["name"], errors="ignore").to_csv(f, mode="a", index=False, compression="gzip",
+                                                              header=not f.exists())
+    except Exception as e:
+        print("データ分析の取得失敗", rid, e, flush=True)
+    X = build_tensors(con, race_ids=[rid], need_result=False, history=his, nk=nk)
     if not X["T"].race_ids:
         return [], ent, []
     P = model.predict(X["T"], X["Q"])[0]
