@@ -1,9 +1,9 @@
 {
  "collect": {
-  "days": 143,
+  "days": 181,
   "races": 10802,
   "months": 6,
-  "first": "2026-06-25",
+  "first": "2026-05-18",
   "last": "2026-11-14",
   "target_first": "2024-11-01"
  },
@@ -15,9 +15,9 @@
  "model": {
   "n_races": 9860,
   "period": "2026-06-25〜2026-11-14",
-  "trained_at": "2026-11-16 00:12",
-  "a": 0.13,
-  "b": 0.9401,
+  "trained_at": "2026-11-16 05:28",
+  "a": 0.1304,
+  "b": 0.9398,
   "views": [
    {
     "key": "p_s",
@@ -27,62 +27,62 @@
    {
     "key": "p_b",
     "label": "B（バック）",
-    "coef": -0.0072
+    "coef": -0.0077
    },
    {
     "key": "p_head_b",
     "label": "前の先行力（番手から）",
-    "coef": -0.0388
+    "coef": -0.0384
    },
    {
     "key": "p_jiriki_head",
     "label": "自力型×先頭",
-    "coef": 0.0357
+    "coef": 0.0354
    },
    {
     "key": "p_oikomi_2nd",
     "label": "差し型×番手",
-    "coef": -0.0163
+    "coef": -0.0162
    },
    {
     "key": "p_banate",
     "label": "番手巧者",
-    "coef": -0.0104
+    "coef": -0.0103
    },
    {
     "key": "p_agari",
     "label": "上がりタイム",
-    "coef": 0.0011
+    "coef": 0.0012
    },
    {
     "key": "p_form",
     "label": "調子（直近の着順）",
-    "coef": -0.0114
+    "coef": -0.0113
    },
    {
     "key": "p_local",
     "label": "地元",
-    "coef": 0.003
+    "coef": 0.0032
    },
    {
     "key": "p_meet",
     "label": "今場所の調子",
-    "coef": -0.0251
+    "coef": -0.0252
    },
    {
     "key": "p_gear",
     "label": "ギヤ変更",
-    "coef": 0.002
+    "coef": 0.0019
    },
    {
     "key": "p_head_rival",
     "label": "先行争い（先頭）",
-    "coef": -0.0123
+    "coef": -0.0122
    },
    {
     "key": "p_2nd_rival",
     "label": "先行争い（番手）",
-    "coef": -0.0293
+    "coef": -0.0294
    },
    {
     "key": "p_line_back",
@@ -92,7 +92,7 @@
    {
     "key": "p_2nd_gap",
     "label": "番手の格上度",
-    "coef": -0.0198
+    "coef": -0.02
    },
    {
     "key": "p_today_head",
@@ -102,27 +102,27 @@
    {
     "key": "p_today_2nd",
     "label": "今日のバンク（番手）",
-    "coef": -0.0074
+    "coef": -0.0077
    },
    {
     "key": "p_tip",
     "label": "記者の印",
-    "coef": -0.062
+    "coef": -0.0622
    },
    {
     "key": "p_eval",
     "label": "記者の総評",
-    "coef": 0.0134
+    "coef": 0.0132
    },
    {
     "key": "p_lead_pred",
     "label": "先行予想",
-    "coef": 0.0123
+    "coef": 0.0118
    },
    {
     "key": "p_osae_pred",
     "label": "押え先行予想",
-    "coef": 0.0092
+    "coef": 0.0089
    },
    {
     "key": "p_kiai",
@@ -132,7 +132,7 @@
    {
     "key": "p_straight_head",
     "label": "直線の長さ（先頭）",
-    "coef": -0.0223
+    "coef": -0.0226
    },
    {
     "key": "p_straight_2nd",
@@ -142,12 +142,12 @@
    {
     "key": "p_cant_head",
     "label": "カント（先頭）",
-    "coef": 0.0029
+    "coef": 0.0028
    },
    {
     "key": "p_venue_head",
     "label": "場の傾向（先頭）",
-    "coef": -0.0012
+    "coef": -0.0016
    },
    {
     "key": "p_venue_2nd",
@@ -162,56 +162,56 @@
    {
     "key": "p_b_short",
     "label": "B×短いバンク",
-    "coef": -0.0028
+    "coef": -0.0023
    },
    {
     "key": "p_nk_class",
     "label": "ネット競輪:レース種目別の勝率",
-    "coef": 0.0088
+    "coef": 0.0045
    },
    {
     "key": "p_nk_perimeter",
     "label": "ネット競輪:周長別の勝率",
-    "coef": 0.0104
+    "coef": 0.01
    },
    {
     "key": "p_nk_deemed",
     "label": "ネット競輪:見なし直線別の勝率",
-    "coef": 0.0033
+    "coef": 0.0017
    },
    {
     "key": "p_nk_jyo",
     "label": "ネット競輪:この場の勝率",
-    "coef": 0.0137
+    "coef": 0.0114
    },
    {
     "key": "p_nk_position",
     "label": "ネット競輪:今回の位置での勝率",
-    "coef": 0.0088
+    "coef": 0.0168
    },
    {
     "key": "p_nk_time",
     "label": "ネット競輪:時間帯別の勝率",
-    "coef": 0.0018
+    "coef": 0.0133
    },
    {
     "key": "p_nk_schedule",
     "label": "ネット競輪:日程別の勝率",
-    "coef": 0.0135
+    "coef": 0.0177
    },
    {
     "key": "p_nk_grade",
     "label": "ネット競輪:グレード別の勝率",
-    "coef": 0.0002
+    "coef": 0.0056
    },
    {
     "key": "p_nk_samepref",
     "label": "ネット競輪:同県同乗時の勝率",
-    "coef": 0.023
+    "coef": 0.0105
    }
   ]
  },
- "updated_at": "2026-11-16 01:42",
+ "updated_at": "2026-11-16 05:29",
  "picks": {
   "date": "2026-11-15",
   "races": [
