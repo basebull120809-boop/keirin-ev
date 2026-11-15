@@ -163,6 +163,8 @@ header{position:sticky;top:0;z-index:20;background:rgba(7,9,13,.82);backdrop-fil
 .fcol{display:flex;gap:3px;flex-wrap:wrap}
 .farr{color:var(--dim);font-size:12px}
 .fn{margin-left:auto;font-family:var(--num);font-size:12px;color:var(--muted)}
+.ftag{font-size:11px;font-weight:700;color:var(--muted)}
+.ftxt{font-family:var(--num);font-size:12px;color:var(--muted);letter-spacing:.03em;word-break:break-all;margin-top:2px}
 details.more{margin-top:8px;font-size:12px;color:var(--muted)}
 details.more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:4px;padding:4px 0;font-weight:700}
 details.more summary::-webkit-details-marker{display:none}
@@ -407,6 +409,71 @@ function tixHTML(bs, k) {
     return `<div class="tk${b.hit ? " hit" : ""}">${c}<span class="pb"><i style="width:${(b.p / maxP * 100).toFixed(0)}%"></i></span>
       <span class="o"><b>${b.stake.toLocaleString()}円</b>${b.odds.toFixed(1)}倍</span></div>`; }).join("")}</div>`;
 }
+/* ---- 2車単・2車複・3連複をフォーメーション（1列目-2列目-3列目）にまとめる。買い目そのものは増やさない ---- */
+const fmSubsets = (xs, max = 9) => { const o = []; for (let m = 1; m < 1 << xs.length; m++) { const t = xs.filter((_, i) => m >> i & 1); if (t.length <= max) o.push(t); } return o; };
+const fmSort = a => [...a].sort((p, q) => p - q);
+const fmKey = ns => fmSort(ns).join("=");
+function fmPick(U, cands) {      // 残りを最も多く覆う形を1つずつ取る
+  const rows = [];
+  while (U.size) {
+    let best = null;
+    for (const c of cands(U)) if (c.pts.length && c.pts.every(x => U.has(x)) && (!best || c.pts.length > best.pts.length || (c.pts.length === best.pts.length && c.sz < best.sz))) best = c;
+    best.pts.forEach(x => U.delete(x)); rows.push(best);
+  }
+  return rows;
+}
+function* candEx(U) {            // 2車単: 1着A ▶ 2着B
+  const T = [...U].map(x => x.split("-").map(Number)), firsts = fmSort(new Set(T.map(t => t[0])));
+  for (const A of fmSubsets(firsts, 5)) {
+    const B = []; for (let b = 1; b <= 9; b++) { const as = A.filter(a => a !== b); if (as.length && as.every(a => U.has(`${a}-${b}`))) B.push(b); }
+    if (!B.length) continue;
+    const pts = []; for (const a of A) for (const b of B) if (a !== b) pts.push(`${a}-${b}`);
+    if (A.every(a => pts.some(x => x.startsWith(a + "-")))) yield { f: [A, B], pts, sz: A.length + B.length, ord: true };
+  }
+}
+function* candQn(U) {            // 2車複: ボックス / 1車流し
+  const cs = fmSort(new Set([...U].flatMap(x => x.split("=").map(Number))));
+  for (const S of fmSubsets(cs)) if (S.length >= 3) { const t = []; for (let i = 0; i < S.length; i++) for (let j = i + 1; j < S.length; j++) t.push(fmKey([S[i], S[j]])); yield { f: [S, S], tag: "ボックス", pts: t, sz: S.length }; }
+  for (const a of cs) { const P = cs.filter(p => p !== a && U.has(fmKey([a, p]))); if (P.length) yield { f: [[a], P], tag: P.length > 1 ? "流し" : "", pts: P.map(p => fmKey([a, p])), sz: 1 + P.length }; }
+}
+function* candTrio(U) {          // 3連複: ボックス / 1車・2車軸流し / 軸-B-C
+  const cs = fmSort(new Set([...U].flatMap(x => x.split("=").map(Number))));
+  for (const S of fmSubsets(cs)) if (S.length >= 3) {
+    const t = []; for (let i = 0; i < S.length; i++) for (let j = i + 1; j < S.length; j++) for (let k = j + 1; k < S.length; k++) t.push(fmKey([S[i], S[j], S[k]]));
+    yield S.length === 3 ? { f: S.map(x => [x]), pts: t, sz: 3 } : { f: [S, S, S], tag: "ボックス", pts: t, sz: S.length };
+  }
+  for (const a of cs) {
+    for (const b of cs) if (b > a) { const P = cs.filter(p => p !== a && p !== b && U.has(fmKey([a, b, p]))); if (P.length) yield { f: [[a], [b], P], tag: P.length > 1 ? "2車軸流し" : "", pts: P.map(p => fmKey([a, b, p])), sz: 2 + P.length }; }
+    const nb = cs.filter(x => x !== a);
+    for (const P of fmSubsets(nb)) if (P.length >= 2) { const t = []; for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) t.push(fmKey([a, P[i], P[j]])); yield { f: [[a], P, P], tag: "1車軸流し", pts: t, sz: 1 + P.length }; }
+    for (const B of fmSubsets(nb, 4)) {
+      const C = nb.filter(c => B.some(b => b !== c) && B.every(b => b === c || U.has(fmKey([a, b, c]))));
+      if (!C.length) continue;
+      const t = new Set(); for (const b of B) for (const c of C) if (b !== c) t.add(fmKey([a, b, c]));
+      if (t.size >= 2) yield { f: [[a], B, C], pts: [...t], sz: 1.5 + B.length + C.length };
+    }
+  }
+}
+const FM_MEMO = new Map();
+function fmRows(bs, k) {
+  const id = k + ":" + bs.map(b => b.combo).join(",");
+  if (!FM_MEMO.has(id)) {
+    const U = new Set(bs.map(b => k === "ex" ? b.combo : fmKey(b.combo.split(/[-=]/).map(Number))));
+    FM_MEMO.set(id, fmPick(U, k === "ex" ? candEx : k === "qn" ? candQn : candTrio));
+  }
+  return FM_MEMO.get(id);
+}
+const fmText = (bs, k) => fmRows(bs, k).map(r => r.f.map(c => c.join("")).join("-")).join(" / ");
+function fmBoxHTML(bs, k) {
+  const key = b => k === "ex" ? b.combo : fmKey(b.combo.split(/[-=]/).map(Number));
+  const st = new Map(bs.map(b => [key(b), b.stake]));
+  const sep = k === "ex" ? '<span class="farr">▶</span>' : '<span class="farr">-</span>';
+  return `<div class="forms"><div class="axis">${fmRows(bs, k).map(r => {
+      const amts = r.pts.map(x => st.get(x) || 0), tot = sum(amts, x => x);
+      return `<div class="frow">${r.f.map(c => `<span class="fcol">${cars(c)}</span>`).join(sep)}${r.tag ? `<span class="ftag">${r.tag}</span>` : ""}<span class="fn">${r.pts.length}点・${tot.toLocaleString()}円</span></div>`;
+    }).join("")}<div class="ftxt">${esc(fmText(bs, k))}</div></div></div>
+    <details class="more"><summary>買い目と金額（${bs.length}点）</summary>${tixHTML(bs, k)}</details>`;
+}
 function planKV(bs) {
   const st = sum(bs, b => b.stake), pays = bs.map(b => b.stake * b.odds);
   return `<div class="kv"><div><span>点数・金額</span><b>${bs.length}<small style="font-size:11px">点</small> ${st.toLocaleString()}</b></div>
@@ -416,7 +483,7 @@ function planKV(bs) {
 function planBody(r, k) {
   const bs = listOf(r, k);
   if (!bs.length) return "";
-  return planKV(bs) + (k === "ex" || isBox(k) ? tixHTML(bs, k) : formationHTML(bs, r.names, k));
+  return planKV(bs) + (k === "ex" || isBox(k) ? fmBoxHTML(bs, k) : formationHTML(bs, r.names, k));
 }
 function recBlock(r) {
   const k = r.rec;
