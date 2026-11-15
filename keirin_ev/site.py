@@ -253,6 +253,33 @@ def export_report(con, days, dates, market=None, backtest=None):
         print("過去予想の書き出し失敗:", e)
 
 
+DOC_LIMIT = 240_000          # ページのデータベースは1文書 262,144 バイトまで（余裕を残す）
+_RES = dict(yoso="result", ex="ex_result", trio="trio_result", qn="qn_result")
+
+
+def _size(o):
+    return len(json.dumps(_clean(o), ensure_ascii=False).encode("utf-8"))
+
+
+def _slim_day(day):
+    """過去予想ページが使う項目だけ残す：おすすめを出したレースの、選ばれた券種の買い目と結果"""
+    races = []
+    for r in day.get("races", []):
+        rec = r.get("rec")
+        if not rec:
+            continue
+        k = rec if rec in ("ex", "trio", "qn") and r.get(rec) else "yoso"
+        bets = r.get("bets" if k == "yoso" else k) or []
+        if not bets:
+            continue
+        s = dict(venue=r.get("venue"), race_no=r.get("race_no"), deadline=r.get("deadline"), rec=rec,
+                 **{"bets" if k == "yoso" else k: [dict(combo=b["combo"], stake=b["stake"], odds=b["odds"],
+                                                       p=b["p"], hit=b.get("hit")) for b in bets]})
+        s[_RES[k]] = r.get(_RES[k])
+        races.append(s)
+    return dict(date=day.get("date"), summary=day.get("summary"), races=races)
+
+
 def split_docs(folder="site/docs"):
     """dashboard.json → ページのデータベース（collection: site）用の文書ファイル"""
     d = load()
@@ -264,7 +291,9 @@ def split_docs(folder="site/docs"):
     if HIST.exists():                            # 過去予想（直近14日・結果つき）
         try:
             h = json.loads(HIST.read_text(encoding="utf-8"))
-            h["days"] = h.get("days", [])[:14]
+            h["days"] = [_slim_day(x) for x in h.get("days", [])[:14]]
+            while len(h["days"]) > 1 and _size(h) > DOC_LIMIT:   # 文書の上限を超えたら古い日から落とす
+                h["days"].pop()
             docs["history"] = h
         except Exception as e:
             print("過去予想の読み込み失敗:", e)
