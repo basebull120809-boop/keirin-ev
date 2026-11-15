@@ -165,7 +165,10 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     rec, why, cand, pats = None, "", {}, {}
     skip_reason = ""
     try:                                         # 券種の使い分け（2車単・3連複・3連単）
-        from .bettypes import plans, recommend, confident_tri, load_rules
+        import importlib
+        from . import bettypes as _bt
+        importlib.reload(_bt)               # 実行中に push された選び方の変更もすぐ効かせる（git pull は push_now で毎回している）
+        plans, recommend, confident_tri, load_rules = _bt.plans, _bt.recommend, _bt.confident_tri, _bt.load_rules
         tr = load_rules()
         sp = kdreams.soup(html)
         exo = dict(kdreams.parse_odds_exacta(sp, rid)[["combo", "odds"]].values)
