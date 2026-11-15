@@ -1,9 +1,9 @@
 name: backfill（過去データの遡り取得）
 on:
-  schedule: [{ cron: "10 0,6,12,18 * * *" }]   # 毎日 03:10 / 09:10 / 15:10 / 21:10 JST（collect の 01:40 と重ならない）
+  schedule: [{ cron: "10 */3 * * *" }]   # 3時間ごと（JST 0:10 / 3:10 / … / 21:10）。collect とは concurrency で順番待ち
   workflow_dispatch:
     inputs:
-      days: { description: "1回で遡る日数", required: false, default: "20" }
+      days: { description: "1回で遡る日数（1日 約4分）", required: false, default: "38" }
 env:
   OLDEST: "2024-11-01"                       # ここまで遡ったら止まる
 concurrency: { group: data, cancel-in-progress: false }
@@ -11,7 +11,7 @@ permissions: { contents: write }
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 170
+    timeout-minutes: 200
     env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
     steps:
       - uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
       - name: 1日ずつ取得して保存
         run: |
           git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
-          for n in $(seq 1 ${{ inputs.days || '20' }}); do
+          for n in $(seq 1 ${{ inputs.days || '38' }}); do
             git pull -q --rebase -X theirs || true
             python main.py backfill 1 "$OLDEST" 2>&1 | tail -40
             git add data/daily
