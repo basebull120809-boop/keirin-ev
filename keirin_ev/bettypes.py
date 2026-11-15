@@ -36,7 +36,8 @@ class TypeRules:
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
     tri_max: int = 15          # 自信ありの3連単の最大点数
     tri_conf_hit: float = 0.40 # この点数・合成2倍以上でこの的中率に届けば「自信あり」の3連単
-    ev_floor: float = 0.85     # おすすめの期待回収の下限（厳選）（買い方全体の 的中率×合成オッズ）
+    ev_floor: float = 0.85     # おすすめの期待回収の下限（厳選）
+    odds_drift: float = 0.93   # 判定時（締切6〜1.5分前）のオッズは、確定時に当たり目ほど下がる（実測で約7%）。損得の計算はこの分を割り引く（買い方全体の 的中率×合成オッズ）
 
 
 def load_rules(path="config.json"):
@@ -183,6 +184,9 @@ def _plan(pm, odds, kmax, synth_min, r: TypeRules):
 def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_odds=None, qn_odds=None):
     """戻り値: (券種ごとの的中最優先プラン, 1着確率, 券種ごとのパターン一覧)"""
     ex, trio, win, qn = marginals(P, cars, combos)
+    d = r.odds_drift
+    sc = lambda o: {k: v * d for k, v in o.items()} if o else o     # 確定時の見込みオッズで判定する
+    ex_odds, trio_odds, tri_odds, qn_odds = sc(ex_odds), sc(trio_odds), sc(tri_odds), sc(qn_odds)
     pats = {}
     if qn_odds:
         pats["qn"] = patterns(qn, qn_odds, r.qn_max, r)
@@ -213,6 +217,9 @@ def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_o
     if tri_odds:
         out["tri"] = two_tier(tri, tri_odds, r.tri_max, r.synth_floor)
     out = {k: v for k, v in out.items() if v}
+    for v in list(out.values()) + [x for ps in pats.values() for x in ps]:   # 表示する個々のオッズは今のオッズのまま
+        for b in v["bets"]:
+            b["odds"] = round(b["odds"] / d, 1)
     return out, win, {k: v for k, v in pats.items() if v}
 
 
@@ -237,7 +244,8 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
     """おすすめ券種と理由。pl: plans() の戻り値, yoso_bets: 3連単フォーメーションの買い目"""
     cand = {k: dict(hit=v["hit"], synth=v["synth"], ev=v["ev"]) for k, v in pl.items() if k != "tri"}
     ys = _summ(yoso_bets)
-    if ys:
+    if ys:                                       # 3連単の買い目は今のオッズのまま → 確定時の見込みに割り引く
+        ys["synth"] *= r.odds_drift; ys["ev"] *= r.odds_drift
         cand["yoso"] = ys
     for k, v in cand.items():
         v["n"] = len(pl[k]["bets"]) if k in pl else len(yoso_bets)

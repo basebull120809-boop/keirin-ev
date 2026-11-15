@@ -255,6 +255,18 @@ def main():
         m.to_json("models/latest.json", n_races=n, period=f"{dates.min()}〜{dates.max()}",
                   trained_at=f"{pd.Timestamp.now(tz='Asia/Tokyo'):%Y-%m-%d %H:%M}")
         print(f"学習完了 {n}レース  ブレンド a={m.blend[0]:.3f} b={m.blend[1]:.3f}")
+        # 市場との差を直接学ぶ残差モデル（判定ではこちらを優先して使う）。学習に使っていない期間での成績も記録する
+        from keirin_ev.residual import ResidualModel
+        from keirin_ev.evaluate import evaluate
+        g, _, _ = evaluate(D, lambda A, B: ResidualModel(l2=0.1).fit(A["T"], A["Q"], A["win_combo"]).predict(B["T"], B["Q"]))
+        g0, _, _ = evaluate(D, lambda A, B: TrifectaModel().fit(A["T"], A["first"], A["second"], A["third"], A["Q"], A["win_combo"]).predict(B["T"], B["Q"]))
+        rm = ResidualModel(l2=0.1).fit(D["T"], D["Q"], D["win_combo"])
+        rm.to_json("models/residual.json", n_races=n, period=f"{dates.min()}〜{dates.max()}",
+                   trained_at=f"{pd.Timestamp.now(tz='Asia/Tokyo'):%Y-%m-%d %H:%M}",
+                   oos=dict(cut=g["cut"], races=g["races"], gain=round(g["gain"], 5), se=round(g["se"], 5),
+                            gain_old=round(g0["gain"], 5), se_old=round(g0["se"], 5)))
+        print(f"残差モデル 検証期間（{g['cut']}〜 {g['races']}R）で市場より +{g['gain']:.4f}±{g['se']:.4f}／レース"
+              f"（旧モデル +{g0['gain']:.4f}±{g0['se']:.4f}）")
     elif a.cmd == "live":                        # 当日運用（締切前判定と通知）
         from keirin_ev.live import run
         run(max_minutes=float(a.args[0]) if a.args else 340)

@@ -143,12 +143,22 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     if not X["T"].race_ids:
         return [], ent, []
     P = model.predict(X["T"], X["Q"])[0]
+    use_res = False
+    try:                                         # 市場との差を直接学んだ残差モデルがあればそちらを使う（検証期間で旧モデルより良い）
+        from .residual import ResidualModel
+        P = ResidualModel.from_json("models/residual.json").predict(X["T"], X["Q"])[0]
+        use_res = True
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        print("残差モデルを使えず旧モデルで判定", rid, e, flush=True)
     cars = X["T"].cars[0]
     sim = None
     try:                                         # 予想前に1000回シミュレーション → あらゆる展開を混ぜた確率で組む
         from .simulate import simulate
         sim = simulate(P, X["T"], 0, X["O"][0], seed=int(rid[-8:]))
-        P = sim["P"]
+        if not use_res:                          # 残差モデルはシミュレーションで混ぜるとわずかに悪化したので、確率はそのまま使う
+            P = sim["P"]
     except Exception as e:
         print("シミュレーション失敗（元の確率で判定）", rid, e, flush=True)
     bets = []
