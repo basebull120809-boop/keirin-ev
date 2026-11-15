@@ -36,7 +36,7 @@ class TypeRules:
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
     tri_max: int = 15          # 自信ありの3連単の最大点数
     tri_conf_hit: float = 0.40 # この点数・合成2倍以上でこの的中率に届けば「自信あり」の3連単
-    ev_floor: float = 0.80     # おすすめの期待回収の下限（買い方全体の 的中率×合成オッズ）
+    ev_floor: float = 0.85     # おすすめの期待回収の下限（厳選）（買い方全体の 的中率×合成オッズ）
 
 
 def load_rules(path="config.json"):
