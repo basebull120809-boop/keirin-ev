@@ -268,6 +268,16 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
     return "\n".join(L)
 
 
+def _note_fail(date, venue, rid, dl, err):
+    """判定できなかったレースを、理由付きの見送りとして記録する"""
+    day = LIVE / date
+    day.mkdir(parents=True, exist_ok=True)
+    with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]), deadline=dl.strftime("%H:%M"),
+                                notes=[], lines=[], n_bets=0, n_invest=0,
+                                reason=f"データ取得・判定に失敗したため見送り（{err}）"), ensure_ascii=False) + "\n")
+
+
 def push_now(msg):
     """買い目を出すたびにリポジトリへ保存（ページへの反映を早くするため）"""
     if not os.environ.get("GITHUB_ACTIONS"):
@@ -311,7 +321,7 @@ def run(max_minutes=340):
     except Exception as e:
         print("締切一覧の保存失敗:", e, flush=True)
     note = Notifier(date)
-    done = set()
+    done, fails = set(), {}
     nf = LIVE / date / "notes.jsonl"          # 前の実行で判定済みのレースは判定し直さない
     if nf.exists():
         for line in nf.read_text(encoding="utf-8").splitlines():
@@ -344,13 +354,26 @@ def run(max_minutes=340):
             left = (dl - t).total_seconds() / 60
             if rid in done or left > LEAD_MAX:
                 continue
-            done.add(rid)
             if left < LEAD_MIN:
+                done.add(rid)
+                if fails.get(rid):                 # 何度やっても判定できなかった → 理由付きで見送りにしてページへ
+                    _note_fail(date, venue, rid, dl, fails[rid])
+                    try:
+                        from .site import export_live
+                        export_live(date)
+                    except Exception as e:
+                        print("サイト用データ更新失敗:", e, flush=True)
+                    push_now(f"live {venue} {int(rid[-4:])}R 判定失敗")
                 continue
             try:
                 bets, ent, notes = judge(date, venue, rid, model, rules, bank, dl, inv_rules)
-            except Exception as e:
-                print("判定失敗", rid, e, flush=True); continue
+            except Exception as e:                 # 失敗しても締切の LEAD_MIN 分前までは30秒ごとにやり直す
+                import traceback
+                fails[rid] = f"{type(e).__name__}: {e}"[:200]
+                print("判定失敗（やり直します）", rid, fails[rid], flush=True)
+                traceback.print_exc()
+                continue
+            done.add(rid)
             print(f"{t:%H:%M} {venue} {int(rid[-4:])}R 締切{dl:%H:%M} 買い目{len(bets)}点", flush=True)
             msg = fmt(venue, rid, dl, bets, ent, mode, notes) if bets else None
             if msg:
