@@ -57,7 +57,17 @@ def fetch(path, refresh=False):
     if _session is None:
         _session = requests.Session()
     time.sleep(SLEEP_SEC)
-    r = _session.get(url, headers={"User-Agent": UA}, timeout=30)
+    for k in range(3):                         # 応答待ちで止まりやすいので、短めに切って3回まで取り直す
+        try:
+            r = _session.get(url, headers={"User-Agent": UA}, timeout=15)
+            if r.status_code < 500:
+                break
+            err = RuntimeError(f"HTTP {r.status_code}: {url}")
+        except (requests.Timeout, requests.ConnectionError) as e:
+            err = e
+        if k == 2:
+            raise err
+        time.sleep(3 * (k + 1))
     if r.status_code != 200:
         raise RuntimeError(f"HTTP {r.status_code}: {url}")
     r.encoding = r.apparent_encoding or "utf-8"
