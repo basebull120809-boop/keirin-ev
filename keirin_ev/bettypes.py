@@ -8,7 +8,7 @@
   - 3連単 : 混戦。フォーメーションで配当を取りにいく（既存の本命予想）
   どの券種も「モデル確率（市場オッズで補正）×その券種の実オッズ」で期待回収を計算し、
   おすすめは「とにかく当てる」：券種ごとに確率の高い順に的中率60%まで広げ、
-  合成オッズ1.5倍以上・買い方全体の期待回収 ev_floor（80%）以上を保てる目だけを足していく
+  合成オッズ2倍（届かなければ最低1.7倍）以上・買い方全体の期待回収 ev_floor（80%）以上を保てる目だけを足していく
   的中率が一番高い券種を選ぶ（期待値では選ばない）。
   3連単は「自信があるとき」だけおすすめにする：確率の高い順に tri_max 点まで
   （合成2倍以上を保って）広げて的中率 tri_conf_hit 以上に届くなら、3連単を最優先。
@@ -30,8 +30,9 @@ class TypeRules:
     hit_min: float = 0.20      # おすすめにする的中率の下限
     ev_tie: float = 0.03       # （旧）期待回収の差がこれ以内なら的中率で選ぶ
     hit_target: float = 0.75   # おすすめで狙う的中率（ここまで点数を広げる）
-    synth_floor: float = 1.5   # 合成オッズ1.5倍未満のおすすめは出さない
-    qn_synth_floor: float = 1.5  # 2車複も同じ
+    synth_floor: float = 1.7   # 合成オッズがこれ未満のおすすめは出さない（最低ライン）
+    qn_synth_floor: float = 1.7  # 2車複も同じ
+    synth_target: float = 2.0  # まず合成オッズこの倍率を保って組む。的中率が足りないときだけ synth_floor まで下げる
     hit_tie: float = 0.03      # 的中率の差がこれ以内なら点数の少ない方
     tri_max: int = 15          # 自信ありの3連単の最大点数
     tri_conf_hit: float = 0.40 # この点数・合成2倍以上でこの的中率に届けば「自信あり」の3連単
@@ -195,15 +196,22 @@ def plans(P, cars, combos, ex_odds, trio_odds, r: TypeRules = TypeRules(), tri_o
             if max(i, j, k) < len(cars) and P[idx] > 0:
                 tri[f"{int(cars[i])}-{int(cars[j])}-{int(cars[k])}"] = float(P[idx])
         pats["tri"] = patterns(tri, tri_odds, 20, r)
+    def two_tier(pm, odds, kmax, floor):
+        """合成 synth_target 倍を保って組む。的中率が hit_min に届かないときだけ floor 倍まで下げて組み直す"""
+        a = hit_plan(pm, odds, kmax, r, floor=max(floor, r.synth_target))
+        if a and a["hit"] >= r.hit_min:
+            return a
+        b = hit_plan(pm, odds, kmax, r, floor=floor)
+        return b if b and (not a or b["hit"] > a["hit"]) else a
     out = {}
     if qn_odds:
-        out["qn"] = hit_plan(qn, qn_odds, r.qn_max, r, floor=r.qn_synth_floor)
+        out["qn"] = two_tier(qn, qn_odds, r.qn_max, r.qn_synth_floor)
     if ex_odds:
-        out["ex"] = hit_plan(ex, ex_odds, r.ex_max, r)
+        out["ex"] = two_tier(ex, ex_odds, r.ex_max, r.synth_floor)
     if trio_odds:
-        out["trio"] = hit_plan(trio, trio_odds, r.trio_max, r)
+        out["trio"] = two_tier(trio, trio_odds, r.trio_max, r.synth_floor)
     if tri_odds:
-        out["tri"] = hit_plan(tri, tri_odds, r.tri_max, r)
+        out["tri"] = two_tier(tri, tri_odds, r.tri_max, r.synth_floor)
     out = {k: v for k, v in out.items() if v}
     return out, win, {k: v for k, v in pats.items() if v}
 
