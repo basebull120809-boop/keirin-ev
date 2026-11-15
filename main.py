@@ -9,6 +9,7 @@
   python main.py train                        全データで学習し models/latest.json に保存
   python main.py live [分]                     当日運用：締切前オッズで判定してIssueに通知
   python main.py upset                        波乱度（荒れ／堅い）の学習と検証 → reports/upset.md
+  python main.py linecollapse                 ライン崩壊確率の検証 → reports/linecollapse.md
   python main.py market                       市場の歪みレポート（人気別・オッズ帯別回収率）
   python main.py backtest [--ev 1.2]          ウォークフォワード検証
   python main.py predict <race_id> [--bank 300000]   当日レースの推奨買い目
@@ -265,6 +266,9 @@ def main():
     elif a.cmd == "upset":                       # 波乱度（荒れ／堅い）の学習と検証 → reports/upset.md
         from keirin_ev.upset import report as upset_report
         upset_report(con)
+    elif a.cmd == "linecollapse":                # ライン崩壊確率と選手の条件つきのクセの検証 → reports/linecollapse.md
+        from keirin_ev.linecollapse import report as lc_report
+        lc_report(con)
     elif a.cmd == "market":
         r1, r2 = market_report(con)
         print(r1.to_string()); print(); print(r2.to_string())
