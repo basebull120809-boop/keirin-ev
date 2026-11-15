@@ -253,6 +253,29 @@ def export_report(con, days, dates, market=None, backtest=None):
         print("過去予想の書き出し失敗:", e)
 
 
+DOC_LIMIT = 250_000      # ページのデータベースは1文書 256KiB まで（少し余裕を見る）
+HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn",
+             "result", "ex_result", "trio_result", "qn_result")
+
+
+def _size(v):
+    return len(json.dumps(_clean(v), ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+
+
+def slim_history(h, limit=DOC_LIMIT):
+    """過去予想の文書を、ページの「過去の予想」で使う分だけに絞る。
+    おすすめの出たレース・表示に使う項目だけ残し、それでも上限を超えたら古い日から落とす"""
+    days = []
+    for d in h.get("days", []):
+        races = [{k: r.get(k) for k in HIST_KEEP if k in r}
+                 for r in d.get("races", []) if r.get("rec") and (r.get("bets") or r.get(r["rec"]))]
+        days.append(dict(date=d.get("date"), summary=d.get("summary"), races=races))
+    out = dict(updated_at=h.get("updated_at"), days=days)
+    while len(out["days"]) > 1 and _size(out) > limit:
+        out["days"].pop()
+    return out
+
+
 def split_docs(folder="site/docs"):
     """dashboard.json → ページのデータベース（collection: site）用の文書ファイル"""
     d = load()
@@ -265,12 +288,13 @@ def split_docs(folder="site/docs"):
         try:
             h = json.loads(HIST.read_text(encoding="utf-8"))
             h["days"] = h.get("days", [])[:14]
-            docs["history"] = h
+            docs["history"] = slim_history(h)
         except Exception as e:
             print("過去予想の読み込み失敗:", e)
     out = []
     for k, v in docs.items():
         if v:
-            (Path(folder) / f"{k}.json").write_text(json.dumps(_clean(v), ensure_ascii=False), encoding="utf-8")
+            (Path(folder) / f"{k}.json").write_text(json.dumps(_clean(v), ensure_ascii=False, separators=(",", ":")),
+                                                     encoding="utf-8")
             out.append(k)
     return out
