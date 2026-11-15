@@ -44,6 +44,15 @@ header{position:sticky;top:0;z-index:20;background:rgba(7,9,13,.82);backdrop-fil
 .live i{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 currentColor;animation:pulse 1.6s infinite}
 .live.off{background:rgba(255,255,255,.05);color:var(--muted);border-color:var(--line2)}
 .live.off i{animation:none}
+.upd{display:flex;align-items:center;gap:6px}
+.reload{width:30px;height:30px;margin:-6px -6px -6px 0;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.reload svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.reload:active{background:rgba(255,255,255,.08)}
+.reload:focus-visible{outline:2px solid var(--lime);outline-offset:0}
+.reload.busy{color:var(--lime)} .reload.busy svg{animation:spin .7s linear infinite}
+.reload.done{color:var(--lime)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.reload.busy svg{animation:none}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,75,43,.6)}70%{box-shadow:0 0 0 7px rgba(255,75,43,0)}100%{box-shadow:0 0 0 0 rgba(255,75,43,0)}}
 .stripe{height:3px;background:linear-gradient(90deg,var(--blue) 0 38%,transparent 38% 40%,var(--hot) 40% 60%,transparent 60% 62%,var(--lime) 62%)}
 
@@ -271,7 +280,7 @@ footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--line);font-si
 <header>
   <div class="wrap hd">
     <h1 class="logo"><span class="mark">EV</span><span>EV BANK<small>KEIRIN · 期待値デスク</small></span></h1>
-    <div class="status"><span id="live" class="live off"><i></i>STANDBY</span><span id="updated" class="num">読み込み中</span></div>
+    <div class="status"><span id="live" class="live off"><i></i>STANDBY</span><span class="upd"><span id="updated" class="num">読み込み中</span><button id="reload" class="reload" type="button" aria-label="最新データを読み込む" title="最新データを読み込む"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></button></span></div>
   </div>
   <div class="stripe" aria-hidden="true"></div>
 </header>
@@ -749,11 +758,13 @@ async function getJSON(path) {
 async function load() {
   try {
     const nd = await getJSON("site/dashboard.json");
-    if (D.updated_at && nd.updated_at && nd.updated_at < D.updated_at) return;   // 古いコピーで戻さない
+    if (D.updated_at && nd.updated_at && nd.updated_at < D.updated_at) return true;   // 古いコピーで戻さない
     D = nd;
     renderAll();
+    return true;
   } catch (e) {
     if (!D.updated_at) $("#updated").textContent = "読み込めませんでした";
+    return false;
   }
 }
 let histAt = 0;
@@ -767,6 +778,18 @@ async function loadHistory(force) {
 }
 route();
 load(); loadHistory(true);
+/* 手動の再読み込み（ホーム画面から開いたときはブラウザの再読み込みが使えないため） */
+$("#reload").addEventListener("click", async () => {
+  const b = $("#reload");
+  if (b.classList.contains("busy")) return;
+  b.classList.remove("done"); b.classList.add("busy");
+  const t0 = Date.now();
+  const ok = (await Promise.all([load(), loadHistory(true)]))[0];
+  await new Promise(r => setTimeout(r, Math.max(0, 500 - (Date.now() - t0))));   // 押したことが見えるよう最低0.5秒回す
+  b.classList.remove("busy");
+  if (ok) { b.classList.add("done"); setTimeout(() => b.classList.remove("done"), 1200); }
+  else $("#updated").textContent = "読み込めませんでした";
+});
 setInterval(() => { if (!document.hidden) load(); }, 30000);
 setInterval(() => { if (!document.hidden) { safe(renderHead); safe(renderToday); } }, 15000);
 document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
