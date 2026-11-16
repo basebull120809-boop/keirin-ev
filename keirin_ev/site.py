@@ -65,6 +65,7 @@ def day_races(pb, last):
                                      hit=None if b.hit != b.hit else bool(b.hit))
                                 for b in g[g["kind"] == "yoso"].itertuples()],
                           invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"), qn=_bl(g, "qn"),
+                          tenkai=_bl(g, "tenkai"),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
                           ex_result=dict(combo=r["ex_combo"], payout=_int(r.get("ex_payout")))

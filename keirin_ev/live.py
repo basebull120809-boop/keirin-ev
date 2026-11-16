@@ -202,11 +202,26 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             b["rec"] = b["kind"] == rec
     except Exception as e:
         print("券種の判定失敗", rid, e, flush=True)
+    tk_note = None
+    try:                                         # 展開予想：主導権を取りそうなラインの「先頭→番手」2車単を紙上で記録（見送りとは別枠）
+        from . import tenkai
+        sp2 = kdreams.soup(html)
+        exo2 = dict(kdreams.parse_odds_exacta(sp2, rid)[["combo", "odds"]].values)
+        tk_note, tkb = tenkai.race_plan(ent, exo2, names=dict(zip(ent["car"].astype(int), ent["name"])))
+        base2 = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                     deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+        bets += [dict(base2, **b, kind="tenkai", rec=False) for b in tkb]
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        print("展開予想失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
     except Exception as e:
         print("解説作成失敗", rid, e, flush=True); notes, line_probs = [], []
+    if tk_note:
+        notes = [tk_note] + notes
     sim_ev = None
     if sim is not None:                          # 出す買い目を1000回のレースで採点
         try:
@@ -273,9 +288,13 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
         L += [f"- {b['combo'].replace('=', '-')}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(rb, key=lambda b: -b["p"])] + [""]
     else:
         yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
-        if not yoso:
+        if yoso:
+            L += ["#### ◎予想：3連単"] + _fmt_block(yoso, names)
+        elif not any(b.get("kind") == "tenkai" for b in bets):
             return None
-        L += ["#### ◎予想：3連単"] + _fmt_block(yoso, names)
+    tk = [b for b in bets if b.get("kind") == "tenkai"]
+    if tk:
+        L += ["#### 展開予想（紙上・検証中）"] + [f"- 2車単 {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）主導権確率 {b['p']:.0%}" for b in tk] + [""]
     if notes:
         L += ["**ひとこと**"] + [f"- {n}" for n in notes] + [""]
     L.append(f"判定時刻 {bets[0]['taken_at']}")
@@ -486,7 +505,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"] == "ex", b["kind"] == "trio", b["kind"] == "qn"
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai"]), b["kind"] == "trio", b["kind"] == "qn"   # tenkai は2車単
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],

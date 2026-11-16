@@ -9,6 +9,7 @@
   python main.py train                        全データで学習し models/latest.json に保存
   python main.py live [分]                     当日運用：締切前オッズで判定してIssueに通知
   python main.py reasonfill [日数]             取得済みの日に勝敗因を足す（誰が先行したかを拾う）
+  python main.py tenkai [B|H]                  展開予想（どのラインが主導権を取るか）を学習 → models/tenkai.json
   python main.py hrider                       先行（H）を取った選手と番手の成績 vs 市場 → reports/hrider.md
   python main.py upset                        波乱度（荒れ／堅い）の学習と検証 → reports/upset.md
   python main.py linecollapse                 ライン崩壊確率の検証 → reports/linecollapse.md
@@ -242,6 +243,9 @@ def main():
     elif a.cmd == "wtprobe":                     # WINTICKET「データ分析」の作り調査（debug/winticket に保存）
         from keirin_ev.winticket import probe as wt_probe
         wt_probe()
+    elif a.cmd == "tenkai":                      # 展開予想（主導権ライン）だけ学習 → models/tenkai.json
+        from keirin_ev import tenkai
+        tenkai.train(a.args[0] if a.args else "B")
     elif a.cmd == "reasonfill":                  # 取得済みの日に勝敗因を足す（新しい日から）
         from keirin_ev.kdreams import reason_fill
         print(reason_fill(int(a.args[0]) if a.args else 3), "日分に勝敗因を追加")
@@ -275,6 +279,11 @@ def main():
                             gain_old=round(g0["gain"], 5), se_old=round(g0["se"], 5)))
         print(f"残差モデル 検証期間（{g['cut']}〜 {g['races']}R）で市場より +{g['gain']:.4f}±{g['se']:.4f}／レース"
               f"（旧モデル +{g0['gain']:.4f}±{g0['se']:.4f}）")
+        try:                                     # 展開予想（どのラインが主導権を取るか）
+            from keirin_ev import tenkai
+            tenkai.train()
+        except Exception as e:
+            print("展開予想の学習失敗:", e)
     elif a.cmd == "live":                        # 当日運用（締切前判定と通知）
         from keirin_ev.live import run
         run(max_minutes=float(a.args[0]) if a.args else 340)
