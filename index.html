@@ -566,13 +566,13 @@ function hitBlock(r) {
 }
 function cardBody(r, hist) {
   const hit = hitBlock(r);
-  if (hist && !hit) return (r.rec ? recBlock(r) : betBlock(r, "yoso")) + poolBlock(r) + tenkaiBlock(r) +
+  if (hist && !hit) return (r.rec ? recBlock(r) : betBlock(r, "yoso")) +
     ((r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : "");
-  const others = (r.rec ? recBlock(r) : betBlock(r, "yoso")) + poolBlock(r) + tenkaiBlock(r);
+  const others = (r.rec ? recBlock(r) : betBlock(r, "yoso"));
   const why = r.reason || (D.board?.races || []).find(x => x.venue === r.venue && x.race_no === r.race_no)?.reason;
   const top = hit || `<div class="reason" style="padding:4px 14px 10px;font-size:13px;color:var(--muted)">当てる予想は今回なし（4点の当たる見込みが50%未満、または当たっても1.5倍に届かない）</div>`;
   return `${top}
-    ${others ? `<details class="more" style="margin:0 14px 10px"><summary>ほかの見方（本命・ズレ・展開）</summary>${!r.rec && !r.bets?.length && why ? `<div class="reason" style="padding:4px 0;font-size:12px;color:var(--muted)">本命：${esc(why)}</div>` : ""}${others}</details>` : ""}
+    ${others ? `<details class="more" style="margin:0 14px 10px"><summary>ほかの見方（本命）</summary>${!r.rec && !r.bets?.length && why ? `<div class="reason" style="padding:4px 0;font-size:12px;color:var(--muted)">本命：${esc(why)}</div>` : ""}${others}</details>` : ""}
     ${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}`;
 }
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
