@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 22:23",
+ "updated_at": "2026-11-16 22:27",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -6414,7 +6414,10 @@
     "race_no": 6,
     "deadline": "22:15",
     "judged_at": "22:09:03",
-    "result": null,
+    "result": {
+     "combo": "1-5-7",
+     "payout": 67490
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -6427,7 +6430,7 @@
       "odds": 93.5,
       "p": 0.0227,
       "ev": 2.124,
-      "hit": null,
+      "hit": false,
       "lead": 0.6016
      }
     ],
@@ -6438,7 +6441,7 @@
       "odds": 4.7,
       "p": 0.2172,
       "ev": 1.021,
-      "hit": null,
+      "hit": false,
       "ratio": 1.366
      },
      {
@@ -6447,14 +6450,23 @@
       "odds": 11.3,
       "p": 0.0797,
       "ev": 0.9,
-      "hit": null,
+      "hit": false,
       "ratio": 1.205
      }
     ],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=5",
+     "payout": 2850
+    },
+    "ex_result": {
+     "combo": "1-5",
+     "payout": 3780
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 16240
+    },
     "notes": [
      "主導権予想：5中武三四郎のライン 60%（2番手は 2小原唯志 34%） → 逃げ切り目 2車単 5-6（93.5倍）",
      "1着が出るライン：2-3 が 62%",
@@ -9978,26 +9990,26 @@
   },
   "pool": {
    "total": {
-    "stake": 1500,
+    "stake": 2500,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 3,
+    "points": 5,
     "hits": 0,
-    "races": 1,
+    "races": 2,
     "race_hits": 0,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-16",
-     "stake": 1500,
+     "stake": 2500,
      "payout": 0.0,
-     "points": 3,
+     "points": 5,
      "hits": 0,
-     "races": 1,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -1500.0
+     "cum": -2500.0
     }
    ]
   },
@@ -10050,26 +10062,26 @@
   },
   "tenkai": {
    "total": {
-    "stake": 9000,
+    "stake": 10000,
     "payout": 3300.0,
-    "roi": 0.3667,
-    "points": 9,
+    "roi": 0.33,
+    "points": 10,
     "hits": 1,
-    "races": 9,
+    "races": 10,
     "race_hits": 1,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-16",
-     "stake": 9000,
+     "stake": 10000,
      "payout": 3300.0,
-     "points": 9,
+     "points": 10,
      "hits": 1,
-     "races": 9,
+     "races": 10,
      "race_hits": 1,
-     "roi": 0.3667,
-     "cum": -5700.0
+     "roi": 0.33,
+     "cum": -6700.0
     }
    ]
   },
