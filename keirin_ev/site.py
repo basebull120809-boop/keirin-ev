@@ -255,7 +255,7 @@ def export_report(con, days, dates, market=None, backtest=None):
 
 
 DOC_LIMIT = 250_000      # ページのデータベースは1文書 256KiB まで（少し余裕を見る）
-HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn",
+HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "tenkai",
              "result", "ex_result", "trio_result", "qn_result")
 
 
