@@ -1,0 +1,37 @@
+name: reasonfill（過去分の勝敗因をまとめて取得）
+on:
+  workflow_dispatch:
+    inputs:
+      days: { description: "取り直す日数（1日 約2〜3分）", required: false, default: "120" }
+concurrency: { group: reasonfill, cancel-in-progress: false }   # data グループに入れると、定時の backfill に待機中の実行を置き換えられるため別グループ
+permissions: { contents: write }
+jobs:
+  reasonfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: main }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: 5日ずつ取得して保存
+        run: |
+          git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
+          n=$(( (${{ inputs.days || '120' }} + 4) / 5 ))
+          for k in $(seq 1 $n); do
+            git pull -q --rebase -X theirs || true
+            python main.py reasonfill 5 2>&1 | tail -6
+            git add data/daily
+            git commit -qm "勝敗因の追加 $(date +%F_%H%M)" || break
+            for i in 1 2 3; do git pull -q --rebase -X theirs && git push -q && break; sleep 5; done
+          done
+      - name: 集計
+        if: always()
+        run: |
+          git pull -q --rebase -X theirs || true
+          python main.py hrider || echo "hrider failed"
+          git add reports
+          git commit -qm "先行（H）の集計 $(date +%F_%H%M)" || exit 0
+          for i in 1 2 3; do git pull -q --rebase -X theirs && git push -q && break; sleep 5; done
