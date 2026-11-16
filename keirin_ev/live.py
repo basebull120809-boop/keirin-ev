@@ -181,9 +181,14 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         plans, recommend, confident_tri, load_rules = _bt.plans, _bt.recommend, _bt.confident_tri, _bt.load_rules
         tr = load_rules()
         sp = kdreams.soup(html)
-        exo = dict(kdreams.parse_odds_exacta(sp, rid)[["combo", "odds"]].values)
-        tro = dict(kdreams.parse_odds_trio(sp, rid)[["combo", "odds"]].values)
-        qno = dict(kdreams.parse_odds_quinella(sp, rid)[["combo", "odds"]].values)
+        _ox, _ot, _oq = kdreams.parse_odds_exacta(sp, rid), kdreams.parse_odds_trio(sp, rid), kdreams.parse_odds_quinella(sp, rid)
+        for nm, df in (("exacta", _ox), ("trio", _ot), ("quinella", _oq)):   # 券種どうしのズレを判定時点のオッズで検証するため保存
+            if len(df):
+                fo = day / f"odds_live_{nm}.csv.gz"
+                df.assign(taken_at=t.strftime("%H:%M:%S")).to_csv(fo, mode="a", index=False, compression="gzip", header=not fo.exists())
+        exo = dict(_ox[["combo", "odds"]].values)
+        tro = dict(_ot[["combo", "odds"]].values)
+        qno = dict(_oq[["combo", "odds"]].values)
         tri_o = {c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {}
         pl, win, pats = plans(P, cars, COMBOS, exo, tro, tr, tri_odds=tri_o, qn_odds=qno)
         tconf = confident_tri(pl, tr)
