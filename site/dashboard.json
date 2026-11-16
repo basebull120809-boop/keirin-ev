@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 21:59",
+ "updated_at": "2026-11-16 22:06",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -5899,7 +5899,10 @@
     "race_no": 5,
     "deadline": "21:55",
     "judged_at": "21:49:28",
-    "result": null,
+    "result": {
+     "combo": "2-3-1",
+     "payout": 15780
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -5912,14 +5915,23 @@
       "odds": 2.5,
       "p": null,
       "ev": 0.0,
-      "hit": null,
+      "hit": false,
       "lead": 0.6855
      }
     ],
     "pool": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=3",
+     "payout": 2240
+    },
+    "ex_result": {
+     "combo": "2-3",
+     "payout": 4420
+    },
+    "trio_result": {
+     "combo": "1=2=3",
+     "payout": 570
+    },
     "notes": [
      "主導権予想：1望月一成のライン 69%（2番手は 5岩原健馬 30%） → 逃げ切り目 2車単 1-2（2.5倍）",
      "1着が出るライン：1-2-4 が 76%",
@@ -9372,26 +9384,26 @@
   },
   "tenkai": {
    "total": {
-    "stake": 8000,
+    "stake": 9000,
     "payout": 3300.0,
-    "roi": 0.4125,
-    "points": 8,
+    "roi": 0.3667,
+    "points": 9,
     "hits": 1,
-    "races": 8,
+    "races": 9,
     "race_hits": 1,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-16",
-     "stake": 8000,
+     "stake": 9000,
      "payout": 3300.0,
-     "points": 8,
+     "points": 9,
      "hits": 1,
-     "races": 8,
+     "races": 9,
      "race_hits": 1,
-     "roi": 0.4125,
-     "cum": -4700.0
+     "roi": 0.3667,
+     "cum": -5700.0
     }
    ]
   },
