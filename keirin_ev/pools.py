@@ -52,6 +52,17 @@ DRIFT = 0.93           # 判定時→確定で当たり目のオッズは約7%�
 HIT_BUDGET = 2000
 
 
+def axis_cars(P, cars, combos, n=HIT_POINTS):
+    """予想の軸：モデルの3連複確率の上位 n 組に出てくる車の集合（当てる予想と同じ見方）。
+    2車複・2車単・3連複・3連単の表示はこの車どうしの組だけにそろえる"""
+    pt = {}
+    for k, (i, j, l) in enumerate(combos):
+        if P[k] > 0 and cars[i] and cars[j] and cars[l]:
+            kk = _key(f"{cars[i]}={cars[j]}={cars[l]}")
+            pt[kk] = pt.get(kk, 0.0) + float(P[k])
+    return {int(c) for kk in sorted(pt, key=pt.get, reverse=True)[:n] for c in kk.split("=")}
+
+
 def hit_plan(P, cars, combos, trio_odds):
     """モデルの3連単確率 P（504）から3連複の上位4点。見込み50%以上・見通した合成オッズ1.5倍以上のときだけ。
     払戻がそろうように配分（どれが当たっても約 合成オッズ 倍）。過去（10〜11月 確定オッズ）：的中率58%・回収率92%"""

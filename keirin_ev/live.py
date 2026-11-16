@@ -19,6 +19,8 @@ from . import kdreams
 from .db import connect
 from .collector import store
 from .model import TrifectaModel, build_tensors, COMBOS
+
+AXIS_KINDS = ("yoso", "ex", "qn", "trio", "tenkai")   # 予想の軸にそろえる券種（invest・pool・hit4 はそのまま）
 from .strategy import Rules, pick_bets
 
 JST = "Asia/Tokyo"
@@ -236,6 +238,18 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         bets += [dict(base3, **b, kind="hit4", rec=False) for b in hb]
     except Exception as e:
         print("券種ズレの判定失敗", rid, e, flush=True)
+    try:                                         # 予想の軸をそろえる：当てる予想の上位車どうし以外の目は「_z」（紙上の記録だけ）に回して表示しない
+        import re
+        from . import pools
+        core = pools.axis_cars(P, cars, COMBOS)
+        for b in bets:
+            if b["kind"] in AXIS_KINDS and not {int(x) for x in re.split("[-=]", str(b["combo"]))} <= core:
+                b["kind"], b["rec"] = b["kind"] + "_z", False
+        if rec and not any(b["kind"] == rec for b in bets):
+            rec, why = None, ""
+            skip_reason = "予想の軸（" + "・".join(map(str, sorted(core))) + "）から外れた買い目しかないため見送り"
+    except Exception as e:
+        print("軸そろえ失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
@@ -536,7 +550,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai"]), b["kind"].isin(["trio", "pool", "hit4"]), b["kind"] == "qn"   # tenkai は2車単、pool は3連複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z"]), b["kind"].isin(["qn", "qn_z"])   # tenkai は2車単、pool は3連複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],
