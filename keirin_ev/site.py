@@ -49,6 +49,8 @@ def _bl(g, kind):
                  hit=None if b.hit != b.hit else bool(b.hit))
         if kind == "pool" and getattr(b, "ratio", None) == getattr(b, "ratio", None) and getattr(b, "ratio", None) is not None:
             d["ratio"] = float(b.ratio)
+        if kind == "hit4" and getattr(b, "synth", None) == getattr(b, "synth", None) and getattr(b, "synth", None) is not None:
+            d["synth"] = float(b.synth)
         if kind == "tenkai":                     # 展開予想：lead＝主導権確率、p＝2車単の的中率見込み（lead 導入前の記録は p が主導権確率）
             lead = getattr(b, "lead", None)
             if lead is None or lead != lead:
@@ -76,7 +78,7 @@ def day_races(pb, last):
                                      hit=None if b.hit != b.hit else bool(b.hit))
                                 for b in g[g["kind"] == "yoso"].itertuples()],
                           invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"), qn=_bl(g, "qn"),
-                          tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"),
+                          tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
                           ex_result=dict(combo=r["ex_combo"], payout=_int(r.get("ex_payout")))
@@ -266,7 +268,7 @@ def export_report(con, days, dates, market=None, backtest=None):
 
 
 DOC_LIMIT = 250_000      # ページのデータベースは1文書 256KiB まで（少し余裕を見る）
-HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "tenkai", "pool",
+HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "tenkai", "pool", "hit4",
              "result", "ex_result", "trio_result", "qn_result")
 
 
