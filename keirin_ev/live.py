@@ -224,6 +224,16 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         pass
     except Exception as e:
         print("展開予想失敗", rid, e, flush=True)
+    try:                                         # 券種どうしのズレ：3連単から見て割安な3連複を紙上で記録（見送りとは別枠）
+        from . import pools
+        sp3 = kdreams.soup(html)
+        tri3 = {c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {}
+        tro3 = dict(kdreams.parse_odds_trio(sp3, rid)[["combo", "odds"]].values)
+        base3 = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                     deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+        bets += [dict(base3, **b, kind="pool", rec=False) for b in pools.trio_plan(tri3, tro3)]
+    except Exception as e:
+        print("券種ズレの判定失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
@@ -299,10 +309,13 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
         yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
         if yoso:
             L += ["#### ◎予想：3連単"] + _fmt_block(yoso, names)
-        elif not any(b.get("kind") == "tenkai" for b in bets):
+        elif not any(b.get("kind") in ("tenkai", "pool") for b in bets):
             return None
         else:
             L += ["#### ◎予想：見送り（条件を満たす買い方がないため）", ""]
+    pb = [b for b in bets if b.get("kind") == "pool"]
+    if pb:
+        L += ["#### ズレ予想 3連複（紙上・検証中）"] + [f"- 3連複 {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）割安度 {b['ratio']:.2f}" for b in pb] + [""]
     tk = [b for b in bets if b.get("kind") == "tenkai"]
     if tk:
         L += ["#### 展開予想（紙上・検証中）"] + [f"- 2車単 {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）主導権確率 {b['p']:.0%}" for b in tk] + [""]
@@ -516,7 +529,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai"]), b["kind"] == "trio", b["kind"] == "qn"   # tenkai は2車単
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai"]), b["kind"].isin(["trio", "pool"]), b["kind"] == "qn"   # tenkai は2車単、pool は3連複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],

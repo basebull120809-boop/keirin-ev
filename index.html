@@ -539,6 +539,19 @@ function tenkaiBlock(r) {
       <div><span>当たれば</span><b style="font-size:14px">${Math.round(Math.min(...pays)).toLocaleString()}</b></div></div>
     ${fmBoxHTML(bs, "ex")}</div>`;
 }
+/* ズレ予想（3連単から見て割安な3連複。紙上で検証中） */
+function poolBlock(r) {
+  const bs = r.pool || [];
+  if (!bs.length) return "";
+  const st = sum(bs, x => x.stake), pays = bs.map(x => x.stake * x.odds);
+  const rmax = Math.max(...bs.map(x => x.ratio || 0));
+  return `<div class="rec"><div class="rec-h"><span class="mk">ズレ</span><b>3連複</b><span class="tag warn">検証中</span></div>
+    <p class="why">3連単のオッズから見ると、3連複が安く売られている組${rmax ? `（割安度 最大${rmax.toFixed(2)}倍）` : ""}。過去の確定オッズでは割安度1.2以上・20倍以下で回収率94〜101%。</p>
+    <div class="kv"><div><span>点数・金額</span><b>${bs.length}<small style="font-size:11px">点</small> ${st.toLocaleString()}</b></div>
+      <div><span>的中率（見込み）</span><b>${pct(sum(bs, x => x.p), 0)}</b></div>
+      <div><span>当たれば</span><b style="font-size:14px">${Math.round(Math.min(...pays)).toLocaleString()}${pays.length > 1 ? "〜" + Math.round(Math.max(...pays)).toLocaleString() : ""}</b></div></div>
+    ${fmBoxHTML(bs, "trio")}</div>`;
+}
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
 
 /* ---- ヘッダー ---- */
@@ -606,10 +619,10 @@ function renderToday() {
     if (!main) {
       const why = r.reason || (D.board?.races || []).find(x => x.venue === r.venue && x.race_no === r.race_no)?.reason;
       return `<article class="card rc">${head.replace('<div class="nm">', '<div class="nm"><span class="tag mute" style="float:right">本命は見送り</span>')}
-      ${why ? `<div class="reason" style="padding:0 14px 10px;font-size:12px;color:var(--muted)">${esc(why)}</div>` : ""}${tenkaiBlock(r)}
+      ${why ? `<div class="reason" style="padding:0 14px 10px;font-size:12px;color:var(--muted)">${esc(why)}</div>` : ""}${poolBlock(r)}${tenkaiBlock(r)}
       ${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</article>`;
     }
-    return `<article class="card rc">${head}${main}${tenkaiBlock(r)}
+    return `<article class="card rc">${head}${main}${poolBlock(r)}${tenkaiBlock(r)}
       ${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</article>`;
   }).join("")}</div>`;
 }
@@ -674,7 +687,7 @@ function renderHistory() {
       <div class="mid"><b>${esc(r.venue)}</b> <span class="num" style="font-size:12px;color:var(--muted)">${esc(r.deadline || "")}</span>
         <div class="t">${r.rec ? `<span class="tag lime">◎${TYPE[r.rec]}${listOf(r, r.rec).some(b => b.hit) ? " 的中" : ""}</span>` : r.bets?.length ? `<span class="tag lime">本命 ${r.bets.length}点</span>` : ""}${r.invest?.length ? `<span class="tag hot">★ ${r.invest.length}点</span>` : ""}${hit ? '<span class="tag good">的中</span>' : resOf(r, kOf(r)) ? '<span class="tag bad">不的中</span>' : ""}</div></div>
       <div class="res">${res}</div></summary>
-      <div class="body">${r.rec ? recBlock(r) : betBlock(r, "yoso")}${tenkaiBlock(r)}${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</div></details>`;
+      <div class="body">${r.rec ? recBlock(r) : betBlock(r, "yoso")}${poolBlock(r)}${tenkaiBlock(r)}${(r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : ""}</div></details>`;
   }).join("")}</div>` : `<div class="empty"><b>該当するレースはありません</b></div>`;
 }
 $("#dates").addEventListener("click", e => { const b = e.target.closest("button[data-d]"); if (b) { histDate = b.dataset.d; renderHistory(); } });
