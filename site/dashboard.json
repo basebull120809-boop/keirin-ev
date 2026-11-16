@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 20:29",
+ "updated_at": "2026-11-16 20:36",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -3892,7 +3892,10 @@
     "race_no": 12,
     "deadline": "20:25",
     "judged_at": "20:19:17",
-    "result": null,
+    "result": {
+     "combo": "2-7-1",
+     "payout": 5830
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -3903,15 +3906,23 @@
       "combo": "1-7",
       "stake": 1000,
       "odds": 8.6,
-      "p": null,
+      "p": 0.5891,
       "ev": 0.0,
-      "hit": null,
-      "lead": 0.5891
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 660
+    },
+    "ex_result": {
+     "combo": "2-7",
+     "payout": 1330
+    },
+    "trio_result": {
+     "combo": "1=2=7",
+     "payout": 860
+    },
     "notes": [
      "主導権予想：1堀江省吾のライン 59%（2番手は 5原口昌平 34%） → 逃げ切り目 2車単 1-7（8.6倍）",
      "1着が出るライン：5-2-4 が 55%",
@@ -6902,6 +6913,31 @@
      "race_hits": 4,
      "roi": 0.8682,
      "cum": -75640.0
+    }
+   ]
+  },
+  "tenkai": {
+   "total": {
+    "stake": 1000,
+    "payout": 0.0,
+    "roi": 0.0,
+    "points": 1,
+    "hits": 0,
+    "races": 1,
+    "race_hits": 0,
+    "days": 1
+   },
+   "daily": [
+    {
+     "date": "2026-11-16",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": -1000.0
     }
    ]
   },
