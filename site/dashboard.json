@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 12:52",
+ "updated_at": "2026-11-16 12:55",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -1208,7 +1208,10 @@
     "race_no": 5,
     "deadline": "12:44",
     "judged_at": "12:38:27",
-    "result": null,
+    "result": {
+     "combo": "2-7-3",
+     "payout": 18650
+    },
     "bets": [
      {
       "combo": "4-1-5",
@@ -1216,7 +1219,7 @@
       "odds": 7.0,
       "p": 0.1137,
       "ev": 0.796,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1-4-5",
@@ -1224,7 +1227,7 @@
       "odds": 9.3,
       "p": 0.095,
       "ev": 0.884,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1-4-2",
@@ -1232,7 +1235,7 @@
       "odds": 9.9,
       "p": 0.0845,
       "ev": 0.836,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "4-1-2",
@@ -1240,7 +1243,7 @@
       "odds": 11.7,
       "p": 0.0637,
       "ev": 0.746,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1-4-7",
@@ -1248,7 +1251,7 @@
       "odds": 18.7,
       "p": 0.042,
       "ev": 0.785,
-      "hit": null
+      "hit": false
      }
     ],
     "invest": [],
@@ -1260,7 +1263,7 @@
       "odds": 4.5,
       "p": 0.2106,
       "ev": 0.881,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4=6",
@@ -1268,7 +1271,7 @@
       "odds": 37.0,
       "p": 0.0244,
       "ev": 0.84,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=7",
@@ -1276,7 +1279,7 @@
       "odds": 38.9,
       "p": 0.017,
       "ev": 0.614,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=5",
@@ -1284,13 +1287,22 @@
       "odds": 89.4,
       "p": 0.0101,
       "ev": 0.841,
-      "hit": null
+      "hit": false
      }
     ],
     "qn": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 1310
+    },
+    "ex_result": {
+     "combo": "2-7",
+     "payout": 2140
+    },
+    "trio_result": {
+     "combo": "2=3=7",
+     "payout": 3720
+    },
     "notes": [
      "1000回シミュレーション：的中 312回／プラス収支 312回（トリガミ 0回）・平均回収率 117%",
      "展開の内訳（1着が出たライン）：1-4-5 79%、2-7 15%、3 5%",
@@ -2987,12 +2999,12 @@
   },
   "trio": {
    "total": {
-    "stake": 350500,
+    "stake": 353300,
     "payout": 270580.0,
-    "roi": 0.772,
-    "points": 438,
+    "roi": 0.7659,
+    "points": 442,
     "hits": 52,
-    "races": 123,
+    "races": 124,
     "race_hits": 52,
     "days": 4
    },
@@ -3032,25 +3044,25 @@
     },
     {
      "date": "2026-11-16",
-     "stake": 2800,
+     "stake": 5600,
      "payout": 8820.0,
-     "points": 5,
+     "points": 9,
      "hits": 1,
-     "races": 1,
+     "races": 2,
      "race_hits": 1,
-     "roi": 3.15,
-     "cum": -79920.0
+     "roi": 1.575,
+     "cum": -82720.0
     }
    ]
   },
   "yoso": {
    "total": {
-    "stake": 461800,
+    "stake": 464600,
     "payout": 382600.0,
-    "roi": 0.8285,
-    "points": 1857,
+    "roi": 0.8235,
+    "points": 1862,
     "hits": 82,
-    "races": 173,
+    "races": 174,
     "race_hits": 82,
     "days": 4
    },
@@ -3090,25 +3102,25 @@
     },
     {
      "date": "2026-11-16",
-     "stake": 11200,
+     "stake": 14000,
      "payout": 7520.0,
-     "points": 19,
+     "points": 24,
      "hits": 1,
-     "races": 4,
+     "races": 5,
      "race_hits": 1,
-     "roi": 0.6714,
-     "cum": -79200.0
+     "roi": 0.5371,
+     "cum": -82000.0
     }
    ]
   },
   "rec": {
    "total": {
-    "stake": 366700,
+    "stake": 369500,
     "payout": 302810.0,
-    "roi": 0.8258,
-    "points": 590,
+    "roi": 0.8195,
+    "points": 594,
     "hits": 65,
-    "races": 131,
+    "races": 132,
     "race_hits": 65,
     "days": 4
    },
@@ -3148,14 +3160,14 @@
     },
     {
      "date": "2026-11-16",
-     "stake": 11200,
+     "stake": 14000,
      "payout": 15030.0,
-     "points": 25,
+     "points": 29,
      "hits": 2,
-     "races": 4,
+     "races": 5,
      "race_hits": 2,
-     "roi": 1.342,
-     "cum": -63890.0
+     "roi": 1.0736,
+     "cum": -66690.0
     }
    ]
   }
