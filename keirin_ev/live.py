@@ -469,10 +469,14 @@ def paper_results():
     for d in b["date"].unique():
         f = st.day_dir(d) / "results.csv.gz"
         lf = LIVE / str(d) / "results.csv"          # 確定データが来るまでは当日取り込んだ結果を使う
-        if f.exists():
-            res.append(pd.read_csv(f, dtype={"race_id": str}))
-        elif lf.exists():
-            res.append(pd.read_csv(lf, dtype={"race_id": str}))
+        got = st.read(str(d), "results") if f.exists() else pd.DataFrame()   # 空のファイルでも止まらない
+        if got.empty and lf.exists():
+            try:
+                got = pd.read_csv(lf, dtype={"race_id": str})
+            except pd.errors.EmptyDataError:
+                got = pd.DataFrame()
+        if not got.empty:
+            res.append(got)
     if not res:
         return b.assign(hit=np.nan, payout=np.nan)
     r = pd.concat(res)

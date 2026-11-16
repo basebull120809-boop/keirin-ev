@@ -21,6 +21,8 @@ def has_day(date):
 
 def save_day(date, frames):
     d = day_dir(date)
+    if not any(frames.get(t) is not None and len(frames.get(t)) for t in TABLES):
+        return 0                                   # 取れなかった日は保存しない（空のファイルで取得済み扱いにしない）
     d.mkdir(parents=True, exist_ok=True)
     n = 0
     for t in TABLES + EXTRA:
