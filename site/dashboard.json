@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 22:56",
+ "updated_at": "2026-11-16 23:09",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -7468,7 +7468,10 @@
     "race_no": 8,
     "deadline": "22:55",
     "judged_at": "22:49:24",
-    "result": null,
+    "result": {
+     "combo": "1-6-3",
+     "payout": 12500
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -7481,15 +7484,24 @@
       "odds": 4.3,
       "p": 0.213,
       "ev": 0.916,
-      "hit": null,
+      "hit": false,
       "lead": 0.7769
      }
     ],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=6",
+     "payout": 1330
+    },
+    "ex_result": {
+     "combo": "1-6",
+     "payout": 1880
+    },
+    "trio_result": {
+     "combo": "1=3=6",
+     "payout": 5880
+    },
     "notes": [
      "主導権予想：1福田海響のライン 78%（2番手は 4冨倉巧 16%） → 逃げ切り目 2車単 1-5（4.3倍）",
      "1着が出るライン：1-5-7 が 62%",
@@ -10755,26 +10767,26 @@
   },
   "tenkai": {
    "total": {
-    "stake": 12000,
+    "stake": 13000,
     "payout": 23300.0,
-    "roi": 1.9417,
-    "points": 12,
+    "roi": 1.7923,
+    "points": 13,
     "hits": 2,
-    "races": 12,
+    "races": 13,
     "race_hits": 2,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-16",
-     "stake": 12000,
+     "stake": 13000,
      "payout": 23300.0,
-     "points": 12,
+     "points": 13,
      "hits": 2,
-     "races": 12,
+     "races": 13,
      "race_hits": 2,
-     "roi": 1.9417,
-     "cum": 11300.0
+     "roi": 1.7923,
+     "cum": 10300.0
     }
    ]
   },
