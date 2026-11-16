@@ -398,7 +398,7 @@ def parse_deadline(s):
 
 
 def parse_finish(s, rid):
-    """全着順・着差・上がり・決まり手・S/B"""
+    """全着順・着差・上がり・決まり手・S/B・勝敗因（「赤板逃切り」「先行捲られ」など）"""
     t = s.find("table", class_="result_table")
     rows = []
     if t is None:
@@ -416,7 +416,8 @@ def parse_finish(s, rid):
                          margin=rest[1] if len(rest) > 1 else None,
                          agari=_num(rest[2]) if len(rest) > 2 else None,
                          kimarite=rest[3] if len(rest) > 3 else None,
-                         sb=rest[4] if len(rest) > 4 else None))
+                         sb=rest[4] if len(rest) > 4 else None,
+                         reason=rest[5] if len(rest) > 5 else None))
     return pd.DataFrame(rows)
 
 
@@ -590,5 +591,36 @@ def yosou_fill(n_days=2, log=print):
         e = e.merge(y, on=["race_id", "car"], how="left")
         e.to_csv(store.day_dir(d) / "entries.csv.gz", index=False, compression="gzip")
         log(f"{d}: 記者予想 {y['tip'].notna().sum()}件 / {len(e)}選手")
+        done += 1
+    return done
+
+
+def reason_fill(n_days=3, log=print):
+    """取得済みの日のうち勝敗因（finish.reason）が無い日を新しい順に n_days 日分、取り直して finish に足す。
+    誰がレースを動かしたか（先行した＝最終ホームを先頭で通過した選手）を勝敗因の文字から拾うために使う"""
+    from . import store
+    done = 0
+    for d in sorted(store.collected_dates(), reverse=True):
+        if done >= n_days:
+            break
+        f = store.read(d, "finish")
+        if f.empty or ("reason" in f and f["reason"].notna().any()):
+            continue
+        rc = store.read(d, "races")
+        F = []
+        for venue, rid in rc[["venue", "race_id"]].astype(str).values:
+            try:
+                F.append(parse_finish(soup(fetch(f"/{venue}/racedetail/{rid}/")), rid)[["race_id", "car", "reason"]])
+            except Exception as ex:
+                log(f"  ! {rid} 勝敗因の取得失敗: {ex}")
+        if not F:
+            continue
+        y = pd.concat(F, ignore_index=True)
+        y["race_id"] = y["race_id"].astype(str)
+        f = f.drop(columns=[c for c in ("reason",) if c in f]).merge(y, on=["race_id", "car"], how="left")
+        if not f["reason"].notna().any():          # 1件も取れなかった日は印を付けて飛ばす（毎回取り直さない）
+            f["reason"] = "-"
+        f.to_csv(store.day_dir(d) / "finish.csv.gz", index=False, compression="gzip")
+        log(f"{d}: 勝敗因 {y['reason'].notna().sum()}件 / {len(f)}選手")
         done += 1
     return done
