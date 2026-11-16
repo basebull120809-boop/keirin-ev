@@ -292,6 +292,8 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
             L += ["#### ◎予想：3連単"] + _fmt_block(yoso, names)
         elif not any(b.get("kind") == "tenkai" for b in bets):
             return None
+        else:
+            L += ["#### ◎予想：見送り（条件を満たす買い方がないため）", ""]
     tk = [b for b in bets if b.get("kind") == "tenkai"]
     if tk:
         L += ["#### 展開予想（紙上・検証中）"] + [f"- 2車単 {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）主導権確率 {b['p']:.0%}" for b in tk] + [""]
