@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 20:10",
+ "updated_at": "2026-11-16 20:15",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -400,6 +400,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "2=4",
      "payout": 210
@@ -606,6 +607,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "1=4",
      "payout": 2070
@@ -906,6 +908,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "2=5",
      "payout": 1120
@@ -1125,6 +1128,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "3=7",
      "payout": 2770
@@ -1291,6 +1295,7 @@
      }
     ],
     "qn": [],
+    "tenkai": [],
     "qn_result": {
      "combo": "2=7",
      "payout": 1310
@@ -1642,6 +1647,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "3=7",
      "payout": 380
@@ -1872,6 +1878,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "3=5",
      "payout": 340
@@ -2169,6 +2176,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "2=4",
      "payout": 2990
@@ -2398,6 +2406,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "3=7",
      "payout": 250
@@ -2751,6 +2760,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "1=4",
      "payout": 300
@@ -3041,6 +3051,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "1=6",
      "payout": 7970
@@ -3252,6 +3263,7 @@
      }
     ],
     "qn": [],
+    "tenkai": [],
     "qn_result": {
      "combo": "1=7",
      "payout": 230
@@ -3463,6 +3475,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "2=4",
      "payout": 170
@@ -3788,6 +3801,7 @@
       "hit": false
      }
     ],
+    "tenkai": [],
     "qn_result": {
      "combo": "2=7",
      "payout": 220
