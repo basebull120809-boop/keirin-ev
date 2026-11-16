@@ -530,9 +530,13 @@ function linesHTML(r) {
 function tenkaiBlock(r) {
   const bs = r.tenkai || [];
   if (!bs.length) return "";
-  const b = bs[0];
-  return `<div class="blk"><div class="blk-h"><b>展開予想 2車単</b><span class="tag warn">検証中</span></div>
-    <div class="kv"><div><span>買い目</span><b>${esc(b.combo)}</b></div><div><span>金額 / オッズ</span><b>${b.stake.toLocaleString()} / ${b.odds.toFixed(1)}倍</b></div><div><span>主導権確率</span><b>${pct(b.p, 0)}</b></div></div>
+  const b = bs[0], st = sum(bs, x => x.stake), pays = bs.map(x => x.stake * x.odds);
+  const why = (r.notes || []).find(n => n.startsWith("主導権予想")) || `主導権予想：${b.combo.split("-")[0]}番のライン ${pct(b.lead, 0)}`;
+  return `<div class="rec"><div class="rec-h"><span class="mk">展開</span><b>2車単</b><span class="tag warn">検証中</span></div>
+    <p class="why">${esc(why.replace(/ → 逃げ切り目.*$/, ""))}。主導権を取るラインの先頭→番手（逃げ切り目）を1点。</p>
+    <div class="kv"><div><span>点数・金額</span><b>${bs.length}<small style="font-size:11px">点</small> ${st.toLocaleString()}</b></div>
+      <div><span>的中率（見込み）</span><b>${b.p == null ? "—" : pct(sum(bs, x => x.p), 0)}</b></div>
+      <div><span>当たれば</span><b style="font-size:14px">${Math.round(Math.min(...pays)).toLocaleString()}</b></div></div>
     ${fmBoxHTML(bs, "ex")}</div>`;
 }
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";

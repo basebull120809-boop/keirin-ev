@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 20:23",
+ "updated_at": "2026-11-16 20:29",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -3903,9 +3903,10 @@
       "combo": "1-7",
       "stake": 1000,
       "odds": 8.6,
-      "p": 0.5891,
+      "p": null,
       "ev": 0.0,
-      "hit": null
+      "hit": null,
+      "lead": 0.5891
      }
     ],
     "qn_result": null,

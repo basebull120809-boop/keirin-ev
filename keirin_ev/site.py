@@ -43,9 +43,18 @@ def _int(v):
 
 
 def _bl(g, kind):
-    return [dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds), p=float(b.p), ev=float(b.ev),
+    out = []
+    for b in g[g["kind"] == kind].itertuples():
+        d = dict(combo=b.combo, stake=int(b.stake), odds=float(b.odds), p=float(b.p), ev=float(b.ev),
                  hit=None if b.hit != b.hit else bool(b.hit))
-            for b in g[g["kind"] == kind].itertuples()]
+        if kind == "tenkai":                     # 展開予想：lead＝主導権確率、p＝2車単の的中率見込み（lead 導入前の記録は p が主導権確率）
+            lead = getattr(b, "lead", None)
+            if lead is None or lead != lead:
+                d.update(lead=d["p"], p=None)
+            else:
+                d["lead"] = float(lead)
+        out.append(d)
+    return out
 
 
 def day_races(pb, last):

@@ -210,6 +210,10 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         tk_note, tkb = tenkai.race_plan(ent, exo2, names=dict(zip(ent["car"].astype(int), ent["name"])))
         base2 = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                      deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+        for b in tkb:                            # p は主導権確率 → モデルの2車単確率（的中率の見込み）に置き換え、主導権確率は lead に
+            a2, b2 = (int(x) for x in b["combo"].split("-"))
+            pe = float(sum(P[n] for n, (i, j, k) in enumerate(COMBOS) if cars[i] == a2 and cars[j] == b2))
+            b.update(lead=b["p"], p=round(pe, 5), ev=round(pe * b["odds"], 3))
         bets += [dict(base2, **b, kind="tenkai", rec=False) for b in tkb]
     except FileNotFoundError:
         pass
