@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-16 23:19",
+ "updated_at": "2026-11-16 23:26",
  "picks": {
   "date": "2026-11-16",
   "races": [
@@ -7564,7 +7564,10 @@
     "race_no": 9,
     "deadline": "23:15",
     "judged_at": "23:09:11",
-    "result": null,
+    "result": {
+     "combo": "2-3-5",
+     "payout": 4010
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -7577,7 +7580,7 @@
       "odds": 5.5,
       "p": 0.1609,
       "ev": 0.885,
-      "hit": null,
+      "hit": false,
       "lead": 0.6918
      }
     ],
@@ -7588,7 +7591,7 @@
       "odds": 16.1,
       "p": 0.0592,
       "ev": 0.953,
-      "hit": null,
+      "hit": false,
       "ratio": 1.278
      },
      {
@@ -7597,14 +7600,23 @@
       "odds": 11.6,
       "p": 0.0794,
       "ev": 0.921,
-      "hit": null,
+      "hit": false,
       "ratio": 1.236
      }
     ],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=3",
+     "payout": 1240
+    },
+    "ex_result": {
+     "combo": "2-3",
+     "payout": 2290
+    },
+    "trio_result": {
+     "combo": "2=3=5",
+     "payout": 810
+    },
     "notes": [
      "主導権予想：1杉浦颯太のライン 69%（2番手は 7秋末蓮 28%） → 逃げ切り目 2車単 1-4（5.5倍）",
      "1着が出るライン：1-4-6 が 59%",
@@ -11131,26 +11143,26 @@
   },
   "pool": {
    "total": {
-    "stake": 3000,
+    "stake": 4000,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 6,
+    "points": 8,
     "hits": 0,
-    "races": 3,
+    "races": 4,
     "race_hits": 0,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-16",
-     "stake": 3000,
+     "stake": 4000,
      "payout": 0.0,
-     "points": 6,
+     "points": 8,
      "hits": 0,
-     "races": 3,
+     "races": 4,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -3000.0
+     "cum": -4000.0
     }
    ]
   },
@@ -11203,26 +11215,26 @@
   },
   "tenkai": {
    "total": {
-    "stake": 13000,
+    "stake": 14000,
     "payout": 23300.0,
-    "roi": 1.7923,
-    "points": 13,
+    "roi": 1.6643,
+    "points": 14,
     "hits": 2,
-    "races": 13,
+    "races": 14,
     "race_hits": 2,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-16",
-     "stake": 13000,
+     "stake": 14000,
      "payout": 23300.0,
-     "points": 13,
+     "points": 14,
      "hits": 2,
-     "races": 13,
+     "races": 14,
      "race_hits": 2,
-     "roi": 1.7923,
-     "cum": 10300.0
+     "roi": 1.6643,
+     "cum": 9300.0
     }
    ]
   },
