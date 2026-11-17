@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 14:59",
+ "updated_at": "2026-11-17 15:01",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -1943,7 +1943,10 @@
     "race_no": 9,
     "deadline": "14:50",
     "judged_at": "14:44:35",
-    "result": null,
+    "result": {
+     "combo": "6-4-7",
+     "payout": 7100
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -1956,7 +1959,7 @@
       "odds": 5.4,
       "p": 0.0855,
       "ev": 0.462,
-      "hit": null,
+      "hit": false,
       "lead": 0.5677
      }
     ],
@@ -1967,14 +1970,23 @@
       "odds": 10.9,
       "p": 0.1055,
       "ev": 1.15,
-      "hit": null,
+      "hit": false,
       "ratio": 1.536
      }
     ],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=6",
+     "payout": 300
+    },
+    "ex_result": {
+     "combo": "6-4",
+     "payout": 670
+    },
+    "trio_result": {
+     "combo": "4=6=7",
+     "payout": 3190
+    },
     "notes": [
      "主導権予想：6田中衛太のライン 57%（2番手は 4岡部伶音 29%） → 逃げ切り目 2車単 6-2（5.4倍）",
      "1着が出るライン：6-2 が 49%",
@@ -3637,12 +3649,12 @@
   },
   "pool": {
    "total": {
-    "stake": 12000,
+    "stake": 12500,
     "payout": 1400.0,
-    "roi": 0.1167,
-    "points": 24,
+    "roi": 0.112,
+    "points": 25,
     "hits": 1,
-    "races": 12,
+    "races": 13,
     "race_hits": 1,
     "days": 2
    },
@@ -3660,14 +3672,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 6500,
+     "stake": 7000,
      "payout": 1400.0,
-     "points": 13,
+     "points": 14,
      "hits": 1,
-     "races": 7,
+     "races": 8,
      "race_hits": 1,
-     "roi": 0.2154,
-     "cum": -10600.0
+     "roi": 0.2,
+     "cum": -11100.0
     }
    ]
   },
@@ -3731,12 +3743,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 22000,
+    "stake": 23000,
     "payout": 26800.0,
-    "roi": 1.2182,
-    "points": 22,
+    "roi": 1.1652,
+    "points": 23,
     "hits": 3,
-    "races": 22,
+    "races": 23,
     "race_hits": 3,
     "days": 2
    },
@@ -3754,14 +3766,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 8000,
+     "stake": 9000,
      "payout": 3500.0,
-     "points": 8,
+     "points": 9,
      "hits": 1,
-     "races": 8,
+     "races": 9,
      "race_hits": 1,
-     "roi": 0.4375,
-     "cum": 4800.0
+     "roi": 0.3889,
+     "cum": 3800.0
     }
    ]
   },
