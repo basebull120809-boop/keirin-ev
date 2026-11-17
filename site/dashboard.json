@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 19:14",
+ "updated_at": "2026-11-17 19:27",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -3471,7 +3471,10 @@
     "race_no": 9,
     "deadline": "19:16",
     "judged_at": "19:10:24",
-    "result": null,
+    "result": {
+     "combo": "2-1-7",
+     "payout": 7970
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -3480,9 +3483,18 @@
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 2210
+    },
+    "ex_result": {
+     "combo": "2-1",
+     "payout": 3860
+    },
+    "trio_result": {
+     "combo": "1=2=7",
+     "payout": 630
+    },
     "notes": [
      "主導権を取るライン：1-4-7（吉田晏生）72%、2-5（伊藤奎）15%、3-6（八嶋稔真）13%",
      "主導権予想：1吉田晏生のライン 72%（2番手は 3八嶋稔真 19%） → 逃げ切り目 2車単 1-7（9.8倍）",
@@ -5646,12 +5658,12 @@
   },
   "pool": {
    "total": {
-    "stake": 24500,
+    "stake": 25500,
     "payout": 9900.0,
-    "roi": 0.4041,
-    "points": 49,
+    "roi": 0.3882,
+    "points": 51,
     "hits": 4,
-    "races": 28,
+    "races": 29,
     "race_hits": 4,
     "days": 2
    },
@@ -5669,14 +5681,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 19000,
+     "stake": 20000,
      "payout": 9900.0,
-     "points": 38,
+     "points": 40,
      "hits": 4,
-     "races": 23,
+     "races": 24,
      "race_hits": 4,
-     "roi": 0.5211,
-     "cum": -14600.0
+     "roi": 0.495,
+     "cum": -15600.0
     }
    ]
   },
@@ -5765,12 +5777,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 40000,
+    "stake": 41000,
     "payout": 43500.0,
-    "roi": 1.0875,
-    "points": 40,
+    "roi": 1.061,
+    "points": 41,
     "hits": 7,
-    "races": 40,
+    "races": 41,
     "race_hits": 7,
     "days": 2
    },
@@ -5788,14 +5800,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 26000,
+     "stake": 27000,
      "payout": 20200.0,
-     "points": 26,
+     "points": 27,
      "hits": 5,
-     "races": 26,
+     "races": 27,
      "race_hits": 5,
-     "roi": 0.7769,
-     "cum": 3500.0
+     "roi": 0.7481,
+     "cum": 2500.0
     }
    ]
   },
