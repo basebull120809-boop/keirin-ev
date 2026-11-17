@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 10:10",
+ "updated_at": "2026-11-17 10:19",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -511,7 +511,10 @@
     "race_no": 5,
     "deadline": "10:08",
     "judged_at": "10:02:08",
-    "result": null,
+    "result": {
+     "combo": "6-4-7",
+     "payout": 12160
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -525,7 +528,7 @@
       "odds": 12.4,
       "p": 0.0784,
       "ev": 0.973,
-      "hit": null,
+      "hit": false,
       "ratio": 1.299
      },
      {
@@ -534,14 +537,23 @@
       "odds": 18.2,
       "p": 0.0498,
       "ev": 0.905,
-      "hit": null,
+      "hit": false,
       "ratio": 1.209
      }
     ],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=6",
+     "payout": 930
+    },
+    "ex_result": {
+     "combo": "6-4",
+     "payout": 1800
+    },
+    "trio_result": {
+     "combo": "4=6=7",
+     "payout": 5090
+    },
     "notes": [
      "主導権予想：5村瀬大和のライン 57%（2番手は 4蒋野翔太 37%） → 逃げ切り目 2車単 5-2（28.0倍）",
      "1着が出るライン：4-1 が 62%",
@@ -1793,12 +1805,12 @@
   },
   "pool": {
    "total": {
-    "stake": 6000,
+    "stake": 7000,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 12,
+    "points": 14,
     "hits": 0,
-    "races": 6,
+    "races": 7,
     "race_hits": 0,
     "days": 2
    },
@@ -1816,14 +1828,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 500,
+     "stake": 1500,
      "payout": 0.0,
-     "points": 1,
-     "hits": false,
-     "races": 1,
+     "points": 3,
+     "hits": 0,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -6000.0
+     "cum": -7000.0
     }
    ]
   },
@@ -1907,6 +1919,31 @@
      "race_hits": 0,
      "roi": 0.0,
      "cum": 7300.0
+    }
+   ]
+  },
+  "tenkai_z": {
+   "total": {
+    "stake": 1000,
+    "payout": 0.0,
+    "roi": 0.0,
+    "points": 1,
+    "hits": 0,
+    "races": 1,
+    "race_hits": 0,
+    "days": 1
+   },
+   "daily": [
+    {
+     "date": "2026-11-17",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": -1000.0
     }
    ]
   },
