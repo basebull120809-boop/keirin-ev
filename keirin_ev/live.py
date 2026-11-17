@@ -263,7 +263,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     except Exception as e:
         print("軸そろえ失敗", rid, e, flush=True)
     scen_notes = []
-    if scen is not None:                         # おすすめ＝展開シナリオ予想の3連複を確率の高い順に5点
+    if True:                                     # おすすめ＝当たる確率の高い3連複を上から5点（期待値・軸は見ない。全レース出す）
         try:
             from .scenario import trio_top, TRIO_POINTS, BACKTEST
             tro_s = dict(kdreams.parse_odds_trio(kdreams.soup(html), rid)[["combo", "odds"]].values)
@@ -276,16 +276,17 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             if tb:
                 bets += [dict(base_s, **b, kind="trio", rec=True) for b in tb]
                 rec, skip_reason = "trio", ""
-                bt = scen.meta.get("backtest", BACKTEST) if hasattr(scen, "meta") else BACKTEST
-                why = (f"展開を全部想定した予想＋オッズで、当たる確率の高い3連複{len(tb)}点（合計の的中確率 {tp:.0%}）")
-                scen_notes.append(f"展開シナリオ予想：3連複{len(tb)}点の的中確率 {tp:.0%}"
+                bt = scen.meta.get("backtest", BACKTEST) if scen is not None and hasattr(scen, "meta") else BACKTEST
+                why = f"当たる確率の高い3連複を上から{len(tb)}点（合計の的中確率 {tp:.0%}）"
+                scen_notes.append(f"3連複{len(tb)}点の的中確率 {tp:.0%}"
                                   f"（過去検証 {bt['period']}・{bt['races']:,}R：上位{TRIO_POINTS}点の的中 {bt['trio5_hit']:.0%}・回収率 {bt['trio5_roi']:.0%}）")
             else:
                 rec, why, skip_reason = None, "", "3連複のオッズが取れなかったため見送り"
-            ll = scen.lead_lines(X["T"], 0)
-            nm = dict(zip(ent["car"].astype(int), ent["name"].astype(str)))
-            scen_notes.append("主導権を取るライン：" + "、".join(
-                f"{'-'.join(map(str, c))}（{nm.get(c[0], '')}）{p:.0%}" for c, p in ll[:3]))
+            if scen is not None:
+                ll = scen.lead_lines(X["T"], 0)
+                nm = dict(zip(ent["car"].astype(int), ent["name"].astype(str)))
+                scen_notes.append("主導権を取るライン：" + "、".join(
+                    f"{'-'.join(map(str, c))}（{nm.get(c[0], '')}）{p:.0%}" for c, p in ll[:3]))
         except Exception as e:
             print("展開シナリオ予想の買い目作成失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
