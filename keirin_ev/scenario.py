@@ -289,6 +289,39 @@ def tenkai_trio(m, T, r, trio_odds=None, cover=TENKAI_COVER, max_lines=TENKAI_MA
     return bets, scens
 
 
+GUARD_DRIFT = 0.93       # 判定時のオッズは確定時に下がる（実測で約7%）。配分はこの分を見込んで安全側に組む
+GUARD_UNIT = 100
+
+
+def guard_stakes(bets, budget=None, unit=GUARD_UNIT, drift=GUARD_DRIFT):
+    """どの目が当たっても払戻が投資額の合計を下回らない（トリガミにならない）ように金額を配分し直す。
+    各目の払戻（オッズ×drift で見込む）がそろうよう、オッズの低い目ほど厚く買う。予算 budget（既定は元の合計）の範囲で、
+    そろえた払戻ができるだけ大きくなる配分を選ぶ。どう配分しても無理なら None（見送り）。"""
+    if not bets:
+        return None
+    budget = budget or int(sum(b["stake"] for b in bets))
+    od = [float(b.get("odds") or 0) * drift for b in bets]
+    if min(od) <= 1 or sum(1 / o for o in od) >= 1:      # 合成オッズが1倍以下なら、どう配っても元が取れない
+        return None
+    best = None
+    T = unit
+    while T <= budget * max(od):
+        st = [int(-(-T // (o * unit))) * unit for o in od]   # 払戻 T 以上になる最小の金額（unit 単位）
+        tot = sum(st)
+        if tot > budget:
+            break
+        if min(s * o for s, o in zip(st, od)) >= tot:
+            best = st
+        T += 10
+    if best is None:
+        return None
+    out = []
+    for b, s in zip(bets, best):
+        b = dict(b, stake=s)
+        out.append(b)
+    return out
+
+
 def trio_top(P, cars, COMBOS, trio_odds, n=TRIO_POINTS, stake=TRIO_STAKE):
     """3連複を確率の高い順に n 点（オッズの付いている目だけ）。戻り値: 買い目リスト, 合計的中確率"""
     pt = {}

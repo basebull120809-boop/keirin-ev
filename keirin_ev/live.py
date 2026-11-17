@@ -266,7 +266,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     scen_notes = []
     if True:                                     # おすすめ＝展開ベースの3連複（主導権を取りそうなライン上位2本 × 各2点。オッズ・期待値・軸では選ばない。全レース出す）
         try:
-            from .scenario import trio_top, tenkai_trio, TRIO_POINTS, BACKTEST
+            from .scenario import trio_top, tenkai_trio, guard_stakes, TRIO_POINTS, BACKTEST
             tro_s = dict(kdreams.parse_odds_trio(kdreams.soup(html), rid)[["combo", "odds"]].values)
             scens = []
             if scen is not None:
@@ -279,9 +279,15 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             bets = [b for b in bets if b["kind"] not in ("trio", "trio_z")]
             for b in bets:
                 b["rec"] = False
+            tg = guard_stakes(tb) if tb else None    # どの目が当たっても元が取れる配分に（トリガミ防止）
             if tb and tp < CONF_MIN:                 # 自信のあるレースだけ出す（見込みの的中率が CONF_MIN 未満は見送り）
                 rec, why, skip_reason = None, "", f"自信なし（見込みの的中率 {tp:.0%}）のため見送り"
+            elif tb and tg is None:                  # 低オッズの目が混ざり、どう配分しても当たって損する目が残る
+                lo = min(tb, key=lambda b: b["odds"])
+                rec, why, skip_reason = None, "", (f"{lo['combo']}（{lo['odds']:.1f}倍）が低すぎて、"
+                                                   f"どの目が当たっても元が取れる配分にできないため見送り")
             elif tb:
+                tb = tg
                 bets += [dict(base_s, **{k: v for k, v in b.items() if k not in ("scen", "pc")}, kind="trio", rec=True) for b in tb]
                 rec, skip_reason = "trio", ""
                 bt = scen.meta.get("backtest", BACKTEST) if scen is not None and hasattr(scen, "meta") else BACKTEST
