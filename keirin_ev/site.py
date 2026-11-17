@@ -170,7 +170,8 @@ def today_board(date):
     rows = []
     for r in sc.sort_values("deadline").itertuples():
         n = judged.get(str(r.race_id))
-        st = "wait" if n is None else ("buy" if n.get("n_bets") else "skip")
+        # 予想＝おすすめの券種が出たレースだけ（おすすめなしは見送り。画面には出さない）
+        st = "wait" if n is None else ("buy" if n.get("rec") else "skip")
         rows.append(dict(venue=VENUE_JA.get(r.venue, r.venue), race_no=int(r.race_no),
                          deadline=r.deadline, status=st, invest=bool((n or {}).get("n_invest")),
                          reason=(n or {}).get("reason", ""),
