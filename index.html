@@ -568,7 +568,11 @@ function hitBlock(r) {
 const pickK = r => r.rec && listOf(r, r.rec).length ? r.rec : r.bets?.length ? "yoso" : null;
 function cardBody(r) {
   const k = pickK(r);
-  return (k === r.rec ? recBlock(r) : betBlock(r, "yoso")) +
+  /* 本命の券種が出ないレースでも、当てる（3連複）・ズレ（3連複）・展開（2車単）の買い目を必ず出す */
+  const main = k ? (k === r.rec ? recBlock(r) : betBlock(r, "yoso")) : "";
+  const alt = hitBlock(r) + poolBlock(r) + tenkaiBlock(r);
+  const none = !main && !alt ? `<div class="rec"><div class="rec-h"><span class="mk">買い目</span><b>なし</b></div><p class="why">${esc(r.rec_reason || "条件を満たす買い目がありません")}</p></div>` : "";
+  return (main ? main + alt : alt) + none +
     ((r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : "");
 }
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
