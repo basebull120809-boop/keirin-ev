@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 16:13",
+ "updated_at": "2026-11-17 16:19",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -3481,7 +3481,10 @@
     "race_no": 2,
     "deadline": "16:08",
     "judged_at": "16:02:24",
-    "result": null,
+    "result": {
+     "combo": "7-4-1",
+     "payout": 4830
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -3494,7 +3497,7 @@
       "odds": 3.3,
       "p": 0.2195,
       "ev": 0.724,
-      "hit": null,
+      "hit": false,
       "lead": 0.7503
      }
     ],
@@ -3505,7 +3508,7 @@
       "odds": 17.0,
       "p": 0.0617,
       "ev": 1.049,
-      "hit": null,
+      "hit": false,
       "ratio": 1.403
      },
      {
@@ -3514,14 +3517,23 @@
       "odds": 9.0,
       "p": 0.1057,
       "ev": 0.952,
-      "hit": null,
+      "hit": false,
       "ratio": 1.274
      }
     ],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 3060
+    },
+    "ex_result": {
+     "combo": "7-4",
+     "payout": 3160
+    },
+    "trio_result": {
+     "combo": "1=4=7",
+     "payout": 330
+    },
     "notes": [
      "主導権予想：1小林史也のライン 75%（2番手は 2白濱一平 18%） → 逃げ切り目 2車単 1-7（3.3倍）",
      "1着が出るライン：1-7-4 が 63%",
@@ -5593,12 +5605,12 @@
   },
   "pool": {
    "total": {
-    "stake": 15500,
+    "stake": 16500,
     "payout": 1400.0,
-    "roi": 0.0903,
-    "points": 31,
+    "roi": 0.0848,
+    "points": 33,
     "hits": 1,
-    "races": 17,
+    "races": 18,
     "race_hits": 1,
     "days": 2
    },
@@ -5616,14 +5628,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 10000,
+     "stake": 11000,
      "payout": 1400.0,
-     "points": 20,
+     "points": 22,
      "hits": 1,
-     "races": 12,
+     "races": 13,
      "race_hits": 1,
-     "roi": 0.14,
-     "cum": -14100.0
+     "roi": 0.1273,
+     "cum": -15100.0
     }
    ]
   },
@@ -5712,12 +5724,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 29000,
+    "stake": 30000,
     "payout": 29000.0,
-    "roi": 1.0,
-    "points": 29,
+    "roi": 0.9667,
+    "points": 30,
     "hits": 4,
-    "races": 29,
+    "races": 30,
     "race_hits": 4,
     "days": 2
    },
@@ -5735,14 +5747,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 15000,
+     "stake": 16000,
      "payout": 5700.0,
-     "points": 15,
+     "points": 16,
      "hits": 2,
-     "races": 15,
+     "races": 16,
      "race_hits": 2,
-     "roi": 0.38,
-     "cum": 0.0
+     "roi": 0.3563,
+     "cum": -1000.0
     }
    ]
   },
