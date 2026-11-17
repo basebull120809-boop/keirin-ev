@@ -4639,7 +4639,10 @@
     "race_no": 4,
     "deadline": "21:35",
     "judged_at": "21:29:26",
-    "result": null,
+    "result": {
+     "combo": "1-3-6",
+     "payout": 360
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -4650,7 +4653,7 @@
       "odds": 5.3,
       "p": 0.2513,
       "ev": 1.332,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=3=7",
@@ -4658,7 +4661,7 @@
       "odds": 17.6,
       "p": 0.1572,
       "ev": 2.767,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=3",
@@ -4666,7 +4669,7 @@
       "odds": 2.5,
       "p": 0.0222,
       "ev": 0.056,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=5",
@@ -4674,16 +4677,25 @@
       "odds": 10.7,
       "p": 0.0143,
       "ev": 0.153,
-      "hit": null
+      "hit": false
      }
     ],
     "qn": [],
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=3",
+     "payout": 130
+    },
+    "ex_result": {
+     "combo": "1-3",
+     "payout": 120
+    },
+    "trio_result": {
+     "combo": "1=3=6",
+     "payout": 320
+    },
     "notes": [
      "自信あり：見込みの的中率 45%（過去検証 2026-08〜11：見込み40%以上のレースで 的中75%・回収率79%）",
      "主導権を取るライン：1-3-6-7（坂井央雅）83%、2-4-5（照屋将貴）17%",
@@ -7346,13 +7358,13 @@
   },
   "pool": {
    "total": {
-    "stake": 31500,
-    "payout": 21850.0,
-    "roi": 0.6937,
-    "points": 63,
-    "hits": 5,
-    "races": 38,
-    "race_hits": 5,
+    "stake": 33000,
+    "payout": 23450.0,
+    "roi": 0.7106,
+    "points": 66,
+    "hits": 6,
+    "races": 39,
+    "race_hits": 6,
     "days": 2
    },
    "daily": [
@@ -7369,14 +7381,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 26000,
-     "payout": 21850.0,
-     "points": 52,
-     "hits": 5,
-     "races": 33,
-     "race_hits": 5,
-     "roi": 0.8404,
-     "cum": -9650.0
+     "stake": 27500,
+     "payout": 23450.0,
+     "points": 55,
+     "hits": 6,
+     "races": 34,
+     "race_hits": 6,
+     "roi": 0.8527,
+     "cum": -9550.0
     }
    ]
   },
@@ -7465,13 +7477,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 50000,
-    "payout": 47200.0,
-    "roi": 0.944,
-    "points": 50,
-    "hits": 9,
-    "races": 50,
-    "race_hits": 9,
+    "stake": 51000,
+    "payout": 48400.0,
+    "roi": 0.949,
+    "points": 51,
+    "hits": 10,
+    "races": 51,
+    "race_hits": 10,
     "days": 2
    },
    "daily": [
@@ -7488,14 +7500,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 36000,
-     "payout": 23900.0,
-     "points": 36,
-     "hits": 7,
-     "races": 36,
-     "race_hits": 7,
-     "roi": 0.6639,
-     "cum": -2800.0
+     "stake": 37000,
+     "payout": 25100.0,
+     "points": 37,
+     "hits": 8,
+     "races": 37,
+     "race_hits": 8,
+     "roi": 0.6784,
+     "cum": -2600.0
     }
    ]
   },
@@ -7526,13 +7538,13 @@
   },
   "trio": {
    "total": {
-    "stake": 428200,
-    "payout": 290880.0,
-    "roi": 0.6793,
-    "points": 558,
-    "hits": 58,
-    "races": 153,
-    "race_hits": 58,
+    "stake": 430200,
+    "payout": 292480.0,
+    "roi": 0.6799,
+    "points": 562,
+    "hits": 59,
+    "races": 154,
+    "race_hits": 59,
     "days": 5
    },
    "daily": [
@@ -7582,14 +7594,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 26800,
-     "payout": 12470.0,
-     "points": 46,
-     "hits": 5,
-     "races": 12,
-     "race_hits": 5,
-     "roi": 0.4653,
-     "cum": -137320.0
+     "stake": 28800,
+     "payout": 14070.0,
+     "points": 50,
+     "hits": 6,
+     "races": 13,
+     "race_hits": 6,
+     "roi": 0.4885,
+     "cum": -137720.0
     }
    ]
   },
@@ -7714,13 +7726,13 @@
   },
   "rec": {
    "total": {
-    "stake": 467200,
-    "payout": 375900.0,
+    "stake": 469200,
+    "payout": 377500.0,
     "roi": 0.8046,
-    "points": 772,
-    "hits": 81,
-    "races": 170,
-    "race_hits": 81,
+    "points": 776,
+    "hits": 82,
+    "races": 171,
+    "race_hits": 82,
     "days": 5
    },
    "daily": [
@@ -7770,14 +7782,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 39400,
-     "payout": 40870.0,
-     "points": 76,
-     "hits": 9,
-     "races": 17,
-     "race_hits": 9,
-     "roi": 1.0373,
-     "cum": -91300.0
+     "stake": 41400,
+     "payout": 42470.0,
+     "points": 80,
+     "hits": 10,
+     "races": 18,
+     "race_hits": 10,
+     "roi": 1.0258,
+     "cum": -91700.0
     }
    ]
   }
