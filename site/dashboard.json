@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 17:00",
+ "updated_at": "2026-11-17 17:05",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -4354,7 +4354,10 @@
     "race_no": 4,
     "deadline": "16:54",
     "judged_at": "16:48:29",
-    "result": null,
+    "result": {
+     "combo": "7-3-2",
+     "payout": 10610
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -4367,15 +4370,24 @@
       "odds": 3.5,
       "p": 0.2654,
       "ev": 0.929,
-      "hit": null,
+      "hit": false,
       "lead": 0.8754
      }
     ],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=7",
+     "payout": 570
+    },
+    "ex_result": {
+     "combo": "7-3",
+     "payout": 2260
+    },
+    "trio_result": {
+     "combo": "2=3=7",
+     "payout": 2320
+    },
     "notes": [
      "主導権予想：3齊藤英伊須のライン 88%（2番手は 7岡田啓渡 7%） → 逃げ切り目 2車単 3-5（3.5倍）",
      "1着が出るライン：3-5-2 が 83%",
@@ -6578,12 +6590,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 33000,
+    "stake": 34000,
     "payout": 32700.0,
-    "roi": 0.9909,
-    "points": 33,
+    "roi": 0.9618,
+    "points": 34,
     "hits": 5,
-    "races": 33,
+    "races": 34,
     "race_hits": 5,
     "days": 2
    },
@@ -6601,14 +6613,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 19000,
+     "stake": 20000,
      "payout": 9400.0,
-     "points": 19,
+     "points": 20,
      "hits": 3,
-     "races": 19,
+     "races": 20,
      "race_hits": 3,
-     "roi": 0.4947,
-     "cum": -300.0
+     "roi": 0.47,
+     "cum": -1300.0
     }
    ]
   },
