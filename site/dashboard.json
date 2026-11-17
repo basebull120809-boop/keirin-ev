@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 09:20",
+ "updated_at": "2026-11-17 09:37",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -220,7 +220,10 @@
     "race_no": 3,
     "deadline": "09:26",
     "judged_at": "09:20:04",
-    "result": null,
+    "result": {
+     "combo": "7-5-1",
+     "payout": 350
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -233,15 +236,24 @@
       "odds": 9.2,
       "p": 0.1234,
       "ev": 1.135,
-      "hit": null,
+      "hit": false,
       "lead": 0.6779
      }
     ],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=7",
+     "payout": 230
+    },
+    "ex_result": {
+     "combo": "7-5",
+     "payout": 280
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 140
+    },
     "notes": [
      "主導権予想：5成海大聖のライン 68%（2番手は 2川西康彦 28%） → 逃げ切り目 2車単 5-7（9.2倍）",
      "1着が出るライン：5-7-1 が 84%",
@@ -1466,14 +1478,14 @@
   },
   "tenkai": {
    "total": {
-    "stake": 14000,
+    "stake": 15000,
     "payout": 23300.0,
-    "roi": 1.6643,
-    "points": 14,
+    "roi": 1.5533,
+    "points": 15,
     "hits": 2,
-    "races": 14,
+    "races": 15,
     "race_hits": 2,
-    "days": 1
+    "days": 2
    },
    "daily": [
     {
@@ -1486,6 +1498,17 @@
      "race_hits": 2,
      "roi": 1.6643,
      "cum": 9300.0
+    },
+    {
+     "date": "2026-11-17",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": 8300.0
     }
    ]
   },
