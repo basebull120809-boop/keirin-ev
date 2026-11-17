@@ -279,13 +279,18 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             bets = [b for b in bets if b["kind"] not in ("trio", "trio_z")]
             for b in bets:
                 b["rec"] = False
-            tg = guard_stakes(tb) if tb else None    # どの目が当たっても元が取れる配分に（トリガミ防止）
+            try:
+                gmin = float(tr.synth_floor)
+            except Exception:
+                gmin = 1.7
+            tg = guard_stakes(tb, min_synth=gmin) if tb else None   # どの目が当たっても 投資額×gmin 以上が戻る配分に
             if tb and tp < CONF_MIN:                 # 自信のあるレースだけ出す（見込みの的中率が CONF_MIN 未満は見送り）
                 rec, why, skip_reason = None, "", f"自信なし（見込みの的中率 {tp:.0%}）のため見送り"
             elif tb and tg is None:                  # 低オッズの目が混ざり、どう配分しても当たって損する目が残る
                 lo = min(tb, key=lambda b: b["odds"])
-                rec, why, skip_reason = None, "", (f"{lo['combo']}（{lo['odds']:.1f}倍）が低すぎて、"
-                                                   f"どの目が当たっても元が取れる配分にできないため見送り")
+                syn = 1 / sum(1 / b["odds"] for b in tb) if all(b["odds"] > 0 for b in tb) else 0
+                rec, why, skip_reason = None, "", (f"合成オッズ {syn:.1f}倍（最安 {lo['combo']} {lo['odds']:.1f}倍）で、"
+                                                   f"どの目が当たっても{gmin:g}倍以上戻る配分にできないため見送り")
             elif tb:
                 tb = tg
                 bets += [dict(base_s, **{k: v for k, v in b.items() if k not in ("scen", "pc")}, kind="trio", rec=True) for b in tb]

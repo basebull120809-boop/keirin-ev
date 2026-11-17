@@ -293,15 +293,18 @@ GUARD_DRIFT = 0.93       # 判定時のオッズは確定時に下がる（実�
 GUARD_UNIT = 100
 
 
-def guard_stakes(bets, budget=None, unit=GUARD_UNIT, drift=GUARD_DRIFT):
-    """どの目が当たっても払戻が投資額の合計を下回らない（トリガミにならない）ように金額を配分し直す。
+GUARD_MIN_SYNTH = 1.7    # どの目が当たっても 投資額×この倍率 以上が戻る配分にできなければ見送り（config の synth_floor で上書き）
+
+
+def guard_stakes(bets, budget=None, unit=GUARD_UNIT, drift=GUARD_DRIFT, min_synth=GUARD_MIN_SYNTH):
+    """どの目が当たっても払戻が 投資額の合計×min_synth を下回らないように金額を配分し直す（トリガミ・薄すぎる払戻の防止）。
     各目の払戻（オッズ×drift で見込む）がそろうよう、オッズの低い目ほど厚く買う。予算 budget（既定は元の合計）の範囲で、
     そろえた払戻ができるだけ大きくなる配分を選ぶ。どう配分しても無理なら None（見送り）。"""
     if not bets:
         return None
     budget = budget or int(sum(b["stake"] for b in bets))
     od = [float(b.get("odds") or 0) * drift for b in bets]
-    if min(od) <= 1 or sum(1 / o for o in od) >= 1:      # 合成オッズが1倍以下なら、どう配っても元が取れない
+    if min(od) <= min_synth or 1 / sum(1 / o for o in od) < min_synth:   # 合成オッズが下限未満なら、どう配っても届かない
         return None
     best = None
     T = unit
@@ -310,7 +313,7 @@ def guard_stakes(bets, budget=None, unit=GUARD_UNIT, drift=GUARD_DRIFT):
         tot = sum(st)
         if tot > budget:
             break
-        if min(s * o for s, o in zip(st, od)) >= tot:
+        if min(s * o for s, o in zip(st, od)) >= tot * min_synth:
             best = st
         T += 10
     if best is None:
