@@ -20,6 +20,7 @@ from .db import connect
 from .collector import store
 from .model import TrifectaModel, build_tensors, COMBOS
 
+CONF_MIN = 0.40                                       # 買い目を出す自信の線（展開ベース3連複4点の見込み的中率）
 AXIS_KINDS = ("yoso", "ex", "qn", "trio", "tenkai")   # 予想の軸にそろえる券種（invest・pool・hit4 はそのまま）
 from .strategy import Rules, pick_bets
 
@@ -278,13 +279,15 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             bets = [b for b in bets if b["kind"] not in ("trio", "trio_z")]
             for b in bets:
                 b["rec"] = False
-            if tb:
+            if tb and tp < CONF_MIN:                 # 自信のあるレースだけ出す（見込みの的中率が CONF_MIN 未満は見送り）
+                rec, why, skip_reason = None, "", f"自信なし（見込みの的中率 {tp:.0%}）のため見送り"
+            elif tb:
                 bets += [dict(base_s, **{k: v for k, v in b.items() if k not in ("scen", "pc")}, kind="trio", rec=True) for b in tb]
                 rec, skip_reason = "trio", ""
                 bt = scen.meta.get("backtest", BACKTEST) if scen is not None and hasattr(scen, "meta") else BACKTEST
                 if scens:
                     why = "／".join(f"{s['label']}（{s['lead']:.0%}）なら {'・'.join(s['picks'])}" for s in scens if s["picks"])
-                    scen_notes.append(f"展開ベース3連複{len(tb)}点（過去検証 2026-08〜11・5,146R：2展開×2点 的中55%・回収率80%）")
+                    scen_notes.append(f"自信あり：見込みの的中率 {tp:.0%}（過去検証 2026-08〜11：見込み40%以上のレースで 的中75%・回収率79%）")
                 else:
                     why = f"当たる確率の高い3連複を上から{len(tb)}点（合計の的中確率 {tp:.0%}）"
                     scen_notes.append(f"3連複{len(tb)}点の的中確率 {tp:.0%}"
