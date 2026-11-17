@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 20:19",
+ "updated_at": "2026-11-17 20:21",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -3772,7 +3772,10 @@
     "race_no": 11,
     "deadline": "20:10",
     "judged_at": "20:04:15",
-    "result": null,
+    "result": {
+     "combo": "5-3-7",
+     "payout": 14050
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -3781,9 +3784,18 @@
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=5",
+     "payout": 2350
+    },
+    "ex_result": {
+     "combo": "5-3",
+     "payout": 4500
+    },
+    "trio_result": {
+     "combo": "3=5=7",
+     "payout": 720
+    },
     "notes": [
      "主導権を取るライン：3-7（宇佐見優介）53%、1-6（高塩讓次）32%、2-4-5（齊藤竜也）15%",
      "主導権予想：7橋本智昭のライン 44%（2番手は 5能代谷元 33%）",
@@ -6163,12 +6175,12 @@
   },
   "pool": {
    "total": {
-    "stake": 27000,
+    "stake": 27500,
     "payout": 9900.0,
-    "roi": 0.3667,
-    "points": 54,
+    "roi": 0.36,
+    "points": 55,
     "hits": 4,
-    "races": 31,
+    "races": 32,
     "race_hits": 4,
     "days": 2
    },
@@ -6186,14 +6198,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 21500,
+     "stake": 22000,
      "payout": 9900.0,
-     "points": 43,
+     "points": 44,
      "hits": 4,
-     "races": 26,
+     "races": 27,
      "race_hits": 4,
-     "roi": 0.4605,
-     "cum": -17100.0
+     "roi": 0.45,
+     "cum": -17600.0
     }
    ]
   },
