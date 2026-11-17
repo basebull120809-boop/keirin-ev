@@ -431,8 +431,37 @@ def push_now(msg):
     print("保存失敗（実行の最後にまとめて保存します）", flush=True)
 
 
+def _code_sig():
+    """読み込んでいるコード（keirin_ev/*.py・main.py・config.json）の指紋。途中で変わったら再起動して新しいコードで続ける"""
+    import hashlib
+    h = hashlib.sha1()
+    for f in sorted(Path("keirin_ev").glob("*.py")) + [Path("main.py"), Path("config.json")]:
+        try:
+            h.update(f.name.encode()); h.update(f.read_bytes())
+        except Exception:
+            pass
+    return h.hexdigest()
+
+
+def _reload_if_changed(sig, t0, max_minutes, last_pull):
+    """数分おきにmainの最新を取り込み、コードが変わっていたら残り時間で自分を起動し直す（判定済みのレースは notes.jsonl から引き継ぐ）"""
+    if os.environ.get("GITHUB_ACTIONS") and time.time() - last_pull[0] > 180:
+        import subprocess
+        subprocess.run("git -c rebase.autoStash=true pull -q --rebase -X theirs", shell=True, capture_output=True)
+        last_pull[0] = time.time()
+    if _code_sig() == sig:
+        return
+    left = int(max_minutes - (time.time() - t0) / 60)
+    if left < 2:
+        return
+    print(f"{now():%H:%M} コードが更新されたので新しいコードで再起動（残り{left}分）", flush=True)
+    import sys
+    os.execv(sys.executable, [sys.executable, "main.py", "live", str(left)])
+
+
 def run(max_minutes=340):
     t0 = time.time()
+    sig, last_pull = _code_sig(), [time.time()]
     date = now().strftime("%Y-%m-%d")
     if now().hour < 4:                         # 日付をまたいだミッドナイト
         date = (now() - pd.Timedelta(days=1)).strftime("%Y-%m-%d")
@@ -476,6 +505,7 @@ def run(max_minutes=340):
     if not sched:
         print("判定するレースが残っていません", flush=True)
     while (sched or pending) and time.time() - t0 < max_minutes * 60:
+        _reload_if_changed(sig, t0, max_minutes, last_pull)
         got = check_results(date, pending, lambda m: print(m, flush=True))
         if got:
             print(f"{now():%H:%M} 結果取り込み {len(got)}レース", flush=True)
