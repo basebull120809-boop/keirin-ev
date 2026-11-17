@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 18:18",
+ "updated_at": "2026-11-17 18:22",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -4966,7 +4966,10 @@
     "race_no": 7,
     "deadline": "18:11",
     "judged_at": "18:05:47",
-    "result": null,
+    "result": {
+     "combo": "7-1-2",
+     "payout": 1680
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -4979,7 +4982,7 @@
       "odds": 4.1,
       "p": 0.209,
       "ev": 0.857,
-      "hit": null,
+      "hit": true,
       "lead": 0.5837
      }
     ],
@@ -4990,14 +4993,23 @@
       "odds": 5.6,
       "p": 0.1646,
       "ev": 0.922,
-      "hit": null,
+      "hit": true,
       "ratio": 1.251
      }
     ],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=7",
+     "payout": 150
+    },
+    "ex_result": {
+     "combo": "7-1",
+     "payout": 380
+    },
+    "trio_result": {
+     "combo": "1=2=7",
+     "payout": 500
+    },
     "notes": [
      "主導権予想：7加藤将武のライン 58%（2番手は 2藤田昌宏 36%） → 逃げ切り目 2車単 7-1（4.1倍）",
      "1着が出るライン：7-1-5 が 84%",
@@ -7418,13 +7430,13 @@
   },
   "pool": {
    "total": {
-    "stake": 21000,
-    "payout": 7400.0,
-    "roi": 0.3524,
-    "points": 42,
-    "hits": 3,
-    "races": 23,
-    "race_hits": 3,
+    "stake": 21500,
+    "payout": 9900.0,
+    "roi": 0.4605,
+    "points": 43,
+    "hits": 4,
+    "races": 24,
+    "race_hits": 4,
     "days": 2
    },
    "daily": [
@@ -7441,14 +7453,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 15500,
-     "payout": 7400.0,
-     "points": 31,
-     "hits": 3,
-     "races": 18,
-     "race_hits": 3,
-     "roi": 0.4774,
-     "cum": -13600.0
+     "stake": 16000,
+     "payout": 9900.0,
+     "points": 32,
+     "hits": 4,
+     "races": 19,
+     "race_hits": 4,
+     "roi": 0.6188,
+     "cum": -11600.0
     }
    ]
   },
@@ -7537,13 +7549,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 35000,
-    "payout": 39700.0,
-    "roi": 1.1343,
-    "points": 35,
-    "hits": 6,
-    "races": 35,
-    "race_hits": 6,
+    "stake": 36000,
+    "payout": 43500.0,
+    "roi": 1.2083,
+    "points": 36,
+    "hits": 7,
+    "races": 36,
+    "race_hits": 7,
     "days": 2
    },
    "daily": [
@@ -7560,14 +7572,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 21000,
-     "payout": 16400.0,
-     "points": 21,
-     "hits": 4,
-     "races": 21,
-     "race_hits": 4,
-     "roi": 0.781,
-     "cum": 4700.0
+     "stake": 22000,
+     "payout": 20200.0,
+     "points": 22,
+     "hits": 5,
+     "races": 22,
+     "race_hits": 5,
+     "roi": 0.9182,
+     "cum": 7500.0
     }
    ]
   },
