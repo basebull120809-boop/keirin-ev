@@ -5278,20 +5278,36 @@
     "race_no": 6,
     "deadline": "22:25",
     "judged_at": "22:19:10",
-    "result": null,
+    "result": {
+     "combo": "1-3-7",
+     "payout": 5120
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=3",
+     "payout": 230,
+     "all": "1=3・1=7・3=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=3",
+     "payout": 490
+    },
+    "ex_result": {
+     "combo": "1-3",
+     "payout": 810
+    },
+    "trio_result": {
+     "combo": "1=3=7",
+     "payout": 3240
+    },
     "notes": [
      "主導権を取るライン：1-2-7（西村剛）81%、4-5（疋田敏）11%、3-6（宇佐見裕輝）8%",
      "主導権予想：1西村剛のライン 83%（2番手は 5井田晶之 12%） → 逃げ切り目 2車単 1-2（4.6倍）",
@@ -7929,12 +7945,12 @@
  "paper": {
   "ex": {
    "total": {
-    "stake": 475400,
+    "stake": 478400,
     "payout": 480940.0,
-    "roi": 1.0117,
-    "points": 674,
+    "roi": 1.0053,
+    "points": 679,
     "hits": 62,
-    "races": 169,
+    "races": 170,
     "race_hits": 62,
     "days": 5
    },
@@ -7985,14 +8001,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 51100,
+     "stake": 54100,
      "payout": 170320.0,
-     "points": 98,
+     "points": 103,
      "hits": 5,
-     "races": 20,
+     "races": 21,
      "race_hits": 5,
-     "roi": 3.3331,
-     "cum": 5540.0
+     "roi": 3.1482,
+     "cum": 2540.0
     }
    ]
   },
@@ -8023,26 +8039,26 @@
   },
   "hit4": {
    "total": {
-    "stake": 14400,
+    "stake": 16200,
     "payout": 6120.0,
-    "roi": 0.425,
-    "points": 29,
+    "roi": 0.3778,
+    "points": 32,
     "hits": 2,
-    "races": 8,
+    "races": 9,
     "race_hits": 2,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-17",
-     "stake": 14400,
+     "stake": 16200,
      "payout": 6120.0,
-     "points": 29,
+     "points": 32,
      "hits": 2,
-     "races": 8,
+     "races": 9,
      "race_hits": 2,
-     "roi": 0.425,
-     "cum": -8280.0
+     "roi": 0.3778,
+     "cum": -10080.0
     }
    ]
   },
@@ -8073,12 +8089,12 @@
   },
   "pool": {
    "total": {
-    "stake": 35000,
+    "stake": 36500,
     "payout": 23450.0,
-    "roi": 0.67,
-    "points": 70,
+    "roi": 0.6425,
+    "points": 73,
     "hits": 6,
-    "races": 42,
+    "races": 43,
     "race_hits": 6,
     "days": 2
    },
@@ -8096,14 +8112,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 29500,
+     "stake": 31000,
      "payout": 23450.0,
-     "points": 59,
+     "points": 62,
      "hits": 6,
-     "races": 37,
+     "races": 38,
      "race_hits": 6,
-     "roi": 0.7949,
-     "cum": -11550.0
+     "roi": 0.7565,
+     "cum": -13050.0
     }
    ]
   },
@@ -8192,12 +8208,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 54000,
+    "stake": 55000,
     "payout": 73500.0,
-    "roi": 1.3611,
-    "points": 54,
+    "roi": 1.3364,
+    "points": 55,
     "hits": 12,
-    "races": 54,
+    "races": 55,
     "race_hits": 12,
     "days": 2
    },
@@ -8215,14 +8231,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 40000,
+     "stake": 41000,
      "payout": 50200.0,
-     "points": 40,
+     "points": 41,
      "hits": 10,
-     "races": 40,
+     "races": 41,
      "race_hits": 10,
-     "roi": 1.255,
-     "cum": 19500.0
+     "roi": 1.2244,
+     "cum": 18500.0
     }
    ]
   },
@@ -8347,12 +8363,12 @@
   },
   "yoso": {
    "total": {
-    "stake": 574500,
+    "stake": 577100,
     "payout": 480380.0,
-    "roi": 0.8362,
-    "points": 2273,
+    "roi": 0.8324,
+    "points": 2284,
     "hits": 102,
-    "races": 217,
+    "races": 218,
     "race_hits": 102,
     "days": 5
    },
@@ -8403,14 +8419,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 55600,
+     "stake": 58200,
      "payout": 33780.0,
-     "points": 209,
+     "points": 220,
      "hits": 7,
-     "races": 22,
+     "races": 23,
      "race_hits": 7,
-     "roi": 0.6076,
-     "cum": -94120.0
+     "roi": 0.5804,
+     "cum": -96720.0
     }
    ]
   },
