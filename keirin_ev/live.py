@@ -169,11 +169,10 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     cars = X["T"].cars[0]
     sim = None
     try:                                         # 予想前に1000回シミュレーション → あらゆる展開を混ぜた確率で組む
-        if scen is None:                         # 展開シナリオ予想のときは使わない（自分の確率で自分を採点することになるため）
-            from .simulate import simulate
-            sim = simulate(P, X["T"], 0, X["O"][0], seed=int(rid[-8:]))
-            if not use_res:                      # 残差モデルはシミュレーションで混ぜるとわずかに悪化したので、確率はそのまま使う
-                P = sim["P"]
+        from .simulate import simulate           # 1000回走らせて、展開の揺らぎ込みで「何回当たるか」を数える（買い目の選択に使う）
+        sim = simulate(P, X["T"], 0, X["O"][0], seed=int(rid[-8:]))
+        if not use_res and scen is None:         # 残差モデル・展開シナリオ予想の確率はそのまま使う（混ぜるとわずかに悪化した）
+            P = sim["P"]
     except Exception as e:
         print("シミュレーション失敗（元の確率で判定）", rid, e, flush=True)
     bets = []
@@ -264,7 +263,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     except Exception as e:
         print("軸そろえ失敗", rid, e, flush=True)
     scen_notes = []
-    try:                                         # おすすめ＝券種をまたいで1つ（2車複・ワイド・2車単・3連複・3連単10〜20点から、見込み回収が一番高い買い方）
+    try:                                         # おすすめ＝券種をまたいで1つ（1点勝負なし。1000回のシミュレーションで一番多く当たる買い方）
         import importlib
         from . import bettypes as _bt
         from .scenario import guard_stakes
@@ -284,7 +283,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                   wide=dict(_ow[["combo", "odds"]].values) if len(_ow) else {},
                   tri={c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {})
         drift = load_rules_drift()
-        mp = _bt.multi_plans(P, cars, COMBOS, mo, drift=drift)
+        fin = _bt.sim_finishes(sim, cars, COMBOS) if sim is not None else None
+        mp = _bt.multi_plans(P, cars, COMBOS, mo, drift=drift, finishes=fin)
         pick, mwhy, msumm = _bt.multi_pick(mp)
         KIND_OF = dict(qn="qn", wide="wide", ex="ex", trio="trio", tri="yoso")
         shown = ("yoso", "ex", "trio", "qn", "wide")

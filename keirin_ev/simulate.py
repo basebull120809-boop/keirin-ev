@@ -64,7 +64,9 @@ def simulate(P, T, r, odds, n=N_SIM, prm=None, seed=None):
     return dict(P=Ps.mean(0), outcome=outcome, pay=pay, n=n, lines=li, lead=winners)
 
 
-def _hits(combo, oc):
+def _hits(combo, oc, kind=None):
+    if kind in ("wide", "wide_z"):                 # ワイド：2人とも3着以内
+        return set(int(x) for x in combo.split("=")) <= set(oc[:3])
     if "=" in combo:                               # 3連複 / 2車複
         s = set(int(x) for x in combo.split("="))
         return s == set(oc[:len(s)])
@@ -85,7 +87,7 @@ def evaluate(sim, cars, bets):
     for t, o in enumerate(sim["outcome"]):
         oc = tuple(int(cars[x]) for x in COMBOS[o])
         for b in bets:
-            if _hits(b["combo"], oc):
+            if _hits(b["combo"], oc, b.get("kind")):
                 od = sim["pay"][t, o] if b.get("kind") in ("yoso", "invest") else b["odds"] * move[t]
                 ret[t] += b["stake"] * od
     pl = ret - stake
