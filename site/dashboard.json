@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 15:12",
+ "updated_at": "2026-11-17 15:15",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -2058,7 +2058,10 @@
     "race_no": 10,
     "deadline": "15:04",
     "judged_at": "14:58:47",
-    "result": null,
+    "result": {
+     "combo": "7-1-5",
+     "payout": 3700
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -2071,15 +2074,24 @@
       "odds": 3.1,
       "p": 0.2455,
       "ev": 0.761,
-      "hit": null,
+      "hit": false,
       "lead": 0.6564
      }
     ],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=7",
+     "payout": 870
+    },
+    "ex_result": {
+     "combo": "7-1",
+     "payout": 2310
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 260
+    },
     "notes": [
      "主導権予想：5木村佑来のライン 66%（2番手は 2小川三士郎 27%） → 逃げ切り目 2車単 5-1（3.1倍）",
      "1着が出るライン：5-1 が 60%",
@@ -3848,12 +3860,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 23000,
+    "stake": 24000,
     "payout": 26800.0,
-    "roi": 1.1652,
-    "points": 23,
+    "roi": 1.1167,
+    "points": 24,
     "hits": 3,
-    "races": 23,
+    "races": 24,
     "race_hits": 3,
     "days": 2
    },
@@ -3871,14 +3883,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 9000,
+     "stake": 10000,
      "payout": 3500.0,
-     "points": 9,
+     "points": 10,
      "hits": 1,
-     "races": 9,
+     "races": 10,
      "race_hits": 1,
-     "roi": 0.3889,
-     "cum": 3800.0
+     "roi": 0.35,
+     "cum": 2800.0
     }
    ]
   },
