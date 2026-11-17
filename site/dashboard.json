@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 23:26",
+ "updated_at": "2026-11-17 23:36",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -5876,20 +5876,36 @@
     "race_no": 9,
     "deadline": "23:25",
     "judged_at": "23:19:11",
-    "result": null,
+    "result": {
+     "combo": "1-3-2",
+     "payout": 590
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 140,
+     "all": "1=2・1=3・2=3"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=3",
+     "payout": 340
+    },
+    "ex_result": {
+     "combo": "1-3",
+     "payout": 410
+    },
+    "trio_result": {
+     "combo": "1=2=3",
+     "payout": 290
+    },
     "notes": [
      "主導権を取るライン：1-2-3（竹山陵太）50%、4-5-7（野口正則）43%、6（大高彰馬）7%",
      "主導権予想：5佐藤竜太のライン 52%（2番手は 3比佐宝太 43%） → 逃げ切り目 2車単 5-7（32.2倍）",
@@ -8679,26 +8695,26 @@
   },
   "hit4": {
    "total": {
-    "stake": 16200,
-    "payout": 6120.0,
-    "roi": 0.3778,
-    "points": 32,
-    "hits": 2,
-    "races": 9,
-    "race_hits": 2,
+    "stake": 18000,
+    "payout": 9020.0,
+    "roi": 0.5011,
+    "points": 36,
+    "hits": 3,
+    "races": 10,
+    "race_hits": 3,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-17",
-     "stake": 16200,
-     "payout": 6120.0,
-     "points": 32,
-     "hits": 2,
-     "races": 9,
-     "race_hits": 2,
-     "roi": 0.3778,
-     "cum": -10080.0
+     "stake": 18000,
+     "payout": 9020.0,
+     "points": 36,
+     "hits": 3,
+     "races": 10,
+     "race_hits": 3,
+     "roi": 0.5011,
+     "cum": -8980.0
     }
    ]
   },
@@ -8884,26 +8900,26 @@
   },
   "tenkai_z": {
    "total": {
-    "stake": 1000,
+    "stake": 2000,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 1,
+    "points": 2,
     "hits": 0,
-    "races": 1,
+    "races": 2,
     "race_hits": 0,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-17",
-     "stake": 1000,
+     "stake": 2000,
      "payout": 0.0,
-     "points": 1,
-     "hits": false,
-     "races": 1,
+     "points": 2,
+     "hits": 0,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -1000.0
+     "cum": -2000.0
     }
    ]
   },
