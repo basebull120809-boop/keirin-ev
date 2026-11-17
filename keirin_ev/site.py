@@ -61,6 +61,18 @@ def _bl(g, kind):
     return out
 
 
+BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "tenkai", "pool", "hit4")
+
+
+def only_rec(r):
+    """出すのはおすすめの1券種だけ。おすすめが無いレースは買い目を出さない"""
+    keep = {"yoso": "bets"}.get(r.get("rec"), r.get("rec"))
+    for k in BET_KEYS:
+        if k != keep and k in r:
+            r[k] = []
+    return r
+
+
 def day_races(pb, last):
     """指定日の買い目（レースごと・結果つき）"""
     from .kdreams import VENUE_JA
@@ -100,6 +112,7 @@ def day_races(pb, last):
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
         r["rec"] = n.get("rec"); r["rec_reason"] = n.get("rec_reason", ""); r["cand"] = n.get("cand", {})
         r.pop("venue_slug", None)
+        only_rec(r)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
     return races
 
@@ -281,7 +294,7 @@ def slim_history(h, limit=DOC_LIMIT):
     おすすめの出たレース・表示に使う項目だけ残し、それでも上限を超えたら古い日から落とす"""
     days = []
     for d in h.get("days", []):
-        races = [{k: r.get(k) for k in HIST_KEEP if k in r}
+        races = [only_rec({k: r.get(k) for k in HIST_KEEP if k in r})
                  for r in d.get("races", []) if r.get("rec") and (r.get("bets") or r.get(r["rec"]))]
         days.append(dict(date=d.get("date"), summary=d.get("summary"), races=races))
     out = dict(updated_at=h.get("updated_at"), days=days)
@@ -298,6 +311,8 @@ def split_docs(folder="site/docs"):
                 picks=d.get("picks"), paper=d.get("paper"),
                 backtest=d.get("backtest"), market=d.get("market"), insight=d.get("insight"),
                 board=d.get("board"))
+    for r in (docs["picks"] or {}).get("races", []) if isinstance(docs["picks"], dict) else []:
+        only_rec(r)
     if HIST.exists():                            # 過去予想（直近14日・結果つき）
         try:
             h = json.loads(HIST.read_text(encoding="utf-8"))
