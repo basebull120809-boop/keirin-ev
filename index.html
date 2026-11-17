@@ -691,12 +691,13 @@ function renderHistory() {
   if (histFilter === "invest") rs = rs.filter(r => r.invest?.length);
   $("#hist-body").innerHTML = rs.length ? `<div class="hl">${rs.map(r => {
     const k = kOf(r), hit = isHit(r), st = sum(listOf(r, k), b => b.stake), rr = resOf(r, k);
+    const bought = st > 0;   /* 買い目を出していないレース（見送り）は的中・不的中を付けない */
     const pay = rr ? payOf(r, k) : 0;
-    const res = rr ? `${isBox(k) ? `<span class="combo">${rr.combo.split("=").map(n => car(n, "sm")).join('<span class="eq">・</span>')}</span>` : combo(rr.combo)}<span class="pay${hit ? " w" : ""}">${hit ? `払戻 ${Math.round(pay).toLocaleString()}円` : "払戻 0円"}</span><span class="pay">投資 ${st.toLocaleString()}円</span>`
-      : `<span class="tag mute">結果待ち</span><span class="pay">投資 ${st.toLocaleString()}円</span>`;
+    const res = rr ? `${isBox(k) ? `<span class="combo">${rr.combo.split("=").map(n => car(n, "sm")).join('<span class="eq">・</span>')}</span>` : combo(rr.combo)}${bought ? `<span class="pay${hit ? " w" : ""}">${hit ? `払戻 ${Math.round(pay).toLocaleString()}円` : "払戻 0円"}</span><span class="pay">投資 ${st.toLocaleString()}円</span>` : ""}`
+      : bought ? `<span class="tag mute">結果待ち</span><span class="pay">投資 ${st.toLocaleString()}円</span>` : "";
     return `<details class="hr${hit ? " win" : ""}"><summary><div class="rno">${r.race_no}<small>R</small></div>
       <div class="mid"><b>${esc(r.venue)}</b> <span class="num" style="font-size:12px;color:var(--muted)">${esc(r.deadline || "")}</span>
-        <div class="t">${pickK(r) ? `<span class="tag lime">◎${TYPE[pickK(r)]} ${listOf(r, pickK(r)).length}点</span>` : ""}${hit ? '<span class="tag good">的中</span>' : resOf(r, kOf(r)) ? '<span class="tag bad">不的中</span>' : ""}</div></div>
+        <div class="t">${pickK(r) ? `<span class="tag lime">◎${TYPE[pickK(r)]} ${listOf(r, pickK(r)).length}点</span>` : ""}${!bought ? '<span class="tag mute">見送り</span>' : hit ? '<span class="tag good">的中</span>' : rr ? '<span class="tag bad">不的中</span>' : ""}</div></div>
       <div class="res">${res}</div></summary>
       <div class="body">${cardBody(r)}</div></details>`;
   }).join("")}</div>` : `<div class="empty"><b>該当するレースはありません</b></div>`;
