@@ -61,7 +61,7 @@ def _bl(g, kind):
     return out
 
 
-BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "tenkai", "pool", "hit4")
+BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4")
 
 
 def only_rec(r):
@@ -71,6 +71,17 @@ def only_rec(r):
         if k != keep and k in r:
             r[k] = []
     return r
+
+
+def _wide_result(r, g):
+    """ワイドの結果（当たりは3組）。買った目が当たっていればその組と配当、外れなら1組目"""
+    cs, ps = r.get("wide_combos"), r.get("wide_payouts")
+    if not isinstance(cs, str) or not cs:
+        return None
+    pay = dict(zip(cs.split("|"), str(ps).split("|")))
+    mine = [c for c in g.loc[g["kind"] == "wide", "combo"] if c in pay]
+    c = mine[0] if mine else cs.split("|")[0]
+    return dict(combo=c, payout=_int(pay.get(c)), all=cs.replace("|", "・"))
 
 
 def day_races(pb, last):
@@ -89,7 +100,8 @@ def day_races(pb, last):
                                      p=float(b.p), ev=float(b.ev),
                                      hit=None if b.hit != b.hit else bool(b.hit))
                                 for b in g[g["kind"] == "yoso"].itertuples()],
-                          invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"), qn=_bl(g, "qn"),
+                          invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"), qn=_bl(g, "qn"), wide=_bl(g, "wide"),
+                          wide_result=_wide_result(r, g),
                           tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
@@ -282,8 +294,8 @@ def export_report(con, days, dates, market=None, backtest=None):
 
 
 DOC_LIMIT = 250_000      # ページのデータベースは1文書 256KiB まで（少し余裕を見る）
-HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "tenkai", "pool", "hit4",
-             "result", "ex_result", "trio_result", "qn_result")
+HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4",
+             "result", "ex_result", "trio_result", "qn_result", "wide_result")
 
 
 def _size(v):

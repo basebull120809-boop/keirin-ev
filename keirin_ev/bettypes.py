@@ -275,3 +275,78 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
     else:
         why = f"3連単フォーメーション{c['n']}点が一番当たりやすい（的中率{c['hit']:.0%}）"
     return rec, why, cand
+
+
+# ---------------- 券種をまたいで1つ選ぶ（2026-11 から のおすすめ） ----------------
+# 3連複に決め打ちせず、2車複・2車単・ワイド・3連複・3連単（10〜20点）の買い方を全部並べ、
+# 「当たる確率 × 合成オッズ（＝買い方全体の期待回収）」が一番高いものを出す。差が小さければ的中率の高い方。
+# 過去検証（2026-09〜11・2,273R。9月より前で学習した展開シナリオ予想・確定オッズ）：
+#   券種・点数を固定すると回収率はどれも 77〜87%（控除率どおり）
+#   券種をまたいで選び（合成2倍以上・見込み85%以上）→ 1,441R 的中30%・回収97%（±4%）
+#   ※確定オッズで選んで確定オッズで採点しているので、締切前オッズで選ぶ実際の成績はこれより下がりうる
+MULTI_CANDS = {"qn": [1, 2, 3], "wide": [1, 2, 3], "ex": [1, 2, 3, 4, 5],
+               "trio": [1, 2, 3, 4, 5, 6, 8], "tri": [10, 12, 15, 18, 20]}
+MULTI_LABEL = {"qn": "2車複", "wide": "ワイド", "ex": "2車単", "trio": "3連複", "tri": "3連単"}
+MULTI_EV_MIN = 0.85       # 買い方全体の見込み回収（確定時の見込みオッズで）がこれ未満なら見送り
+MULTI_SYNTH_MIN = 2.0     # 合成オッズ（確定時の見込み）がこれ未満の買い方は使わない
+MULTI_TIE = 0.03          # 見込み回収の差がこれ以内なら的中率の高い方
+
+
+def all_marginals(P, cars, combos):
+    """3連単確率 → 券種ごとの確率 {券種: {組: 確率}}。ワイドは「2人とも3着以内」"""
+    ex, trio, _, qn = marginals(P, cars, combos)
+    tri, wide = {}, {}
+    n = len(cars)
+    for idx, (i, j, k) in enumerate(combos):
+        if max(i, j, k) >= n or P[idx] <= 0:
+            continue
+        p = float(P[idx]); a, b, c = int(cars[i]), int(cars[j]), int(cars[k])
+        tri[f"{a}-{b}-{c}"] = p
+        for x, y in ((a, b), (a, c), (b, c)):
+            key = f"{min(x, y)}={max(x, y)}"
+            wide[key] = wide.get(key, 0) + p
+    return dict(qn=qn, wide=wide, ex=ex, trio=trio, tri=tri)
+
+
+def multi_plans(P, cars, combos, odds, drift=0.93, cands=None):
+    """odds: {券種: {組: 判定時オッズ}}（無い券種は飛ばす）。
+    戻り値: 候補の買い方のリスト（確率の高い順に上から k 点。hit=的中確率, synth=合成オッズ, ev=見込み回収。どれも確定時の見込み）"""
+    cands = cands or MULTI_CANDS
+    pm = all_marginals(P, cars, combos)
+    out = []
+    for t, ks in cands.items():
+        o = {k: float(v) * drift for k, v in (odds.get(t) or {}).items() if v and float(v) > 0}
+        p = pm.get(t, {})
+        order = sorted((x for x in p if o.get(x, 0) > 1.0), key=lambda x: -p[x])
+        for k in ks:
+            if len(order) < k:
+                break
+            sel = order[:k]
+            inv = sum(1 / o[x] for x in sel); hit = sum(p[x] for x in sel)
+            out.append(dict(t=t, k=k, sel=sel, hit=hit, synth=1 / inv, ev=hit / inv,
+                            bets=[dict(combo=x, odds=round(o[x] / drift, 1), p=round(p[x], 5),
+                                       ev=round(p[x] * o[x], 3)) for x in sel]))
+    return out
+
+
+def multi_pick(plans, ev_min=MULTI_EV_MIN, synth_min=MULTI_SYNTH_MIN, tie=MULTI_TIE):
+    """候補から1つ選ぶ。戻り値: (選んだ買い方 or None, 理由, 券種ごとの一番良い候補)"""
+    best_by = {}
+    for x in plans:
+        if x["synth"] >= synth_min and (x["t"] not in best_by or x["ev"] > best_by[x["t"]]["ev"]):
+            best_by[x["t"]] = x
+    ok = [x for x in plans if x["synth"] >= synth_min and x["ev"] >= ev_min]
+    summ = {t: dict(n=x["k"], hit=round(x["hit"], 4), synth=round(x["synth"], 2), ev=round(x["ev"], 4))
+            for t, x in best_by.items()}
+    if not ok:
+        top = max(best_by.values(), key=lambda x: x["ev"]) if best_by else None
+        why = (f"どの券種でも見込み回収が{ev_min:.0%}に届かないため見送り"
+               + (f"（一番良い {MULTI_LABEL[top['t']]}{top['k']}点で {top['ev']:.0%}）" if top else ""))
+        return None, why, summ
+    b = max(x["ev"] for x in ok)
+    pick = max((x for x in ok if x["ev"] >= b - tie), key=lambda x: (x["hit"], -x["k"]))
+    others = sorted((v for t, v in best_by.items() if t != pick["t"]), key=lambda x: -x["ev"])[:2]
+    oth = "・".join(f"{MULTI_LABEL[v['t']]}{v['k']}点 {v['ev']:.0%}" for v in others)
+    why = (f"{MULTI_LABEL[pick['t']]}{pick['k']}点：的中率{pick['hit']:.0%}・合成{pick['synth']:.1f}倍・見込み回収{pick['ev']:.0%}"
+           + (f"（ほかの券種の最良：{oth}）" if oth else ""))
+    return pick, why, summ

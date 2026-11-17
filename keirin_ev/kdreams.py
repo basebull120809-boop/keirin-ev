@@ -312,6 +312,52 @@ def parse_odds_trio(s, rid):
     return pd.DataFrame(rows, columns=["race_id", "combo", "odds"]).drop_duplicates("combo")
 
 
+def parse_odds_wide(s, rid):
+    """ワイドのオッズ。表は2車複と同じ下三角（列=小さい車番・行=大きい車番）で、セルは「下限-上限」の幅。
+    odds=下限（控えめに見る）, odds_hi=上限。ワイドの箱が無いページでは空"""
+    box = None
+    for key in ("JS_ODDSCONTENTS_wide", "JS_ODDSCONTENTS_WIDE"):
+        box = box or s.find(id=key)
+    if box is None:
+        box = s.find(id=re.compile(r"JS_ODDSCONTENTS_.*wide", re.I))
+    rows = []
+    t = box.find("table", class_="odds_table") if box else None
+    if t is not None:
+        trs = t.find_all("tr")
+        cols = [int(th.get_text(strip=True)) for th in trs[0].find_all("th")
+                if re.fullmatch(r"[1-9]", th.get_text(strip=True))]
+        for tr in trs[2:]:                       # 2車複と同じく、見出しの2行を飛ばす
+            th = tr.find("th")
+            if not th or not re.fullmatch(r"[1-9]", th.get_text(strip=True)):
+                continue
+            b = int(th.get_text(strip=True))
+            for a, td in zip(cols, tr.find_all("td")):
+                v = [float(x) for x in re.findall(r"\d+(?:\.\d+)?", td.get_text(" ", strip=True).replace(",", ""))]
+                v = v[:2]                                    # 「下限-上限」の2つだけ見る
+                if v and a != b and v[0] >= 1.0:
+                    x, y = sorted((a, b))
+                    rows.append((rid, f"{x}={y}", min(v), max(v)))
+    return pd.DataFrame(rows, columns=["race_id", "combo", "odds", "odds_hi"]).drop_duplicates("combo")
+
+
+def parse_wide_refunds(rt):
+    """払戻表のワイド欄（最大3組・同着ならそれ以上）→ dict(wide_combos="1=2|1=3|2=3", wide_payouts="150|220|300")"""
+    cs, ps = [], []
+    for el in rt.find_all(["td", "th"]):
+        if "wide" not in (el.get("class") or []):
+            continue
+        for dl in el.find_all("dl"):
+            dt, dd = dl.find("dt"), dl.find("dd")
+            if not dt or not dd:
+                continue
+            m = re.fullmatch(r"([1-9])\s*[=＝-]\s*([1-9])", dt.get_text(strip=True))
+            pay = re.search(r"([\d,]+)円", dd.get_text())
+            if m and pay:
+                x, y = sorted((int(m.group(1)), int(m.group(2))))
+                cs.append(f"{x}={y}"); ps.append(pay.group(1).replace(",", ""))
+    return dict(wide_combos="|".join(cs), wide_payouts="|".join(ps)) if cs else {}
+
+
 def parse_refunds(s):
     """払戻表から 2車単・2車複・3連複 の組と払戻（100円あたり）。同着などで複数あれば最初の1つ
     表は1行目に 見出し(th)＋複、2行目に同じ順で 単 が並ぶ（2行目には見出しが無い）"""
@@ -355,6 +401,10 @@ def parse_refunds(s):
             r = first(dls, r"[1-9]=[1-9]=[1-9]")
             if r:
                 out.update(trio_combo=r[0], trio_payout=r[1])
+    try:
+        out.update(parse_wide_refunds(rt))
+    except Exception:
+        pass
     return out
 
 
@@ -491,7 +541,7 @@ class KdreamsCollector:
     name = "kdreams"
 
     def fetch_day(self, date, log=print):
-        R, E, RES, OD, FIN, HIS, OX, OT, OQ = [], [], [], [], [], [], [], [], []
+        R, E, RES, OD, FIN, HIS, OX, OT, OQ, OW = [], [], [], [], [], [], [], [], [], []
         n_ok = 0
         ids = race_ids_of_day(date)
         for venue, rid in ids:
@@ -501,6 +551,10 @@ class KdreamsCollector:
                 sp = soup(html)
                 OX.append(parse_odds_exacta(sp, rid)); OT.append(parse_odds_trio(sp, rid))
                 OQ.append(parse_odds_quinella(sp, rid))
+                try:                                   # ワイドは読めなくても他の取得は止めない
+                    OW.append(parse_odds_wide(sp, rid))
+                except Exception:
+                    pass
             except Exception as e:                     # 1レースの失敗で止めない
                 log(f"  ! {venue} {rid} 解析失敗: {e}")
                 continue
@@ -520,7 +574,7 @@ class KdreamsCollector:
         return dict(races=pd.DataFrame(R), entries=cat(E),
                     results=pd.DataFrame(RES), odds_trifecta=cat(OD),
                     finish=cat(FIN), history=cat(HIS),
-                    odds_exacta=cat(OX), odds_trio=cat(OT), odds_quinella=cat(OQ))
+                    odds_exacta=cat(OX), odds_trio=cat(OT), odds_quinella=cat(OQ), odds_wide=cat(OW))
 
 
 def probe(dates, log=print):

@@ -264,54 +264,58 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     except Exception as e:
         print("軸そろえ失敗", rid, e, flush=True)
     scen_notes = []
-    if True:                                     # おすすめ＝展開ベースの3連複（主導権を取りそうなライン上位2本 × 各2点。オッズ・期待値・軸では選ばない。全レース出す）
+    try:                                         # おすすめ＝券種をまたいで1つ（2車複・ワイド・2車単・3連複・3連単10〜20点から、見込み回収が一番高い買い方）
+        import importlib
+        from . import bettypes as _bt
+        from .scenario import guard_stakes
+        importlib.reload(_bt)
+        spm = kdreams.soup(html)
         try:
-            from .scenario import trio_top, tenkai_trio, guard_stakes, TRIO_POINTS, BACKTEST
-            tro_s = dict(kdreams.parse_odds_trio(kdreams.soup(html), rid)[["combo", "odds"]].values)
-            scens = []
-            if scen is not None:
-                tb, scens = tenkai_trio(scen, X["T"], 0, tro_s, cover=1.0, max_lines=2, per_line=2)
-                tp = sum(b["p"] for b in tb)
-            else:
-                tb, tp = trio_top(P, cars, COMBOS, tro_s)
-            base_s = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
-                          deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
-            bets = [b for b in bets if b["kind"] not in ("trio", "trio_z")]
-            for b in bets:
-                b["rec"] = False
-            try:
-                gmin = float(tr.synth_floor)
-            except Exception:
-                gmin = 1.7
-            tg = guard_stakes(tb, min_synth=gmin) if tb else None   # どの目が当たっても 投資額×gmin 以上が戻る配分に
-            if tb and tp < CONF_MIN:                 # 自信のあるレースだけ出す（見込みの的中率が CONF_MIN 未満は見送り）
-                rec, why, skip_reason = None, "", f"自信なし（見込みの的中率 {tp:.0%}）のため見送り"
-            elif tb and tg is None:                  # 低オッズの目が混ざり、どう配分しても当たって損する目が残る
-                lo = min(tb, key=lambda b: b["odds"])
-                syn = 1 / sum(1 / b["odds"] for b in tb) if all(b["odds"] > 0 for b in tb) else 0
-                rec, why, skip_reason = None, "", (f"合成オッズ {syn:.1f}倍（最安 {lo['combo']} {lo['odds']:.1f}倍）で、"
-                                                   f"どの目が当たっても{gmin:g}倍以上戻る配分にできないため見送り")
-            elif tb:
-                tb = tg
-                bets += [dict(base_s, **{k: v for k, v in b.items() if k not in ("scen", "pc")}, kind="trio", rec=True) for b in tb]
-                rec, skip_reason = "trio", ""
-                bt = scen.meta.get("backtest", BACKTEST) if scen is not None and hasattr(scen, "meta") else BACKTEST
-                if scens:
-                    why = "／".join(f"{s['label']}（{s['lead']:.0%}）なら {'・'.join(s['picks'])}" for s in scens if s["picks"])
-                    scen_notes.append(f"自信あり：見込みの的中率 {tp:.0%}（過去検証 2026-08〜11：見込み40%以上のレースで 的中75%・回収率79%）")
-                else:
-                    why = f"当たる確率の高い3連複を上から{len(tb)}点（合計の的中確率 {tp:.0%}）"
-                    scen_notes.append(f"3連複{len(tb)}点の的中確率 {tp:.0%}"
-                                      f"（過去検証 {bt['period']}・{bt['races']:,}R：上位{TRIO_POINTS}点の的中 {bt['trio5_hit']:.0%}・回収率 {bt['trio5_roi']:.0%}）")
-            else:
-                rec, why, skip_reason = None, "", "3連複のオッズが取れなかったため見送り"
-            if scen is not None:
-                ll = scen.lead_lines(X["T"], 0)
-                nm = dict(zip(ent["car"].astype(int), ent["name"].astype(str)))
-                scen_notes.append("主導権を取るライン：" + "、".join(
-                    f"{'-'.join(map(str, c))}（{nm.get(c[0], '')}）{p:.0%}" for c, p in ll[:3]))
-        except Exception as e:
-            print("展開シナリオ予想の買い目作成失敗", rid, e, flush=True)
+            _ow = kdreams.parse_odds_wide(spm, rid)
+        except Exception as e:                   # ワイドが読めなくても他の券種で判定する
+            print("ワイドのオッズを読めず", rid, e, flush=True)
+            _ow = pd.DataFrame(columns=["race_id", "combo", "odds"])
+        if len(_ow):                             # ワイドの判定時オッズも保存（あとで検証するため）
+            fo = day / "odds_live_wide.csv.gz"
+            _ow.assign(taken_at=t.strftime("%H:%M:%S")).to_csv(fo, mode="a", index=False, compression="gzip", header=not fo.exists())
+        mo = dict(qn=dict(kdreams.parse_odds_quinella(spm, rid)[["combo", "odds"]].values),
+                  ex=dict(kdreams.parse_odds_exacta(spm, rid)[["combo", "odds"]].values),
+                  trio=dict(kdreams.parse_odds_trio(spm, rid)[["combo", "odds"]].values),
+                  wide=dict(_ow[["combo", "odds"]].values) if len(_ow) else {},
+                  tri={c: float(o) for c, o in od[["combo", "odds"]].values} if not od.empty else {})
+        drift = load_rules_drift()
+        mp = _bt.multi_plans(P, cars, COMBOS, mo, drift=drift)
+        pick, mwhy, msumm = _bt.multi_pick(mp)
+        KIND_OF = dict(qn="qn", wide="wide", ex="ex", trio="trio", tri="yoso")
+        shown = ("yoso", "ex", "trio", "qn", "wide")
+        bets = [b for b in bets if b["kind"] not in shown + tuple(k + "_z" for k in shown)]
+        for b in bets:
+            b["rec"] = False
+        cand = {KIND_OF[k]: v for k, v in msumm.items()}
+        base_m = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                      deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+        try:
+            gmin = float(_bt.load_rules().synth_floor)
+        except Exception:
+            gmin = 1.7
+        tg = guard_stakes([dict(b, stake=0) for b in pick["bets"]], budget=max(3000, 200 * pick["k"]),
+                          min_synth=gmin) if pick else None   # どの目が当たっても 投資額×gmin 以上が戻る配分に
+        if pick is None:
+            rec, why, skip_reason = None, "", mwhy
+        elif tg is None:                         # どう配分しても、当たって損する目が残る
+            rec, why, skip_reason = None, "", f"{_bt.MULTI_LABEL[pick['t']]}{pick['k']}点はどの目が当たっても{gmin:g}倍以上戻る配分にできないため見送り"
+        else:
+            kd = KIND_OF[pick["t"]]
+            bets += [dict(base_m, **b, kind=kd, rec=True) for b in tg]
+            rec, why, skip_reason = kd, mwhy, ""
+            scen_notes.append(f"券種をまたいで選択：{mwhy.split('（')[0]}")
+        if scen is not None:
+            ll = scen.lead_lines(X["T"], 0)
+            nm = dict(zip(ent["car"].astype(int), ent["name"].astype(str)))
+            scen_notes.append("主導権を取るライン：" + "、".join(
+                f"{'-'.join(map(str, c))}（{nm.get(c[0], '')}）{p:.0%}" for c, p in ll[:3]))
+    except Exception as e:
+        print("券種をまたいだ買い目作成失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
@@ -334,7 +338,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
-                                n_bets=sum(b["kind"] in ("yoso", "ex", "trio", "qn") for b in bets),
+                                n_bets=sum(b["kind"] in ("yoso", "ex", "trio", "qn", "wide") for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why, sim=sim_ev,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
@@ -348,6 +352,15 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             new = pd.concat([old, new], ignore_index=True)
         new.to_csv(f, index=False)
     return bets, ent, notes
+
+
+def load_rules_drift():
+    """判定時オッズ→確定時の見込み（config.json の type_rules.odds_drift。無ければ 0.93）"""
+    try:
+        from .bettypes import load_rules
+        return float(load_rules().odds_drift)
+    except Exception:
+        return 0.93
 
 
 def _fmt_block(bets, names):
@@ -383,8 +396,8 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
         L += [f"#### ◎当てる予想：3連複 {len(h4)}点 {st:,}円（的中率 {hp:.0%}・合成 {h4[0].get('synth', 0):.1f}倍）", ""]
         L += [f"- {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(h4, key=lambda b: -b["p"])] + [""]
     rec = next((b["kind"] for b in bets if b.get("rec")), None)
-    if rec in ("ex", "trio", "qn"):
-        lab = {"ex": "2車単", "trio": "3連複", "qn": "2車複"}[rec]
+    if rec in ("ex", "trio", "qn", "wide"):
+        lab = {"ex": "2車単", "trio": "3連複", "qn": "2車複", "wide": "ワイド"}[rec]
         rb = [b for b in bets if b.get("kind") == rec]
         hp = sum(b["p"] for b in rb); st = sum(b["stake"] for b in rb)
         L += [f"#### ◎予想：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
@@ -638,11 +651,11 @@ def paper_results():
         return b.assign(hit=np.nan, payout=np.nan)
     r = pd.concat(res)
     r["win"] = r["first"].astype(str) + "-" + r["second"].astype(str) + "-" + r["third"].astype(str)
-    for c in ("ex_combo", "ex_payout", "trio_combo", "trio_payout", "qn_combo", "qn_payout"):
+    for c in ("ex_combo", "ex_payout", "trio_combo", "trio_payout", "qn_combo", "qn_payout", "wide_combos", "wide_payouts"):
         if c not in r:
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
-                   "qn_combo", "qn_payout"]], on="race_id", how="left")
+                   "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
     is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z"]), b["kind"].isin(["qn", "qn_z"])   # tenkai は2車単、pool は3連複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
@@ -651,6 +664,19 @@ def paper_results():
     b["hit"] = (b["combo"] == target).astype(object)
     b["payout"] = np.where(b["hit"], b["stake"] / 100 * pd.to_numeric(pay, errors="coerce"), 0)
     b.loc[pd.isna(target), ["hit", "payout"]] = np.nan
+    is_w = b["kind"].isin(["wide", "wide_z"])  # ワイドは当たりが3組（同着ならそれ以上）
+    if is_w.any():
+        def _wide(row):
+            cs, ps = row["wide_combos"], row["wide_payouts"]
+            if not isinstance(cs, str) or not cs:
+                return np.nan, np.nan
+            pay = dict(zip(cs.split("|"), str(ps).split("|")))
+            if row["combo"] in pay:
+                return True, row["stake"] / 100 * float(pay[row["combo"]])
+            return False, 0.0
+        hp = b.loc[is_w].apply(_wide, axis=1, result_type="expand")
+        b.loc[is_w, "hit"] = hp[0].values
+        b.loc[is_w, "payout"] = hp[1].values
     if "rec" not in b:
         b["rec"] = False
     return b

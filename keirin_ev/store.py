@@ -7,7 +7,7 @@ import pandas as pd
 
 ROOT = Path("data/daily")
 TABLES = ["races", "entries", "results", "odds_trifecta"]
-EXTRA = ["finish", "history", "odds_exacta", "odds_trio", "odds_quinella"]   # 全着順・上がり / 前場所までの成績 / 2車単・3連複・2車複オッズ
+EXTRA = ["finish", "history", "odds_exacta", "odds_trio", "odds_quinella", "odds_wide"]   # 全着順・上がり / 前場所までの成績 / 2車単・3連複・2車複・ワイドオッズ
 
 
 def day_dir(date):
