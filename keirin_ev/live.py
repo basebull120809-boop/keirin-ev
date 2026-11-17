@@ -263,23 +263,32 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     except Exception as e:
         print("軸そろえ失敗", rid, e, flush=True)
     scen_notes = []
-    if True:                                     # おすすめ＝当たる確率の高い3連複を上から5点（期待値・軸は見ない。全レース出す）
+    if True:                                     # おすすめ＝展開ベースの3連複（主導権を取りそうなライン上位2本 × 各2点。オッズ・期待値・軸では選ばない。全レース出す）
         try:
-            from .scenario import trio_top, TRIO_POINTS, BACKTEST
+            from .scenario import trio_top, tenkai_trio, TRIO_POINTS, BACKTEST
             tro_s = dict(kdreams.parse_odds_trio(kdreams.soup(html), rid)[["combo", "odds"]].values)
-            tb, tp = trio_top(P, cars, COMBOS, tro_s)
+            scens = []
+            if scen is not None:
+                tb, scens = tenkai_trio(scen, X["T"], 0, tro_s, cover=1.0, max_lines=2, per_line=2)
+                tp = sum(b["p"] for b in tb)
+            else:
+                tb, tp = trio_top(P, cars, COMBOS, tro_s)
             base_s = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                           deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
             bets = [b for b in bets if b["kind"] not in ("trio", "trio_z")]
             for b in bets:
                 b["rec"] = False
             if tb:
-                bets += [dict(base_s, **b, kind="trio", rec=True) for b in tb]
+                bets += [dict(base_s, **{k: v for k, v in b.items() if k not in ("scen", "pc")}, kind="trio", rec=True) for b in tb]
                 rec, skip_reason = "trio", ""
                 bt = scen.meta.get("backtest", BACKTEST) if scen is not None and hasattr(scen, "meta") else BACKTEST
-                why = f"当たる確率の高い3連複を上から{len(tb)}点（合計の的中確率 {tp:.0%}）"
-                scen_notes.append(f"3連複{len(tb)}点の的中確率 {tp:.0%}"
-                                  f"（過去検証 {bt['period']}・{bt['races']:,}R：上位{TRIO_POINTS}点の的中 {bt['trio5_hit']:.0%}・回収率 {bt['trio5_roi']:.0%}）")
+                if scens:
+                    why = "／".join(f"{s['label']}（{s['lead']:.0%}）なら {'・'.join(s['picks'])}" for s in scens if s["picks"])
+                    scen_notes.append(f"展開ベース3連複{len(tb)}点（過去検証 2026-08〜11・5,146R：2展開×2点 的中55%・回収率80%）")
+                else:
+                    why = f"当たる確率の高い3連複を上から{len(tb)}点（合計の的中確率 {tp:.0%}）"
+                    scen_notes.append(f"3連複{len(tb)}点の的中確率 {tp:.0%}"
+                                      f"（過去検証 {bt['period']}・{bt['races']:,}R：上位{TRIO_POINTS}点の的中 {bt['trio5_hit']:.0%}・回収率 {bt['trio5_roi']:.0%}）")
             else:
                 rec, why, skip_reason = None, "", "3連複のオッズが取れなかったため見送り"
             if scen is not None:

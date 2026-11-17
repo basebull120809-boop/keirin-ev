@@ -242,6 +242,52 @@ def train_from(D, path=PATH, log=print):
 TRIO_POINTS = 5
 TRIO_STAKE = 600
 
+# ---- 展開ベースの買い目 ----
+TENKAI_COVER = 0.75      # 主導権の確率をこの合計まで想定する
+TENKAI_MAX_LINES = 3     # 想定する展開の数の上限
+TENKAI_PER_LINE = 2      # 展開ごとの3連複の点数
+TENKAI_STAKE = 500
+
+
+def tenkai_trio(m, T, r, trio_odds=None, cover=TENKAI_COVER, max_lines=TENKAI_MAX_LINES,
+                per_line=TENKAI_PER_LINE, stake=TENKAI_STAKE):
+    """展開ごとに残りそうな3人を出す（オッズとは混ぜない。人気で目を選ばない）。
+    主導権を取りそうなラインを確率の高い順に合計 cover まで（最大 max_lines 本）想定し、
+    そのラインが主導権を取ったときの着順の確率から3連複を上から per_line 点ずつ。
+    戻り値: 買い目リスト（scen=展開の説明, lead=主導権確率, pc=その展開での確率）, 展開リスト"""
+    from .model import COMBOS
+    Tr = _take(T, [r])
+    C, CL = candidates(Tr)
+    PA = m.lead_probs(Tr, C, CL)[0]
+    order = [c for c in np.argsort(-PA) if C[0, c] >= 0 and PA[c] > 0]
+    bets, scens, seen, cum = [], [], set(), 0.0
+    for c in order[:max_lines]:
+        line = [int(Tr.cars[0, k]) for k in range(MAXN) if Tr.mask[0, k] and Tr.line[0, k] == CL[0, c]]
+        Pc = m.order.combo_probs(_with_X(Tr, _augX(Tr, C, CL, np.array([c]))))[0]
+        pt = {}
+        for n, (i, j, k) in enumerate(COMBOS):
+            if Pc[n] > 0 and Tr.mask[0, i] and Tr.mask[0, j] and Tr.mask[0, k]:
+                key = "=".join(map(str, sorted(int(Tr.cars[0, x]) for x in (i, j, k))))
+                pt[key] = pt.get(key, 0.0) + float(Pc[n])
+        ok = [x for x in sorted(pt, key=lambda x: -pt[x]) if trio_odds is None or float(trio_odds.get(x, 0) or 0) > 0]
+        lab = "-".join(map(str, line)) + ("ライン" if len(line) > 1 else "（単騎）") + "が主導権"
+        picks = []
+        for key in ok:
+            if len(picks) >= per_line:
+                break
+            if key in seen:
+                continue
+            seen.add(key); picks.append(key)
+            o = float(trio_odds.get(key, 0)) if trio_odds else 0.0
+            bets.append(dict(combo=key, stake=stake, odds=o, p=round(pt[key] * float(PA[c]), 5),
+                             ev=round(pt[key] * float(PA[c]) * o, 3), scen=lab,
+                             lead=round(float(PA[c]), 3), pc=round(pt[key], 3)))
+        scens.append(dict(line=line, lead=float(PA[c]), label=lab, picks=picks))
+        cum += float(PA[c])
+        if cum >= cover:
+            break
+    return bets, scens
+
 
 def trio_top(P, cars, COMBOS, trio_odds, n=TRIO_POINTS, stake=TRIO_STAKE):
     """3連複を確率の高い順に n 点（オッズの付いている目だけ）。戻り値: 買い目リスト, 合計的中確率"""
