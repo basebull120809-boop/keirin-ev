@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 17:05",
+ "updated_at": "2026-11-17 17:17",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -4458,7 +4458,10 @@
     "race_no": 4,
     "deadline": "17:06",
     "judged_at": "17:00:40",
-    "result": null,
+    "result": {
+     "combo": "7-2-3",
+     "payout": 1340
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -4472,7 +4475,7 @@
       "odds": 12.6,
       "p": 0.0773,
       "ev": 0.974,
-      "hit": null,
+      "hit": true,
       "ratio": 1.306
      },
      {
@@ -4481,7 +4484,7 @@
       "odds": 6.4,
       "p": 0.1458,
       "ev": 0.933,
-      "hit": null,
+      "hit": false,
       "ratio": 1.251
      }
     ],
@@ -4492,7 +4495,7 @@
       "odds": 6.4,
       "p": 0.1512,
       "ev": 0.968,
-      "hit": null,
+      "hit": false,
       "synth": 1.53
      },
      {
@@ -4501,7 +4504,7 @@
       "odds": 6.0,
       "p": 0.1342,
       "ev": 0.805,
-      "hit": null,
+      "hit": false,
       "synth": 1.53
      },
      {
@@ -4510,7 +4513,7 @@
       "odds": 7.0,
       "p": 0.1231,
       "ev": 0.862,
-      "hit": null,
+      "hit": false,
       "synth": 1.53
      },
      {
@@ -4519,13 +4522,22 @@
       "odds": 7.0,
       "p": 0.1185,
       "ev": 0.83,
-      "hit": null,
+      "hit": false,
       "synth": 1.53
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 150
+    },
+    "ex_result": {
+     "combo": "7-2",
+     "payout": 230
+    },
+    "trio_result": {
+     "combo": "2=3=7",
+     "payout": 720
+    },
     "notes": [
      "主導権予想：7中西将太郎のライン 38%（2番手は 3加藤健一 37%）",
      "1着が出るライン：7-2 が 79%",
@@ -6421,26 +6433,26 @@
   },
   "hit4": {
    "total": {
-    "stake": 1800,
+    "stake": 3600,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 4,
+    "points": 8,
     "hits": 0,
-    "races": 1,
+    "races": 2,
     "race_hits": 0,
     "days": 1
    },
    "daily": [
     {
      "date": "2026-11-17",
-     "stake": 1800,
+     "stake": 3600,
      "payout": 0.0,
-     "points": 4,
+     "points": 8,
      "hits": 0,
-     "races": 1,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -1800.0
+     "cum": -3600.0
     }
    ]
   },
@@ -6471,13 +6483,13 @@
   },
   "pool": {
    "total": {
-    "stake": 19000,
-    "payout": 3800.0,
-    "roi": 0.2,
-    "points": 38,
-    "hits": 2,
-    "races": 21,
-    "race_hits": 2,
+    "stake": 20000,
+    "payout": 7400.0,
+    "roi": 0.37,
+    "points": 40,
+    "hits": 3,
+    "races": 22,
+    "race_hits": 3,
     "days": 2
    },
    "daily": [
@@ -6494,14 +6506,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 13500,
-     "payout": 3800.0,
-     "points": 27,
-     "hits": 2,
-     "races": 16,
-     "race_hits": 2,
-     "roi": 0.2815,
-     "cum": -15200.0
+     "stake": 14500,
+     "payout": 7400.0,
+     "points": 29,
+     "hits": 3,
+     "races": 17,
+     "race_hits": 3,
+     "roi": 0.5103,
+     "cum": -12600.0
     }
    ]
   },
