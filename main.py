@@ -284,6 +284,11 @@ def main():
             tenkai.train()
         except Exception as e:
             print("展開予想の学習失敗:", e)
+        try:                                     # 展開シナリオ予想（判定ではこれを最優先で使う）
+            from keirin_ev.scenario import train_from
+            train_from(D)
+        except Exception as e:
+            print("展開シナリオ予想の学習失敗:", e)
     elif a.cmd == "live":                        # 当日運用（締切前判定と通知）
         from keirin_ev.live import run
         run(max_minutes=float(a.args[0]) if a.args else 340)

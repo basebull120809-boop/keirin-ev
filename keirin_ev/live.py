@@ -154,13 +154,25 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         pass
     except Exception as e:
         print("残差モデルを使えず旧モデルで判定", rid, e, flush=True)
+    scen = None
+    try:                                         # 展開シナリオ予想（全展開を想定＋オッズ）があれば最優先で使う
+        from .scenario import ScenarioModel
+        scen = ScenarioModel.from_json()
+        P = scen.predict(X["T"], X["Q"])[0]
+        use_res = True
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        scen = None
+        print("展開シナリオ予想を使えず従来の予想で判定", rid, e, flush=True)
     cars = X["T"].cars[0]
     sim = None
     try:                                         # 予想前に1000回シミュレーション → あらゆる展開を混ぜた確率で組む
-        from .simulate import simulate
-        sim = simulate(P, X["T"], 0, X["O"][0], seed=int(rid[-8:]))
-        if not use_res:                          # 残差モデルはシミュレーションで混ぜるとわずかに悪化したので、確率はそのまま使う
-            P = sim["P"]
+        if scen is None:                         # 展開シナリオ予想のときは使わない（自分の確率で自分を採点することになるため）
+            from .simulate import simulate
+            sim = simulate(P, X["T"], 0, X["O"][0], seed=int(rid[-8:]))
+            if not use_res:                      # 残差モデルはシミュレーションで混ぜるとわずかに悪化したので、確率はそのまま使う
+                P = sim["P"]
     except Exception as e:
         print("シミュレーション失敗（元の確率で判定）", rid, e, flush=True)
     bets = []
@@ -250,6 +262,32 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             skip_reason = "予想の軸（" + "・".join(map(str, sorted(core))) + "）から外れた買い目しかないため見送り"
     except Exception as e:
         print("軸そろえ失敗", rid, e, flush=True)
+    scen_notes = []
+    if scen is not None:                         # おすすめ＝展開シナリオ予想の3連複を確率の高い順に5点
+        try:
+            from .scenario import trio_top, TRIO_POINTS, BACKTEST
+            tro_s = dict(kdreams.parse_odds_trio(kdreams.soup(html), rid)[["combo", "odds"]].values)
+            tb, tp = trio_top(P, cars, COMBOS, tro_s)
+            base_s = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                          deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+            bets = [b for b in bets if b["kind"] not in ("trio", "trio_z")]
+            for b in bets:
+                b["rec"] = False
+            if tb:
+                bets += [dict(base_s, **b, kind="trio", rec=True) for b in tb]
+                rec, skip_reason = "trio", ""
+                bt = scen.meta.get("backtest", BACKTEST) if hasattr(scen, "meta") else BACKTEST
+                why = (f"展開を全部想定した予想＋オッズで、当たる確率の高い3連複{len(tb)}点（合計の的中確率 {tp:.0%}）")
+                scen_notes.append(f"展開シナリオ予想：3連複{len(tb)}点の的中確率 {tp:.0%}"
+                                  f"（過去検証 {bt['period']}・{bt['races']:,}R：上位{TRIO_POINTS}点の的中 {bt['trio5_hit']:.0%}・回収率 {bt['trio5_roi']:.0%}）")
+            else:
+                rec, why, skip_reason = None, "", "3連複のオッズが取れなかったため見送り"
+            ll = scen.lead_lines(X["T"], 0)
+            nm = dict(zip(ent["car"].astype(int), ent["name"].astype(str)))
+            scen_notes.append("主導権を取るライン：" + "、".join(
+                f"{'-'.join(map(str, c))}（{nm.get(c[0], '')}）{p:.0%}" for c, p in ll[:3]))
+        except Exception as e:
+            print("展開シナリオ予想の買い目作成失敗", rid, e, flush=True)
     try:                                         # 一言解説（買い目の有無にかかわらず記録）
         from .insights import race_notes
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
@@ -257,6 +295,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         print("解説作成失敗", rid, e, flush=True); notes, line_probs = [], []
     if tk_note:
         notes = [tk_note] + notes
+    notes = scen_notes + notes
     sim_ev = None
     if sim is not None:                          # 出す買い目を1000回のレースで採点
         try:
@@ -275,7 +314,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why, sim=sim_ev,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
-                                reason=skip_reason or ("" if any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),
+                                reason=skip_reason or ("" if rec or any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),
                            ensure_ascii=False) + "\n")
     if bets:
         f = day / "bets.csv"
