@@ -246,7 +246,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         base3 = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                      deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
         bets += [dict(base3, **b, kind="pool", rec=False) for b in pools.trio_plan(tri3, tro3)]
-        hb, hinfo = pools.hit_plan(P, cars, COMBOS, tro3)       # 当てる予想（3連複4点）
+        hb, hinfo = pools.hit_plan(P, cars, COMBOS, tro3)       # 当てる予想（3連複・荒れそうなら多点）
         bets += [dict(base3, **b, kind="hit4", rec=False) for b in hb]
     except Exception as e:
         print("券種ズレの判定失敗", rid, e, flush=True)

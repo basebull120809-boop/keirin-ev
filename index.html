@@ -552,13 +552,13 @@ function poolBlock(r) {
       <div><span>当たれば</span><b style="font-size:14px">${Math.round(Math.min(...pays)).toLocaleString()}${pays.length > 1 ? "〜" + Math.round(Math.max(...pays)).toLocaleString() : ""}</b></div></div>
     ${fmBoxHTML(bs, "trio")}</div>`;
 }
-/* 当てる予想（3連複4点）：見込み50%以上・確定の合成オッズ1.5倍以上（判定時オッズ×0.93で見通し）のときだけ */
+/* 当てる予想（3連複・点数はレースしだい）：見込み50%に届くまで足す・確定の合成オッズ1.5倍以上（判定時オッズ×0.93で見通し）のときだけ */
 function hitBlock(r) {
   const bs = r.hit4 || [];
   if (!bs.length) return "";
   const st = sum(bs, x => x.stake), pays = bs.map(x => x.stake * x.odds * 0.93);
   return `<div class="rec"><div class="rec-h"><span class="mk">当てる</span><b>3連複 ${bs.length}点</b><span class="tag lime">的中率 ${pct(sum(bs, x => x.p), 0)}</span></div>
-    <p class="why">予想の上位${bs.length}組。どれが当たっても払戻がそろう配分で、確定オッズでも約${(bs[0].synth || Math.min(...pays) / st).toFixed(1)}倍になる見通し（トリガミなし）。</p>
+    <p class="why">予想の上位${bs.length}組（当たる見込み50%に届くまで足すので、荒れそうなレースほど点数が増えます）。どれが当たっても払戻がそろう配分で、確定オッズでも約${(bs[0].synth || Math.min(...pays) / st).toFixed(1)}倍になる見通し（トリガミなし）。</p>
     <div class="kv"><div><span>点数・金額</span><b>${bs.length}<small style="font-size:11px">点</small> ${st.toLocaleString()}</b></div>
       <div><span>的中率（見込み）</span><b>${pct(sum(bs, x => x.p), 0)}</b></div>
       <div><span>当たれば（見通し）</span><b style="font-size:14px">${Math.round(Math.min(...pays)).toLocaleString()}〜${Math.round(Math.max(...pays)).toLocaleString()}</b></div></div>

@@ -44,45 +44,66 @@ def trio_plan(tri_odds, trio_odds):
             for r, k, o, p in cand[:MAX_POINTS]]
 
 
-# ---------------- 当てる予想（3連複4点） ----------------
-HIT_POINTS = 4
-HIT_P_MIN = 0.5        # 4点の合計の当たる見込み（モデル）
+# ---------------- 当てる予想（3連複・点数はレースしだい） ----------------
+HIT_POINTS = 4         # 堅いレースの最少の軸の広さ（予想の軸そろえで使う）
+HIT_MIN_POINTS = 3     # 当てる予想の最少点数
+HIT_MAX_POINTS = 15    # 荒れそうなレースで広げる上限
+HIT_P_MIN = 0.5        # 合計の当たる見込み（モデル）。届くまで確率の高い順に点数を足す
 HIT_SYNTH_MIN = 1.5    # 確定時の合成オッズの下限（判定時オッズ × DRIFT で見通す）
 DRIFT = 0.93           # 判定時→確定で当たり目のオッズは約7%下がる（実測）
 HIT_BUDGET = 2000
+HIT_UNIT_BUDGET = 300  # 点数が多いときは1点あたりこの額まで予算を広げる（払戻をそろえるため）
 
 
-def axis_cars(P, cars, combos, n=HIT_POINTS):
-    """予想の軸：モデルの3連複確率の上位 n 組に出てくる車の集合（当てる予想と同じ見方）。
-    2車複・2車単・3連複・3連単の表示はこの車どうしの組だけにそろえる"""
+def _trio_probs(P, cars, combos):
     pt = {}
     for k, (i, j, l) in enumerate(combos):
         if P[k] > 0 and cars[i] and cars[j] and cars[l]:
             kk = _key(f"{cars[i]}={cars[j]}={cars[l]}")
             pt[kk] = pt.get(kk, 0.0) + float(P[k])
-    return {int(c) for kk in sorted(pt, key=pt.get, reverse=True)[:n] for c in kk.split("=")}
+    return pt
+
+
+def _need_points(probs_desc):
+    """確率の高い順に足して HIT_P_MIN に届く点数（荒れそうなレースほど多くなる）"""
+    acc = 0.0
+    for n, q in enumerate(probs_desc, 1):
+        acc += q
+        if acc >= HIT_P_MIN:
+            return n
+    return len(probs_desc)
+
+
+def axis_cars(P, cars, combos, n=None):
+    """予想の軸：モデルの3連複確率の上位の組に出てくる車の集合（当てる予想と同じ見方）。
+    組の数は、見込み50%に届くまでの点数（最少 HIT_POINTS・最大 HIT_MAX_POINTS）。荒れそうなレースほど軸が広がる。
+    2車複・2車単・3連複・3連単の表示はこの車どうしの組だけにそろえる"""
+    pt = _trio_probs(P, cars, combos)
+    keys = sorted(pt, key=pt.get, reverse=True)
+    if n is None:
+        n = min(HIT_MAX_POINTS, max(HIT_POINTS, _need_points([pt[k] for k in keys])))
+    return {int(c) for kk in keys[:n] for c in kk.split("=")}
 
 
 def hit_plan(P, cars, combos, trio_odds):
-    """モデルの3連単確率 P（504）から3連複の上位4点。見込み50%以上・見通した合成オッズ1.5倍以上のときだけ。
-    払戻がそろうように配分（どれが当たっても約 合成オッズ 倍）。過去（10〜11月 確定オッズ）：的中率58%・回収率92%"""
+    """モデルの3連単確率 P（504）から3連複を確率の高い順に、合計の見込みが50%に届くまで足す（3〜15点）。
+    堅いレースは少なく、荒れそうなレースは多点になる。見通した合成オッズ1.5倍以上・トリガミなしのときだけ出す。
+    払戻がそろうように配分（どれが当たっても約 合成オッズ 倍）"""
     from .strategy import _equal_payout
     tro = {_key(k): float(v) for k, v in trio_odds.items() if v and float(v) > 0}
-    pt = {}
-    for n, (i, j, k) in enumerate(combos):
-        if P[n] > 0 and cars[i] and cars[j] and cars[k]:
-            kk = _key(f"{cars[i]}={cars[j]}={cars[k]}")
-            pt[kk] = pt.get(kk, 0.0) + float(P[n])
-    top = [k for k in sorted(pt, key=pt.get, reverse=True) if k in tro][:HIT_POINTS]
-    if len(top) < HIT_POINTS:
+    pt = _trio_probs(P, cars, combos)
+    ranked = [k for k in sorted(pt, key=pt.get, reverse=True) if k in tro][:HIT_MAX_POINTS]
+    if len(ranked) < HIT_MIN_POINTS:
         return [], None
+    n = max(HIT_MIN_POINTS, _need_points([pt[k] for k in ranked]))
+    top = ranked[:n]
     p = sum(pt[k] for k in top)
     o = np.array([tro[k] for k in top])
     synth = 1 / (1 / (o * DRIFT)).sum()
-    info = dict(p=round(p, 3), synth=round(float(synth), 2))
+    info = dict(p=round(p, 3), synth=round(float(synth), 2), n=n)
     if p < HIT_P_MIN or synth < HIT_SYNTH_MIN:
         return [], info
-    st = _equal_payout(o, HIT_BUDGET, 100)
+    st = _equal_payout(o, max(HIT_BUDGET, HIT_UNIT_BUDGET * n), 100)
     if (st * o * DRIFT).min() < st.sum():          # 当たっても損になる目があれば出さない
         return [], info
     return [dict(combo=k, stake=int(s), odds=float(oo), p=round(pt[k], 5), ev=round(pt[k] * oo, 3), synth=info["synth"])
