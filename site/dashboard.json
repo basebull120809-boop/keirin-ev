@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 22:19",
+ "updated_at": "2026-11-17 22:26",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -5094,7 +5094,10 @@
     "race_no": 6,
     "deadline": "22:15",
     "judged_at": "22:09:10",
-    "result": null,
+    "result": {
+     "combo": "6-5-2",
+     "payout": 176210
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -5103,9 +5106,18 @@
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=6",
+     "payout": 20030
+    },
+    "ex_result": {
+     "combo": "6-5",
+     "payout": 57170
+    },
+    "trio_result": {
+     "combo": "2=5=6",
+     "payout": 15070
+    },
     "notes": [
      "主導権を取るライン：1-2-4（水谷亮太）84%、3-5（立石拓也）8%、6-7（宮本佳樹）8%",
      "主導権予想：1水谷亮太のライン 84%（2番手は 7田村裕也 9%） → 逃げ切り目 2車単 1-2（3.6倍）",
@@ -7969,12 +7981,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 53000,
+    "stake": 54000,
     "payout": 73500.0,
-    "roi": 1.3868,
-    "points": 53,
+    "roi": 1.3611,
+    "points": 54,
     "hits": 12,
-    "races": 53,
+    "races": 54,
     "race_hits": 12,
     "days": 2
    },
@@ -7992,14 +8004,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 39000,
+     "stake": 40000,
      "payout": 50200.0,
-     "points": 39,
+     "points": 40,
      "hits": 10,
-     "races": 39,
+     "races": 40,
      "race_hits": 10,
-     "roi": 1.2872,
-     "cum": 20500.0
+     "roi": 1.255,
+     "cum": 19500.0
     }
    ]
   },
