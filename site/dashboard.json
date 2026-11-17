@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 22:49",
+ "updated_at": "2026-11-17 22:56",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -5483,7 +5483,10 @@
     "race_no": 7,
     "deadline": "22:45",
     "judged_at": "22:39:05",
-    "result": null,
+    "result": {
+     "combo": "1-2-3",
+     "payout": 1350
+    },
     "bets": [],
     "invest": [],
     "ex": [
@@ -5493,19 +5496,32 @@
       "odds": 4.5,
       "p": 0.2421,
       "ev": 1.013,
-      "hit": null
+      "hit": false
      }
     ],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 190,
+     "all": "1=2・1=3・2=3"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 540
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 700
+    },
+    "trio_result": {
+     "combo": "1=2=3",
+     "payout": 420
+    },
     "notes": [
      "券種をまたいで選択：2車単1点：的中率24%・合成4.2倍・見込み回収101%",
      "主導権を取るライン：1-4-5（岩辺陸）74%、2-3-7（愛敬博之）23%、6（鈴木豪）3%",
@@ -8195,12 +8211,12 @@
  "paper": {
   "ex": {
    "total": {
-    "stake": 481100,
+    "stake": 484100,
     "payout": 483360.0,
-    "roi": 1.0047,
-    "points": 685,
+    "roi": 0.9985,
+    "points": 686,
     "hits": 63,
-    "races": 171,
+    "races": 172,
     "race_hits": 63,
     "days": 5
    },
@@ -8251,14 +8267,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 56800,
+     "stake": 59800,
      "payout": 172740.0,
-     "points": 109,
+     "points": 110,
      "hits": 6,
-     "races": 22,
+     "races": 23,
      "race_hits": 6,
-     "roi": 3.0412,
-     "cum": 2260.0
+     "roi": 2.8886,
+     "cum": -740.0
     }
    ]
   },
@@ -8339,12 +8355,12 @@
   },
   "pool": {
    "total": {
-    "stake": 37500,
+    "stake": 38000,
     "payout": 23450.0,
-    "roi": 0.6253,
-    "points": 75,
+    "roi": 0.6171,
+    "points": 76,
     "hits": 6,
-    "races": 44,
+    "races": 45,
     "race_hits": 6,
     "days": 2
    },
@@ -8362,14 +8378,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 32000,
+     "stake": 32500,
      "payout": 23450.0,
-     "points": 64,
+     "points": 65,
      "hits": 6,
-     "races": 39,
+     "races": 40,
      "race_hits": 6,
-     "roi": 0.7328,
-     "cum": -14050.0
+     "roi": 0.7215,
+     "cum": -14550.0
     }
    ]
   },
@@ -8458,12 +8474,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 55000,
+    "stake": 56000,
     "payout": 73500.0,
-    "roi": 1.3364,
-    "points": 55,
+    "roi": 1.3125,
+    "points": 56,
     "hits": 12,
-    "races": 55,
+    "races": 56,
     "race_hits": 12,
     "days": 2
    },
@@ -8481,14 +8497,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 41000,
+     "stake": 42000,
      "payout": 50200.0,
-     "points": 41,
+     "points": 42,
      "hits": 10,
-     "races": 41,
+     "races": 42,
      "race_hits": 10,
-     "roi": 1.2244,
-     "cum": 18500.0
+     "roi": 1.1952,
+     "cum": 17500.0
     }
    ]
   },
@@ -8707,12 +8723,12 @@
   },
   "rec": {
    "total": {
-    "stake": 471200,
+    "stake": 474200,
     "payout": 382080.0,
-    "roi": 0.8109,
-    "points": 780,
+    "roi": 0.8057,
+    "points": 781,
     "hits": 83,
-    "races": 172,
+    "races": 173,
     "race_hits": 83,
     "days": 5
    },
@@ -8763,14 +8779,14 @@
     },
     {
      "date": "2026-11-17",
-     "stake": 43400,
+     "stake": 46400,
      "payout": 47050.0,
-     "points": 84,
+     "points": 85,
      "hits": 11,
-     "races": 19,
+     "races": 20,
      "race_hits": 11,
-     "roi": 1.0841,
-     "cum": -89120.0
+     "roi": 1.014,
+     "cum": -92120.0
     }
    ]
   }
