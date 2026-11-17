@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-17 21:14",
+ "updated_at": "2026-11-17 21:16",
  "picks": {
   "date": "2026-11-17",
   "races": [
@@ -5835,7 +5835,7 @@
     "venue": "別府",
     "race_no": 9,
     "deadline": "19:03",
-    "status": "buy",
+    "status": "skip",
     "invest": false,
     "reason": "自信なし（見込みの的中率 18%）のため見送り",
     "notes": [
@@ -6088,7 +6088,7 @@
     "venue": "高知",
     "race_no": 1,
     "deadline": "20:35",
-    "status": "buy",
+    "status": "skip",
     "invest": false,
     "reason": "自信なし（見込みの的中率 37%）のため見送り",
     "notes": [
@@ -6131,7 +6131,7 @@
     "venue": "宇都宮",
     "race_no": 1,
     "deadline": "20:45",
-    "status": "buy",
+    "status": "skip",
     "invest": false,
     "reason": "自信なし（見込みの的中率 31%）のため見送り",
     "notes": [
@@ -6214,7 +6214,7 @@
     "venue": "宇都宮",
     "race_no": 2,
     "deadline": "21:05",
-    "status": "buy",
+    "status": "skip",
     "invest": false,
     "reason": "自信なし（見込みの的中率 25%）のため見送り",
     "notes": [
