@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 11:34",
+ "updated_at": "2026-11-18 11:42",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -1142,20 +1142,36 @@
     "race_no": 3,
     "deadline": "11:31",
     "judged_at": "11:25:21",
-    "result": null,
+    "result": {
+     "combo": "1-5-4",
+     "payout": 4050
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 190,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=5",
+     "payout": 840
+    },
+    "ex_result": {
+     "combo": "1-5",
+     "payout": 1490
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 880
+    },
     "notes": [
      "主導権を取るライン：3-5-7（好永晃）50%、1-4（高本和也）39%、2-6（山田哲也）12%",
      "主導権予想：5一ノ瀬匠のライン 57%（2番手は 1高本和也 34%） → 逃げ切り目 2車単 5-3（4.0倍）",
@@ -2994,12 +3010,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 70000,
+    "stake": 71000,
     "payout": 89800.0,
-    "roi": 1.2829,
-    "points": 70,
+    "roi": 1.2648,
+    "points": 71,
     "hits": 17,
-    "races": 70,
+    "races": 71,
     "race_hits": 17,
     "days": 3
    },
@@ -3028,14 +3044,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 11000,
+     "stake": 12000,
      "payout": 16300.0,
-     "points": 11,
+     "points": 12,
      "hits": 5,
-     "races": 11,
+     "races": 12,
      "race_hits": 5,
-     "roi": 1.4818,
-     "cum": 19800.0
+     "roi": 1.3583,
+     "cum": 18800.0
     }
    ]
   },
