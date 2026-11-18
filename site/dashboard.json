@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 09:41",
+ "updated_at": "2026-11-18 09:58",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -300,20 +300,36 @@
     "race_no": 4,
     "deadline": "09:47",
     "judged_at": "09:41:26",
-    "result": null,
+    "result": {
+     "combo": "2-7-5",
+     "payout": 570
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=5",
+     "payout": 230,
+     "all": "2=5・2=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 210
+    },
+    "ex_result": {
+     "combo": "2-7",
+     "payout": 280
+    },
+    "trio_result": {
+     "combo": "2=5=7",
+     "payout": 340
+    },
     "notes": [
      "主導権を取るライン：2-5-7（宇根秀俊）83%、3-6（一ノ瀬貴将）10%、1-4（西徹）8%",
      "主導権予想：7川西康彦のライン 83%（2番手は 1西徹 8%） → 逃げ切り目 2車単 7-2（6.7倍）",
@@ -1592,12 +1608,12 @@
   },
   "pool": {
    "total": {
-    "stake": 42500,
+    "stake": 44000,
     "payout": 31300.0,
-    "roi": 0.7365,
-    "points": 85,
+    "roi": 0.7114,
+    "points": 88,
     "hits": 8,
-    "races": 50,
+    "races": 51,
     "race_hits": 8,
     "days": 3
    },
@@ -1626,14 +1642,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 500,
+     "stake": 2000,
      "payout": 0.0,
-     "points": 1,
-     "hits": false,
-     "races": 1,
+     "points": 4,
+     "hits": 0,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -11200.0
+     "cum": -12700.0
     }
    ]
   },
@@ -1722,12 +1738,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 60000,
+    "stake": 61000,
     "payout": 73500.0,
-    "roi": 1.225,
-    "points": 60,
+    "roi": 1.2049,
+    "points": 61,
     "hits": 12,
-    "races": 60,
+    "races": 61,
     "race_hits": 12,
     "days": 3
    },
@@ -1756,14 +1772,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 1000,
+     "stake": 2000,
      "payout": 0.0,
-     "points": 1,
-     "hits": false,
-     "races": 1,
+     "points": 2,
+     "hits": 0,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 13500.0
+     "cum": 12500.0
     }
    ]
   },
