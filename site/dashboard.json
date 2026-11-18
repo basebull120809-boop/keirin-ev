@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 13:59",
+ "updated_at": "2026-11-18 14:07",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -2593,20 +2593,36 @@
     "race_no": 8,
     "deadline": "13:56",
     "judged_at": "13:50:09",
-    "result": null,
+    "result": {
+     "combo": "4-7-3",
+     "payout": 6490
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=4",
+     "payout": 120,
+     "all": "3=4・3=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 1740
+    },
+    "ex_result": {
+     "combo": "4-7",
+     "payout": 4240
+    },
+    "trio_result": {
+     "combo": "3=4=7",
+     "payout": 540
+    },
     "notes": [
      "主導権を取るライン：3-4-6（谷内健太）58%、2-5（依田翔大）21%、1-7（三ツ石康洋）21%",
      "主導権予想：3谷内健太のライン 72%（2番手は 7中川聖大 16%） → 逃げ切り目 2車単 3-4（4.4倍）",
@@ -4929,12 +4945,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 82000,
+    "stake": 83000,
     "payout": 95200.0,
-    "roi": 1.161,
-    "points": 82,
+    "roi": 1.147,
+    "points": 83,
     "hits": 20,
-    "races": 82,
+    "races": 83,
     "race_hits": 20,
     "days": 3
    },
@@ -4963,14 +4979,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 23000,
+     "stake": 24000,
      "payout": 21700.0,
-     "points": 23,
+     "points": 24,
      "hits": 8,
-     "races": 23,
+     "races": 24,
      "race_hits": 8,
-     "roi": 0.9435,
-     "cum": 13200.0
+     "roi": 0.9042,
+     "cum": 12200.0
     }
    ]
   },
