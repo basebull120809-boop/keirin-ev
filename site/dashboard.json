@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 23:19",
+ "updated_at": "2026-11-18 23:26",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -6385,20 +6385,36 @@
     "race_no": 9,
     "deadline": "23:15",
     "judged_at": "23:09:22",
-    "result": null,
+    "result": {
+     "combo": "1-2-6",
+     "payout": 2390
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 180,
+     "all": "1=2・1=6・2=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 170
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 280
+    },
+    "trio_result": {
+     "combo": "1=2=6",
+     "payout": 1460
+    },
     "notes": [
      "主導権を取るライン：1-5-7（小玉拓真）44%、2-3（吉田茂生）42%、4-6（片山弘城）14%",
      "主導権予想：3下岡優季のライン 48%（2番手は 7増田仁 42%）",
@@ -9830,12 +9846,12 @@
   },
   "hit4": {
    "total": {
-    "stake": 54100,
+    "stake": 55900,
     "payout": 26430.0,
-    "roi": 0.4885,
-    "points": 117,
+    "roi": 0.4728,
+    "points": 120,
     "hits": 9,
-    "races": 30,
+    "races": 31,
     "race_hits": 9,
     "days": 2
    },
@@ -9853,14 +9869,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 36100,
+     "stake": 37900,
      "payout": 17410.0,
-     "points": 81,
+     "points": 84,
      "hits": 6,
-     "races": 20,
+     "races": 21,
      "race_hits": 6,
-     "roi": 0.4823,
-     "cum": -27670.0
+     "roi": 0.4594,
+     "cum": -29470.0
     }
    ]
   },
