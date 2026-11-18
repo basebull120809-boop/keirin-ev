@@ -8,7 +8,7 @@ on:
     inputs:
       minutes: { description: "動かす分数（テストは15など）", required: false, default: "340" }
 concurrency: { group: live, cancel-in-progress: false }
-permissions: { contents: write, issues: write }
+permissions: { contents: write, issues: write, actions: write }
 jobs:
   live:
     # 非公開リポジトリでは無料枠を使い切るため、自動起動は公開リポジトリのときだけ
@@ -31,3 +31,8 @@ jobs:
           git add data/live site
           git commit -m "live $(date +%F_%H%M)" || exit 0
           for i in 1 2 3; do git pull --rebase -X theirs && git push && break; sleep 5; done
+      - name: 次のジョブを起動（時間切れでレースが残っているとき）
+        # 定時起動は遅れたり抜けたりするので、終わる前に自分で次を起動して判定を途切れさせない
+        if: ${{ !cancelled() && hashFiles('.live_continue') != '' }}
+        env: { GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        run: gh workflow run live.yml --ref main -f minutes=340

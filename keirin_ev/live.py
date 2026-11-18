@@ -570,6 +570,9 @@ def run(max_minutes=340):
             push_now(f"live {venue} {int(rid[-4:])}R {'買い' if bets else '見送り'}")
         sched = [x for x in sched if x[2] not in done]
         time.sleep(30)
+    if sched or pending:                       # 時間切れでレースが残っている → 次のジョブに引き継ぐ（ワークフローが起動する）
+        Path(".live_continue").write_text(f"{len(sched)} {len(pending)}\n")
+        print(f"時間切れ：残り 判定{len(sched)}・結果待ち{len(pending)}レース → 次のジョブへ引き継ぎ", flush=True)
     print("終了", flush=True)
 
 
