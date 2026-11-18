@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 16:55",
+ "updated_at": "2026-11-18 17:14",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -4028,20 +4028,36 @@
     "race_no": 5,
     "deadline": "17:00",
     "judged_at": "16:54:09",
-    "result": null,
+    "result": {
+     "combo": "9-3-8",
+     "payout": 12300
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=8",
+     "payout": 470,
+     "all": "3=8・3=9・8=9"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=9",
+     "payout": 1430
+    },
+    "ex_result": {
+     "combo": "9-3",
+     "payout": 2390
+    },
+    "trio_result": {
+     "combo": "3=8=9",
+     "payout": 1940
+    },
     "notes": [
      "主導権を取るライン：1-6-9（山田英明）39%、4-7（岩井芯）28%、3-8（菊池岳仁）21%",
      "主導権予想：4岩井芯のライン 35%（2番手は 9嘉永泰斗 32%）",
@@ -6657,12 +6673,12 @@
   },
   "pool": {
    "total": {
-    "stake": 71000,
+    "stake": 71500,
     "payout": 42250.0,
-    "roi": 0.5951,
-    "points": 142,
+    "roi": 0.5909,
+    "points": 143,
     "hits": 10,
-    "races": 83,
+    "races": 84,
     "race_hits": 10,
     "days": 3
    },
@@ -6691,14 +6707,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 29000,
+     "stake": 29500,
      "payout": 10950.0,
-     "points": 58,
+     "points": 59,
      "hits": 2,
-     "races": 34,
+     "races": 35,
      "race_hits": 2,
-     "roi": 0.3776,
-     "cum": -28750.0
+     "roi": 0.3712,
+     "cum": -29250.0
     }
    ]
   },
