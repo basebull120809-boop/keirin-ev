@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 21:19",
+ "updated_at": "2026-11-18 21:26",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -5215,20 +5215,36 @@
     "race_no": 3,
     "deadline": "21:15",
     "judged_at": "21:09:05",
-    "result": null,
+    "result": {
+     "combo": "1-2-4",
+     "payout": 290
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 100,
+     "all": "1=2・1=4・2=4"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 120
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 160
+    },
+    "trio_result": {
+     "combo": "1=2=4",
+     "payout": 130
+    },
     "notes": [
      "主導権を取るライン：1-2-4-6（西原裕太郎）81%、3-5-7（高橋聖太）19%",
      "主導権予想：1西原裕太郎のライン 87%（2番手は 3高橋聖太 13%） → 逃げ切り目 2車単 1-2（1.8倍）",
@@ -8441,13 +8457,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 100000,
-    "payout": 113900.0,
-    "roi": 1.139,
-    "points": 100,
-    "hits": 25,
-    "races": 100,
-    "race_hits": 25,
+    "stake": 101000,
+    "payout": 115500.0,
+    "roi": 1.1436,
+    "points": 101,
+    "hits": 26,
+    "races": 101,
+    "race_hits": 26,
     "days": 3
    },
    "daily": [
@@ -8475,14 +8491,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 41000,
-     "payout": 40400.0,
-     "points": 41,
-     "hits": 13,
-     "races": 41,
-     "race_hits": 13,
-     "roi": 0.9854,
-     "cum": 13900.0
+     "stake": 42000,
+     "payout": 42000.0,
+     "points": 42,
+     "hits": 14,
+     "races": 42,
+     "race_hits": 14,
+     "roi": 1.0,
+     "cum": 14500.0
     }
    ]
   },
