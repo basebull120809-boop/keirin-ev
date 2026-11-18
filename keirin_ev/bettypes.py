@@ -290,6 +290,7 @@ MULTI_LABEL = {"qn": "2車複", "wide": "ワイド", "ex": "2車単", "trio": "3
 MULTI_EV_MIN = 0.80       # 買い方全体の見込み回収（確定時の見込みオッズで）がこれ未満の買い方は使わない
 MULTI_SYNTH_MIN = 1.7     # 合成オッズ（確定時の見込み）がこれ未満の買い方は使わない（2026-11-18 2.0→1.7：2.0では買いが1日数Rしか出ないため）
 MULTI_TIE = 0.01          # シミュレーションの的中率の差がこれ以内なら見込み回収の高い方
+MULTI_HIT_MIN = 0.30      # シミュレーションの的中率がこれ未満の買い方は使わない（2026-11-18 追加：無理に荒れ目だけを買う予想はせず見送る）
 
 
 def all_marginals(P, cars, combos):
@@ -355,20 +356,25 @@ def multi_plans(P, cars, combos, odds, drift=0.93, cands=None, finishes=None):
     return out
 
 
-def multi_pick(plans, ev_min=MULTI_EV_MIN, synth_min=MULTI_SYNTH_MIN, tie=MULTI_TIE):
+def multi_pick(plans, ev_min=MULTI_EV_MIN, synth_min=MULTI_SYNTH_MIN, tie=MULTI_TIE, hit_min=MULTI_HIT_MIN):
     """候補から1つ選ぶ：シミュレーションで一番多く当たる買い方。
     戻り値: (選んだ買い方 or None, 理由, 券種ごとの一番当たる候補)"""
     bl = getattr(plans, "blocked", [])
     if bl:                                       # 2026-11-18 追加：本命が元返しのレースは残りの目を買わない
         t, c, o = bl[0]
         return None, f"一番来そうな目（{MULTI_LABEL[t]} {c}）が{o:.1f}倍で、残りの目を買うことになるため見送り", {}
-    ok = [x for x in plans if x["synth"] >= synth_min and x["ev"] >= ev_min]
+    ok0 = [x for x in plans if x["synth"] >= synth_min and x["ev"] >= ev_min]
+    ok = [x for x in ok0 if x["sim_hit"] >= hit_min]
     best_by = {}
     for x in ok:
         if x["t"] not in best_by or x["sim_hit"] > best_by[x["t"]]["sim_hit"]:
             best_by[x["t"]] = x
     summ = {t: dict(n=x["k"], hit=round(x["sim_hit"], 4), synth=round(x["synth"], 2), ev=round(x["ev"], 4))
             for t, x in best_by.items()}
+    if ok0 and not ok:
+        b0 = max(ok0, key=lambda x: x["sim_hit"])
+        return None, (f"条件を満たす買い方は{MULTI_LABEL[b0['t']]}{b0['k']}点（的中{b0['sim_hit']:.0%}）のような"
+                      f"荒れ目ねらいだけで、的中{hit_min:.0%}に届かないため見送り"), summ
     if not ok:
         return None, (f"どの券種も、合成{synth_min:g}倍以上・見込み回収{ev_min:.0%}以上で"
                       f"複数点に広げられないため見送り"), summ
