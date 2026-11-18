@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 10:44",
+ "updated_at": "2026-11-18 10:48",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -539,20 +539,36 @@
     "race_no": 1,
     "deadline": "10:37",
     "judged_at": "10:31:06",
-    "result": null,
+    "result": {
+     "combo": "2-5-7",
+     "payout": 150
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=5",
+     "payout": 100,
+     "all": "2=5・2=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=5",
+     "payout": 120
+    },
+    "ex_result": {
+     "combo": "2-5",
+     "payout": 130
+    },
+    "trio_result": {
+     "combo": "2=5=7",
+     "payout": 120
+    },
     "notes": [
      "主導権を取るライン：2-3-5-7（池田充槻）95%、1-6（川野正芳）4%、4（宮崎康司）1%",
      "主導権予想：2池田充槻のライン 92%（2番手は 6高鍋邦彰 6%） → 逃げ切り目 2車単 2-5（1.3倍）",
@@ -2255,13 +2271,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 63000,
-    "payout": 75900.0,
-    "roi": 1.2048,
-    "points": 63,
-    "hits": 13,
-    "races": 63,
-    "race_hits": 13,
+    "stake": 64000,
+    "payout": 77200.0,
+    "roi": 1.2063,
+    "points": 64,
+    "hits": 14,
+    "races": 64,
+    "race_hits": 14,
     "days": 3
    },
    "daily": [
@@ -2289,14 +2305,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 4000,
-     "payout": 2400.0,
-     "points": 4,
-     "hits": 1,
-     "races": 4,
-     "race_hits": 1,
-     "roi": 0.6,
-     "cum": 12900.0
+     "stake": 5000,
+     "payout": 3700.0,
+     "points": 5,
+     "hits": 2,
+     "races": 5,
+     "race_hits": 2,
+     "roi": 0.74,
+     "cum": 13200.0
     }
    ]
   },
