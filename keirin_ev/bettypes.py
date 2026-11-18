@@ -321,6 +321,13 @@ def sim_finishes(sim, cars, combos):
     return [tuple(int(cars[x]) for x in combos[o]) for o in sim["outcome"]]
 
 
+class _Plans(list):
+    """multi_plans の戻り値。blocked = 一番来そうな目が元返しだった券種 [(券種, 組, 判定時オッズ)]"""
+    def __init__(self, *a):
+        super().__init__(*a)
+        self.blocked = []
+
+
 def multi_plans(P, cars, combos, odds, drift=0.93, cands=None, finishes=None):
     """odds: {券種: {組: 判定時オッズ}}（無い券種は飛ばす）。finishes: シミュレーション各回の着順（あれば的中回数を数える）
     戻り値: 候補の買い方のリスト（確率の高い順に上から k 点。hit=的中確率, sim_hit=シミュレーションで当たった割合,
@@ -328,10 +335,13 @@ def multi_plans(P, cars, combos, odds, drift=0.93, cands=None, finishes=None):
     cands = cands or MULTI_CANDS
     pm = all_marginals(P, cars, combos)
     keys = [_sim_keys(f) for f in finishes] if finishes else None
-    out = []
+    out = _Plans()
     for t, ks in cands.items():
         o = {k: float(v) * drift for k, v in (odds.get(t) or {}).items() if v and float(v) > 0}
         p = pm.get(t, {})
+        top = max((x for x in p if x in o), key=lambda x: p[x], default=None)
+        if top is not None and o[top] <= 1.0:    # 一番来そうな目が元返し（1.0倍前後）→ 本命を外して残りを買うことになるのでレースごと見送り
+            out.blocked.append((t, top, round(o[top] / drift, 1)))
         order = sorted((x for x in p if o.get(x, 0) > 1.0), key=lambda x: -p[x])
         for k in ks:
             if len(order) < k:
@@ -348,6 +358,10 @@ def multi_plans(P, cars, combos, odds, drift=0.93, cands=None, finishes=None):
 def multi_pick(plans, ev_min=MULTI_EV_MIN, synth_min=MULTI_SYNTH_MIN, tie=MULTI_TIE):
     """候補から1つ選ぶ：シミュレーションで一番多く当たる買い方。
     戻り値: (選んだ買い方 or None, 理由, 券種ごとの一番当たる候補)"""
+    bl = getattr(plans, "blocked", [])
+    if bl:                                       # 2026-11-18 追加：本命が元返しのレースは残りの目を買わない
+        t, c, o = bl[0]
+        return None, f"一番来そうな目（{MULTI_LABEL[t]} {c}）が{o:.1f}倍で、残りの目を買うことになるため見送り", {}
     ok = [x for x in plans if x["synth"] >= synth_min and x["ev"] >= ev_min]
     best_by = {}
     for x in ok:
