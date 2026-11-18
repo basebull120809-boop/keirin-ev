@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 14:10",
+ "updated_at": "2026-11-18 14:16",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -2674,20 +2674,36 @@
     "race_no": 8,
     "deadline": "14:05",
     "judged_at": "13:59:21",
-    "result": null,
+    "result": {
+     "combo": "2-4-7",
+     "payout": 18530
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 1480,
+     "all": "2=4・2=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=4",
+     "payout": 3450
+    },
+    "ex_result": {
+     "combo": "2-4",
+     "payout": 4050
+    },
+    "trio_result": {
+     "combo": "2=4=7",
+     "payout": 2910
+    },
     "notes": [
      "主導権を取るライン：1-5-6（小原亮哉）58%、3-7（堀政美）33%、2-4（高山雄丞）9%",
      "主導権予想：6久保光司のライン 51%（2番手は 7上川直紀 42%） → 逃げ切り目 2車単 6-1（24.6倍）",
@@ -5124,14 +5140,14 @@
   },
   "tenkai_z": {
    "total": {
-    "stake": 2000,
+    "stake": 3000,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 2,
+    "points": 3,
     "hits": 0,
-    "races": 2,
+    "races": 3,
     "race_hits": 0,
-    "days": 1
+    "days": 2
    },
    "daily": [
     {
@@ -5144,6 +5160,17 @@
      "race_hits": 0,
      "roi": 0.0,
      "cum": -2000.0
+    },
+    {
+     "date": "2026-11-18",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": -3000.0
     }
    ]
   },
