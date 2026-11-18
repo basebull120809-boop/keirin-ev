@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 15:59",
+ "updated_at": "2026-11-18 16:06",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -3751,20 +3751,36 @@
     "race_no": 11,
     "deadline": "15:55",
     "judged_at": "15:49:17",
-    "result": null,
+    "result": {
+     "combo": "3-6-2",
+     "payout": 3020
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=3",
+     "payout": 220,
+     "all": "2=3・2=6・3=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=6",
+     "payout": 530
+    },
+    "ex_result": {
+     "combo": "3-6",
+     "payout": 920
+    },
+    "trio_result": {
+     "combo": "2=3=6",
+     "payout": 750
+    },
     "notes": [
      "主導権を取るライン：3-5（小笠原匠海）42%、2-7（小原周祐）29%、4-6（上野恭哉）24%",
      "主導権予想：3小笠原匠海のライン 45%（2番手は 7野村賢 34%）",
@@ -6260,12 +6276,12 @@
   },
   "pool": {
    "total": {
-    "stake": 67500,
+    "stake": 68500,
     "payout": 42250.0,
-    "roi": 0.6259,
-    "points": 135,
+    "roi": 0.6168,
+    "points": 137,
     "hits": 10,
-    "races": 80,
+    "races": 81,
     "race_hits": 10,
     "days": 3
    },
@@ -6294,14 +6310,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 25500,
+     "stake": 26500,
      "payout": 10950.0,
-     "points": 51,
+     "points": 53,
      "hits": 2,
-     "races": 31,
+     "races": 32,
      "race_hits": 2,
-     "roi": 0.4294,
-     "cum": -25250.0
+     "roi": 0.4132,
+     "cum": -26250.0
     }
    ]
   },
