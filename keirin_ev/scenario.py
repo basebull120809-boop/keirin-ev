@@ -186,10 +186,23 @@ class ScenarioModel:
             P += w[:, None] * self.order.combo_probs(_with_X(T, _augX(T, C, CL, np.full(R, c))))
         return P / np.maximum(P.sum(1, keepdims=True), 1e-300)
 
+    def weights(self):
+        """展開予想とオッズの混ぜ具合 (a, b)。config.json の tenkai_weight（0〜1）があればそれを使う：
+        a=tenkai_weight, b=1-tenkai_weight。無ければ学習で決めた値（2026-11 時点で 展開≈0.06・市場≈1.0）"""
+        try:
+            w = json.loads(Path("config.json").read_text(encoding="utf-8")).get("tenkai_weight")
+            if w is not None:
+                w = min(max(float(w), 0.0), 1.0)
+                return w, 1.0 - w
+        except Exception:
+            pass
+        return float(self.blend[0]), float(self.blend[1])
+
     def predict(self, T, Q):
         P = self.mix(T)
         v = Q > 0
-        u = np.where(v, self.blend[0] * np.log(P + 1e-12) + self.blend[1] * np.log(Q + 1e-12), -1e9)
+        a, b = self.weights()
+        u = np.where(v, a * np.log(P + 1e-12) + b * np.log(Q + 1e-12), -1e9)
         u -= u.max(1, keepdims=True)
         p = np.where(v, np.exp(u), 0)
         return p / p.sum(1, keepdims=True)
