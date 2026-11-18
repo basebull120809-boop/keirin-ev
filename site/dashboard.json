@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 15:21",
+ "updated_at": "2026-11-18 15:27",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -3393,20 +3393,36 @@
     "race_no": 10,
     "deadline": "15:16",
     "judged_at": "15:10:10",
-    "result": null,
+    "result": {
+     "combo": "4-7-3",
+     "payout": 2060
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=4",
+     "payout": 130,
+     "all": "3=4・3=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 340
+    },
+    "ex_result": {
+     "combo": "4-7",
+     "payout": 410
+    },
+    "trio_result": {
+     "combo": "3=4=7",
+     "payout": 450
+    },
     "notes": [
      "主導権を取るライン：1-4（岡崎昭次）42%、3-6（才迫勇馬）32%、2-5-7（入田龍馬）26%",
      "主導権予想：3才迫勇馬のライン 51%（2番手は 4松本悠平 33%） → 逃げ切り目 2車単 3-6（25.9倍）",
@@ -5850,12 +5866,12 @@
   },
   "pool": {
    "total": {
-    "stake": 64500,
+    "stake": 65500,
     "payout": 42250.0,
-    "roi": 0.655,
-    "points": 129,
+    "roi": 0.645,
+    "points": 131,
     "hits": 10,
-    "races": 77,
+    "races": 78,
     "race_hits": 10,
     "days": 3
    },
@@ -5884,14 +5900,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 22500,
+     "stake": 23500,
      "payout": 10950.0,
-     "points": 45,
+     "points": 47,
      "hits": 2,
-     "races": 28,
+     "races": 29,
      "race_hits": 2,
-     "roi": 0.4867,
-     "cum": -22250.0
+     "roi": 0.466,
+     "cum": -23250.0
     }
    ]
   },
@@ -6038,12 +6054,12 @@
   },
   "tenkai_z": {
    "total": {
-    "stake": 3000,
+    "stake": 4000,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 3,
+    "points": 4,
     "hits": 0,
-    "races": 3,
+    "races": 4,
     "race_hits": 0,
     "days": 2
    },
@@ -6061,14 +6077,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 1000,
+     "stake": 2000,
      "payout": 0.0,
-     "points": 1,
-     "hits": false,
-     "races": 1,
+     "points": 2,
+     "hits": 0,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -3000.0
+     "cum": -4000.0
     }
    ]
   },
