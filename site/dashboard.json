@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 16:54",
+ "updated_at": "2026-11-18 16:55",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -3947,20 +3947,36 @@
     "race_no": 4,
     "deadline": "16:44",
     "judged_at": "16:38:31",
-    "result": null,
+    "result": {
+     "combo": "5-1-7",
+     "payout": 4490
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=5",
+     "payout": 240,
+     "all": "1=5・1=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=5",
+     "payout": 560
+    },
+    "ex_result": {
+     "combo": "5-1",
+     "payout": 640
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 2090
+    },
     "notes": [
      "主導権を取るライン：3-4-6（中西将太郎）45%、1-5（大内達也）38%、2-7（湯浅弘光）17%",
      "主導権予想：5庄子琢心のライン 46%（2番手は 3中西将太郎 34%）",
@@ -6641,12 +6657,12 @@
   },
   "pool": {
    "total": {
-    "stake": 69500,
+    "stake": 71000,
     "payout": 42250.0,
-    "roi": 0.6079,
-    "points": 139,
+    "roi": 0.5951,
+    "points": 142,
     "hits": 10,
-    "races": 82,
+    "races": 83,
     "race_hits": 10,
     "days": 3
    },
@@ -6675,14 +6691,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 27500,
+     "stake": 29000,
      "payout": 10950.0,
-     "points": 55,
+     "points": 58,
      "hits": 2,
-     "races": 33,
+     "races": 34,
      "race_hits": 2,
-     "roi": 0.3982,
-     "cum": -27250.0
+     "roi": 0.3776,
+     "cum": -28750.0
     }
    ]
   },
