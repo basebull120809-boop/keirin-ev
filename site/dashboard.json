@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 21:09",
+ "updated_at": "2026-11-18 21:16",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -5130,20 +5130,36 @@
     "race_no": 2,
     "deadline": "21:05",
     "judged_at": "20:59:25",
-    "result": null,
+    "result": {
+     "combo": "1-5-7",
+     "payout": 28320
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=5",
+     "payout": 830,
+     "all": "1=5・1=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=5",
+     "payout": 3440
+    },
+    "ex_result": {
+     "combo": "1-5",
+     "payout": 3110
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 9760
+    },
     "notes": [
      "主導権を取るライン：1-3（山元大夢）73%、4-5-7（浦山一栄）16%、2（野口修平）9%",
      "主導権予想：1山元大夢のライン 77%（2番手は 4浦山一栄 15%） → 逃げ切り目 2車単 1-3（2.9倍）",
@@ -8331,12 +8347,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 99000,
+    "stake": 100000,
     "payout": 113900.0,
-    "roi": 1.1505,
-    "points": 99,
+    "roi": 1.139,
+    "points": 100,
     "hits": 25,
-    "races": 99,
+    "races": 100,
     "race_hits": 25,
     "days": 3
    },
@@ -8365,14 +8381,14 @@
     },
     {
      "date": "2026-11-18",
-     "stake": 40000,
+     "stake": 41000,
      "payout": 40400.0,
-     "points": 40,
+     "points": 41,
      "hits": 13,
-     "races": 40,
+     "races": 41,
      "race_hits": 13,
-     "roi": 1.01,
-     "cum": 14900.0
+     "roi": 0.9854,
+     "cum": 13900.0
     }
    ]
   },
