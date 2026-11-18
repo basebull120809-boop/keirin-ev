@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-18 09:20",
+ "updated_at": "2026-11-18 09:37",
  "picks": {
   "date": "2026-11-18",
   "races": [
@@ -220,20 +220,36 @@
     "race_no": 3,
     "deadline": "09:26",
     "judged_at": "09:20:13",
-    "result": null,
+    "result": {
+     "combo": "6-3-1",
+     "payout": 96650
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=3",
+     "payout": 760,
+     "all": "1=3・1=6・3=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=6",
+     "payout": 1460
+    },
+    "ex_result": {
+     "combo": "6-3",
+     "payout": 8000
+    },
+    "trio_result": {
+     "combo": "1=3=6",
+     "payout": 6810
+    },
     "notes": [
      "主導権を取るライン：3-4-6（田中秀治）76%、1-5-7（在本直樹）20%、2（原田礼）3%",
      "主導権予想：4村瀬大和のライン 78%（2番手は 1在本直樹 19%） → 逃げ切り目 2車単 4-3（8.3倍）",
@@ -1480,14 +1496,14 @@
   },
   "pool": {
    "total": {
-    "stake": 42000,
+    "stake": 42500,
     "payout": 31300.0,
-    "roi": 0.7452,
-    "points": 84,
+    "roi": 0.7365,
+    "points": 85,
     "hits": 8,
-    "races": 49,
+    "races": 50,
     "race_hits": 8,
-    "days": 2
+    "days": 3
    },
    "daily": [
     {
@@ -1511,6 +1527,17 @@
      "race_hits": 8,
      "roi": 0.8575,
      "cum": -10700.0
+    },
+    {
+     "date": "2026-11-18",
+     "stake": 500,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": -11200.0
     }
    ]
   },
@@ -1599,14 +1626,14 @@
   },
   "tenkai": {
    "total": {
-    "stake": 59000,
+    "stake": 60000,
     "payout": 73500.0,
-    "roi": 1.2458,
-    "points": 59,
+    "roi": 1.225,
+    "points": 60,
     "hits": 12,
-    "races": 59,
+    "races": 60,
     "race_hits": 12,
-    "days": 2
+    "days": 3
    },
    "daily": [
     {
@@ -1630,6 +1657,17 @@
      "race_hits": 10,
      "roi": 1.1156,
      "cum": 14500.0
+    },
+    {
+     "date": "2026-11-18",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": 13500.0
     }
    ]
   },
