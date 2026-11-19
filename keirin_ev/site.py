@@ -61,7 +61,7 @@ def _bl(g, kind):
     return out
 
 
-BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4")
+BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4")   # おすすめ以外は空にする券種（evr3・evr2 は紙上記録として残す）
 
 
 def only_rec(r):
@@ -103,6 +103,7 @@ def day_races(pb, last):
                           invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"), qn=_bl(g, "qn"), wide=_bl(g, "wide"),
                           wide_result=_wide_result(r, g),
                           tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
+                          evr3=_bl(g, "evr3"), evr2=_bl(g, "evr2"),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
                           ex_result=dict(combo=r["ex_combo"], payout=_int(r.get("ex_payout")))
@@ -146,6 +147,9 @@ def picks_and_paper():
         rr = done[done["rec"].astype(str).str.lower().isin(["true", "1"])]
         if len(rr):
             groups.append(("rec", rr))
+    ev = done[done["kind"].isin(["evr3", "evr2"])]   # 残差モデルの期待値買い（3連複＋2車複を合わせて）
+    if len(ev):
+        groups.append(("evr", ev))
     for kind, sub in groups:
         d = sub.groupby("date").agg(stake=("stake", "sum"), payout=("payout", "sum"),
                                     points=("combo", "size"), hits=("hit", "sum"),

@@ -147,10 +147,12 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         return [], ent, []
     P = model.predict(X["T"], X["Q"])[0]
     use_res = False
+    P_res = None
     try:                                         # 市場との差を直接学んだ残差モデルがあればそちらを使う（検証期間で旧モデルより良い）
         from .residual import ResidualModel
         P = ResidualModel.from_json("models/residual.json").predict(X["T"], X["Q"])[0]
         use_res = True
+        P_res = P                                # 残差モデルの期待値買い（evbuy）用に取っておく
     except FileNotFoundError:
         pass
     except Exception as e:
@@ -250,6 +252,19 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         bets += [dict(base3, **b, kind="hit4", rec=False) for b in hb]
     except Exception as e:
         print("券種ズレの判定失敗", rid, e, flush=True)
+    if P_res is not None:                        # 残差モデルの期待値買い（3連複・2車複）：紙上の記録だけ（見送りとは別枠）
+        try:
+            from . import evbuy
+            sp4 = kdreams.soup(html)
+            tro4 = dict(kdreams.parse_odds_trio(sp4, rid)[["combo", "odds"]].values)
+            qno4 = dict(kdreams.parse_odds_quinella(sp4, rid)[["combo", "odds"]].values)
+            b3, b2 = evbuy.plan(P_res, cars, COMBOS, tro4, qno4)
+            base4 = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                         deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+            bets += [dict(base4, **b, kind="evr3", rec=False) for b in b3]
+            bets += [dict(base4, **b, kind="evr2", rec=False) for b in b2]
+        except Exception as e:
+            print("残差モデルの期待値買い失敗", rid, e, flush=True)
     try:                                         # 予想の軸をそろえる：当てる予想の上位車どうし以外の目は「_z」（紙上の記録だけ）に回して表示しない
         import re
         from . import pools
@@ -656,7 +671,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z"]), b["kind"].isin(["qn", "qn_z"])   # tenkai は2車単、pool は3連複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3"]), b["kind"].isin(["qn", "qn_z", "evr2"])   # tenkai は2車単、pool・evr3 は3連複、evr2 は2車複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],
