@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 11:01",
+ "updated_at": "2026-11-19 11:06",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -1215,20 +1215,36 @@
     "race_no": 7,
     "deadline": "10:55",
     "judged_at": "10:49:12",
-    "result": null,
+    "result": {
+     "combo": "4-1-5",
+     "payout": 340
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 130,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 150
+    },
+    "ex_result": {
+     "combo": "4-1",
+     "payout": 140
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 220
+    },
     "notes": [
      "主導権を取るライン：1-4-6（加藤大輔）69%、2-5-7（大中拓磨）30%、3（川口秀人）1%",
      "主導権予想：4高佐龍太郎のライン 67%（2番手は 2大中拓磨 31%） → 逃げ切り目 2車単 4-1（1.4倍）",
@@ -2907,13 +2923,13 @@
   },
   "pool": {
    "total": {
-    "stake": 95000,
-    "payout": 66200.0,
-    "roi": 0.6968,
-    "points": 190,
-    "hits": 19,
-    "races": 111,
-    "race_hits": 19,
+    "stake": 96500,
+    "payout": 67300.0,
+    "roi": 0.6974,
+    "points": 193,
+    "hits": 20,
+    "races": 112,
+    "race_hits": 20,
     "days": 4
    },
    "daily": [
@@ -2952,14 +2968,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 8000,
-     "payout": 2100.0,
-     "points": 16,
-     "hits": 1,
-     "races": 10,
-     "race_hits": 1,
-     "roi": 0.2625,
-     "cum": -28800.0
+     "stake": 9500,
+     "payout": 3200.0,
+     "points": 19,
+     "hits": 2,
+     "races": 11,
+     "race_hits": 2,
+     "roi": 0.3368,
+     "cum": -29200.0
     }
    ]
   },
@@ -3070,13 +3086,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 119000,
-    "payout": 120800.0,
-    "roi": 1.0151,
-    "points": 119,
-    "hits": 29,
-    "races": 119,
-    "race_hits": 29,
+    "stake": 120000,
+    "payout": 122200.0,
+    "roi": 1.0183,
+    "points": 120,
+    "hits": 30,
+    "races": 120,
+    "race_hits": 30,
     "days": 4
    },
    "daily": [
@@ -3115,14 +3131,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 11000,
-     "payout": 3400.0,
-     "points": 11,
-     "hits": 2,
-     "races": 11,
-     "race_hits": 2,
-     "roi": 0.3091,
-     "cum": 1800.0
+     "stake": 12000,
+     "payout": 4800.0,
+     "points": 12,
+     "hits": 3,
+     "races": 12,
+     "race_hits": 3,
+     "roi": 0.4,
+     "cum": 2200.0
     }
    ]
   },
