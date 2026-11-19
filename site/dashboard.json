@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 13:37",
+ "updated_at": "2026-11-19 13:39",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -1990,7 +1990,10 @@
     "race_no": 7,
     "deadline": "13:28",
     "judged_at": "13:22:12",
-    "result": null,
+    "result": {
+     "combo": "4-7-1",
+     "payout": 750
+    },
     "bets": [],
     "invest": [],
     "ex": [
@@ -2000,7 +2003,7 @@
       "odds": 6.2,
       "p": 0.1522,
       "ev": 0.878,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2-7",
@@ -2008,7 +2011,7 @@
       "odds": 7.9,
       "p": 0.1316,
       "ev": 0.967,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2-5",
@@ -2016,7 +2019,7 @@
       "odds": 9.4,
       "p": 0.1144,
       "ev": 1.0,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "7-1",
@@ -2024,21 +2027,34 @@
       "odds": 8.6,
       "p": 0.1106,
       "ev": 0.884,
-      "hit": null
+      "hit": false
      }
     ],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 270,
+     "all": "1=4・1=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 270
+    },
+    "ex_result": {
+     "combo": "4-7",
+     "payout": 560
+    },
+    "trio_result": {
+     "combo": "1=4=7",
+     "payout": 280
+    },
     "notes": [
      "1000回シミュレーション：的中 478回／プラス収支 475回（トリガミ 3回）・平均回収率 95%",
      "展開の内訳（1着が出たライン）：1-4-7 55%、2-5 40%、3-6 4%",
@@ -3858,12 +3874,12 @@
  "paper": {
   "ex": {
    "total": {
-    "stake": 504300,
+    "stake": 507300,
     "payout": 494260.0,
-    "roi": 0.9801,
-    "points": 711,
+    "roi": 0.9743,
+    "points": 715,
     "hits": 65,
-    "races": 179,
+    "races": 180,
     "race_hits": 65,
     "days": 7
    },
@@ -3936,14 +3952,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 5900,
+     "stake": 8900,
      "payout": 4300.0,
-     "points": 9,
+     "points": 13,
      "hits": 1,
-     "races": 2,
+     "races": 3,
      "race_hits": 1,
-     "roi": 0.7288,
-     "cum": -10040.0
+     "roi": 0.4831,
+     "cum": -13040.0
     }
    ]
   },
@@ -4046,12 +4062,12 @@
   },
   "pool": {
    "total": {
-    "stake": 99000,
+    "stake": 99500,
     "payout": 67300.0,
-    "roi": 0.6798,
-    "points": 198,
+    "roi": 0.6764,
+    "points": 199,
     "hits": 20,
-    "races": 116,
+    "races": 117,
     "race_hits": 20,
     "days": 4
    },
@@ -4091,14 +4107,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 12000,
+     "stake": 12500,
      "payout": 3200.0,
-     "points": 24,
+     "points": 25,
      "hits": 2,
-     "races": 15,
+     "races": 16,
      "race_hits": 2,
-     "roi": 0.2667,
-     "cum": -31700.0
+     "roi": 0.256,
+     "cum": -32200.0
     }
    ]
   },
@@ -4502,12 +4518,12 @@
   },
   "rec": {
    "total": {
-    "stake": 578400,
+    "stake": 581400,
     "payout": 460920.0,
-    "roi": 0.7969,
-    "points": 873,
+    "roi": 0.7928,
+    "points": 877,
     "hits": 97,
-    "races": 208,
+    "races": 209,
     "race_hits": 97,
     "days": 7
    },
@@ -4580,14 +4596,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 17900,
+     "stake": 20900,
      "payout": 10150.0,
-     "points": 18,
+     "points": 22,
      "hits": 2,
-     "races": 6,
+     "races": 7,
      "race_hits": 2,
-     "roi": 0.567,
-     "cum": -117480.0
+     "roi": 0.4856,
+     "cum": -120480.0
     }
    ]
   }
