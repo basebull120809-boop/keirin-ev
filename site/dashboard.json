@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 16:34",
+ "updated_at": "2026-11-19 16:51",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -3508,22 +3508,38 @@
     "race_no": 4,
     "deadline": "16:40",
     "judged_at": "16:34:07",
-    "result": null,
+    "result": {
+     "combo": "2-9-1",
+     "payout": 7110
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 440,
+     "all": "1=2・1=9・2=9"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=9",
+     "payout": 1410
+    },
+    "ex_result": {
+     "combo": "2-9",
+     "payout": 2080
+    },
+    "trio_result": {
+     "combo": "1=2=9",
+     "payout": 2360
+    },
     "notes": [
      "主導権を取るライン：1-7-8（浅井康太）44%、3-5（桑原大志）33%、2-9（坂井洋）13%",
      "主導権予想：7寺崎浩平のライン 44%（2番手は 5河端朋之 27%）",
@@ -5864,12 +5880,12 @@
   },
   "pool": {
    "total": {
-    "stake": 106500,
+    "stake": 107000,
     "payout": 76300.0,
-    "roi": 0.7164,
-    "points": 213,
+    "roi": 0.7131,
+    "points": 214,
     "hits": 24,
-    "races": 127,
+    "races": 128,
     "race_hits": 24,
     "days": 4
    },
@@ -5909,14 +5925,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 19500,
+     "stake": 20000,
      "payout": 12200.0,
-     "points": 39,
+     "points": 40,
      "hits": 6,
-     "races": 26,
+     "races": 27,
      "race_hits": 6,
-     "roi": 0.6256,
-     "cum": -30200.0
+     "roi": 0.61,
+     "cum": -30700.0
     }
    ]
   },
