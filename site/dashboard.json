@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 09:59",
+ "updated_at": "2026-11-19 10:06",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -562,7 +562,10 @@
     "race_no": 4,
     "deadline": "09:55",
     "judged_at": "09:49:27",
-    "result": null,
+    "result": {
+     "combo": "1-4-6",
+     "payout": 260
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -573,9 +576,18 @@
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 100
+    },
+    "ex_result": {
+     "combo": "1-4",
+     "payout": 140
+    },
+    "trio_result": {
+     "combo": "1=4=6",
+     "payout": 200
+    },
     "notes": [
      "主導権を取るライン：1-4-6（田上晃也）74%、3-5-7（後田康成）23%、2（竹田慎一）3%",
      "主導権予想：1田上晃也のライン 78%（2番手は 7白濱蓮 19%） → 逃げ切り目 2車単 1-4（1.3倍）",
@@ -2047,12 +2059,12 @@
   },
   "pool": {
    "total": {
-    "stake": 89500,
+    "stake": 90500,
     "payout": 64100.0,
-    "roi": 0.7162,
-    "points": 179,
+    "roi": 0.7083,
+    "points": 181,
     "hits": 18,
-    "races": 104,
+    "races": 105,
     "race_hits": 18,
     "days": 4
    },
@@ -2092,14 +2104,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 2500,
+     "stake": 3500,
      "payout": 0.0,
-     "points": 5,
+     "points": 7,
      "hits": 0,
-     "races": 3,
+     "races": 4,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -25400.0
+     "cum": -26400.0
     }
    ]
   },
@@ -2199,13 +2211,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 112000,
-    "payout": 117400.0,
-    "roi": 1.0482,
-    "points": 112,
-    "hits": 27,
-    "races": 112,
-    "race_hits": 27,
+    "stake": 113000,
+    "payout": 118800.0,
+    "roi": 1.0513,
+    "points": 113,
+    "hits": 28,
+    "races": 113,
+    "race_hits": 28,
     "days": 4
    },
    "daily": [
@@ -2244,14 +2256,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 4000,
-     "payout": 0.0,
-     "points": 4,
-     "hits": 0,
-     "races": 4,
-     "race_hits": 0,
-     "roi": 0.0,
-     "cum": 5400.0
+     "stake": 5000,
+     "payout": 1400.0,
+     "points": 5,
+     "hits": 1,
+     "races": 5,
+     "race_hits": 1,
+     "roi": 0.28,
+     "cum": 5800.0
     }
    ]
   },
