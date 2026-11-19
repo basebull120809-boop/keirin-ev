@@ -1,0 +1,4 @@
+date,race_id,venue,race_no,deadline,taken_at,combo,stake,odds,p,ev,lead,kind,rec,ratio
+2026-11-19,7520261117030002,matsuyama,2,09:05,08:59:18,4-1,1000,10.1,0.11524,1.164,0.6197,tenkai,False,
+2026-11-19,7520261117030002,matsuyama,2,09:05,08:59:18,1=5=7,500,17.4,0.06126,1.066,,pool,False,1.428
+2026-11-19,7520261117030002,matsuyama,2,09:05,08:59:18,2=6=7,500,18.9,0.04764,0.9,,pool,False,1.206
