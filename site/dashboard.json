@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 09:49",
+ "updated_at": "2026-11-19 09:55",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -390,20 +390,36 @@
     "race_no": 3,
     "deadline": "09:35",
     "judged_at": "09:29:09",
-    "result": null,
+    "result": {
+     "combo": "7-5-1",
+     "payout": 440
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=5",
+     "payout": 220,
+     "all": "1=5・1=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=7",
+     "payout": 230
+    },
+    "ex_result": {
+     "combo": "7-5",
+     "payout": 300
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 260
+    },
     "notes": [
      "主導権を取るライン：2-4-7（瓦田勝也）84%、1-5（武田和也）11%、3-6（沢田勇治）6%",
      "主導権予想：7下山聖斗のライン 82%（2番手は 5藤井準也 11%） → 逃げ切り目 2車単 7-2（2.8倍）",
@@ -2037,12 +2053,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 110000,
+    "stake": 111000,
     "payout": 117400.0,
-    "roi": 1.0673,
-    "points": 110,
+    "roi": 1.0577,
+    "points": 111,
     "hits": 27,
-    "races": 110,
+    "races": 111,
     "race_hits": 27,
     "days": 4
    },
@@ -2082,14 +2098,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 2000,
+     "stake": 3000,
      "payout": 0.0,
-     "points": 2,
+     "points": 3,
      "hits": 0,
-     "races": 2,
+     "races": 3,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 7400.0
+     "cum": 6400.0
     }
    ]
   },
