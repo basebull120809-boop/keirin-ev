@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 16:13",
+ "updated_at": "2026-11-19 16:21",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -3322,22 +3322,38 @@
     "race_no": 3,
     "deadline": "16:10",
     "judged_at": "16:04:04",
-    "result": null,
+    "result": {
+     "combo": "9-7-1",
+     "payout": 2480
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=7",
+     "payout": 130,
+     "all": "1=7・1=9・7=9"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "7=9",
+     "payout": 420
+    },
+    "ex_result": {
+     "combo": "9-7",
+     "payout": 980
+    },
+    "trio_result": {
+     "combo": "1=7=9",
+     "payout": 400
+    },
     "notes": [
      "主導権を取るライン：1-5-7（阿部拓真）74%、6-8（安彦統賀）12%、2-9（三谷将太）8%",
      "主導権予想：7深谷知広のライン 60%（2番手は 8松崎広太 22%） → 逃げ切り目 2車単 7-1（3.7倍）",
@@ -5646,13 +5662,13 @@
   },
   "hit4": {
    "total": {
-    "stake": 73700,
-    "payout": 36490.0,
-    "roi": 0.4951,
-    "points": 166,
-    "hits": 13,
-    "races": 41,
-    "race_hits": 13,
+    "stake": 75600,
+    "payout": 39690.0,
+    "roi": 0.525,
+    "points": 169,
+    "hits": 14,
+    "races": 42,
+    "race_hits": 14,
     "days": 3
    },
    "daily": [
@@ -5680,14 +5696,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 15900,
-     "payout": 7340.0,
-     "points": 42,
-     "hits": 3,
-     "races": 9,
-     "race_hits": 3,
-     "roi": 0.4616,
-     "cum": -37210.0
+     "stake": 17800,
+     "payout": 10540.0,
+     "points": 45,
+     "hits": 4,
+     "races": 10,
+     "race_hits": 4,
+     "roi": 0.5921,
+     "cum": -35910.0
     }
    ]
   },
@@ -5718,13 +5734,13 @@
   },
   "pool": {
    "total": {
-    "stake": 105500,
-    "payout": 74300.0,
-    "roi": 0.7043,
-    "points": 211,
-    "hits": 23,
-    "races": 125,
-    "race_hits": 23,
+    "stake": 106000,
+    "payout": 76300.0,
+    "roi": 0.7198,
+    "points": 212,
+    "hits": 24,
+    "races": 126,
+    "race_hits": 24,
     "days": 4
    },
    "daily": [
@@ -5763,14 +5779,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 18500,
-     "payout": 10200.0,
-     "points": 37,
-     "hits": 5,
-     "races": 24,
-     "race_hits": 5,
-     "roi": 0.5514,
-     "cum": -31200.0
+     "stake": 19000,
+     "payout": 12200.0,
+     "points": 38,
+     "hits": 6,
+     "races": 25,
+     "race_hits": 6,
+     "roi": 0.6421,
+     "cum": -29700.0
     }
    ]
   },
@@ -5881,12 +5897,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 129000,
+    "stake": 130000,
     "payout": 130000.0,
-    "roi": 1.0078,
-    "points": 129,
+    "roi": 1.0,
+    "points": 130,
     "hits": 32,
-    "races": 129,
+    "races": 130,
     "race_hits": 32,
     "days": 4
    },
@@ -5926,14 +5942,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 21000,
+     "stake": 22000,
      "payout": 12600.0,
-     "points": 21,
+     "points": 22,
      "hits": 5,
-     "races": 21,
+     "races": 22,
      "race_hits": 5,
-     "roi": 0.6,
-     "cum": 1000.0
+     "roi": 0.5727,
+     "cum": 0.0
     }
    ]
   },
