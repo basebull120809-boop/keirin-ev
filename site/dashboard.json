@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 22:43",
+ "updated_at": "2026-11-19 22:53",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -7428,9 +7428,9 @@
     "venue": "高知",
     "race_no": 8,
     "deadline": "22:55",
-    "status": "wait",
+    "status": "skip",
     "invest": false,
-    "reason": "",
+    "reason": "データ取得・判定に失敗したため見送り（ValueError: 出走表テーブルが見つかりません）",
     "notes": [],
     "lines": []
    },
