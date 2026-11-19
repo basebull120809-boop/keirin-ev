@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 18:06",
+ "updated_at": "2026-11-19 18:11",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -3816,22 +3816,38 @@
     "race_no": 7,
     "deadline": "18:00",
     "judged_at": "17:54:19",
-    "result": null,
+    "result": {
+     "combo": "1-4-5",
+     "payout": 1940
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 130,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 160
+    },
+    "ex_result": {
+     "combo": "1-4",
+     "payout": 210
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 920
+    },
     "notes": [
      "主導権を取るライン：1-4-7（松本貴治）72%、2-5-6（守澤太志）23%、3-8（笠松信幸）5%",
      "主導権予想：4石原颯のライン 67%（2番手は 5中石湊 27%） → 逃げ切り目 2車単 4-1（7.2倍）",
@@ -6572,12 +6588,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 132000,
+    "stake": 133000,
     "payout": 130000.0,
-    "roi": 0.9848,
-    "points": 132,
+    "roi": 0.9774,
+    "points": 133,
     "hits": 32,
-    "races": 132,
+    "races": 133,
     "race_hits": 32,
     "days": 4
    },
@@ -6617,14 +6633,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 24000,
+     "stake": 25000,
      "payout": 12600.0,
-     "points": 24,
+     "points": 25,
      "hits": 5,
-     "races": 24,
+     "races": 25,
      "race_hits": 5,
-     "roi": 0.525,
-     "cum": -2000.0
+     "roi": 0.504,
+     "cum": -3000.0
     }
    ]
   },
