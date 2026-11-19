@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 15:04",
+ "updated_at": "2026-11-19 15:11",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -2771,22 +2771,38 @@
     "race_no": 10,
     "deadline": "15:00",
     "judged_at": "14:54:28",
-    "result": null,
+    "result": {
+     "combo": "1-6-4",
+     "payout": 1320
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 230,
+     "all": "1=4・1=6・4=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=6",
+     "payout": 330
+    },
+    "ex_result": {
+     "combo": "1-6",
+     "payout": 340
+    },
+    "trio_result": {
+     "combo": "1=4=6",
+     "payout": 630
+    },
     "notes": [
      "主導権を取るライン：1-6（森田一郎）47%、2-5-7（昼田達哉）37%、3-4（栗山俊介）16%",
      "主導権予想：1森田一郎のライン 59%（2番手は 2昼田達哉 32%） → 逃げ切り目 2車単 1-6（3.7倍）",
@@ -4986,13 +5002,13 @@
   },
   "pool": {
    "total": {
-    "stake": 103000,
-    "payout": 69000.0,
-    "roi": 0.6699,
-    "points": 206,
-    "hits": 21,
-    "races": 121,
-    "race_hits": 21,
+    "stake": 104000,
+    "payout": 72150.0,
+    "roi": 0.6937,
+    "points": 208,
+    "hits": 22,
+    "races": 122,
+    "race_hits": 22,
     "days": 4
    },
    "daily": [
@@ -5031,14 +5047,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 16000,
-     "payout": 4900.0,
-     "points": 32,
-     "hits": 3,
-     "races": 20,
-     "race_hits": 3,
-     "roi": 0.3063,
-     "cum": -34000.0
+     "stake": 17000,
+     "payout": 8050.0,
+     "points": 34,
+     "hits": 4,
+     "races": 21,
+     "race_hits": 4,
+     "roi": 0.4735,
+     "cum": -31850.0
     }
    ]
   },
@@ -5149,13 +5165,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 126000,
-    "payout": 122200.0,
-    "roi": 0.9698,
-    "points": 126,
-    "hits": 30,
-    "races": 126,
-    "race_hits": 30,
+    "stake": 127000,
+    "payout": 125600.0,
+    "roi": 0.989,
+    "points": 127,
+    "hits": 31,
+    "races": 127,
+    "race_hits": 31,
     "days": 4
    },
    "daily": [
@@ -5194,14 +5210,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 18000,
-     "payout": 4800.0,
-     "points": 18,
-     "hits": 3,
-     "races": 18,
-     "race_hits": 3,
-     "roi": 0.2667,
-     "cum": -3800.0
+     "stake": 19000,
+     "payout": 8200.0,
+     "points": 19,
+     "hits": 4,
+     "races": 19,
+     "race_hits": 4,
+     "roi": 0.4316,
+     "cum": -1400.0
     }
    ]
   },
