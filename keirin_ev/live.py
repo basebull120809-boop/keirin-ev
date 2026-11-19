@@ -153,6 +153,18 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         P = ResidualModel.from_json("models/residual.json").predict(X["T"], X["Q"])[0]
         use_res = True
         P_res = P                                # 残差モデルの期待値買い（evbuy）用に取っておく
+        try:                                     # 診断用：判定時の特徴量と残差モデルの確率を保存（過去検証との食い違いを調べるため）
+            from .model import FEATURES
+            T0 = X["T"]; mk = T0.mask[0]
+            top = np.argsort(-P_res)[:30]
+            with open(day / "diag.jsonl", "a", encoding="utf-8") as f:
+                f.write(json.dumps(dict(race_id=rid, taken_at=t.strftime("%H:%M:%S"),
+                                        cars=[int(c) for c in T0.cars[0][mk]],
+                                        X={fe: [round(float(v), 5) for v in T0.X[0][mk, i]] for i, fe in enumerate(FEATURES)},
+                                        top=[[int(n), round(float(P_res[n]), 6), round(float(X["Q"][0][n]), 6)] for n in top]),
+                                   ensure_ascii=False) + "\n")
+        except Exception as e:
+            print("診断の保存失敗", rid, e, flush=True)
     except FileNotFoundError:
         pass
     except Exception as e:
