@@ -1,0 +1,20 @@
+name: preview（今日の残りレースを先に判定）
+on:
+  push:
+    branches: [preview]
+    paths: [".github/workflows/preview.yml", "tools/preview.py"]
+concurrency: { group: preview, cancel-in-progress: false }
+permissions: { contents: write }
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: preview }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - run: git fetch -q origin main && git checkout origin/main -- data/live models config.json keirin_ev main.py
+      - run: python tools/preview.py 300
