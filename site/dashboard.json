@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 22:34",
+ "updated_at": "2026-11-19 22:43",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -7418,9 +7418,9 @@
     "venue": "宇都宮",
     "race_no": 7,
     "deadline": "22:45",
-    "status": "wait",
+    "status": "skip",
     "invest": false,
-    "reason": "",
+    "reason": "データ取得・判定に失敗したため見送り（ValueError: 出走表テーブルが見つかりません）",
     "notes": [],
     "lines": []
    },
