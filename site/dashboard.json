@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-19 10:16",
+ "updated_at": "2026-11-19 10:29",
  "picks": {
   "date": "2026-11-19",
   "races": [
@@ -748,20 +748,36 @@
     "race_no": 5,
     "deadline": "10:15",
     "judged_at": "10:09:05",
-    "result": null,
+    "result": {
+     "combo": "5-7-1",
+     "payout": 430
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=5",
+     "payout": 160,
+     "all": "1=5・1=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=7",
+     "payout": 200
+    },
+    "ex_result": {
+     "combo": "5-7",
+     "payout": 210
+    },
+    "trio_result": {
+     "combo": "1=5=7",
+     "payout": 250
+    },
     "notes": [
      "主導権を取るライン：1-4-7（中井修）57%、2-3-5（矢田晋）42%、6（赤星俊光）1%",
      "主導権予想：7永田吏玖のライン 67%（2番手は 5近藤雄太 32%） → 逃げ切り目 2車単 7-1（22.0倍）",
@@ -2169,12 +2185,12 @@
   },
   "pool": {
    "total": {
-    "stake": 91500,
+    "stake": 92000,
     "payout": 64100.0,
-    "roi": 0.7005,
-    "points": 183,
+    "roi": 0.6967,
+    "points": 184,
     "hits": 18,
-    "races": 106,
+    "races": 107,
     "race_hits": 18,
     "days": 4
    },
@@ -2214,14 +2230,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 4500,
+     "stake": 5000,
      "payout": 0.0,
-     "points": 9,
+     "points": 10,
      "hits": 0,
-     "races": 5,
+     "races": 6,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -27400.0
+     "cum": -27900.0
     }
    ]
   },
@@ -2332,12 +2348,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 114000,
+    "stake": 115000,
     "payout": 118800.0,
-    "roi": 1.0421,
-    "points": 114,
+    "roi": 1.033,
+    "points": 115,
     "hits": 28,
-    "races": 114,
+    "races": 115,
     "race_hits": 28,
     "days": 4
    },
@@ -2377,14 +2393,14 @@
     },
     {
      "date": "2026-11-19",
-     "stake": 6000,
+     "stake": 7000,
      "payout": 1400.0,
-     "points": 6,
+     "points": 7,
      "hits": 1,
-     "races": 6,
+     "races": 7,
      "race_hits": 1,
-     "roi": 0.2333,
-     "cum": 4800.0
+     "roi": 0.2,
+     "cum": 3800.0
     }
    ]
   },
