@@ -53,3 +53,4 @@
 {"race_id": "7420261117030008", "venue": "kochi", "race_no": 8, "deadline": "22:55", "notes": [], "lines": [], "n_bets": 0, "n_invest": 0, "reason": "データ取得・判定に失敗したため見送り（ValueError: 出走表テーブルが見つかりません）"}
 {"race_id": "2420261117030008", "venue": "utsunomiya", "race_no": 8, "deadline": "23:05", "notes": [], "lines": [], "n_bets": 0, "n_invest": 0, "reason": "データ取得・判定に失敗したため見送り（ValueError: 出走表テーブルが見つかりません）"}
 {"race_id": "7420261117030009", "venue": "kochi", "race_no": 9, "deadline": "23:15", "notes": [], "lines": [], "n_bets": 0, "n_invest": 0, "reason": "データ取得・判定に失敗したため見送り（ValueError: 出走表テーブルが見つかりません）"}
+{"race_id": "2420261117030009", "venue": "utsunomiya", "race_no": 9, "deadline": "23:25", "notes": [], "lines": [], "n_bets": 0, "n_invest": 0, "reason": "データ取得・判定に失敗したため見送り（ValueError: 出走表テーブルが見つかりません）"}
