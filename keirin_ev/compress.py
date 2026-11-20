@@ -191,10 +191,10 @@ def predict_residual(model, F, base_p, race_id, top=1):
 
 
 # ---------- 3. 判定 ----------
-def evaluate(T, e, F, valid_from, log=print):
+def evaluate(T, e, F, valid_from, log=print, valid_to="9999"):
     rid = e["race_id"]
     tr = (e.date < valid_from).values & e["rank"].notna().values
-    va = (e.date >= valid_from).values
+    va = ((e.date >= valid_from) & (e.date < valid_to)).values
     # 学習期間のうち最後の1か月は、ブースティングの回数決めにだけ使う
     y1, y3 = e.y1.values, e.y3.values
     m1 = fit_residual(F, y1, e.m_win.values, tr)
