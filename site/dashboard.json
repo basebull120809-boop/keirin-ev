@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-20 23:00",
+ "updated_at": "2026-11-20 23:06",
  "picks": {
   "date": "2026-11-20",
   "races": [
@@ -5267,23 +5267,39 @@
     "race_no": 8,
     "deadline": "22:55",
     "judged_at": "22:49:04",
-    "result": null,
+    "result": {
+     "combo": "1-2-5",
+     "payout": 190
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 110,
+     "all": "1=2・1=5・2=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
     "cmp2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 110
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 110
+    },
+    "trio_result": {
+     "combo": "1=2=5",
+     "payout": 170
+    },
     "notes": [
      "主導権を取るライン：1-2-5（伊藤京介）82%、4-6（北野良栄）12%、3-7（根藤浩二）6%",
      "主導権予想：1伊藤京介のライン 73%（2番手は 4北野良栄 22%） → 逃げ切り目 2車単 1-2（1.4倍）",
@@ -8356,13 +8372,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 176000,
-    "payout": 153400.0,
-    "roi": 0.8716,
-    "points": 176,
-    "hits": 42,
-    "races": 176,
-    "race_hits": 42,
+    "stake": 177000,
+    "payout": 154500.0,
+    "roi": 0.8729,
+    "points": 177,
+    "hits": 43,
+    "races": 177,
+    "race_hits": 43,
     "days": 5
    },
    "daily": [
@@ -8412,14 +8428,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 31000,
-     "payout": 12500.0,
-     "points": 31,
-     "hits": 6,
-     "races": 31,
-     "race_hits": 6,
-     "roi": 0.4032,
-     "cum": -22600.0
+     "stake": 32000,
+     "payout": 13600.0,
+     "points": 32,
+     "hits": 7,
+     "races": 32,
+     "race_hits": 7,
+     "roi": 0.425,
+     "cum": -22500.0
     }
    ]
   },
