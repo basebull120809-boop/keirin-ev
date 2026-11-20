@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-20 19:26",
+ "updated_at": "2026-11-20 19:43",
  "picks": {
   "date": "2026-11-20",
   "races": [
@@ -3399,14 +3399,21 @@
     "race_no": 10,
     "deadline": "19:32",
     "judged_at": "19:26:13",
-    "result": null,
+    "result": {
+     "combo": "3-9-4",
+     "payout": 5250
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=4",
+     "payout": 840,
+     "all": "3=4・3=9・4=9"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3418,7 +3425,7 @@
       "odds": 46.9,
       "p": 0.0253,
       "ev": 1.102,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=9",
@@ -3426,12 +3433,21 @@
       "odds": 7.1,
       "p": 0.1634,
       "ev": 1.079,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=9",
+     "payout": 400
+    },
+    "ex_result": {
+     "combo": "3-9",
+     "payout": 1810
+    },
+    "trio_result": {
+     "combo": "3=4=9",
+     "payout": 1010
+    },
     "notes": [
      "主導権を取るライン：2-7（根田空史）37%、3-4-9（稲川翔）35%、1-5（新田祐大）16%",
      "主導権予想：2根田空史のライン 42%（2番手は 9寺崎浩平 34%）",
@@ -5385,12 +5401,12 @@
  "paper": {
   "evr2": {
    "total": {
-    "stake": 3300,
+    "stake": 3500,
     "payout": 3790.0,
-    "roi": 1.1485,
-    "points": 33,
+    "roi": 1.0829,
+    "points": 35,
     "hits": 7,
-    "races": 28,
+    "races": 29,
     "race_hits": 7,
     "days": 2
    },
@@ -5408,14 +5424,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 1800,
+     "stake": 2000,
      "payout": 260.0,
-     "points": 18,
+     "points": 20,
      "hits": 1,
-     "races": 13,
+     "races": 14,
      "race_hits": 1,
-     "roi": 0.1444,
-     "cum": 490.0
+     "roi": 0.13,
+     "cum": 290.0
     }
    ]
   },
@@ -5584,13 +5600,13 @@
   },
   "hit4": {
    "total": {
-    "stake": 106900,
-    "payout": 64580.0,
-    "roi": 0.6041,
-    "points": 245,
-    "hits": 24,
-    "races": 59,
-    "race_hits": 24,
+    "stake": 108600,
+    "payout": 66600.0,
+    "roi": 0.6133,
+    "points": 252,
+    "hits": 25,
+    "races": 60,
+    "race_hits": 25,
     "days": 4
    },
    "daily": [
@@ -5629,14 +5645,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 20400,
-     "payout": 16420.0,
-     "points": 57,
-     "hits": 6,
-     "races": 11,
-     "race_hits": 6,
-     "roi": 0.8049,
-     "cum": -42320.0
+     "stake": 22100,
+     "payout": 18440.0,
+     "points": 64,
+     "hits": 7,
+     "races": 12,
+     "race_hits": 7,
+     "roi": 0.8344,
+     "cum": -42000.0
     }
    ]
   },
@@ -5667,12 +5683,12 @@
   },
   "pool": {
    "total": {
-    "stake": 131000,
+    "stake": 131500,
     "payout": 110850.0,
-    "roi": 0.8462,
-    "points": 262,
+    "roi": 0.843,
+    "points": 263,
     "hits": 36,
-    "races": 161,
+    "races": 162,
     "race_hits": 36,
     "days": 5
    },
@@ -5723,14 +5739,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 15500,
+     "stake": 16000,
      "payout": 27700.0,
-     "points": 31,
+     "points": 32,
      "hits": 8,
-     "races": 21,
+     "races": 22,
      "race_hits": 8,
-     "roi": 1.7871,
-     "cum": -20150.0
+     "roi": 1.7312,
+     "cum": -20650.0
     }
    ]
   },
@@ -6291,12 +6307,12 @@
   },
   "evr": {
    "total": {
-    "stake": 5500,
+    "stake": 5700,
     "payout": 8470.0,
-    "roi": 1.54,
-    "points": 55,
+    "roi": 1.486,
+    "points": 57,
     "hits": 13,
-    "races": 34,
+    "races": 35,
     "race_hits": 11,
     "days": 2
    },
@@ -6314,14 +6330,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 2800,
+     "stake": 3000,
      "payout": 670.0,
-     "points": 28,
+     "points": 30,
      "hits": 2,
-     "races": 17,
+     "races": 18,
      "race_hits": 2,
-     "roi": 0.2393,
-     "cum": 2970.0
+     "roi": 0.2233,
+     "cum": 2770.0
     }
    ]
   }
