@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-20 15:34",
+ "updated_at": "2026-11-20 15:51",
  "picks": {
   "date": "2026-11-20",
   "races": [
@@ -2730,22 +2730,38 @@
     "race_no": 2,
     "deadline": "15:40",
     "judged_at": "15:34:04",
-    "result": null,
+    "result": {
+     "combo": "2-7-8",
+     "payout": 910
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=7",
+     "payout": 140,
+     "all": "2=7・2=8・7=8"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 210
+    },
+    "ex_result": {
+     "combo": "2-7",
+     "payout": 310
+    },
+    "trio_result": {
+     "combo": "2=7=8",
+     "payout": 580
+    },
     "notes": [
      "主導権を取るライン：2-7-8（深谷知広）52%、3-4（河端朋之）20%、5-6（東口善朋）19%",
      "主導権予想：2深谷知広のライン 57%（2番手は 6岩井芯 21%） → 逃げ切り目 2車単 2-7（3.0倍）",
@@ -4903,13 +4919,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 160000,
-    "payout": 145400.0,
-    "roi": 0.9087,
-    "points": 160,
-    "hits": 38,
-    "races": 160,
-    "race_hits": 38,
+    "stake": 161000,
+    "payout": 148500.0,
+    "roi": 0.9224,
+    "points": 161,
+    "hits": 39,
+    "races": 161,
+    "race_hits": 39,
     "days": 5
    },
    "daily": [
@@ -4959,14 +4975,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 15000,
-     "payout": 4500.0,
-     "points": 15,
-     "hits": 2,
-     "races": 15,
-     "race_hits": 2,
-     "roi": 0.3,
-     "cum": -14600.0
+     "stake": 16000,
+     "payout": 7600.0,
+     "points": 16,
+     "hits": 3,
+     "races": 16,
+     "race_hits": 3,
+     "roi": 0.475,
+     "cum": -12500.0
     }
    ]
   },
