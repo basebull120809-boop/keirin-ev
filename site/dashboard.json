@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-20 12:38",
+ "updated_at": "2026-11-20 12:43",
  "picks": {
   "date": "2026-11-20",
   "races": [
@@ -1389,22 +1389,38 @@
     "race_no": 5,
     "deadline": "12:29",
     "judged_at": "12:23:01",
-    "result": null,
+    "result": {
+     "combo": "4-7-1",
+     "payout": 394620
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 460,
+     "all": "1=4・1=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 14760
+    },
+    "ex_result": {
+     "combo": "4-7",
+     "payout": 41160
+    },
+    "trio_result": {
+     "combo": "1=4=7",
+     "payout": 21320
+    },
     "notes": [
      "主導権を取るライン：1-3-4-5（高橋広大）72%、2-6-7（板垣昴）28%",
      "主導権予想：4浮島知稀のライン 65%（2番手は 2板垣昴 35%） → 逃げ切り目 2車単 4-3（27.1倍）",
@@ -3093,12 +3109,12 @@
   },
   "pool": {
    "total": {
-    "stake": 123000,
+    "stake": 123500,
     "payout": 90600.0,
-    "roi": 0.7366,
-    "points": 246,
+    "roi": 0.7336,
+    "points": 247,
     "hits": 32,
-    "races": 148,
+    "races": 149,
     "race_hits": 32,
     "days": 5
    },
@@ -3149,14 +3165,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 7500,
+     "stake": 8000,
      "payout": 7450.0,
-     "points": 15,
+     "points": 16,
      "hits": 4,
-     "races": 8,
+     "races": 9,
      "race_hits": 4,
-     "roi": 0.9933,
-     "cum": -32400.0
+     "roi": 0.9313,
+     "cum": -32900.0
     }
    ]
   },
@@ -3278,12 +3294,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 154000,
+    "stake": 155000,
     "payout": 145400.0,
-    "roi": 0.9442,
-    "points": 154,
+    "roi": 0.9381,
+    "points": 155,
     "hits": 38,
-    "races": 154,
+    "races": 155,
     "race_hits": 38,
     "days": 5
    },
@@ -3334,14 +3350,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 9000,
+     "stake": 10000,
      "payout": 4500.0,
-     "points": 9,
+     "points": 10,
      "hits": 2,
-     "races": 9,
+     "races": 10,
      "race_hits": 2,
-     "roi": 0.5,
-     "cum": -8600.0
+     "roi": 0.45,
+     "cum": -9600.0
     }
    ]
   },
