@@ -38,97 +38,128 @@
   "disallow": [],
   "pages": [
    {
-    "url": "https://www.chariloto.com/",
+    "url": "https://www.chariloto.com/keirin/predictions/list",
     "status": 200,
-    "final": "https://www.chariloto.com/",
-    "kb": 46,
+    "final": "https://www.chariloto.com/keirin/predictions/list",
+    "kb": 68,
     "js": false,
     "words": {
-     "予想": 4,
-     "バック": 1,
-     "ホーム": 2,
-     "AI": 3
+     "予想": 15,
+     "AI": 1
     },
     "race_links": [
+     "/auto/predictions",
+     "/keirin/2026-11-20/22/?race_num=1",
+     "/keirin/2026-11-20/42/?race_num=1",
+     "/keirin/2026-11-20/81/?race_num=11",
+     "/keirin/predictions",
+     "/keirin/predictions/2026-11-18/24/detail",
+     "/keirin/predictions/2026-11-18/26/detail",
+     "/keirin/predictions/2026-11-18/38/detail",
+     "/keirin/predictions/2026-11-18/44/detail",
+     "/keirin/predictions/2026-11-18/73/detail",
+     "/keirin/predictions/2026-11-18/74/detail",
+     "/keirin/predictions/2026-11-18/75/detail",
+     "/keirin/predictions/2026-11-18/81/detail",
+     "/keirin/predictions/2026-11-18/81/dokanto",
+     "/keirin/predictions/2026-11-19/24/detail",
+     "/keirin/predictions/2026-11-19/26/detail",
+     "/keirin/predictions/2026-11-19/38/detail",
+     "/keirin/predictions/2026-11-19/44/detail",
+     "/keirin/predictions/2026-11-19/51/detail",
+     "/keirin/predictions/2026-11-19/74/detail",
+     "/keirin/predictions/2026-11-19/75/detail",
+     "/keirin/predictions/2026-11-19/81/detail",
+     "/keirin/predictions/2026-11-19/81/dokanto",
+     "/keirin/predictions/2026-11-20/22/detail",
+     "/keirin/predictions/2026-11-20/26/detail",
+     "/keirin/predictions/2026-11-20/42/detail",
+     "/keirin/predictions/2026-11-20/44/detail",
+     "/keirin/predictions/2026-11-20/51/detail",
+     "/keirin/predictions/2026-11-20/81/detail",
+     "/keirin/predictions/2026-11-20/81/dokanto",
      "/keirin/predictions/list",
      "/keirin/results",
      "https://autorace.jp/"
     ]
    },
    {
-    "url": "https://www.chariloto.com/keirin",
+    "url": "https://www.chariloto.com/keirin/results",
     "status": 200,
-    "final": "https://www.chariloto.com/login",
-    "kb": 25,
+    "final": "https://www.chariloto.com/keirin/results",
+    "kb": 32,
     "js": false,
     "words": {
      "予想": 3,
-     "バック": 1,
      "AI": 1
     },
     "race_links": [
+     "/auto/results",
      "/keirin/predictions/list",
-     "/keirin/results"
+     "/keirin/results",
+     "/keirin/results/11",
+     "/keirin/results/12",
+     "/keirin/results/13",
+     "/keirin/results/21",
+     "/keirin/results/22",
+     "/keirin/results/23",
+     "/keirin/results/24",
+     "/keirin/results/25",
+     "/keirin/results/26",
+     "/keirin/results/27",
+     "/keirin/results/28",
+     "/keirin/results/31",
+     "/keirin/results/32",
+     "/keirin/results/34",
+     "/keirin/results/35",
+     "/keirin/results/36",
+     "/keirin/results/37",
+     "/keirin/results/38",
+     "/keirin/results/42",
+     "/keirin/results/43",
+     "/keirin/results/44",
+     "/keirin/results/45",
+     "/keirin/results/46",
+     "/keirin/results/47",
+     "/keirin/results/48",
+     "/keirin/results/51",
+     "/keirin/results/53",
+     "/keirin/results/54",
+     "/keirin/results/55",
+     "/keirin/results/56",
+     "/keirin/results/61",
+     "/keirin/results/62",
+     "/keirin/results/63",
+     "/keirin/results/71",
+     "/keirin/results/73",
+     "/keirin/results/74",
+     "/keirin/results/75"
     ]
    }
   ]
  },
  {
   "name": "Gamboo",
-  "robots": null,
+  "robots": 202,
   "disallow": [],
   "pages": [
    {
-    "url": "https://www.gamboo.jp/",
-    "status": null,
-    "err": "SSLError: HTTPSConnectionPool(host='www.gamboo.jp', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.gamboo.jp'. (_ssl.c:1018)\")))"
-   },
-   {
-    "url": "https://www.gamboo.jp/keirin/",
-    "status": null,
-    "err": "SSLError: HTTPSConnectionPool(host='www.gamboo.jp', port=443): Max retries exceeded with url: /keirin/ (Caused by SSLError(SSLCertVerificationError(1, \"[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.gamboo.jp'. (_ssl.c:1018)\")))"
-   }
-  ]
- },
- {
-  "name": "SPAIA競輪",
-  "robots": null,
-  "disallow": [],
-  "pages": [
-   {
-    "url": "https://spaia-keirin.jp/",
-    "status": null,
-    "err": "ConnectionError: HTTPSConnectionPool(host='spaia-keirin.jp', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPSConnection(host='spaia-keirin.jp', port=443): Failed to resolve 'spaia-keirin.jp' ([Errno -2] Name or service not known)\"))"
-   },
-   {
-    "url": "https://spaia.jp/keirin/",
-    "status": 404,
-    "final": "https://spaia.jp/keirin/",
+    "url": "https://gamboo.jp/",
+    "status": 202,
+    "final": "https://gamboo.jp/",
     "kb": 0,
     "js": false,
     "words": {},
     "race_links": []
-   }
-  ]
- },
- {
-  "name": "JKA",
-  "robots": 200,
-  "disallow": [],
-  "pages": [
+   },
    {
-    "url": "https://www.jka-cycle.jp/",
-    "status": 200,
-    "final": "https://www.jka-cycle.jp/",
-    "kb": 137,
+    "url": "https://gamboo.jp/keirin/",
+    "status": 202,
+    "final": "https://gamboo.jp/keirin/",
+    "kb": 0,
     "js": false,
-    "words": {
-     "ホーム": 1
-    },
-    "race_links": [
-     "https://hojo.keirin-autorace.or.jp/contact.html",
-     "https://www.keirin-autorace.or.jp/privacy/"
-    ]
+    "words": {},
+    "race_links": []
    }
   ]
  },
@@ -149,96 +180,76 @@
   ]
  },
  {
-  "name": "WINTICKET",
-  "robots": 200,
-  "disallow": [
-   "/keirin/cups/"
-  ],
-  "pages": [
-   {
-    "url": "https://www.winticket.jp/keirin",
-    "status": 403,
-    "final": "https://www.winticket.jp/keirin",
-    "kb": 3,
-    "js": false,
-    "words": {},
-    "race_links": []
-   }
-  ]
- },
- {
-  "name": "Kドリームス（取得中）",
+  "name": "ネット競輪",
   "robots": 200,
   "disallow": [],
   "pages": [
    {
-    "url": "https://keirin.kdreams.jp/",
+    "url": "https://keirin.netkeiba.com/",
     "status": 200,
-    "final": "https://keirin.kdreams.jp/",
-    "kb": 114,
+    "final": "https://keirin.netkeiba.com/",
+    "kb": 94,
     "js": false,
     "words": {
-     "出走表": 18,
-     "予想": 10,
-     "オッズ": 15,
-     "ホーム": 3,
-     "逃": 2,
-     "AI": 17
+     "出走表": 4,
+     "予想": 15,
+     "オッズ": 6,
+     "選手コメント": 1
     },
     "race_links": [
-     "https://keirin.kdreams.jp/fukui/racecard/51202611190200/",
-     "https://keirin.kdreams.jp/fukui/racecard/51202611190300/?l-id=l-ti-cmsi_default_tomorrowRaceTable_fukui",
-     "https://keirin.kdreams.jp/fukui/raceresult/51202611190100/?l-id=l-ti-cmsi_default_yesterdayResult_fukui",
-     "https://keirin.kdreams.jp/fukui/raceresult/51202611190200/",
-     "https://keirin.kdreams.jp/graderace/honki_tv/champions/",
-     "https://keirin.kdreams.jp/graderace/honki_tv/race/",
-     "https://keirin.kdreams.jp/graderace/keirinsai/?l-id=top-main-keirinsai",
-     "https://keirin.kdreams.jp/kaisai/?l-id=l-ti-headerTab_tab_raceInfo",
-     "https://keirin.kdreams.jp/kaisai/feature-race/",
-     "https://keirin.kdreams.jp/kaisai/feature-race/?l-id=l-ti-directoryNav_link_kaisaiFeatureRace",
-     "https://keirin.kdreams.jp/kochi/raceresult/74202611170300/?l-id=l-ti-cmsi_default_yesterdayResult_kochi",
-     "https://keirin.kdreams.jp/kokura/pickupracer/8120261118/?l-id=l-ti-cmsi_gradebnr_pickUpDetail",
-     "https://keirin.kdreams.jp/kokura/pickupracer/8120261118/?l-id=l-ti-cmsi_gradebnr_pickUpIndex",
-     "https://keirin.kdreams.jp/kokura/racecard/81202611180300/?l-id=l-ti-cmsi_default_raceTable_kokura",
-     "https://keirin.kdreams.jp/kokura/racecard/81202611180300/?l-id=l-ti-cmsi_gradebnr_raceTable",
-     "https://keirin.kdreams.jp/kokura/racenews/8120261118/?l-id=l-ti-cmsi_gradebnr_raceOutlook",
-     "https://keirin.kdreams.jp/kokura/raceresult/81202611180200/?l-id=l-ti-cmsi_default_yesterdayResult_kokura",
-     "https://keirin.kdreams.jp/kokura/raceresult/81202611180300/?l-id=l-ti-cmsi_default_result_kokura",
-     "https://keirin.kdreams.jp/kokura/raceresult/81202611180300/?l-id=l-ti-cmsi_gradebnr_result",
-     "https://keirin.kdreams.jp/maebashi/racecard/22202611200100/?l-id=l-ti-cmsi_default_raceTable_maebashi",
-     "https://keirin.kdreams.jp/maebashi/raceresult/22202611200100/?l-id=l-ti-cmsi_default_result_maebashi",
-     "https://keirin.kdreams.jp/matsuyama/raceresult/75202611170300/?l-id=l-ti-cmsi_default_yesterdayResult_matsuyama",
-     "https://keirin.kdreams.jp/nagoya/racecard/42202611200100/?l-id=l-ti-cmsi_default_raceTable_nagoya",
-     "https://keirin.kdreams.jp/nagoya/raceresult/42202611200100/?l-id=l-ti-cmsi_default_result_nagoya",
-     "https://keirin.kdreams.jp/odawara/racecard/36202611210100/?l-id=l-ti-cmsi_default_tomorrowRaceTable_odawara",
-     "https://keirin.kdreams.jp/odds/?l-id=l-ti-directoryNav_link_odds",
-     "https://keirin.kdreams.jp/ogaki/racecard/44202611180300/",
-     "https://keirin.kdreams.jp/ogaki/raceresult/44202611180200/?l-id=l-ti-cmsi_default_yesterdayResult_ogaki",
-     "https://keirin.kdreams.jp/ogaki/raceresult/44202611180300/",
-     "https://keirin.kdreams.jp/racecard/?l-id=l-ti-directoryNav_link_racecard",
-     "https://keirin.kdreams.jp/raceresult/?l-id=l-ti-directoryNav_link_raceresult",
-     "https://keirin.kdreams.jp/sasebo/racenews/8520240716/",
-     "https://keirin.kdreams.jp/seibuen/racecard/26202611180300/",
-     "https://keirin.kdreams.jp/seibuen/raceresult/26202611180200/?l-id=l-ti-cmsi_default_yesterdayResult_seibuen",
-     "https://keirin.kdreams.jp/seibuen/raceresult/26202611180300/",
-     "https://keirin.kdreams.jp/shizuoka/raceresult/38202611170300/?l-id=l-ti-cmsi_default_yesterdayResult_shizuoka",
-     "https://keirin.kdreams.jp/toyohashi/racecard/45202611210100/?l-id=l-ti-cmsi_default_tomorrowRaceTable_toyohashi",
-     "https://keirin.kdreams.jp/utsunomiya/raceresult/24202611170300/?l-id=l-ti-cmsi_default_yesterdayResult_utsunomiya",
-     "https://keirin.kdreams.jp/yoso/?l-id=l-ti-directoryNav_link_yoso",
-     "https://my.keirin.kdreams.jp/kaisai/feature-race/"
+     "/race/schedule/",
+     "https://cdnv2.netkeiba.com/keirin/common/css/race/race_nk01.css?20261005",
+     "https://cdnv2.netkeiba.com/keirin/common/css/yoso/top_umai_area.css?20261019",
+     "https://keirin.netkeiba.com/favorites/my_favorites.html?category=racer&tab=race_list",
+     "https://keirin.netkeiba.com/favorites/my_favorites.html?category=racer&tab=racer",
+     "https://keirin.netkeiba.com/race/?rf=footer",
+     "https://keirin.netkeiba.com/race/?rf=navi",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=11",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=12",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=13",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=21",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=22",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=22&rf=toptodayrace",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=23",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=24",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=25",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=26",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=26&rf=toptodayrace",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=27",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=28",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=31",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=32",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=34",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=35",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=36",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=37",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=38",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=42",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=42&rf=toptodayrace",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=43",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=44",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=44&rf=toptodayrace",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=45",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=46",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=47",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=48",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=51",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=51&rf=toptodayrace",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=53",
+     "https://keirin.netkeiba.com/race/course/?jyo_cd=54"
     ]
-   }
-  ]
- },
- {
-  "name": "ネット競輪（取得中）",
-  "robots": null,
-  "disallow": [],
-  "pages": [
+   },
    {
-    "url": "https://keirin.netkeirin.com/",
-    "status": null,
-    "err": "ConnectTimeout: HTTPSConnectionPool(host='keirin.netkeirin.com', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='keirin.netkeirin.com', port=443) at 0x700ac93f3fd0>, 'Connection to keirin.netkeirin.com timed out. (connect timeout=30)'))"
+    "url": "https://keirin.netkeiba.com/perfectanavi",
+    "status": 200,
+    "final": "https://keirin.netkeiba.com/perfectanavi/?_q=perfectanavi",
+    "kb": 33,
+    "js": false,
+    "words": {
+     "予想": 1,
+     "選手コメント": 3
+    },
+    "race_links": []
    }
   ]
  }
