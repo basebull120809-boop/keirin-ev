@@ -130,8 +130,25 @@ def rider_stats(T, mk, log=print):
         X[f"r3_{cond}"] = (Q.y3 + SMOOTH * X["r3"]) / (Q.n + SMOOTH)    # 全体の率に寄せる
         X[f"over3_{cond}"] = Q.ov / (Q.n + SMOOTH)
         X[f"n_{cond}"] = Q.n
+    X = X.join(head_to_head(e))
     log(f"選手の指標: {X.shape[1]}項目")
     return e, X
+
+
+def head_to_head(e):
+    """対戦成績：今回の相手それぞれに、前の日までに先着した回数−先着された回数（相手ごとにならして平均）"""
+    a = e[["race_id", "date", "rid", "rkv"]].reset_index()
+    p = a.merge(a[["race_id", "rid", "rkv"]], on="race_id", suffixes=("", "_o"))
+    p = p[p.rid != p.rid_o]
+    p["w"] = (p.rkv < p.rkv_o).astype(float) - (p.rkv > p.rkv_o).astype(float)
+    p["n"] = 1.0
+    g = p.groupby(["rid", "rid_o", "date"])[["w", "n"]].sum()
+    g = g.groupby(level=[0, 1]).cumsum() - g                    # 前の日までの対戦
+    p = p.merge(g.rename(columns={"w": "pw", "n": "pn"}).reset_index(), on=["rid", "rid_o", "date"], how="left")
+    p["score"] = p.pw / (p.pn + 3.0)
+    p["met"] = (p.pn > 0).astype(float)
+    r = p.groupby("index").agg(h2h=("score", "mean"), h2h_sum=("pw", "sum"), h2h_met=("met", "mean"))
+    return r
 
 
 # ---------- レースの中での相対化 ＋ 出走表 ----------
@@ -142,7 +159,7 @@ def race_features(e, X):
     F = X.copy()
     g = e["race_id"]
     rel = ["r1", "r3", "s_rate", "b_rate", "k_nige", "k_makuri", "k_sashi", "agari", "avg_rank",
-           "r3_pos", "r3_bank", "r3_wx", "r3_venue", "over3", "r3_last10"]
+           "r3_pos", "r3_bank", "r3_wx", "r3_venue", "over3", "r3_last10", "h2h"]
     for c in rel:
         s = F[c]
         F[c + "_z"] = (s - s.groupby(g).transform("mean")) / s.groupby(g).transform("std").replace(0, np.nan)
@@ -163,6 +180,18 @@ def race_features(e, X):
     F["line_score_sum"] = F.score.groupby(key).transform("sum")
     F["rival_head_b_max"] = (pd.Series(np.where(e.line_pos == 1, X.b_rate, np.nan), index=e.index)
                              .groupby(g).transform("max") - head_b.fillna(0))
+    # チャリロトの記者予想（取れている日だけ。無い日は空欄のまま＝LightGBMが欠損として扱う）
+    try:
+        from .chariloto import read_all, MARK
+        cr = read_all()
+        if len(cr):
+            cr = cr.drop_duplicates(["race_id", "car"], keep="last")
+            cr["cr_mark"] = cr["mark"].map(MARK).fillna(0)
+            m = e[["race_id", "car"]].merge(cr[["race_id", "car", "cr_mark"]], on=["race_id", "car"], how="left")
+            F["cr_mark"] = m["cr_mark"].values
+            F["cr_vs_tip"] = F["cr_mark"] - F["tip"]          # 2社の記者の評価の食い違い
+    except Exception:
+        pass
     F["log_m_win"] = np.log(e.m_win.clip(1e-4))
     F["log_m_top3"] = np.log(e.m_top3.clip(1e-4))
     return F
