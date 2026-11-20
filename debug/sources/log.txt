@@ -1,0 +1,34 @@
+■ KEIRIN.JP（公式）  robots.txt: 200  Disallow 1件 /
+   https://keirin.jp/: robots.txt で禁止のため取得しない
+   https://keirin.jp/pc/top: robots.txt で禁止のため取得しない
+■ オッズパーク  robots.txt: 403  Disallow 0件 
+   https://www.oddspark.com/keirin/ → 403 https://www.oddspark.com/keirin/  0KB  JS組立=False  用語 {}
+      レースらしいリンク 0件: 
+   https://www.oddspark.com/keirin/RaceList.do → 403 https://www.oddspark.com/keirin/RaceList.do  0KB  JS組立=False  用語 {}
+      レースらしいリンク 0件: 
+■ チャリロト  robots.txt: 200  Disallow 0件 
+   https://www.chariloto.com/ → 200 https://www.chariloto.com/  46KB  JS組立=False  用語 {'予想': 4, 'バック': 1, 'ホーム': 2, 'AI': 3}
+      レースらしいリンク 3件: /keirin/predictions/list /keirin/results https://autorace.jp/
+   https://www.chariloto.com/keirin → 200 https://www.chariloto.com/login  25KB  JS組立=False  用語 {'予想': 3, 'バック': 1, 'AI': 1}
+      レースらしいリンク 2件: /keirin/predictions/list /keirin/results
+■ Gamboo  robots.txt: None  Disallow 0件 
+   https://www.gamboo.jp/: 失敗 SSLError: HTTPSConnectionPool(host='www.gamboo.jp', port=443): Max retries exceeded with url: / (Caused by SSLError(SSLCertVerificationError(1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.gamboo.jp'. (_ssl.c:1018)")))
+   https://www.gamboo.jp/keirin/: 失敗 SSLError: HTTPSConnectionPool(host='www.gamboo.jp', port=443): Max retries exceeded with url: /keirin/ (Caused by SSLError(SSLCertVerificationError(1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.gamboo.jp'. (_ssl.c:1018)")))
+■ SPAIA競輪  robots.txt: None  Disallow 0件 
+   https://spaia-keirin.jp/: 失敗 ConnectionError: HTTPSConnectionPool(host='spaia-keirin.jp', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='spaia-keirin.jp', port=443): Failed to resolve 'spaia-keirin.jp' ([Errno -2] Name or service not known)"))
+   https://spaia.jp/keirin/ → 404 https://spaia.jp/keirin/  0KB  JS組立=False  用語 {}
+      レースらしいリンク 0件: 
+■ JKA  robots.txt: 200  Disallow 0件 
+   https://www.jka-cycle.jp/ → 200 https://www.jka-cycle.jp/  137KB  JS組立=False  用語 {'ホーム': 1}
+      レースらしいリンク 2件: https://hojo.keirin-autorace.or.jp/contact.html https://www.keirin-autorace.or.jp/privacy/
+■ 競輪ステーション  robots.txt: 503  Disallow 0件 
+   https://www.keirin-station.com/ → 503 https://www.keirin-station.com/  0KB  JS組立=False  用語 {}
+      レースらしいリンク 0件: 
+■ WINTICKET  robots.txt: 200  Disallow 1件 /keirin/cups/
+   https://www.winticket.jp/keirin → 403 https://www.winticket.jp/keirin  3KB  JS組立=False  用語 {}
+      レースらしいリンク 0件: 
+■ Kドリームス（取得中）  robots.txt: 200  Disallow 0件 
+   https://keirin.kdreams.jp/ → 200 https://keirin.kdreams.jp/  114KB  JS組立=False  用語 {'出走表': 18, '予想': 10, 'オッズ': 15, 'ホーム': 3, '逃': 2, 'AI': 17}
+      レースらしいリンク 40件: https://keirin.kdreams.jp/fukui/racecard/51202611190200/ https://keirin.kdreams.jp/fukui/racecard/51202611190300/?l-id=l-ti-cmsi_default_tomorrowRaceTable_fukui https://keirin.kdreams.jp/fukui/raceresult/51202611190100/?l-id=l-ti-cmsi_default_yesterdayResult_fukui https://keirin.kdreams.jp/fukui/raceresult/51202611190200/ https://keirin.kdreams.jp/graderace/honki_tv/champions/ https://keirin.kdreams.jp/graderace/honki_tv/race/ https://keirin.kdreams.jp/graderace/keirinsai/?l-id=top-main-keirinsai https://keirin.kdreams.jp/kaisai/?l-id=l-ti-headerTab_tab_raceInfo
+■ ネット競輪（取得中）  robots.txt: None  Disallow 0件 
+   https://keirin.netkeirin.com/: 失敗 ConnectTimeout: HTTPSConnectionPool(host='keirin.netkeirin.com', port=443): Max retries exceeded with url: / (Caused by ConnectTimeoutError(<HTTPSConnection(host='keirin.netkeirin.com', port=443) at 0x700ac93f3fd0>, 'Connection to keirin.netkeirin.com timed out. (connect timeout=30)'))
