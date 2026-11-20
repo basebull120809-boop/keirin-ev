@@ -72,3 +72,52 @@ def probe(out="debug/sources", log=print):
                                       race_links=race_links[:40]))
         summary.append(site)
     (out / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+# ---------- 2段目：レースのページとタブを保存して中身を調べる ----------
+DEEP = [
+    # チャリロト：レースのページ・予想の詳細（日付・場コードは一覧から拾う）
+    ("chariloto", "https://www.chariloto.com/keirin/predictions/list",
+     r'href="(/keirin/(?:predictions/\d{4}-\d\d-\d\d/\d+/detail|\d{4}-\d\d-\d\d/\d+/\?race_num=\d+))"'),
+    # Kドリームス：出走表のタブ（AI予想など）
+    ("kdreams", "https://keirin.kdreams.jp/",
+     r'href="(https://keirin\.kdreams\.jp/[a-z]+/racecard/\d+/)'),
+    # ネット競輪：レース一覧 → レースのページ
+    ("netkeiba", "https://keirin.netkeiba.com/race/",
+     r'href="((?:https://keirin\.netkeiba\.com)?/race/[^"]*race_id=\d+[^"]*)"'),
+]
+
+
+def deep(out="debug/sources/deep", log=print, per_site=2):
+    import requests
+    from urllib.parse import urljoin
+    out = Path(out); out.mkdir(parents=True, exist_ok=True)
+    sess = requests.Session()
+
+    def save(tag, url):
+        st, final, h = _get(sess, url)
+        fn = tag + "_" + re.sub(r"[^a-z0-9]+", "_", url.lower().split("//", 1)[-1])[:90]
+        if st == 200:
+            (out / f"{fn}.html").write_text(h[:400000], encoding="utf-8")
+        log(f"   {url} → {st} {len(h)//1024}KB  用語 { {w: h.count(w) for w in WORDS if h.count(w)} }")
+        return h if st == 200 else ""
+
+    for tag, top, pat in DEEP:
+        log(f"■ {tag}: {top}")
+        h = save(tag, top)
+        cands = list(dict.fromkeys(re.findall(pat, h)))
+        log(f"   候補 {len(cands)}件: {' '.join(cands[:6])}")
+        for u in cands[:per_site]:
+            u = urljoin(top, u.replace("&amp;", "&"))
+            rh = save(tag, u)
+            # レースのページ内のタブ（同じサイト内で、レースを表すIDを含むリンク）
+            ids = re.findall(r"\d{8,}", u)
+            tabs = set()
+            for l in re.findall(r'href="([^"#]+)"', rh):
+                l = urljoin(u, l.replace("&amp;", "&"))
+                if urlparse(l).netloc == urlparse(u).netloc and l != u and (
+                        any(i in l for i in ids) or ("race_num" in u and urlparse(u).path in l)):
+                    tabs.add(l)
+            log(f"   タブ {len(tabs)}件: {' '.join(sorted(tabs)[:25])}")
+            for t in sorted(tabs)[:12]:
+                save(tag, t)

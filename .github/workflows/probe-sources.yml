@@ -8,7 +8,7 @@ permissions: { contents: write }
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: |
           mkdir -p debug/sources
-          python -c "from keirin_ev.sources import probe; probe()" 2>&1 | tee debug/sources/log.txt
+          python -c "from keirin_ev.sources import deep; deep()" 2>&1 | tee debug/sources/deep_log.txt
       - name: 結果を保存（このブランチに）
         run: |
           git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
