@@ -109,6 +109,21 @@ def schedule(date):
     return sorted(out)
 
 
+_CMP = []
+
+
+def _compress_predictor():
+    """圧縮モデルの当日予想（起動後の最初の判定で1回だけ過去データを読む。モデルが無ければ使わない）"""
+    if not _CMP:
+        try:
+            from .compress import LivePredictor
+            _CMP.append(LivePredictor())
+        except Exception as e:
+            print("圧縮モデルを使わない:", e, flush=True)
+            _CMP.append(None)
+    return _CMP[0]
+
+
 def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     html = kdreams.fetch(f"/{venue}/racedetail/{rid}/", refresh=True)
     ent, od, _, info, _, his = kdreams.parse_race(html, rid, extra=True)
@@ -277,6 +292,19 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             bets += [dict(base4, **b, kind="evr2", rec=False) for b in b2]
         except Exception as e:
             print("残差モデルの期待値買い失敗", rid, e, flush=True)
+    try:                                         # 独自指標の圧縮モデル（2026/11 追加）：補正した確率で期待値1以上の2車複を紙上で記録（見送りとは別枠）
+        cp = _compress_predictor()
+        if cp is not None and not od.empty:
+            from .compress import quinella_plan
+            pred, tri_m = cp.predict(dict(race_id=rid, date=date, venue=venue, race_no=int(rid[-4:]), grade=None,
+                                          bank_len=kdreams.BANK.get(venue, 400), wind=info.get("wind"),
+                                          weather=info.get("weather")), ent, od)
+            qno5 = dict(kdreams.parse_odds_quinella(kdreams.soup(html), rid)[["combo", "odds"]].values)
+            base5 = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                         deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+            bets += [dict(base5, **b, kind="cmp2", rec=False) for b in quinella_plan(pred, tri_m, qno5)]
+    except Exception as e:
+        print("圧縮モデルの判定失敗", rid, e, flush=True)
     try:                                         # 予想の軸をそろえる：当てる予想の上位車どうし以外の目は「_z」（紙上の記録だけ）に回して表示しない
         import re
         from . import pools
@@ -517,6 +545,7 @@ def run(max_minutes=340):
         model = TrifectaModel.from_json("models/latest.json")
     except Exception as e:
         print("モデルなし（オッズの記録のみ行います）:", e); model = None
+    _compress_predictor()                      # 圧縮モデルの過去データを先に読んでおく（最初の判定が締切に遅れないように）
     kdreams.SLEEP_SEC = 1.0
     full = schedule(date)
     sched = [x for x in full if x[0] > now() + pd.Timedelta(minutes=LEAD_MIN)]
@@ -683,7 +712,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3"]), b["kind"].isin(["qn", "qn_z", "evr2"])   # tenkai は2車単、pool・evr3 は3連複、evr2 は2車複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3"]), b["kind"].isin(["qn", "qn_z", "evr2", "cmp2"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],

@@ -1,0 +1,33 @@
+name: chariloto-backfill（チャリロトの記者予想を過去分から取得）
+on:
+  workflow_dispatch:
+    inputs:
+      days: { description: "1回に取る日数", default: "30" }
+  push:
+    branches: ["claude/**"]
+    paths: [".github/workflows/chariloto-backfill.yml", "keirin_ev/chariloto.py"]
+permissions: { contents: write }
+concurrency: { group: chariloto-backfill, cancel-in-progress: false }
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt
+      - name: 取得（10日分ずつ保存して、途中で止まっても取れた分は残す）
+        run: |
+          git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
+          mkdir -p debug
+          total="${{ github.event.inputs.days || '3' }}"; left=$total
+          while [ "$left" -gt 0 ]; do
+            n=$(( left < 10 ? left : 10 ))
+            python main.py crbackfill "$n" 2>&1 | tee -a debug/chariloto_log.txt
+            git add data/daily debug/chariloto_log.txt
+            git commit -m "chariloto-backfill $(date +%F_%H%M)" || true
+            for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+            left=$(( left - n ))
+          done
