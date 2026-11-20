@@ -116,6 +116,12 @@ def _compress_predictor():
     """圧縮モデルの当日予想（起動後の最初の判定で1回だけ過去データを読む。モデルが無ければ使わない）"""
     if not _CMP:
         try:
+            try:
+                import lightgbm  # noqa: F401
+            except ImportError:                  # 起動後にコードだけ更新されて再起動した場合（requirements の入れ直しが無い）
+                if os.environ.get("GITHUB_ACTIONS"):
+                    import subprocess, sys
+                    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "lightgbm"], capture_output=True)
             from .compress import LivePredictor
             _CMP.append(LivePredictor())
         except Exception as e:
