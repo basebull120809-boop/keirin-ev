@@ -131,8 +131,84 @@ def rider_stats(T, mk, log=print):
         X[f"over3_{cond}"] = Q.ov / (Q.n + SMOOTH)
         X[f"n_{cond}"] = Q.n
     X = X.join(head_to_head(e))
+    X = X.join(line_dynamics(e, X))
     log(f"選手の指標: {X.shape[1]}項目")
     return e, X
+
+
+def line_dynamics(e, X):
+    """レース展開の数字（どれも前の日までの成績から）
+
+    先頭として : ラインから1着が出た割合（主導権を取って決めた／番手を勝たせた）、自分が3着内に残った割合
+    番手として : 前（先頭）に先着した割合、前とワンツーを決めた割合
+    この2人で  : 同じ先頭・番手の組み合わせで走った回数と、ワンツー・2人とも3着内の割合
+    レース内    : 逃げ型の人数（先行争いの激しさ）、ラインの数、自分のラインの強さの順位
+    """
+    d = e[["race_id", "date", "rid", "line_id", "line_pos", "line_size", "rkv"]].copy()
+    d["lk"] = d.race_id + "_" + d.line_id.astype(str)
+    multi = d.line_size.fillna(1) > 1
+    head = d[multi & (d.line_pos == 1)][["lk", "rid", "rkv"]].rename(columns={"rid": "h_rid", "rkv": "h_rk"})
+    sec = d[multi & (d.line_pos == 2)][["lk", "rid", "rkv"]].rename(columns={"rid": "s_rid", "rkv": "s_rk"})
+    best = d.groupby("lk").rkv.min().rename("best")
+    d = d.merge(head, on="lk", how="left").merge(sec, on="lk", how="left").merge(best, on="lk", how="left")
+    d.index = e.index
+    one = pd.Series(1.0, index=d.index)
+    D = pd.DataFrame(index=e.index)
+
+    # 先頭として
+    ish = (multi & (d.line_pos == 1)).astype(float)
+    t = pd.DataFrame(dict(rid=d.rid, date=d.date, n=ish, won=ish * (d.best == 1), top3=ish * (d.rkv <= 3)))
+    P = pd.DataFrame(_prior(t, ["rid"], ["n", "won", "top3"]), index=e.index, columns=["n", "won", "top3"])
+    gw = (t.won.sum() / max(t.n.sum(), 1)); g3 = (t.top3.sum() / max(t.n.sum(), 1))
+    D["head_n"] = P.n
+    D["head_linewin"] = (P.won + 8 * gw) / (P.n + 8)
+    D["head_top3"] = (P.top3 + 8 * g3) / (P.n + 8)
+
+    # 番手として
+    iss = (multi & (d.line_pos == 2)).astype(float)
+    t = pd.DataFrame(dict(rid=d.rid, date=d.date, n=iss, beat=iss * (d.rkv < d.h_rk),
+                          onetwo=iss * ((d.rkv <= 2) & (d.h_rk <= 2))))
+    P = pd.DataFrame(_prior(t, ["rid"], ["n", "beat", "onetwo"]), index=e.index, columns=["n", "beat", "onetwo"])
+    gb = t.beat.sum() / max(t.n.sum(), 1); g12 = t.onetwo.sum() / max(t.n.sum(), 1)
+    D["sec_n"] = P.n
+    D["sec_beat_head"] = (P.beat + 8 * gb) / (P.n + 8)
+    D["sec_onetwo"] = (P.onetwo + 8 * g12) / (P.n + 8)
+
+    # 先頭・番手の組み合わせ（番手の行に付ける。先頭の行には相方の値を付ける）
+    pair = d[multi & (d.line_pos == 2)].copy()
+    pair["n"] = 1.0
+    pair["onetwo"] = ((pair.rkv <= 2) & (pair.h_rk <= 2)).astype(float)
+    pair["both3"] = ((pair.rkv <= 3) & (pair.h_rk <= 3)).astype(float)
+    pair = pair[pair.h_rid.notna()]
+    Pp = pd.DataFrame(_prior(pair, ["h_rid", "rid"], ["n", "onetwo", "both3"]), index=pair.index,
+                      columns=["n", "onetwo", "both3"])
+    D["pair_n"] = np.nan
+    D.loc[Pp.index, "pair_n"] = Pp.n
+    D.loc[Pp.index, "pair_onetwo"] = (Pp.onetwo + 4 * g12) / (Pp.n + 4)
+    D.loc[Pp.index, "pair_both3"] = Pp.both3 / (Pp.n + 4)
+    pv = D.loc[Pp.index, ["pair_n", "pair_onetwo", "pair_both3"]].assign(lk=d.loc[Pp.index, "lk"])
+    hidx = d.index[multi & (d.line_pos == 1)]
+    hv = d.loc[hidx, ["lk"]].reset_index().merge(pv, on="lk", how="left").set_index("index")
+    for c in ("pair_n", "pair_onetwo", "pair_both3"):
+        D.loc[hv.index, c] = hv[c]
+
+    # 自分の前（先頭）の成績を、番手・3番手の行に付ける
+    hs = pd.DataFrame(dict(lk=d.lk, linewin=D.head_linewin, htop3=D.head_top3))[ish == 1].drop_duplicates("lk")
+    m = d[["lk"]].merge(hs, on="lk", how="left")
+    D["front_linewin"] = np.where(d.line_pos.values >= 2, m.linewin.values, np.nan)
+    D["front_top3"] = np.where(d.line_pos.values >= 2, m.htop3.values, np.nan)
+    # 番手の「前を抜く力」を先頭の行に付ける（強い番手を連れていると先頭は残りにくい）
+    ss = pd.DataFrame(dict(lk=d.lk, beat=D.sec_beat_head))[iss == 1].drop_duplicates("lk")
+    m = d[["lk"]].merge(ss, on="lk", how="left")
+    D["behind_beat"] = np.where(ish.values == 1, m.beat.values, np.nan)
+
+    # レース内の状況
+    nige = (X["k_nige"] > X["k_nige"].median() * 1.5).astype(float)
+    D["n_nige_race"] = nige.groupby(e.race_id).transform("sum")
+    D["n_lines"] = d.groupby("race_id").lk.transform("nunique")
+    ls = pd.Series(D.head_linewin.where(ish == 1), index=e.index).groupby(d.lk).transform("max")
+    D["line_strength_rank"] = ls.groupby(e.race_id).rank(ascending=False, method="min")
+    return D
 
 
 def head_to_head(e):
