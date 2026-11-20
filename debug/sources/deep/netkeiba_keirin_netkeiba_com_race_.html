@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script>
+window.self = window;
+window.URL = window.URL || window.webkitURL;
+window.performance = window.performance || {
+now: function() { return Date.now(); }
+};
+</script>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=0.5, user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+<!-- block=meta_tag_racetop (d) -->
+<title>競輪レース情報 | 競輪投票・予想・結果・速報・オッズ・出走表・払戻など競輪情報は netkeirin(ネットケイリン)</title>
+<meta name="description" content="本日2026年11月20日開催の競輪レース情報。競輪の出走表や最新オッズ、レース結果速報、払戻情報、競輪投票、全国競輪場の車券の購入をはじめ、競輪予想やデータ分析など予想に役立つ競輪の最新レース情報も満載です。" />
+<meta name="thumbnail" content="https://cdnv2.netkeiba.com/keirin/common/img/netkeirin_logo_keirin.png" />
+<meta name="keywords" content="競輪,レース情報,出走表,オッズ,予想,結果,競輪投票,払戻,速報,netkeirin,ネットケイリン" />
+<link rel="canonical" href="https://keirin.netkeiba.com/race/" />
+<meta property="og:site_name" content="netkeirin（ネットケイリン）" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="競輪レース情報 | 競輪投票・予想・結果・速報・オッズ・出走表・払戻など競輪情報は netkeirin(ネットケイリン)" />
+<meta property="og:url" content="https://keirin.netkeiba.com/race/" />
+<meta property="og:description" content="本日2026年11月20日開催の競輪レース情報。競輪の出走表や最新オッズ、レース結果速報、払戻情報、競輪投票、全国競輪場の車券の購入をはじめ、競輪予想やデータ分析など予想に役立つ競輪の最新レース情報も満載です。" />
+<meta property="og:image" content="https://cdnv2.netkeiba.com/keirin/common/img/netkeirin_logo_keirin.png" />
+<meta property="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+[
+{
+"@context": "http://schema.org",
+"@type": "BreadcrumbList",
+"itemListElement": [
+{
+"@type": "ListItem",
+"position": 1,
+"item": "https://keirin.netkeiba.com/",
+"name": "netkeirin（ネットケイリン）"
+},{
+"@type": "ListItem",
+"position": 2,
+"item": "https://keirin.netkeiba.com/race/",
+"name": "競輪レース情報"
+}
+]
+},
+{
+"@context":"http://schema.org",
+"@type":"WebSite",
+"url":"https://keirin.netkeiba.com/",
+"name":"netkeirin（ネットケイリン）",
+"alternateName":"netkeirin",
+"description": "netkeirin（ネットケイリン）は、国内最大級の競馬情報サイトnetkeiba.comの競輪情報サイトです。全国競輪場全レースの出走表やオッズ・競輪予想、ニュース、コラム、選手データベース、競輪場、ガイドなどがご利用いただけます。"
+}
+]
+</script>
+<!-- block=meta_tag_common (d) -->
+<script type="text/javascript">
+window.console = {};
+window.console.warn = function(i){return;};
+window.console.log = function(i){return;};
+window.console.error = function(i){return;};
+</script>
+<!-- BEGIN IS_LIVE_SP -->
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({'dimension1': '0_NotLogin'});
+dataLayer.push({'dimension2': '0'});
+dataLayer.push({'dimension3': 'N'});
+
+</script>
+<!-- 競輪サイト共通 -->
+<link rel="apple-touch-icon" href="https://cdnv2.netkeiba.com/keirin/common/img/apple-touch-icon.png" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="alternate" type="application/rss+xml" href="https://keirin.netkeiba.com/news/news_rss.html" />
+<link rel="alternate" type="application/rss+xml" href="https://keirin.netkeiba.com/news/column_rss.html" />
+<meta property="twitter:site" content="@netkeirin">
+<!-- block=race_css (d) -->
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/common_nk01.css?20250514" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/stg.mediaqueries.css?2015091801" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/race/race_nk01.css?202610162" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/race/race_newspaper_nk01.css?20260519" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/colorbox.css?2018041101" type="text/css" media="screen">
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/sweetalert_custom.css?20250522" type="text/css" media="screen">
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/halfmodal_nk01.css?20241122"_ type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/bet/common/css/bet_modal.css?1803229" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/halfmodal_nk01.css?20211013" type="text/css" media="screen">
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/live/live_commonModal.css?20250507" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/live/live_movie.css?20250507" type="text/css" media="screen" />
+<!-- block=race_js (d) -->
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/tipstar.js?20220406" type="text/javascript"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/ndtracker/common/js/ndtracker.js?220224a"></script>
+<script>ndTracker('race');</script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnv2.netkeiba.com/keirin/common/js/slick.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://cdnv2.netkeiba.com/keirin/common/js/race/svgxuse.js" type="text/javascript"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/jquery.lazyscript.js" type="text/javascript"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/yoso/YosoGoodsB.js?2020101501"></script>
+<!-- Google Tag Manager -->
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+'itemInfo': '','memberRank': 'NotLogin','memberId': ''
+});
+</script>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WLK55MR');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body class="Netkeirin_Race" id="Netkeiba_RaceTop">
+<!-- Google TagManager -->
+<!-- block=gtm (d) -->
+
+<!-- block=subMenu (d) -->
+
+<div class="Wrap fc">
+
+<!-- block=modal_banner (d) -->
+
+<!-- ヘッダー -->
+<!-- block=header (d) -->
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/pc_header.css?20260319" type="text/css" media="screen" />
+<header class="Header_Area fc">
+<div class="Header_Inner fc">
+<h1>
+<a href="https://keirin.netkeiba.com/" title="netkeirin（ネットケイリン） - 国内最大級の競輪情報・競輪投票サイト">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/netkeirinlogo_illustver.svg" alt="netkeirin（ネットケイリン） - 国内最大級の競輪情報・競輪投票サイト" width="158.48" height="24">
+</a>
+</h1>
+<div class="DB_Search_Input">
+<form class="Search_Box" action="https://keirin.netkeiba.com/db/search_result/player.html" method="GET">
+<div class="InputTxt_Form_Box">
+<input class="Txt_Form" placeholder="キーワードで検索" value="" type="text" name="word" id="keywords">
+</div><!-- / .InputTxt_Form -->
+<div class="Submit_Btn_Box">
+<svg xmlns="http://www.w3.org/2000/svg" width="41.05" height="41.05" viewBox="0 0 41.05 41.05" class="IconInput01">
+<g id="icon_search" transform="translate(-234.6 -459.7)">
+<circle cx="15.6" cy="15.6" r="15.6" transform="translate(236.1 461.2)" class="st0"/>
+<g>
+<path d="M275.2,498.2a1.335,1.335,0,0,1,0,2l-.1.1a1.335,1.335,0,0,1-2,0l-11.2-11.2a1.335,1.335,0,0,1,0-2l.1-.1a1.335,1.335,0,0,1,2,0Z" class="st1"/>
+</g>
+</g>
+</svg>
+<input class="Submit_Btn" type="submit" name="submit" value="">
+</div><!-- / .Submit_Btn_Box -->
+</form>
+</div><!-- / .DB_Search_Input -->
+<div class="MyMenuWrap">
+<ul class="UserMyMenu fc">
+
+
+
+<li>
+<a href="https://keirin.netkeiba.com/favorites/?rf=navi" class="Icon_Header">
+<svg class="Icon_PcHead_01 Icon_FavPlayer" width="25" height="25">
+<title>お気に入り</title>
+<use xlink:href="https://keirin.netkeiba.com/common/img/icon/icon_pc_header01.svg#pc_fav_icon"></use>
+</svg>
+<span>お気に入り</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/regist/?rf=navi" class="Icon_Header">
+<svg class="Icon_PcHead_01 Icon_Login" width="21" height="24">
+<title>ログイン/会員登録</title>
+<use xlink:href="https://keirin.netkeiba.com/common/img/icon/icon_pc_header01.svg#pc_login_icon"></use>
+</svg>
+<span>ログイン/会員登録</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0)" id="header_bell" class="Icon_Header bell_inner">
+<svg class="Icon_PcHead_01 Icon_Bell" xmlns="http://www.w3.org/2000/svg" width="19" height="22" viewBox="0 0 38 45">
+<path class="bell" d="M374.257,201.815v-11.7a13.814,13.814,0,0,0-2.806-8.39A14.019,14.019,0,0,0,364.4,176.8v-.7a4.06,4.06,0,0,0-1.306-2.979,4.006,4.006,0,0,0-2.718-1.061h-.007a4.006,4.006,0,0,0-2.718,1.061,4.058,4.058,0,0,0-1.306,2.979v.7a14.014,14.014,0,0,0-7.054,4.933,13.811,13.811,0,0,0-2.807,8.39v11.7l-4.6,4.612a1.759,1.759,0,0,0-.516,1.249v2.287a1.766,1.766,0,0,0,1.76,1.766h11.089a6.216,6.216,0,0,0,12.3,0H377.61a1.766,1.766,0,0,0,1.76-1.766v-2.287a1.761,1.761,0,0,0-.515-1.25Z" transform="translate(-341.37 -172.052)" />
+</svg>
+<span>お知らせ</span>
+</a>
+</li>
+</ul>
+<div class="SiteToggleBtn01 HorseRace">
+<a href="https://www.netkeiba.com/?rf=navi">
+<span class="LiveRace" id="KeibaLiveMark" style="display:none;">LIVE</span>
+<svg class="Icon_Contents06" width="24" height="16">
+<title>競馬</title>
+<use xlink:href="https://keirin.netkeiba.com/common/img/db/icon/icon_db_sprite01.svg#icon_horse"></use>
+</svg>競馬
+</a>
+</div><!-- /.SiteToggleBtn01 -->
+</div><!-- /.MyMenuWrap -->
+</div><!-- /.Header_Inner -->
+</header>
+<!-- <div class="MenuNew01">
+<span class="MenuNewIcon">NEW</span>
+</div> -->
+<nav class="ContentNavi01">
+<ul class="fc">
+<li id="gmenu-top">
+<a href="https://keirin.netkeiba.com/?rf=navi" title="トップ">トップ</a>
+</li>
+<li id="gmenu-race">
+<a href="https://keirin.netkeiba.com/race/?rf=navi" title="レース">レース</a>
+</li>
+<li id="gmenu-yoso">
+<a href="https://keirin.netkeiba.com/yoso/?rf=navi" title="ウマい車券">予想</a>
+</li>
+<li id="gmenu-news">
+<a href="https://keirin.netkeiba.com/news/?rf=navi" title="ニュース＆コラム">ニュース＆コラム</a>
+</li>
+<li id="gmenu-midnight">
+<a href="https://keirin.netkeiba.com/midnight/?rf=navi" title="ミッドナイト">ミッドナイト</a>
+</li>
+<li id="gmenu-girls">
+<a href="https://keirin.netkeiba.com/girls/?rf=navi" title="ガールズ">ガールズ</a>
+</li>
+<li id="gmenu-db">
+<a href="https://keirin.netkeiba.com/db/?rf=navi" title="データベース">データベース</a>
+</li>
+<li id="gmenu-notes">
+<a href="https://keirin.netkeiba.com/notes/?rf=navi" title="メモ">メモ</a>
+</li>
+<li id="gmenu-keirinmatome">
+<a href="https://keirin.netkeiba.com/keirinmatome/?rf=navi" title="まとめ">まとめ</a>
+</li>
+<li id="gmenu-campaign">
+<a href="https://keirin.netkeiba.com/campaign_v2/mypage/?rf=navi" title="キャンペーン">キャンペーン</a>
+</li>
+</ul>
+</nav><!-- /.ContentNavi01 -->
+<div class="bellModal_box">
+<div class="bellModal_boxBg"></div>
+<div class="bellModal_box_inner">
+<iframe id="header_info_boby" src=""></iframe>
+<div class="InfoModal_CloseBtn"><span>閉じる</span></div>
+</div>
+</div>
+<script>
+$(function () {
+let scrollPosition;
+$('.bell_inner').on('click', function(){
+$('.bellModal_box').addClass('active').fadeIn();
+scrollPosition = $(window).scrollTop();
+$('body').addClass('fixed').css({ 'top': -scrollPosition });
+$('#header_bell').removeClass('active'); //バッジ消す
+var url = "https://keirin.netkeiba.com/info/header_info_list.html?mode=pc&rf=pc_header";
+$('#header_info_boby').attr({'src':url});
+});
+$(document).on('click', '.bellModal_boxBg ,.header_info_topMenu_back,.header_info_topMenu_close,.InfoModal_CloseBtn', function () {
+$('body').removeClass('fixed').css({ 'top': 0 });
+window.scrollTo(0, scrollPosition);
+$('.bellModal_box').removeClass('active').fadeOut();
+return false;
+});
+});
+</script>
+<script>
+$(function(){
+var path = location.pathname ;
+var gmenu = path.split('/');
+console.log(location.search);
+var host = location.hostname;
+if( host.indexOf( "community.sp.keirin") > -1 || host.indexOf( "bbs.sp.keirin") > -1 ){
+gmenu[1] = "community";
+}
+console.log(gmenu[1]);
+if( gmenu[1] == "bet" || gmenu[1] == "shushi" ){
+gmenu[1] = "race";
+}
+if( gmenu[1] == "campaign_v2" ){
+gmenu[1] = "campaign";
+}
+$('[id^="gmenu-"]').each(function(){
+$(this).removeClass('Active');
+});
+if (gmenu[1] != "") {
+$('#gmenu-' + gmenu[1]).addClass('Active');
+} else if (path === "/") {
+$('#gmenu-top').addClass('Active');
+}
+});
+</script>
+<script>
+$(function(){
+var _data = {};
+_data.output      = 'jsonp';
+$.ajax({type     : 'GET',
+url      : "https://keirin.netkeiba.com/api/keiba_live_check/",
+data     : _data,
+dataType : _data.output
+}).done(function(json) {
+console.log('recieve checklive(%O)',json);
+if ('true' == json.live) {
+$('#KeibaLiveMark').css('display', 'block')
+}
+}).fail(function() {
+//alert('エラーが起きました');
+}).always(function() {
+console.log('complete');
+});
+//お知らせのベルマーク対応
+var c_info_id = '0';
+var is_header_bell = '';
+header_info_id(function(info_id){
+if(info_id > c_info_id){
+//新着お知らせあり
+$('#header_bell').addClass('active'); //バッジ
+if(!is_header_bell){
+//cookieがなかったらベルのアニメーション
+$('#header_bell').addClass('bell_motion');
+document.cookie = "header_bell=1; expires=0;; path=/;";
+}
+}
+});
+function header_info_id(fn){
+var _data = {};
+_data.output = 'jsonp';
+$.ajax({
+type	 : 'GET',
+url	  : "https://keirin.netkeiba.com/api/info/api_get_header_info_id.html",
+data	 : _data,
+dataType : _data.output
+}).done(function(ret) {
+console.log('api_get_header_info_id(%O)',ret);
+if(ret && ret['status'] == 'ok'){
+fn(ret['id']);
+}
+}).fail(function() {
+fn(false);
+//alert('エラーが起きました');
+}).always(function() {
+//console.log('complete');
+});
+}
+});
+</script>
+<script async src="https://cdnv2.netkeiba.com/img.racev4.sp/common/js/nd_util.min.js"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/profile/common/js/sns_profile.js"></script>
+<script>
+$(function(){
+"use strict"
+var api_url = 'https://keirin.netkeiba.com/profile/api/';
+var val = $('[id^="snsimage_"]').prop('id');
+var sns_user_id = null;
+if(undefined !== val){
+sns_user_id = $('[id^="snsimage_"]').prop('id').replace(/snsimage_/,'');
+var sns = new SNSProfile(api_url);
+sns.get_image(sns_user_id, function(data){
+if('OK' == data.status){
+$('#snsimage_'+sns_user_id).attr('src',data.url);
+}
+});
+}else{
+// not login
+$('#snsimage_').css('background-image','url()');
+}
+});
+</script>
+<div class="Contents">
+<div class="Main_Column">
+<!-- 本日の開催競輪場 -->
+<!-- block=today_kaisai (cp) -->
+<script src="https://cdnv2.netkeiba.com/keirin/api/campaign/common/js/campaign_common.js"></script>
+<div class="TodayRace_Slide fc" style="display: none;">
+<div class="Title_Sec">
+<h1>2026年11月20日 のレース情報</h1>
+<div class="Title_BtnMore">
+<a href="https://keirin.netkeiba.com/race/race_list/?rf=racetoplive">競輪一覧</a>
+</div>
+</div>
+<!-- /.SubTitle -->
+<div id="TodayRace_Live" class="TodayRace_SlideBox"></div>
+<!-- /.TodayRace_SlideBox -->
+<a href="https://keirin.netkeiba.com/race/pointbackrace/" class="pointbackBtn">
+<svg width="18" height="29" viewBox="0 0 18 29" fill="none" class="pointbackIcon" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_2342_2761)">
+<path d="M17.6056 25.6076V22.611V22.5081H17.6001" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.412807 22.5081H0.406494V22.611V25.6076" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.00641 25.6076C13.756 25.6076 17.6063 24.2659 17.6063 22.611C17.6063 20.956 13.756 19.6144 9.00641 19.6144C4.25681 19.6144 0.406494 20.956 0.406494 22.611C0.406494 24.2659 4.25681 25.6076 9.00641 25.6076Z" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.406494 25.6075C0.406494 27.263 4.25665 28.6041 9.00641 28.6041C13.7562 28.6041 17.6063 27.263 17.6063 25.6075" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.38029 24.1342C3.95925 23.8832 2.26025 23.2958 2.26025 22.611C2.26025 21.6981 5.28024 20.9579 9.0065 20.9579C12.7328 20.9579 15.7528 21.6981 15.7528 22.611C15.7528 23.0139 15.1656 23.3829 14.1887 23.6695" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16.8399 9.0729L15.3035 6.50304L15.2499 6.41437L15.2451 6.41833" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.506745 15.2885L0.501221 15.2917L0.554881 15.3804L2.09131 17.9502" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.46534 13.5116C13.5382 11.0602 16.1521 7.92256 15.3034 6.50338C14.4548 5.0842 10.4651 5.92094 6.39223 8.37229C2.31932 10.8236 -0.294484 13.9613 0.554131 15.3805C1.40275 16.7997 5.39243 15.9629 9.46534 13.5116Z" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.09131 17.9502C2.94041 19.3697 6.92945 18.5329 11.0021 16.081C15.0756 13.6291 17.6884 10.4924 16.8401 9.07288" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.4582 13.6038C4.25338 14.6385 2.4952 15.0114 2.14404 14.424C1.67609 13.641 3.88644 11.4472 7.08082 9.52414C10.276 7.6011 13.2447 6.67718 13.7134 7.46017C13.9202 7.80536 13.6053 8.42526 12.9156 9.175" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0.818359 9.79889V6.38904" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.73169 6.38904V2.97919" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17.2969 5.25214V2.66882" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9.05762 3.80573V0.395874" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M13.1768 4.11527V1.73938" stroke="#E03D3D" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_2342_2761">
+<rect width="18" height="29" fill="white"/>
+</clipPath>
+</defs>
+</svg>
+最大5%還元レース一覧</a>
+</div>
+<script>
+$(function () {
+"use strict"
+var _data = {is_all:'1'};
+_data.input = 'UTF-8';
+_data.output = 'json';
+_data.rf = 'racetoplive';
+$.ajax({
+type: "POST",
+url: 'https://keirin.netkeiba.com/race/ajax_race_live_flash.html',
+data: _data,
+dataType: _data.output,
+success: function(data){
+if (data !=='') {
+$('#TodayRace_Live').parent().css('display', 'block');
+$('#TodayRace_Live').html(data);
+}
+},
+error: function(XMLHttpRequest, textStatus, errorThrown) {
+console.error('textStatus:',textStatus);
+}
+});
+});
+</script>
+<div id="meikore_race"><div class="FileLoader"><img src="https://cdnv2.netkeiba.com/keirin/common/img/gif-load.gif?20190116" alt=""></div></div>
+<script>
+$(function(){
+const _data = {};
+_data.input    = 'UTF-8';
+_data.output   = 'html';
+$.ajax({
+type: 'POST',
+url: '/race/ajax_meikore_race.html',
+data: _data,
+dataType: _data.output,
+})
+.done(function(data){
+// レスポンス存在チェック
+if (!data) {
+return;
+}
+const html = data ?? '';
+// html存在チェック
+if (!html) {
+return;
+}
+// 描画
+$('#meikore_race').html(html);
+})
+.fail(function(jqXHR, textStatus, errorThrown){
+console.log('jqXHR: ', jqXHR);
+});
+});
+</script>
+<!-- スペシャルバナー -->
+
+<!-- block=async_special_bnr (d) -->
+<div id="race_special_bnr"><div class="FileLoader"><img src="https://cdnv2.netkeiba.com/keirin/common/img/gif-load.gif" alt=""></div></div>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/special_bunner.js?20251222"></script>
+<script>
+$(function(){
+if (typeof getSpecialBnrHtml === 'function') {
+getSpecialBnrHtml('https://keirin.netkeiba.com','race_special_bnr', 'race_top');
+} else {
+$('#race_special_bnr').hide();
+}
+});
+</script>
+
+<!-- 注目レース -->
+<!-- block=pickup_race_v2 (cp) -->
+<section class="PickupRaceArea Contents_Box">
+<div class="Title_Sec">
+<h2>グレードレース特集</h2>
+<div class="Title_BtnMore">
+<a href="https://keirin.netkeiba.com/race/schedule/">グレードレース日程</a>
+</div><!-- /.Title_BtnMore -->
+</div><!-- /.Title_Sec -->
+<div class="PickupRace_Slide_Area">
+<div class="PickupRaceSlideWrap01 fc">
+<div class="PickupRace_SlideImgBox01">
+<a href="https://keirin.netkeiba.com/race/special/grade_race/?grade_cd=39&rf=racetopfeaturedrace" onclick="ga('send','event','banner','click','GradeRace_Banner')">
+<div style="background-image:url('https://cdnv2.netkeiba.com/keirin/race/special/image.php?id=138');" class="PickupRace_ThumbBg" onload="ga('send','event','banner','impression','GradeRace_Banner')"></div>
+
+<div class="SlideTxtArea">
+<span class="Content_Countdown">12R 発売中</span>
+
+<div class="SlideTxtInner">
+<p class="ContentMainData">小倉 3日目
+<span class="Icon_RaceMark Icon_Grade Icon_GradeType2">GI</span>
+<span class="Icon_RaceMark Girls" aria-label="ガールズ"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14"><g transform="translate(2106 -2355)"><rect width="18" height="14" transform="translate(-2106 2355)" fill="#ff9292" opacity="0"/><g transform="translate(-2103.3 2356.4)"><path d="M1541.137,669.152a3.51,3.51,0,0,0-2.6-1.117,3.29,3.29,0,0,0-2.039.7.825.825,0,1,1-1.649,0,3.289,3.289,0,0,0-2.039-.7,3.51,3.51,0,0,0-2.6,1.117,3.982,3.982,0,0,0-1.03,2.738,4.743,4.743,0,0,0,1.287,3.125A27.291,27.291,0,0,0,1533.7,678c.446.376.953.8,1.478,1.256a.769.769,0,0,0,1,0c.526-.454,1.032-.881,1.479-1.257a27.273,27.273,0,0,0,3.222-2.988,4.74,4.74,0,0,0,1.287-3.125,3.982,3.982,0,0,0-1.03-2.738Zm0,0" transform="translate(-1529.188 -668.035)" fill="#fff"/></g></g></svg></span>
+<span class="Icon_RaceMark Nighter" aria-label="ナイター"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" viewBox="0 0 18 14"><g transform="translate(2079 -2355)"><rect width="18" height="14" transform="translate(-2079 2355)" fill="#ff9292" opacity="0"/><g transform="translate(-2075.174 2356.2)"><path d="M29.221,8.52A5.566,5.566,0,1,1,23.819,0a.067.067,0,0,1,.062.107,5.258,5.258,0,0,0,5.27,8.311A.067.067,0,0,1,29.221,8.52Z" transform="translate(-18.968 0)" fill="#efda45"/></g></g></svg></span>
+
+
+</p>
+<span class="ContentMainTitle">朝日新聞社杯競輪祭</span>
+<span class="Content_Date">2026年11月18日(水)～2026年11月23日(月)</span>
+</div>
+</div>
+</a>
+</div>
+<ul class="RaceList">
+<li>
+<a href="https://keirin.netkeiba.com/race/special/grade_race/?grade_cd=12&rf=racetopfeaturedrace" title="" class="LinkBox_01">
+<div>
+<p class="ContentMainData">別府 
+<span class="Icon_RaceMark Icon_Grade Icon_GradeType4">GIII</span>
+
+
+
+
+</p>
+<span class="ContentMainTitle">オランダ王国友好杯</span>
+<span class="Content_Date">2026年12月3日(木)～2026年12月6日(日)</span>
+</div>
+</a>
+</li><li>
+<a href="https://keirin.netkeiba.com/race/special/grade_race/?grade_cd=22&rf=racetopfeaturedrace" title="" class="LinkBox_01">
+<div>
+<p class="ContentMainData">佐世保 
+<span class="Icon_RaceMark Icon_Grade Icon_GradeType4">GIII</span>
+
+
+
+
+</p>
+<span class="ContentMainTitle">九十九島賞争奪戦</span>
+<span class="Content_Date">2026年12月10日(木)～2026年12月13日(日)</span>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</div><!-- /.PickupRace_Slide_Area -->
+</section><!-- /.PickupRaceArea -->
+<!--
+<div class="CampaignBnr01">
+<a href="https://keirin.netkeiba.com/campaign/2020/keiringp/?rf=racetop">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/bnr/bnr_keirinGP2020_640160_01.jpg" alt="KEIRINグランプリ特集 2020">
+</a>
+</div>
+-->
+<!-- 出走表 -->
+<!-- block=race_list (d) -->
+<script src="https://cdnv2.netkeiba.com/keirin/bbs/common/js/store.legacy.min.js?180322a"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/nd_isam.js?180322a"></script>
+<style>
+.race_canceled {
+background-color: lightgrey;
+}
+.Btn_Group li.Active a {
+padding:0;
+}
+.Btn_Group .jyo_tab li.Active a{
+color: #fff;
+font-weight: bold;
+}
+.Btn_Group .jyo_tab li a {
+color: #444;
+font-size: 14px;
+display: inline-block;
+line-height: 2;
+border-radius: 1.1em;
+border: 1px solid #e1e1e1;
+padding: 0 14px;
+white-space: nowrap;
+min-width: 80px;
+text-align: center;
+position: relative;
+z-index: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+max-width: 81px;
+height: 100%;
+padding: 8px 0;
+margin: auto;
+line-height: 1;
+}
+.Content_Icon_Text {
+display: flex;
+margin-top: 4px;
+}
+</style>
+<div class="Title_Sec">
+<h1>レース一覧</h1>
+</div><!-- /.Title_Sec -->
+<div class="RaceDayWrap">
+<div class="RaceDayWrap_Inner">
+<div class="RaceDayPrev">
+<a href="https://keirin.netkeiba.com/race/race_list/?kaisai_date=20261117" class="Active">前日</a>
+</div><!-- /.RaceDayPrev -->
+<div class="Tab_RaceDaySelect">
+<ul class="Tab fc">
+<li><a href="javascript:void(0);" id="race_day_20261119" data-date="20261119">11/19<span class="Thu">(木)</span></a></li>
+<li><a href="javascript:void(0);" id="race_day_20261120" class="Tab_Active" data-date="20261120">11/20<span class="Fri">(金)</span></a></li>
+<li><a href="javascript:void(0);" id="race_day_20261121" data-date="20261121">11/21<span class="Sat">(土)</span></a></li>
+</ul>
+</div><!-- /.Tab_RaceDaySelect -->
+<div class="RaceDayNext">
+<a href="https://keirin.netkeiba.com/race/race_list/?kaisai_date=20261123" class="Active">翌日</a>
+</div><!-- /.RaceDayNext -->
+</div><!-- /.RaceDayWrap_Inner -->
+</div><!-- /.RaceDayWrap -->
+<div class="RaceListDayWrap">
+</div><!-- /.RaceListDayWrap -->
+<script>
+var url = new URL(window.location.href);
+var params = url.searchParams;
+$(function(){
+$('.Tab_RaceDaySelect').on('click','[id^="race_day_"]',function(){
+var race_day = $(this).prop('id').replace(/race_day_/,'');
+$('[id^=race_day_]').removeClass('Tab_Active');
+$('#race_day_'+race_day).addClass('Tab_Active');
+$('#race_day_'+race_day).show();
+getRaceList(race_day);
+// URLパラメータ書き換え
+//setUrlParams('kaisai_date', race_day, params);
+//changeUrl(url);
+});
+getRaceList(20261120, );
+$(document).on('click','[id^="btn_jyoname_"]',function(){
+var jyocd = $(this).prop('id').replace(/btn_jyoname_/,'');
+$('#btn_jyoname_'+jyocd).removeClass('Active');
+var race_day = '';
+$('[id^="race_day_"]').each(function (){
+if ($(this).hasClass('Tab_Active')){
+race_day = $(this).prop('id').replace(/race_day_/,'');
+}
+});
+getRaceList(race_day, jyocd);
+$('#btn_jyoname_'+jyocd).addClass('Active');
+// URLパラメータ書き換え
+//setUrlParams('jyocd', jyocd, params);
+//changeUrl(url);
+});
+$(document).on('click','.RaceList_Menu_Box a',function(e){
+e.preventDefault();
+if ( $(this).parents(".RaceListMainArea").next().css('display') == 'block' ) {
+$(this).toggleClass('close');
+$(this).parents(".RaceListMainArea").next().slideToggle("normal");
+} else {
+$('.RaceList_Menu_Box a').removeClass('close');
+$('.RaceList_SlideBoxItem .RaceSubMenuArea').slideUp();
+$(this).toggleClass('close');
+$(this).parents(".RaceListMainArea").next().slideToggle("normal");
+}
+});
+//レース一覧の見方
+$(document).on('click','.Description_Box .Title',function() {
+var description_box = $(this).parent().parent();
+var contents = description_box.find('> dl > dd');
+if ( contents.css('display') !== 'block' ) {
+description_box.find('.Icon_Arrow').toggleClass('open');
+}
+contents.slideToggle(200);
+});
+});
+function getRaceList ( _kaisai_date, _jyocd = '') {
+console.log('getRaceList(%O)', _kaisai_date);
+var _data = { pid : 'api_race_list' };
+_data.input       = 'UTF-8';
+_data.output      = 'html';
+_data.kaisai_date = _kaisai_date;
+_data.jyocd       = _jyocd;
+_data.link_mode   = '';
+$.ajax({type     : 'GET',
+url      : "/race/api_race_list.html",
+data     : _data,
+dataType : _data.output
+}).done(function(html) {
+$(".RaceListDayWrap").html(html); // htmlを設定
+getBetList(_kaisai_date, function(bet_comp_list){
+raceListAfterSettings(_jyocd, bet_comp_list); // 描画後のhtmlにイベント追加
+});
+}).fail(function() {
+alert('エラーが起きました');
+}).always(function() {
+console.log('complete');
+});
+}
+function raceListAfterSettings(_fstJyocd, bet_comp_list) {
+if (_fstJyocd == '' && $('.jyo_tab').children('li').length > 0) {
+// 場コードが空の場合は要素から取得
+_fstJyocd = $('.jyo_tab').children('li').prop('id').replace(/btn_jyoname_/,'');
+}
+$('#racelist_'+_fstJyocd).show();
+$('#btn_jyoname_'+_fstJyocd).addClass('Active');
+var ndisam = new NDIsam();
+$('[id^="racing_color_"]').each(function(){
+var state = $(this).data("race_state");
+switch(state){
+case 1:
+$(this).addClass('Next_Racing');
+break;
+case 0:
+case 2:
+case 99:
+default:
+break;
+}
+});
+$('[id^="racing_num_"]').each(function(){
+var state = $(this).data("race_state");
+var sale_state = $(this).data("sale_state");
+var tmp_id = $(this).attr("id").split("_");
+var race_id = tmp_id.pop();
+var key = 'bet_' + race_id;
+var bet_list = ndisam.list(key);
+switch(state){
+case 1:
+$(this).addClass('Race_Next');
+if(sale_state <= 40 && Object.keys(bet_list).length >= 1){
+$("#bet_now_"+race_id).show();
+}else if(bet_comp_list[race_id]){
+$("#bet_complete_"+race_id).show();
+}
+break;
+case 2:
+$(this).addClass('Race_Fixed');
+if(bet_comp_list[race_id]){
+$("#bet_complete_"+race_id).show();
+}
+break;
+case 0:
+if(sale_state <= 40 && Object.keys(bet_list).length >= 1){
+$("#bet_now_"+race_id).show();
+}else if(bet_comp_list[race_id]){
+$("#bet_complete_"+race_id).show();
+}
+case 99:
+default:
+break;
+}
+});
+if ($('.RaceList_Item01 > .Race_Num').hasClass('Race_Next')) {
+$('.Race_Next').parents('li').addClass('Next_Racing');
+}
+}
+function setUrlParams(name, value, params) {
+if( params.get(name) ) {
+params.set(name, value);
+}
+}
+function changeUrl(url) {
+history.pushState('', '', url);
+}
+function getBetList(_kaisai_date, fn){
+console.log('getBetList');
+var _data = { pid : 'api_race_list' };
+_data.input       = 'UTF-8';
+_data.output      = 'json';
+_data.kaisai_date = _kaisai_date;
+$.ajax({type     : 'GET',
+url      : "/shushi/api_get_bet_complete_list.html",
+data     : _data,
+dataType : _data.output
+}).done(function(data) {
+fn(data);
+}).fail(function() {
+//                alert('エラーが起きました');
+}).always(function() {
+console.log('complete');
+});
+}
+</script>
+<div class="Description_Box pt10">
+<dl>
+<dt class="Title">
+<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
+<path d="M6.5,0A6.5,6.5,0,1,0,13,6.5,6.5,6.5,0,0,0,6.5,0Zm0,11.984A5.484,5.484,0,1,1,11.984,6.5,5.481,5.481,0,0,1,6.5,11.984Zm2.031-6.69A2.035,2.035,0,0,1,7.008,7.261v.826a.508.508,0,0,1-1.016,0V6.817A.508.508,0,0,1,6.5,6.31,1.016,1.016,0,1,0,5.484,5.294a.508.508,0,1,1-1.016,0,2.031,2.031,0,0,1,4.063,0ZM7.135,9.61A.635.635,0,1,1,6.5,8.976.635.635,0,0,1,7.135,9.61Z"/>
+</svg>
+レース一覧の見方<span class="Icon_Arrow"></span></dt>
+<dd>
+<div class="Description_Inner">
+<table class="Icon_Guide">
+<tbody>
+<tr>
+<th><span class="Icon_Guide01">11R</span></th>
+<td><span class="mr05">…</span>結果確定前</td>
+</tr>
+<tr>
+<th><span class="Icon_Guide02">11R</span></th>
+<td><span class="mr05">…</span>次のレース(発走直前)</td>
+</tr>
+<tr>
+<th><span class="Icon_Guide03">11R</span></th>
+<td><span class="mr05">…</span>結果確定</td>
+</tr>
+<!--
+<tr>
+<th><img src="https://zracev4.sp.netkeiba.com/common/img/icon/icon_horse.png" alt="" width="20" style="vertical-align:-3px;"></th>
+<td><span class="mr05">…</span>お気に入り馬</td>
+</tr>
+<tr>
+<th><img src="https://zracev4.sp.netkeiba.com/common/img/icon/icon_win5.png" alt="" width="30" style="vertical-align:-1px;"></th>
+<td><span class="mr05">…</span>WIN5対象レース</td>
+</tr>
+-->
+</tbody>
+</table>
+</div>
+</dd>
+</dl>
+</div><!-- /.Description_Box -->
+<!-- お気に入り選手・出走情報 -->
+<!-- block=favorite_player (d) -->
+<div id="view-player_favoritelist"></div>
+<script>
+$(function(){
+"use strict"
+var url_player_favoritelist = 'https://keirin.netkeiba.com/favorites/player_race_info/ajax_player_race_list.html';
+var param = {};
+api_player_favoritelist(url_player_favoritelist, param, function(data){
+$('#view-player_favoritelist').html(data);
+});
+//------------------------------------------------------------
+function api_player_favoritelist(url, param, fn){
+var _data = {};
+_data.output = 'json';
+for(var key in param){
+_data[key] = param[key];
+}
+$.ajax({
+type: "POST",
+url: url,
+data: _data,
+dataType: _data.output,
+success: function(json){
+if(undefined !== fn){
+fn(json);
+}
+},
+error: function(XMLHttpRequest, textStatus, errorThrown) {
+console.error('textStatus:',textStatus);
+}
+});
+}
+});
+</script>
+<!-- ピックアップ選手 -->
+<!-- block=race_pickup_player (d) -->
+<section class="PickupPlayerArea Contents_Box">
+<div class="Title_Sec">
+<h2>ピックアップ選手</h2>
+</div><!-- /.Title_Sec -->
+<ul class="Top_PickUpPlayerList">
+<li class="PickUpPlayerBox">
+<a href="https://keirin.netkeiba.com/race/entry/?race_id=202611208112&rf=racetoppickup" class="GensenLink">
+<div class="PlayerInnerBox">
+<div class="PlayerPhotoImg">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/players/player_15218.jpg" alt="太田りゆ" id = "pickup_player_photo_15218" onerror="pickup_player_photo_PlayerPhotoDefaultImg(15218,'girls')">
+</div>
+<div class="PlayerPickUpArea">
+<div class="PlayerPickUpBox">
+<p class="PickUpPoint">20連勝中</p>
+<p class="Name">太田りゆ</p>
+<p class="PlayerFromClass">埼玉 32歳 112期 Ｌ１</p>
+</div><!-- /.PlayerPickupBox -->
+<div class="PlayerPickUpRace">
+<p class="PickUpPoint">小倉<span class="Icon_GradeType Icon_GradeType2">GI</span> 12R</p>
+<p class="Race_StateTime">発走 20:30</p>
+<p class="Race_DeadlineTime">締切 20:25</p>
+</div><!-- /.PlayerPickupRace -->
+</div><!-- /.PlayerPickupArea -->
+</div><!-- /.PlayerInnerBox -->
+</a>
+</li><!-- /.PickUpPlayerBox --><li class="PickUpPlayerBox">
+<a href="https://keirin.netkeiba.com/race/entry/?race_id=202611208112&rf=racetoppickup" class="GensenLink">
+<div class="PlayerInnerBox">
+<div class="PlayerPhotoImg">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/players/player_15219.jpg" alt="梅川風子" id = "pickup_player_photo_15219" onerror="pickup_player_photo_PlayerPhotoDefaultImg(15219,'girls')">
+</div>
+<div class="PlayerPickUpArea">
+<div class="PlayerPickUpBox">
+<p class="PickUpPoint">14連続連対中</p>
+<p class="Name">梅川風子</p>
+<p class="PlayerFromClass">東京 35歳 112期 Ｌ１</p>
+</div><!-- /.PlayerPickupBox -->
+<div class="PlayerPickUpRace">
+<p class="PickUpPoint">小倉<span class="Icon_GradeType Icon_GradeType2">GI</span> 12R</p>
+<p class="Race_StateTime">発走 20:30</p>
+<p class="Race_DeadlineTime">締切 20:25</p>
+</div><!-- /.PlayerPickupRace -->
+</div><!-- /.PlayerPickupArea -->
+</div><!-- /.PlayerInnerBox -->
+</a>
+</li><!-- /.PickUpPlayerBox --><li class="PickUpPlayerBox">
+<a href="https://keirin.netkeiba.com/race/entry/?race_id=202611208112&rf=racetoppickup" class="GensenLink">
+<div class="PlayerInnerBox">
+<div class="PlayerPhotoImg">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/players/player_15306.jpg" alt="佐藤水菜" id = "pickup_player_photo_15306" onerror="pickup_player_photo_PlayerPhotoDefaultImg(15306,'girls')">
+</div>
+<div class="PlayerPickUpArea">
+<div class="PlayerPickUpBox">
+<p class="PickUpPoint">28連勝中</p>
+<p class="Name">佐藤水菜</p>
+<p class="PlayerFromClass">神奈 27歳 114期 Ｌ１</p>
+</div><!-- /.PlayerPickupBox -->
+<div class="PlayerPickUpRace">
+<p class="PickUpPoint">小倉<span class="Icon_GradeType Icon_GradeType2">GI</span> 12R</p>
+<p class="Race_StateTime">発走 20:30</p>
+<p class="Race_DeadlineTime">締切 20:25</p>
+</div><!-- /.PlayerPickupRace -->
+</div><!-- /.PlayerPickupArea -->
+</div><!-- /.PlayerInnerBox -->
+</a>
+</li><!-- /.PickUpPlayerBox -->
+</ul>
+<script type="text/javascript">
+// スライドバナー指定
+$(document).ready(function() {
+$('.Top_PickUpPlayerList').slick({
+slidesToShow: 1,
+dots: true,
+arrows: false,
+autoplay: true,
+autoplaySpeed: 6000,
+speed: 300,
+});
+});
+//選手写真がない場合はNO DATAイメージに切り替え
+function pickup_player_photo_PlayerPhotoDefaultImg(senshu_cd,sex){
+if(sex=='man'){
+document.getElementById("pickup_player_photo_"+senshu_cd).src="https://cdnv2.netkeiba.com/keirin/common/img/db/player_noimage.jpg";
+}else{
+document.getElementById("pickup_player_photo_"+senshu_cd).src="https://cdnv2.netkeiba.com/keirin/common/img/db/player_noimage_women.jpg";
+}
+}
+</script>
+</section>
+<!-- おすすめ予想家 -->
+<!-- block=umai_race_top (d) -->
+<div id="delay_umai_baken">
+<div id="umai_race_top_view">
+<div class="FileLoader"><img src="https://keirin.netkeiba.com/common/img/gif-load.gif?20190116" alt=""></div>
+</div>
+</div>
+<script type="text/javascript">
+$( document ).ready( function() {
+var yoso_goods_b = new YosoGoodsB('https://keirin.netkeiba.com/yoso');
+var _show_id = 'umai_race_top_view';
+var options = {
+type: "visible",
+id: "delay_umai_baken",
+scripts: [
+],
+success: function () {
+yoso_goods_b.GetYosokaRankingRecommend( function(data){
+$("#"+_show_id).html( data );
+});
+}
+};
+$.lazyscript(options);
+});
+</script>
+<!-- PIST6バナー -->
+<!-- <div class="Pist6_Bnr01">
+<a href="https://keirin.netkeiba.com/pist6/" title="PIST6 レース情報">
+<span class="Pist6_BnrInnerBox">
+<span class="Pist6_BnrInnerBoxImg"><img src="https://cdnv2.netkeiba.com/keirin/common/img/pist6/pist6_title_logo.svg" alt="PIST6"></span>
+<span class="Pist6_BnrInnerBoxTxt">レース情報はこちら</span>
+</span>
+</a>
+</div> -->
+<!-- /.Pist6_Bnr01 -->
+</div><!-- /.Main_Column -->
+<div class="Side_Column">
+<!-- レースメニュー -->
+<!-- block=race_bottom_menu2 (d) -->
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/tipstar.js?20220331" type="text/javascript"></script>
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/halfmodal_nk01.css?20211013" type="text/css" media="screen" />
+<div id="TipstarModal"></div>
+<section class="Contents_Box Top_RaceMenu">
+<div class="Title_Sec">
+<h2>競輪レースメニュー</h2>
+</div><!-- / .Title_Sec -->
+<div class="Top_RaceMenu_Inner">
+<ul class="Btn_List_01 Col4 fc">
+<li>
+<a href="https://keirin.netkeiba.com/race/yoso_list/" title="予想">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_yoso">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-yoso" /></svg>
+</div>
+<span class="Icon_Label">予想</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/race/odds_list/" title="オッズ・購入">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_odds">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-odds" /></svg>
+</div>
+<span class="Icon_Label Fs_pc">オッズ・購入</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/race/payback_list/" title="結果・払戻">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_10">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-race_10" /></svg>
+</div>
+<span class="Icon_Label">結果・払戻</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/race/race_calendar/" title="開催日程">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_09">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-race_09" /></svg>
+</div>
+<span class="Icon_Label">開催日程</span>
+</a>
+</li>
+<li>
+<a href="/race/schedule/" title="グレードレース">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_05">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-race_05" /></svg>
+</div>
+<span class="Icon_Label FsSS Fs_pc">グレードレース</span>
+</a>
+</li>
+<!--
+<li>
+<a href="https://keirin.netkeiba.com/favorites/" title="お気に入り選手">
+<svg class="Icon_Race01 Icon_Race01_14">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-race_14" /></svg>
+<span class="Icon_Label PcFsS">お気に入り選手</span>
+</a>
+</li>
+-->
+<li>
+<a href="https://keirin.netkeiba.com/race/racecourse_list/" title="競輪場一覧">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_28">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg?20220526#icon-race_28" /></svg>
+</div>
+<span class="Icon_Label">競輪場一覧</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0);" class="jsChargeForModal" title="チャージ">
+<div class="IconInside">
+<svg class="iconAddedColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26.253" height="26.229" viewBox="0 0 26.253 26.229">
+<defs>
+<clipPath id="clip-path-charge">
+<rect id="長方形_2860" data-name="長方形 2860" width="26.253" height="26.229" fill=""/>
+</clipPath>
+</defs>
+<g id="グループ_19193" data-name="グループ 19193" clip-path="url(#clip-path-charge)">
+<path id="パス_5808" data-name="パス 5808" d="M24.257,14.25a9.225,9.225,0,0,1-2.118-5.829A1.857,1.857,0,0,0,20.261,6.59H18.077a.757.757,0,1,0,0,1.514h2.183a.346.346,0,0,1,.358.311,10.733,10.733,0,0,0,2.39,6.69,7.2,7.2,0,0,1,1.73,4.291,4.617,4.617,0,0,1-.816,2.589,7.059,7.059,0,0,1-4.263,2.51c-.369.081-1.109.165-1.388.2l-.115.016H8.139c-.413-.039-1.182-.131-1.546-.207a7.037,7.037,0,0,1-4.262-2.51A4.617,4.617,0,0,1,1.515,19.4c.006-1.873.858-3.2,1.846-4.741l.008-.012a10.976,10.976,0,0,0,2.26-6.229.346.346,0,0,1,.358-.311h7.542a2.826,2.826,0,0,0,2.823-2.823V4.724a.074.074,0,0,1,.049-.06,2.406,2.406,0,1,0-1.608,0l.007,0a.059.059,0,0,1,.038.056v.563a1.3,1.3,0,0,1-1.3,1.3h-2.06a1.3,1.3,0,0,1-1.3-1.3V4.724a.075.075,0,0,1,.049-.06,2.406,2.406,0,1,0-1.608,0l.007,0a.059.059,0,0,1,.038.056v.563a2.761,2.761,0,0,0,.282,1.2.081.081,0,0,1,0,.067l0,.006a.056.056,0,0,1-.051.026H5.993A1.857,1.857,0,0,0,4.115,8.421c0,2.267-.982,3.795-2.022,5.412A9.928,9.928,0,0,0,0,19.4a6.081,6.081,0,0,0,1.114,3.5,8.51,8.51,0,0,0,5.163,3.1c.569.124,1.662.229,1.789.239h10.2c.011,0,1.128-.111,1.708-.232a8.547,8.547,0,0,0,5.164-3.1,6.13,6.13,0,0,0,1.115-3.5,8.6,8.6,0,0,0-2-5.152M10.313,2.405a.892.892,0,1,1-.892-.892.893.893,0,0,1,.892.892m4.4,0A.892.892,0,1,1,15.6,3.3a.893.893,0,0,1-.892-.892" transform="translate(0 0.001)" fill=""/>
+<path id="パス_5809" data-name="パス 5809" d="M104.275,111.886a.765.765,0,0,0-.21-1.053.754.754,0,0,0-.419-.129.767.767,0,0,0-.629.338l-2.06,3.093,0,.006a.061.061,0,0,1-.048.025.07.07,0,0,1-.052-.032l-2.062-3.1a.772.772,0,0,0-.633-.335.785.785,0,0,0-.414.125l-.006,0a.758.758,0,0,0-.321.484.749.749,0,0,0,.113.569l2.44,3.659a.067.067,0,0,1,0,.068.066.066,0,0,1-.059.032H98.487a.757.757,0,1,0,0,1.514h1.6a.068.068,0,0,1,.065.065v.822a.068.068,0,0,1-.065.065h-1.6a.757.757,0,1,0,0,1.514h1.6a.068.068,0,0,1,.065.065v1.238a.758.758,0,0,0,.751.757h.006a.758.758,0,0,0,.751-.757v-1.238a.068.068,0,0,1,.065-.065h1.649a.757.757,0,0,0,0-1.514h-1.649a.068.068,0,0,1-.065-.065v-.822a.068.068,0,0,1,.065-.065h1.649a.757.757,0,0,0,0-1.514h-1.479a.064.064,0,0,1-.058-.1Z" transform="translate(-87.782 -99.771)" fill=""/>
+</g>
+</svg>
+</div>
+<span class="Icon_Label">チャージ</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/settlement/" title="精算">
+<div class="IconInside">
+<svg class="iconAddedColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26.215" height="26.226" viewBox="0 0 26.215 26.226">
+<defs>
+<clipPath id="clip-path-settlement">
+<rect id="長方形_2861" data-name="長方形 2861" width="26.215" height="26.226" fill=""/>
+</clipPath>
+</defs>
+<g id="グループ_19196" data-name="グループ 19196" transform="translate(0)" clip-path="url(#clip-path-settlement)">
+<path id="パス_5810" data-name="パス 5810" d="M21.011,146.591a4.406,4.406,0,0,0-1.133.186l-2.8.741a.066.066,0,0,1-.062-.045,3.423,3.423,0,0,0-3.539-2.155,6.761,6.761,0,0,0-.833.054,6.143,6.143,0,0,1-.686.046,1.83,1.83,0,0,1-1.67-.786l-.033-.039a2.567,2.567,0,0,0-.842-.716,3.438,3.438,0,0,0-1.484-.3,8.2,8.2,0,0,0-3.025.691l-.011.005a.028.028,0,0,1-.013,0,.106.106,0,0,1-.039-.016.061.061,0,0,1-.026-.048v-2.252a.758.758,0,0,0-.757-.757H.757a.758.758,0,0,0-.757.757v10.705a.758.758,0,0,0,.757.757h3.3a.758.758,0,0,0,.757-.757v-1.384a.071.071,0,0,1,.029-.053.053.053,0,0,1,.035-.012H4.9c2.492.823,6.907,2.2,8.482,2.2h.085l.008-.008c1.886-.074,7.338-2.464,8.953-3.531.587-.4.659-1.11.219-2.177a1.65,1.65,0,0,0-1.633-1.118M15.543,147.9a.058.058,0,0,1,0,.041.085.085,0,0,1-.04.038,9.95,9.95,0,0,1-2.2.564.57.57,0,0,1-.152-.015l-.01,0c-.288-.07-.731-.181-1.182-.293l-.861-.214a.561.561,0,0,0-.194-.026.753.753,0,0,0-.646,1.143.749.749,0,0,0,.468.347l.74.184c.5.124,1,.249,1.323.327a2.256,2.256,0,0,0,.491.052,9.711,9.711,0,0,0,2.83-.68l.237-.082h.01l3.908-1.033a3.918,3.918,0,0,1,.74-.146.251.251,0,0,1,.119.019l0,0,.009.007a.437.437,0,0,1,.092.153,3.453,3.453,0,0,1,.145.416.065.065,0,0,1-.032.066c-1.743,1.064-6.668,3.137-7.97,3.137-1.511,0-6.893-1.755-8.506-2.293l-.016-.005a.075.075,0,0,1-.048-.065v-3.508a.066.066,0,0,1,.035-.055,7.317,7.317,0,0,1,2.78-.871H7.9a1.945,1.945,0,0,1,.841.154,1.521,1.521,0,0,1,.369.365,3.27,3.27,0,0,0,2.832,1.328,7.582,7.582,0,0,0,.875-.06,5.482,5.482,0,0,1,.661-.045,2.385,2.385,0,0,1,1.744.573,1.406,1.406,0,0,1,.319.479M3.291,142.784v9.057a.068.068,0,0,1-.064.065H1.578a.068.068,0,0,1-.064-.065v-9.057a.068.068,0,0,1,.064-.065H3.226a.068.068,0,0,1,.064.065" transform="translate(0 -127.199)" fill=""/>
+<path id="パス_5811" data-name="パス 5811" d="M105.847,2.518A8.5,8.5,0,0,0,99.906,0h-.123a8.584,8.584,0,0,0-7.137,13.356.771.771,0,0,0,.632.335.784.784,0,0,0,.414-.125l0,0a.761.761,0,0,0,.209-1.054,7,7,0,0,1-1.162-4.514,7.109,7.109,0,0,1,6.519-6.452c.177-.011.354-.017.527-.017a7.066,7.066,0,0,1,.592,14.108c-.179.015-.372.023-.592.023a7.051,7.051,0,0,1-3.922-1.191.754.754,0,0,0-.419-.128.772.772,0,0,0-.634.338.761.761,0,0,0,.209,1.053,8.549,8.549,0,0,0,4.766,1.442h.2V17.16l.223-.008a8.646,8.646,0,0,0,8.149-8.7,8.528,8.528,0,0,0-2.518-5.937" transform="translate(-82.15)" fill=""/>
+<path id="パス_5812" data-name="パス 5812" d="M149.26,36.6a.749.749,0,0,0,.113-.57A.754.754,0,0,0,148,35.758l-2.059,3.091,0,.006a.061.061,0,0,1-.048.025.068.068,0,0,1-.052-.032L143.8,35.79a.81.81,0,0,0-.665-.364.7.7,0,0,0-.386.108.746.746,0,0,0-.337.485.773.773,0,0,0,.113.577l2.438,3.657a.067.067,0,0,1,0,.068.067.067,0,0,1-.059.032h-1.39a.777.777,0,0,0-.792.739.766.766,0,0,0,.215.546.747.747,0,0,0,.548.234h1.6a.065.065,0,0,1,.064.065v.821a.065.065,0,0,1-.065.065h-1.56a.777.777,0,0,0-.792.739.765.765,0,0,0,.215.546.746.746,0,0,0,.548.234h1.6a.065.065,0,0,1,.064.064v1.2a.811.811,0,0,0,.26.6.845.845,0,0,0,.406.187l.078.013a.755.755,0,0,0,.588-.281l.042-.061.039-.061a.753.753,0,0,0,.088-.354V44.412a.065.065,0,0,1,.065-.065h1.613a.777.777,0,0,0,.792-.739.766.766,0,0,0-.215-.546.747.747,0,0,0-.548-.234h-1.648a.065.065,0,0,1-.065-.065v-.821a.065.065,0,0,1,.064-.064h1.613a.777.777,0,0,0,.792-.739.766.766,0,0,0-.215-.546.747.747,0,0,0-.548-.234h-1.478a.064.064,0,0,1-.058-.1Z" transform="translate(-128.272 -31.906)" fill=""/>
+</g>
+</svg>
+</div>
+<span class="Icon_Label">精算</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/shushi/" title="My収支">
+<div class="IconInside">
+<svg class="Icon_Race01 Icon_Race01_22">
+<use xlink:href="https://keirin.netkeiba.com/common/img/race/icon/icon_race_sprite01.svg#icon-race_19" /></svg>
+</div>
+<span class="Icon_Label PcFsS">My収支</span>
+</a>
+</li>
+<li>
+<a href="https://keirin.netkeiba.com/favorites/my_favorites.html" title="お気に入り">
+<div class="IconInside">
+<svg class="Icon_PcHead_01 Icon_FavPlayer iconAddedColor" width="25" height="25">
+<title>お気に入り</title>
+<use xlink:href="https://keirin.netkeiba.com/common/img/icon/icon_pc_header01.svg#pc_fav_icon"></use>
+</svg>
+</div>
+<span class="Icon_Label PcFsS">お気に入り</span>
+</a>
+</li>
+</ul>
+</div><!-- /.Top_RaceMenu_Inner -->
+</section>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/jquery.colorbox.js" type="text/javascript"></script>
+<link href="https://cdnv2.netkeiba.com/keirin/common/css/colorbox.css" type="text/css" rel="stylesheet" media="screen">
+<div id="chargeRacePage"></div>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/chargeModal.js?20240918_6"></script>
+<script>
+$(document).ready(function () {
+var ekyc_complete = '0';
+var is_appli = '';
+$('.jsChargeForModal').click(function (e) {
+if (ekyc_complete == '3') {
+location.href = 'https://keirin.netkeiba.com/settlement/ekyc_ban.html';
+return '';
+}
+if (ekyc_complete != '1') {
+location.href = 'https://keirin.netkeiba.com/regist/first_gift.html';
+return '';
+}
+if (is_appli) {
+location.href = "ndapp://open_popupbox?url=https://keirin.netkeiba.com/charge/";
+return '';
+}
+if (!is_appli){
+e.preventDefault();
+$.colorbox({
+iframe: true,
+width: "95%",
+maxWidth: '480px',
+height: "540px",
+maxHeight: "90%",
+speed: '200',
+open: true,
+fixed: true,
+speed: 200,
+href: 'https://keirin.netkeiba.com/charge/',
+className: 'addChargeColorbox',
+onComplete: function () {
+$('#cboxLoadedContent iframe').attr('allow', 'payment');
+window.addEventListener('message', function(event) {
+if (event.data === 'closeColorbox') {
+$.colorbox.close();
+}
+});
+},
+onClosed: function () {
+}
+});
+}
+});
+$(document).on("touchend click", "#chargeRacePage .HalfModal_CloseBtn, .ModalOverlay", function(){
+closeHalfModal("#chargeRacePage .HalfModal");
+return false;
+event.preventDefault();
+});
+});
+</script>
+<!-- まとめバナー -->
+<!-- block=bnr_matome (d) -->
+<div class="Contents_Box BnrList01">
+<ul>
+<li>
+<a href="/guide/word_01.html"><img src="https://cdnv2.netkeiba.com/keirin/common/img/bnr/bnr_600240_yougo.png?ver2" alt="いまさら聞けない競輪用語集" ></a>
+</li>
+<li>
+<a href="/guide/"><img src="https://cdnv2.netkeiba.com/keirin/common/img/bnr/bnr_600240_shoshin.png?ver2" alt="0から学ぶ！初心者ガイド" ></a>
+</li>
+<li style="display:none">
+<div class="tipstar_coopeBnr03 db">
+<a href="https://keirin.netkeiba.com/campaign/2021/tipstar_coope/?rf=" title="競輪ってどこで買えるの?車券の買い方はこちら">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/300_120_tipstar_coope.jpg" alt="競輪ってどこで買えるの?車券の買い方はこちら">
+</a>
+</div><!-- /.Top_TipStarBnr01 -->
+</li>
+</ul>
+</div><!-- /.BnrList01 -->
+<script>
+if(document.URL.match('/db/')){
+$('.tipstar_coopeBnr03 a').attr('href','https://keirin.netkeiba.com/campaign/2021/tipstar_coope/?rf=db_top_bottom');
+}else{
+$('.tipstar_coopeBnr03 a').attr('href', 'https://keirin.netkeiba.com/campaign/2021/tipstar_coope/?rf=race_top_bottom');
+};
+</script>
+<!-- block=side_opinion (d) -->
+<section class="Contents_Box OpinionBox">
+<div class="Title_Sec">
+<h2>ご意見・ご要望</h2>
+</div><!-- /.Title_Sec -->
+<div class="OpinionBoxWrap" id="OpinionBoxWrap">
+<form action="/?pid=opinion" method="post">
+<!-- textarea cols="10" rows="3" name="opinion_comment" class="GoikenFormBox_Textarea" id="opinion_comment" placeholder="〇〇〇〇〇について、ご意見・ご要望をご記入ください。"></textarea -->
+<p class="OpinionBoxCheckTxt">頂いたご意見には必ずスタッフが目を通します。個々のご意見に回答できないことを予めご了承ください</p>
+<a href="https://support.keirin.netkeiba.com/hc/ja/requests/new?ticket_form_id=59595424836121" id="LocationSupport" class="SideOpinionBtn" data-param-api="https://keirin.netkeiba.com/regist/api_get_suport_params.html" data-param-method="GET" data-param-path="params"><span>ご意見・ご要望はこちら</span></a>
+</form>
+</div><!-- /.OpinionBoxWrap -->
+</section>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/make_suport_params.js"></script>
+</div><!-- /.Side_Column -->
+</div><!-- /.Contents -->
+</div><!-- /.Wrap -->
+<!-- フッターー -->
+<!-- block=footer (d) -->
+<style>
+.pankuzu_no_link {
+color: inherit;
+pointer-events: none;
+}
+</style>
+<footer class="PcFooter">
+<!-- パンくず -->
+<div class="BreadCrumbsArea">
+<ul>
+<li><a href="https://keirin.netkeiba.com/?rf=keirinlist" id="pankuzu_1" class="">netkeirin</a></li>
+<li><a href="" id="pankuzu_2" class="pankuzu_no_link">競輪レース情報</a></li>
+</ul>
+</div><!-- /.BreadCrumbsArea -->
+<div class="NkFooterArea">
+<div class="BtnPagetop">
+<a href="javascript:void(0)" title="ページトップへ"></a>
+</div><!-- /.BtnPagetop -->
+<script type="text/javascript">
+$(function() {
+$('.BtnPagetop a').click(function () {
+$('body,html').animate({
+scrollTop: 0
+}, 400);
+return false;
+});
+});
+</script>
+<dl class="FootSiteTitle fc">
+<dt>
+<a href="https://keirin.netkeiba.com/?rf=footer" title="netkeirin">
+<img alt="netkeirin 欲しい競輪情報はここにある" src="https://keirin.netkeiba.com/common/img/netkeirinlogo_illustver.svg" class="NetkeirinLogo01">
+</a>
+</dt>
+</dl>
+<div class="FootWrap">
+<dl class="NkFoot01 NkFootCateLink">
+<dt>カテゴリ</dt>
+<dd class="fc">
+<ul>
+<li> <a href="https://keirin.netkeiba.com/?rf=footer">トップ</a> </li>
+<li> <a href="https://keirin.netkeiba.com/race/?rf=footer">レース</a> </li>
+<li> <a href="https://keirin.netkeiba.com/yoso/?rf=footer">予想</a> </li>
+<li> <a href="https://keirin.netkeiba.com/news/?rf=footer">ニュース・コラム</a> </li>
+<li> <a href="https://keirin.netkeiba.com/midnight/?rf=footer">ミッドナイト</a> </li>
+<li> <a href="https://keirin.netkeiba.com/girls/?rf=footer">ガールズ</a> </li>
+<li> <a href="https://keirin.netkeiba.com/db/?rf=footer">データベース</a> </li>
+<li> <a href="https://keirin.netkeiba.com/community/?rf=footer">競輪広場</a> </li>
+<li> <a href="https://keirin.netkeiba.com/favorites/?rf=footer">お気に入り</a> </li>
+<li> <a href="https://keirin.netkeiba.com/keirinmatome/?rf=footer">まとめ</a> </li>
+<li> <a href="https://keirin.netkeiba.com/regist/?rf=footer">アカウント</a> </li>
+</ul>
+</dd>
+</dl>
+<dl class="NkFoot01">
+<dt>ヘルプ＆ガイド</dt>
+<dd>
+<ul>
+<li> <a href="https://keirin.netkeiba.com/info/?rf=footer">お知らせ</a> </li>
+<li> <a href="https://support.keirin.netkeiba.com/hc/ja/?rf=footer">よくある質問・お問い合わせ</a> </li>
+<li> <a href="https://keirin.netkeiba.com/info/info_detail/?id=53">のめり込む不安のある方へ</a> </li>
+</ul>
+</dd>
+</dl>
+<dl class="NkFoot01">
+<dt>netkeirinについて</dt>
+<dd>
+<ul>
+<li> <a href="//www.netdreamers.co.jp/career/?rf=footer">採用情報</a> </li>
+<!-- <li> <a href="//www.netkeiba.com/info/ad/?rf=footer">広告掲載について</a> </li> -->
+<li> <a href="https://keirin.netkeiba.com/info/kiyaku/?rf=footer">利用規約</a> </li>
+<li> <a href="https://keirin.netkeiba.com/info/betting_kiyaku/?rf=footer">netkeirin車券投票サービス利用規約</a> </li>
+<li> <a href="https://keirin.netkeiba.com/info/money_kiyaku/?rf=footer">マネー利用規約</a> </li>
+<li> <a href="//www.netdreamers.co.jp/company/about/privacy.html?rf=footer">プライバシーポリシー</a> </li>
+<li> <a href="https://keirin.netkeiba.com/info/guide/?rf=footer">投稿ガイドライン</a> </li>
+<li> <a href="https://keirin.netkeiba.com/info/tokusho/?rf=footer">特定商取引法に基づく表記</a> </li>
+<li> <a href="https://keirin.netkeiba.com/info/license/?rf=footer">ライセンス</a> </li>
+<li> <a href="//www.netdreamers.co.jp/?rf=footer">運営会社</a> </li>
+</ul>
+</dd>
+</dl>
+<dl class="NkFoot01">
+<dt>スマホでnetkeirin</dt>
+<dd class="SpNkInfoImg">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/img_nr_searchimg01.png" width="201" alt="検索" class="SearchImg01">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/img_nr_qr01.png" width="60" alt="バーコード" class="QrImg01">
+</dd>
+<dd>
+<span class="DeviceChange"><a href="https://keirin.netkeiba.com/top/change.html?device=sp">※スマートフォン版</a></span>
+</dd>
+<dd class="Nk_Sns">
+<ul class="fc">
+<li>
+<a href="//twitter.com/netkeirin" title="公式 X" class="Tw">
+<svg class="Sns_listItemSVG" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1200 1227"><title>X</title><g id="Logo_FIXED" data-name="Logo — FIXED"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" fill="#fff"></path></g></svg>
+</a>
+</li>
+<li>
+<a href="//www.youtube.com/channel/UC0cdCUwpXqJO5nW15fOillg/" title="公式 Youtube" class="Yt">
+<svg class="Sns_listItemSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 32"><title>Youtube</title><path fill="#fff" style="fill: var(--color1, #fff)" d="M3.368 0h38.737c1.86 0 3.368 1.508 3.368 3.368v25.263c0 1.86-1.508 3.368-3.368 3.368h-38.737c-1.86 0-3.368-1.508-3.368-3.368v-25.263c0-1.86 1.508-3.368 3.368-3.368z"></path><path fill="#cd201f" style="fill: var(--color2, #cd201f)" d="M17.684 10.105v12.968l12.687-6.511z"></path></svg>
+</a>
+</li>
+</ul>
+</dd>
+</dl>
+</div><!-- /.FootWrap -->
+<div class="RaceTrackList">
+<dl class="RaceTrackList_wrap">
+<dt><a href="https://keirin.netkeiba.com/race/racecourse_list/">全国の競輪場一覧</a></dt>
+<dd>
+<dl class="RaceTrackList_inner">
+<dt>北日本</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=11">函館競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=12">青森競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=13">いわき平競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>関東</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=21">弥彦競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=22">前橋競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=23">取手競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=24">宇都宮競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=25">大宮競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=26">西武園競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=27">京王閣競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=28">立川競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>南関東</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=31">松戸競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=32">千葉競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=34">川崎競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=35">平塚競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=36">小田原競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=37">伊東競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=38">静岡競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>中部</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=42">名古屋競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=43">岐阜競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=44">大垣競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=45">豊橋競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=46">富山競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=47">松阪競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=48">四日市競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>近畿</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=51">福井競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=53">奈良競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=54">向日町競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=55">和歌山競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=56">岸和田競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>中国</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=61">玉野競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=62">広島競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=63">防府競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>四国</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=71">高松競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=73">小松島競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=74">高知競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=75">松山競輪場</a></dd>
+</dl>
+<dl class="RaceTrackList_inner">
+<dt>九州</dt>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=81">小倉競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=83">久留米競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=84">武雄競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=85">佐世保競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=86">別府競輪場</a></dd>
+<dd><a href="https://keirin.netkeiba.com/race/course/?jyo_cd=87">熊本競輪場</a></dd>
+</dl>
+</dd>
+</dl>
+</div><!-- /.RaceTrackList -->
+</div><!-- /.NkFooterArea -->
+<div class="GlobalFooterArea">
+<div class="FootWrap">
+<dl class="NkFoot02">
+<dt class="GfootIcon01 IconGame01">netkeiba 公式競馬ゲーム</dt>
+<dd>
+<ul>
+<li> <a href="//www.netkeiba.com/game/umasta.html?rf=footer" target="_blank" title="うまいるスタジアム">みんなの愛馬とバトル！ <strong>うまいるスタジアム</strong></a> </li>
+</ul>
+</dd>
+<dt class="GfootIcon01 IconSisterSite01">netkeirin 姉妹サイト</dt>
+<dd>
+<ul>
+<li>
+<a href="//www.netkeiba.com/?rf=footer" target="_blank">日本最大の競馬情報サービス <strong>netkeiba</strong></a>
+</li>
+</ul>
+</dd>
+</dl>
+<dl class="NkFoot02">
+<dt class="GfootIcon01 IconMedia01">関連メディア</dt>
+<dd>
+<ul>
+<li> <a href="//sp.baseball.findfriends.jp/?rf=footer" target="_blank" title="週刊ベースボールONLINE">徹底取材！野球情報は <strong>週刊ベースボールONLINE</strong></a> </li>
+<li> <a href="//recipe.sp.findfriends.jp/?rf=footer" target="_blank" title="KATSUYOレシピ">小林カツ代直伝！ <strong>KATSUYOレシピ</strong></a> </li>
+</ul>
+</dd>
+</dl>
+<dl class="NkFoot02">
+<dt class="GfootIcon01 IconSoftware01">ソフトウェア・プロダクト</dt>
+<dd>
+<ul>
+<li> <a href="//smart.lets-ktai.jp/?rf=footer" target="_blank" title="SMART会員証">もっともセキュアな店舗売上向上アプリ <strong>SMART会員証</strong></a> </li>
+<li> <a href="//lets-ktai.jp/?rf=footer" target="_blank" title="Let'sケータイ！">スマホサイト制作ASP <strong>Let'sケータイ！</strong></a> </li>
+<li> <a href="//webspiral.jp/?rf=footer" target="_blank" title="WEB SPIRAL">サイト運営を劇的に効率化するCMS <strong>WEB SPIRAL</strong></a> </li>
+</ul>
+</dd>
+</dl>
+</div><!-- /.FootWrap -->
+<p class="CopyRight"> <small>© NET DREAMERS, Co., Ltd. All Rights Reserved.</small> </p>
+</div><!-- /.GlobalFooterArea -->
+</footer>
+<script type="text/javascript" id="mierucajs">
+var random = Math.floor( Math.random() * 1 );  //サンプリングレート設定
+if(random==0)
+{
+window.__fid = window.__fid || [];__fid.push([207880792]);
+(function() {
+function mieruca(){if(typeof window.__fjsld != "undefined") return; window.__fjsld = 1; var fjs = document.createElement('script'); fjs.type = 'text/javascript'; fjs.async = true; fjs.id = "fjssync"; var timestamp = new Date;fjs.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://hm.mieru-ca.com/service/js/mieruca-hm.js?v='+ timestamp.getTime(); var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(fjs, x); };
+setTimeout(mieruca, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent("onload", mieruca) : window.addEventListener("load", mieruca, false)) : mieruca();
+})();
+}
+</script>
+<div style="position: fixed; height: auto; bottom: 0; width: 100%; text-align: center; left: 0; z-index: 1500; padding-top: 3px;">
+<span>
+<div id='div-gpt-ad-23343089768-0' style="min-height: 60px !important;">
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+window.googletag = window.googletag || {cmd: []};
+googletag.cmd.push(function() {
+googletag.defineSlot("/21246805/pc_netkeirin_all_overlay-banner_free", [[468,60]], "div-gpt-ad-23343089768-0").setCollapseEmptyDiv(true).addService(googletag.pubads());
+googletag.pubads().collapseEmptyDivs();
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+googletag.display('div-gpt-ad-23343089768-0');
+googletag.pubads().addEventListener('slotRenderEnded', function(evt) {
+var slot = evt.slot;
+if (slot.getSlotElementId() === 'div-gpt-ad-23343089768-0'&& evt.size) {
+var height = evt.size[1];
+document.body.style.paddingBottom = height + 'px';
+}
+});
+});
+</script>
+</div>
+</span>
+<div style="height: 0px; width: 100%; position: absolute; bottom: 0; overflow: hidden;"></div>
+</div>
+<script>
+var domain = '';
+var pankuzu_cnt = $('[id^="pankuzu_"]').length - 1;
+$('[id^="pankuzu_"]').each(function(index) {
+var link_id = $(this).prop('id');
+// パンくず１は処理なし
+if(link_id == 'pankuzu_1') return true;
+// aタグからURL取得
+var link = document.getElementById(link_id);
+var url = link.href.replace(domain,'');
+// リンク文字列がtempの場合、titleタグから取得して書き換え
+if($(this).text() == 'temp'){
+// 書き換え対象のパスを取得
+var pattern = '/race/entry|/race/special/race_info|/race/course|/race/odds|/race/yoso|/race/player_comment|/race/result|/race/special/grade_race|/race/match_list|/race/data|/race/bbs|/race/entry_playerlist|/race/course_guide|/yoso/profile|/yoso/list|/news/column_detail.html|/news/news_detail.html|/db/result|/db/race_program|/db/player_result|/db/profile|/info/info_detail|/pist6/entry|/pist6/odds|/pist6/result|/pist6/bbs|/pist6/data|/campaign/detail|perfectanavi/news_detail|perfectanavi/column_detail|perfectanavi/column_backnumber';
+if(url.match(pattern)){
+var pankuzu_name = '-';
+if(url.match('/race/course')){
+var title = document.title.split("-");
+if(title[0].length > 0){
+pankuzu_name = title[0].replace('|','');
+}
+}else if(url.match('/campaign/detail')){
+var title = document.title.split("-");
+if(title[0].length > 0) {
+pankuzu_name = title[0].replace('|', '');
+}
+}else{
+var title = document.title.split("|");
+if(title[0].length > 0) {
+pankuzu_name = title[0];
+}
+}
+$('#'+link_id).text(pankuzu_name);
+}
+}
+if( index!= pankuzu_cnt){
+var params = (new URL(document.location)).searchParams;
+if (url.match('/race/entry|/pist6/entry')) {
+var newUrl = link + '?race_id=' + params.get('race_id') + '&rf=keirinlist';
+link.setAttribute('href', newUrl);
+}
+// 中間パンくず 名称書き換え
+if (url.match('/yoso/profile')) {
+var hide_yosoka_id = $('#hide_yosoka_id').val();
+var yosoka_name = $('#hide_yosoka_name').val();
+var yosoka_catchcopy2 = $('#hide_catchcopy2').val();
+$('#' + link_id).text('【' + yosoka_name + '】 ' + yosoka_catchcopy2);
+var newUrl = link + '?id=' + hide_yosoka_id + '&rf=keirinlist';
+link.setAttribute('href', newUrl);
+}
+// 中間パンくず スペシャルレース対応
+if (url.match('/race/special/temp')) {
+// URLが2パターンあるため動的に書き換え（レース特集（平場）　/　グレードレース特集）
+var newUrl = $('.RaceList_NameBox .Race_Name a').attr('href');
+link.setAttribute('href', newUrl+'&rf=keirinlist');
+// 名称はtitleタグとGETパラメータ「kaisai_group_id」から開催年を取得して書き換え
+var title = document.title.split(" ");
+var kaisai_group = location.search.replace('?kaisai_group_id=', '');
+var kaisai_year = kaisai_group.substr(0, 4);
+$('#' + link_id).text(title[0] + '特集' + kaisai_year);
+}
+}
+});
+</script>
+<!-- block=bet_btn (d) -->
+<div class="BetFixedBtn">
+<!-- モック追加部分 -->
+<span id="speech_bubble" style="display: none;">車券を購入<br>できます</span>
+<!-- モック追加部分 -->
+<a href="https://keirin.netkeiba.com/bet/editor.html?rf=bet_btn">
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="26" viewBox="0 0 21 26">
+<g transform="translate(-269.768 -631.252)">
+<line x1="1.548" transform="translate(275.637 631.752)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<path d="M3433.023,1748.554h-2.584a.765.765,0,0,0-.764.766v23.468a.765.765,0,0,0,.764.766h18.473a.765.765,0,0,0,.763-.766V1749.32a.765.765,0,0,0-.763-.766h-10.265" transform="translate(-3159.408 -1116.802)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<rect width="3.02" height="3.02" transform="translate(273.965 642.756)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<line x2="7.758" transform="translate(279.275 642.756)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<line x2="3.879" transform="translate(279.275 644.596)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<rect width="3.02" height="3.02" transform="translate(273.965 648.935)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<line x2="7.758" transform="translate(279.275 648.935)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<line x2="4.769" transform="translate(279.275 650.776)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<rect width="3.02" height="3.02" transform="translate(273.965 636.409)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<line x2="7.758" transform="translate(279.275 636.409)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+<line x2="5.923" transform="translate(279.275 638.25)" fill="none" stroke="#fff" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1"/>
+</g>
+</svg>
+<span>投票</span>
+</a>
+</div><!-- /.BetFixedBtn -->
+<script type="text/javascript">
+$(document).ready(function () {
+$('.BetFixedBtn').css('bottom','80px')
+var sb = '1';
+if (sb > 0) {
+$('#speech_bubble').css('display','block');
+}else{
+$('#speech_bubble').css('display','none');
+}
+});
+</script>
+<!-- block=bonus_banner (d) -->
+<div class="inductionBannerWrap">
+<p class="close jsCloseBannerWrap"></p>
+<a href="https://keirin.netkeiba.com/regist/first_gift.html?rf=float_button" class="banner">
+<img src="https://cdnv2.netkeiba.com/keirin/common/img/check_id_campaign_text.png?20250610" alt="本人確認はこちら1,000円分マネーもらえる！">
+</a>
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+var cookie_name = 'hidden_bonus_banner';
+function setCookie(name, value, days) {
+var date = new Date();
+date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+var expires = "expires=" + date.toUTCString();
+document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+$('.jsCloseBannerWrap').on('click', function () {
+$(this).closest('.inductionBannerWrap').fadeOut();
+setCookie(cookie_name, '1', 1); // クッキーを1日間有効で発行
+});
+$('.inductionBannerWrap').on('click', function () {
+setCookie(cookie_name, '1', 1); // クッキーを1日間有効で発行
+});
+});
+</script>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WLK55MR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+</body>
+</html>

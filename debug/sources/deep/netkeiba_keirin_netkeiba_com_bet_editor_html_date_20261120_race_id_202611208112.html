@@ -1,0 +1,391 @@
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-language" content="ja">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit-cover, user-scalable=no">
+<title>ガールズ決勝の買い目入力</title>
+<!-- jQuery -->
+<!--script src="https://cdnv2.netkeiba.com/keirin/common/js/jquery-1.7.1.min.js"></script-->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/jquery.colorbox.js" type="text/javascript"></script>
+<link href="https://cdnv2.netkeiba.com/keirin/common/css/colorbox.css" type="text/css" rel="stylesheet" media="screen">
+<!-- css -->
+<!--不具合が出るためinclideはこの位置でお願いします-->
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/common_nk01.css?2019041201" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/race/race_nk01.css?20260324" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/race/race_bet_nk02.css?20260324" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/stg.mediaqueries.css?170714" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/bet/common/css/bet_modal.css?180322a" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/halfmodal_nk01.css?20220421" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/sweetalert2.min.css?20250522" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/colorbox.css?20210506" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/charge/A-3-2-1.css?20240918_6" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/charge/A-3-2-2.css?20240918_6" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://cdnv2.netkeiba.com/keirin/common/css/charge/A-3-2-3.css?20240918_6" type="text/css" media="screen" />
+<!-- cssここまで -->
+<!-- Bootstrap -->
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/bootstrap.min.js"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/route.min.js"></script>
+<!-- riot.js -->
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/riot.min.js"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/bet/tags/nk_bet.min.js?20260406"></script>
+<script>
+window.console = {};
+window.console.log = function(){};
+window.console.debug = function(){};
+window.console.info = function(){};
+window.console.warn = function(){};
+window.console.error = function(){};
+window.console.time = function(){};
+window.console.timeEnd = function(){};
+</script>
+
+<!-- storage -->
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/zlib.min.js?180322a"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/bbs/common/js/store.legacy.min.js?180322a"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/promise.min.js?180614a"></script>
+<!--api-->
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/ndcommon.js?180322a"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/api/race/common/js/race_api_indexdb.min.js?20260605"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/nd_isam.js?180322a"></script>
+<!--script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/ipat.min.js?180203a"></script-->
+<script src="https://cdnv2.netkeiba.com/keirin/bet/common/js/data_model.min.js?20250812"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/api/social_cart/common/js/cart_api.js"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/sweetalert2.min.js"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/tipstar.js?20210420" type="text/javascript"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/jquery.colorbox.js?20210506"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/common/js/change_session.js"></script>
+<script src="https://cdnv2.netkeiba.com/keirin/api/campaign/common/js/campaign_common.js"></script>
+<!-- block=meta_tag_common (d) -->
+<script type="text/javascript">
+window.console = {};
+window.console.warn = function(i){return;};
+window.console.log = function(i){return;};
+window.console.error = function(i){return;};
+</script>
+<!-- BEGIN IS_LIVE_SP -->
+<script>
+window.dataLayer = window.dataLayer || [];
+
+
+
+
+</script>
+<!-- 競輪サイト共通 -->
+<link rel="apple-touch-icon" href="https://cdnv2.netkeiba.com/keirin/common/img/apple-touch-icon.png" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="alternate" type="application/rss+xml" href="https://keirin.netkeiba.com/news/news_rss.html" />
+<link rel="alternate" type="application/rss+xml" href="https://keirin.netkeiba.com/news/column_rss.html" />
+<meta property="twitter:site" content="@netkeirin">
+<!-- Google Tag Manager -->
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+'itemInfo': '','memberRank': 'NotLogin','memberId': ''
+});
+</script>
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WLK55MR');</script>
+<!-- End Google Tag Manager -->
+</head>
+<!-- <body id="Ipat" class="PatternBG">-->
+<body class="Netkeirin_Race RaceDetail" id="RaceBetEdit">
+<div class="Wrap fc">
+<!-- ヘッダー -->
+<div id="tag-bet_header" style="display:block">
+<bet_header></bet_header>
+</div>
+<div class="Contents">
+<div class="Main_Column">
+<div id="tag-narabi_yoso" style="display:block">
+<narabi_yoso></narabi_yoso>
+</div>
+<div id="tag-mark_sheet" style="display:none">
+<mark_sheet></mark_sheet>
+</div>
+<div id="tag-bet_list" style="display:none">
+<bet_list></bet_list>
+</div>
+</div><!-- /.Contents -->
+</div><!-- /.Wrap -->
+<div id="tag-footer_fixed" style="display:block">
+<footer_fixed></footer_fixed>
+</div>
+<script>
+window.addEventListener('popstate', function(e) {
+//戻るボタンはリロードさせる
+window.location.reload();
+});
+</script>
+<script>
+// $Id: ipat_sp.html 402 2017-09-08 06:11:48Z ysimizu $
+"use strict"
+var _action_api_url_change_session = 'https://keirin.netkeiba.com/api/social_cart/api_post_change_session.html';
+if(typeof NetkeirinAppli == 'object'){
+change_session();
+}
+var debug = false;
+var tags = {
+// tag_name: mount status
+mark_sheet: null,
+bet_list: null,
+narabi_yoso: null,
+bet_header: null,
+footer_fixed: null,
+};
+var always_visible_tags = {
+// tag_name: mount status
+narabi_yoso: true,
+bet_header: true,
+footer_fixed: true,
+};
+var tag_count = 0;
+var default_tag = 'mark_sheet';
+var shared_obs = riot.observable(this);
+var user_id = ''
+var env = 'live';
+//if (! user_id) {
+//    alert('ログインを行ってください');
+//    window.location.href = 'index.html';
+//}
+// タグに渡す構造体
+var tag_opt = {
+tag_name: null,
+obs: shared_obs,
+api_url: 'https://keirin.netkeiba.com/api/race/',
+cart_url: 'https://keirin.netkeiba.com/api/social_cart/',
+user_id: user_id,
+keirin_url: 'https://keirin.netkeiba.com/',
+betapi_url: 'https://keirin-vote.netkeiba.com',
+tipstar_url: 'https://tipstar.com',
+regist_netkeiba_url: 'https://regist.sp.netkeiba.com',
+cdn_keirin_url: 'https://cdnv2.netkeiba.com/keirin',
+cookie_domain: '.netkeiba.com',
+sns_user_id: '',
+odds_update: true,
+jyo_list: '{"11":"\u51fd\u9928","12":"\u9752\u68ee","13":"\u3044\u308f\u304d\u5e73","21":"\u5f25\u5f66","22":"\u524d\u6a4b","23":"\u53d6\u624b","24":"\u5b87\u90fd\u5bae","25":"\u5927\u5bae","26":"\u897f\u6b66\u5712","27":"\u4eac\u738b\u95a3","28":"\u7acb\u5ddd","31":"\u677e\u6238","32":"\u5343\u8449","34":"\u5ddd\u5d0e","35":"\u5e73\u585a","36":"\u5c0f\u7530\u539f","37":"\u4f0a\u6771\u6e29\u6cc9","38":"\u9759\u5ca1","41":"\u4e00\u5bae","42":"\u540d\u53e4\u5c4b","43":"\u5c90\u961c","44":"\u5927\u57a3","45":"\u8c4a\u6a4b","46":"\u5bcc\u5c71","47":"\u677e\u962a","48":"\u56db\u65e5\u5e02","51":"\u798f\u4e95","53":"\u5948\u826f","54":"\u5411\u65e5\u753a","55":"\u548c\u6b4c\u5c71","56":"\u5cb8\u548c\u7530","61":"\u7389\u91ce","62":"\u5e83\u5cf6","63":"\u9632\u5e9c","71":"\u9ad8\u677e","73":"\u5c0f\u677e\u5cf6","74":"\u9ad8\u77e5","75":"\u677e\u5c71","81":"\u5c0f\u5009","83":"\u4e45\u7559\u7c73","84":"\u6b66\u96c4","85":"\u4f50\u4e16\u4fdd","86":"\u5225\u5e9c","87":"\u718a\u672c","91":"TIPSTARDOME CHIBA"}',
+kaisai_list: '[{"jyo_cd":"81","sp_race_name":"\u671d\u65e5\u65b0\u805e\u793e\u676f\u7af6\u8f2a\u796d","is_morning":0,"is_night":1,"is_midnight":0,"is_girls":1,"hi":3,"grade_icon":"2","grade_name":"GI","is_kaisai_end":1},{"jyo_cd":"22","sp_race_name":"\u30cb\u30c3\u30ab\u30f3\u30fb\u30b3\u30e0\u676f","is_morning":0,"is_night":0,"is_midnight":1,"is_girls":0,"hi":1,"grade_icon":"5","grade_name":"FII","is_kaisai_end":1},{"jyo_cd":"42","sp_race_name":"\u524d\u691c\u65e5\u30b3\u30e1\u306a\u3089\u30a6\u30a3\u30f3\u30c1\u30b1\u30c3\u30c8\u676f","is_morning":0,"is_night":0,"is_midnight":1,"is_girls":0,"hi":1,"grade_icon":"5","grade_name":"FII","is_kaisai_end":1},{"jyo_cd":"26","sp_race_name":"\uff2b\uff25\uff29\uff32\uff29\uff2e\u30d5\u30a7\u30b9\u30c6\u30a3\u30d0\u30eb","is_morning":0,"is_night":0,"is_midnight":0,"is_girls":0,"hi":3,"grade_icon":"5","grade_name":"FI","is_kaisai_end":0},{"jyo_cd":"44","sp_race_name":"\uff2b\uff25\uff29\uff32\uff29\uff2e\u30d5\u30a7\u30b9\u30c6\u30a3\u30d0\u30eb","is_morning":0,"is_night":0,"is_midnight":0,"is_girls":0,"hi":3,"grade_icon":"5","grade_name":"FI","is_kaisai_end":0},{"jyo_cd":"51","sp_race_name":"\u30aa\u30c3\u30ba\u30d1\u30fc\u30af\u676f\u3000\u798f\u4e95\u30a2\u30ea\u30fc\u30ca\u8cde","is_morning":1,"is_night":0,"is_midnight":0,"is_girls":1,"hi":2,"grade_icon":"5","grade_name":"FII","is_kaisai_end":0}]',
+is_appli: '',
+device: '1',
+tipstar_api_url : 'https://api.tipstar.com',
+session_name : 'nkrace',
+mixim_alignment : '0',
+vote_mode : 'netkeirin',
+money_api_url : 'https://keirin.netkeiba.com',
+campaign_badge_api_url : 'https://keirin.netkeiba.com/api/campaign/api_get_campaign_badge_list.html',
+};
+var query = {};
+if(tag_opt['is_appli']){
+delete tags['bet_header'];
+delete always_visible_tags['bet_header'];
+}
+var i = 0;
+for (var k in tags) i++;
+tag_count = i;
+route.base('/bet/editor.html');
+route.start();
+// route event
+route(function() {
+$("[id^=action_bet]").prop("disabled", true);
+query = route.query();
+if (debug) console.log('ipat_sp.html query: %O', query);
+if (undefined !== query['m']) {
+var cur_tag = query['m'];
+var els = document.querySelectorAll('[id^=tag-]');
+for (var i = 0; i < els.length; i++) {
+var show_tag_name = els[i].id.replace('tag-', '');
+if(always_visible_tags[show_tag_name]){
+console.log('always_visible_tags: %s', show_tag_name);
+//常に表示するタグは非表示にしない
+continue;
+}
+els[i].style.display = 'none';
+console.log('display_none_tag : %O', els[i].id);
+}
+}
+//shared_obs.trigger('render_bet_header', query);
+//shared_obs.trigger('render_narabi_yoso', query);
+if (tags[cur_tag]) {
+var elem = document.getElementById('tag-' + cur_tag);
+if (elem) {
+elem.style.display = 'block';
+}
+//shared_obs.on('narabi_yoso_comp',function(e){
+shared_obs.trigger('render_narabi_yoso' , query);
+//shared_obs.trigger('render_' + cur_tag, query);
+//});
+console.log('ipat_sp.html trigger --> %s', 'render_' + cur_tag);
+}else{
+//shared_obs.on('narabi_yoso_comp',function(e){
+shared_obs.trigger('render_narabi_yoso' , query);
+//				shared_obs.trigger('render_' + default_tag, query);
+var elem = document.getElementById('tag-' + default_tag);
+if (elem) {
+elem.style.display = 'block';
+}
+//});
+}
+});
+shared_obs.on('tag_mounted', function(e) {
+// 子タグがマウントを完了した
+if (debug) console.log('ipat_sp.html tag_mounted e: %O', e);
+query = route.query();
+tags[e['tag']] = true;
+var mount_count = 0;
+for (var name in tags) {
+if (true == tags[name]) {
+mount_count++;
+}
+}
+if (debug) console.log('ipat_sp.html mount_count: %s', mount_count);
+if (mount_count >= tag_count) {
+var cur_tag = null;
+if (undefined === query['m']) {
+// 初期表示(デフォルト)
+cur_tag = default_tag;
+} else {
+// 初期表示(URLで指定したタブ)
+cur_tag = query['m'];
+}
+query = route.query();
+shared_obs.trigger('render_bet_header', query);
+shared_obs.trigger('render_narabi_yoso', query);
+//引数がない時のnarabi_yoso → ipat_sp にパラメータ共有
+if(query['race_id'] === undefined && query['date'] === undefined){
+//query = e;
+shared_obs.on('narabi_yoso_comp',function(e){
+//引数がない時のnarabi_yoso → ipat_sp にパラメータ共有
+if(Object.keys(query.length <= 0)){
+// narabi_yosoでデフォルトのレースIDを取得してるため、パラメータを引き継ぐ
+query = e;
+}
+if (undefined === query['m']) {
+// 初期表示(デフォルト)
+cur_tag = default_tag;
+} else {
+// 初期表示(URLで指定したタブ)
+cur_tag = query['m'];
+}
+show_rendering(cur_tag, query);
+//shared_obs.trigger('render_' + cur_tag, query);
+//var elem = document.getElementById('tag-' + cur_tag);
+//if (elem) {
+//    elem.style.display = 'block';
+//}
+});
+}else{
+shared_obs.on('narabi_yoso_comp',function(e){
+if (undefined === query['m']) {
+// 初期表示(デフォルト)
+cur_tag = default_tag;
+} else {
+// 初期表示(URLで指定したタブ)
+cur_tag = query['m'];
+}
+show_rendering(cur_tag, query);
+//shared_obs.trigger('render_' + cur_tag, query);
+//    var elem = document.getElementById('tag-' + cur_tag);
+//    if (elem) {
+//        elem.style.display = 'block';
+//    }
+});
+}
+}
+});
+// レンダリング(並び予想表示後配下のタグを表示)
+function show_rendering(show_tag, query){
+shared_obs.trigger('render_footer_fixed', query);
+shared_obs.trigger('render_' + show_tag, query);
+var elem = document.getElementById('tag-' + show_tag);
+if (elem) {
+elem.style.display = 'block';
+}
+};
+//並び予想の表示/非表示トリガー (ipat_sp_v4 → narabi_yoso)
+shared_obs.on('narabi_show_event', function(e) {
+shared_obs.trigger('narabi_show', e);
+});
+//投票モードの切り替えトリガー (narabi_yoso → ipat_sp_v4/bet_header)
+shared_obs.on('change_vote_mode_event', function(e) {
+shared_obs.trigger('change_vote_mode', e);
+});
+shared_obs.on('race_api_get_event', function(e) {
+shared_obs.trigger('tipstar_send_flg', e);
+});
+shared_obs.on('update_points_event', function(e) {
+shared_obs.trigger('update_points', e);
+});
+//指定のタグを再描画する
+shared_obs.on('update_tag', function(e, query) {
+if(e['update_tag_name'] !== undefined && e['update_tag_name'] !== null){
+shared_obs.trigger('render_' + e['update_tag_name'], query);
+}
+});
+if(env == 'live'){
+for(var name in tags){
+var opt = tag_opt;
+opt['tag_name'] = name;
+riot.mount(name, opt);
+}
+}else{
+riot.compile(function() {
+if(debug) console.log('index.html compiled');
+for(var name in tags){
+var opt = tag_opt;
+opt['tag_name'] = name;
+riot.mount(name, opt);
+}
+});
+}
+$(function() {
+$('#act-clear').on('click', function() {
+if (confirm("\nブラウザのストレージを削除してよろしいですか？\n")) {
+store.clearAll();
+window.location.href = '';
+}
+});
+});
+function Scroll_Top() {
+$('body,html').animate({scrollTop:0}, 400, 'swing');
+return false;
+}
+// ストレージ削除対応
+var now = new Date().getTime();
+Object.keys(localStorage).forEach(function (key) {
+//買い目のキー以外が処理しない
+if(!key.match(/^ndi::bet_/)){
+return;
+}
+var val = localStorage.getItem(key);
+try {
+const ls_obj = JSON.parse(val);
+if(ls_obj.uptime){
+//時間の判定して条件のあったデータを消す
+let expire_day = 7; // 7日間は保持しておく
+let data_expire = expire_day * 24 * 60 * 60;
+let uptime = new Date(ls_obj.uptime).getTime();
+let expire = uptime + data_expire * 1000;
+if(now >= expire){
+localStorage.removeItem(key);
+}
+}
+} catch (error) {
+console.log(error);
+}
+});
+// ストレージ削除対応ここまで
+</script>
+<!-- block=ndtracker (d) -->
+<script src="https://cdnv2.netkeiba.com/keirin/ndtracker/common/js/ndtracker.js?220224a"></script>
+<script>ndTracker('race');</script>
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WLK55MR"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager -->
+</body>
+</html>
