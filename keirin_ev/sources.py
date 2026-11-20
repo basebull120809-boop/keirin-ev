@@ -20,14 +20,10 @@ UA = "Mozilla/5.0 (personal research; keirin_ev)"
 SITES = [
     ("KEIRIN.JP（公式）", ["https://keirin.jp/", "https://keirin.jp/pc/top"]),
     ("オッズパーク", ["https://www.oddspark.com/keirin/", "https://www.oddspark.com/keirin/RaceList.do"]),
-    ("チャリロト", ["https://www.chariloto.com/", "https://www.chariloto.com/keirin"]),
-    ("Gamboo", ["https://www.gamboo.jp/", "https://www.gamboo.jp/keirin/"]),
-    ("SPAIA競輪", ["https://spaia-keirin.jp/", "https://spaia.jp/keirin/"]),
-    ("JKA", ["https://www.jka-cycle.jp/"]),
+    ("チャリロト", ["https://www.chariloto.com/keirin/predictions/list", "https://www.chariloto.com/keirin/results"]),
+    ("Gamboo", ["https://gamboo.jp/", "https://gamboo.jp/keirin/"]),
     ("競輪ステーション", ["https://www.keirin-station.com/"]),
-    ("WINTICKET", ["https://www.winticket.jp/keirin"]),
-    ("Kドリームス（取得中）", ["https://keirin.kdreams.jp/"]),
-    ("ネット競輪（取得中）", ["https://keirin.netkeirin.com/"]),
+    ("ネット競輪", ["https://keirin.netkeiba.com/", "https://keirin.netkeiba.com/perfectanavi"]),
 ]
 
 WORDS = ["出走表", "競走得点", "ギヤ", "並び", "決まり手", "上がり", "予想", "オッズ",

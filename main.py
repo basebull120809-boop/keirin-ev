@@ -240,6 +240,9 @@ def main():
     elif a.cmd == "nkasof":                      # netkeirin データ分析が時点集計かの確認
         from keirin_ev.netkeirin import check_asof
         check_asof()
+    elif a.cmd == "compress":                    # 独自指標を圧縮して市場のずれを学習・検証 → reports/compress.json
+        from keirin_ev.compress import run as compress_run
+        compress_run(*(a.args[:1] or []))
     elif a.cmd == "wtprobe":                     # WINTICKET「データ分析」の作り調査（debug/winticket に保存）
         from keirin_ev.winticket import probe as wt_probe
         wt_probe()
