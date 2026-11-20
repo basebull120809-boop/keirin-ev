@@ -243,6 +243,9 @@ def main():
     elif a.cmd == "crbackfill":                  # チャリロトの記者予想を、未取得の日から新しい順に N 日分
         from keirin_ev.chariloto import backfill as cr_backfill
         cr_backfill(int(a.args[0]) if a.args else 10)
+    elif a.cmd == "compress-train":              # 圧縮モデルを全期間で学習 → models/compress_*.txt（当日運用 cmp2 用）
+        from keirin_ev.compress import train_all
+        train_all()
     elif a.cmd == "compress":                    # 独自指標を圧縮して市場のずれを学習・検証 → reports/compress.json
         from keirin_ev.compress import run as compress_run
         compress_run(*(a.args[:1] or []))

@@ -21,6 +21,18 @@ from .store import collected_dates, read
 
 SMOOTH = 8.0          # 率をならす強さ（出走数が少ない選手は全体平均に寄せる）
 
+# 全体平均など「データ全体から決める定数」。学習時に記録し、当日判定（一部の選手だけで計算）ではその値を使う
+_G = {}
+_FROZEN = [False]
+USE_CR = False
+
+
+def gm(name, v):
+    if _FROZEN[0] and name in _G:
+        return _G[name]
+    _G[name] = float(v)
+    return _G[name]
+
 
 # ---------- 読み込み ----------
 def load_all(log=print):
@@ -45,7 +57,7 @@ def load_all(log=print):
 
 
 def market(odds):
-    o = odds[odds.get("snapshot", "final") == "final"] if "snapshot" in odds else odds
+    o = odds[odds["snapshot"] == "final"] if "snapshot" in odds and (odds["snapshot"] == "final").any() else odds
     o = o[o.odds > 0].copy()
     o["inv"] = 1 / o.odds
     o["q"] = o.inv / o.groupby("race_id").inv.transform("sum")
@@ -66,10 +78,11 @@ def _prior(df, key, cols):
     return df[key + ["date"]].merge(g.reset_index(), on=key + ["date"], how="left")[cols].values
 
 
-def rider_stats(T, mk, log=print):
-    r = T["races"][["race_id", "date", "venue", "race_no", "grade", "bank_len", "wind", "weather"]]
-    e = T["entries"].merge(r, on="race_id", how="inner")
-    f = T["finish"][["race_id", "car", "rank", "kimarite", "sb", "agari"]]
+def prepare(races, entries, finish, mk):
+    """出走表・着順・市場の確率を1つの表にし、着順から作る素の列を足す（日付順）"""
+    r = races[["race_id", "date", "venue", "race_no", "grade", "bank_len", "wind", "weather"]]
+    e = entries.merge(r, on="race_id", how="inner")
+    f = finish[["race_id", "car", "rank", "kimarite", "sb", "agari"]]
     e = e.merge(f, on=["race_id", "car"], how="left").merge(mk, on=["race_id", "car"], how="left")
     e = e[e.m_win.notna()].copy()
     e["rid"] = e["name"].astype(str) + "_" + e["term"].astype(str)
@@ -95,21 +108,31 @@ def rider_stats(T, mk, log=print):
     e["pos"] = np.select([e.line_size.fillna(1) <= 1, e.line_pos == 1, e.line_pos == 2], ["single", "head", "2nd"], "3rd")
     e["bank"] = np.select([e.bank_len <= 335, e.bank_len >= 500], ["333", "500"], "400")
     e["wx"] = e["weather"].fillna("?").astype(str).str[:1]
+    return e
 
+
+def rider_stats(T, mk, log=print):
+    e = prepare(T["races"], T["entries"], T["finish"], mk)
+    X = stats(e)
+    log(f"選手の指標: {X.shape[1]}項目")
+    return e, X
+
+
+def stats(e):
     base = ["one", "fin", "y1", "y2", "y3", "gotS", "gotB", "k_nige", "k_makuri", "k_sashi", "k_mark",
             "ag", "ag_n", "over1", "over3", "rkv"]
     P = pd.DataFrame(_prior(e, ["rid"], base), columns=["c_" + c for c in base], index=e.index)
     n = P["c_one"]
-    g1, g3 = e.y1.mean(), e.y3.mean()
+    g1, g3 = gm("y1", e.y1.mean()), gm("y3", e.y3.mean())
     X = pd.DataFrame(index=e.index)
     X["n_prior"] = n
     X["r1"] = (P.c_y1 + SMOOTH * g1) / (n + SMOOTH)
-    X["r2"] = (P.c_y2 + SMOOTH * e.y2.mean()) / (n + SMOOTH)
+    X["r2"] = (P.c_y2 + SMOOTH * gm("y2", e.y2.mean())) / (n + SMOOTH)
     X["r3"] = (P.c_y3 + SMOOTH * g3) / (n + SMOOTH)
-    X["s_rate"] = (P.c_gotS + SMOOTH * e.gotS.mean()) / (n + SMOOTH)
-    X["b_rate"] = (P.c_gotB + SMOOTH * e.gotB.mean()) / (n + SMOOTH)
+    X["s_rate"] = (P.c_gotS + SMOOTH * gm("gotS", e.gotS.mean())) / (n + SMOOTH)
+    X["b_rate"] = (P.c_gotB + SMOOTH * gm("gotB", e.gotB.mean())) / (n + SMOOTH)
     for c in ("k_nige", "k_makuri", "k_sashi", "k_mark"):
-        X[c] = (P["c_" + c] + SMOOTH * e[c].mean()) / (n + SMOOTH)
+        X[c] = (P["c_" + c] + SMOOTH * gm(c, e[c].mean())) / (n + SMOOTH)
     X["agari"] = np.where(P.c_ag_n > 0, P.c_ag / P.c_ag_n.clip(lower=1), np.nan)
     X["over1"] = P.c_over1 / (n + SMOOTH)               # 過去に市場を上回った度合い（少数はゼロに寄せる）
     X["over3"] = P.c_over3 / (n + SMOOTH)
@@ -132,8 +155,7 @@ def rider_stats(T, mk, log=print):
         X[f"n_{cond}"] = Q.n
     X = X.join(head_to_head(e))
     X = X.join(line_dynamics(e, X))
-    log(f"選手の指標: {X.shape[1]}項目")
-    return e, X
+    return X
 
 
 def line_dynamics(e, X):
@@ -159,7 +181,7 @@ def line_dynamics(e, X):
     ish = (multi & (d.line_pos == 1)).astype(float)
     t = pd.DataFrame(dict(rid=d.rid, date=d.date, n=ish, won=ish * (d.best == 1), top3=ish * (d.rkv <= 3)))
     P = pd.DataFrame(_prior(t, ["rid"], ["n", "won", "top3"]), index=e.index, columns=["n", "won", "top3"])
-    gw = (t.won.sum() / max(t.n.sum(), 1)); g3 = (t.top3.sum() / max(t.n.sum(), 1))
+    gw = gm("head_won", t.won.sum() / max(t.n.sum(), 1)); g3 = gm("head_top3", t.top3.sum() / max(t.n.sum(), 1))
     D["head_n"] = P.n
     D["head_linewin"] = (P.won + 8 * gw) / (P.n + 8)
     D["head_top3"] = (P.top3 + 8 * g3) / (P.n + 8)
@@ -169,7 +191,7 @@ def line_dynamics(e, X):
     t = pd.DataFrame(dict(rid=d.rid, date=d.date, n=iss, beat=iss * (d.rkv < d.h_rk),
                           onetwo=iss * ((d.rkv <= 2) & (d.h_rk <= 2))))
     P = pd.DataFrame(_prior(t, ["rid"], ["n", "beat", "onetwo"]), index=e.index, columns=["n", "beat", "onetwo"])
-    gb = t.beat.sum() / max(t.n.sum(), 1); g12 = t.onetwo.sum() / max(t.n.sum(), 1)
+    gb = gm("sec_beat", t.beat.sum() / max(t.n.sum(), 1)); g12 = gm("sec_onetwo", t.onetwo.sum() / max(t.n.sum(), 1))
     D["sec_n"] = P.n
     D["sec_beat_head"] = (P.beat + 8 * gb) / (P.n + 8)
     D["sec_onetwo"] = (P.onetwo + 8 * g12) / (P.n + 8)
@@ -203,7 +225,7 @@ def line_dynamics(e, X):
     D["behind_beat"] = np.where(ish.values == 1, m.beat.values, np.nan)
 
     # レース内の状況
-    nige = (X["k_nige"] > X["k_nige"].median() * 1.5).astype(float)
+    nige = (X["k_nige"] > gm("k_nige_med", X["k_nige"].median()) * 1.5).astype(float)
     D["n_nige_race"] = nige.groupby(e.race_id).transform("sum")
     D["n_lines"] = d.groupby("race_id").lk.transform("nunique")
     ls = pd.Series(D.head_linewin.where(ish == 1), index=e.index).groupby(d.lk).transform("max")
@@ -256,8 +278,10 @@ def race_features(e, X):
     F["line_score_sum"] = F.score.groupby(key).transform("sum")
     F["rival_head_b_max"] = (pd.Series(np.where(e.line_pos == 1, X.b_rate, np.nan), index=e.index)
                              .groupby(g).transform("max") - head_b.fillna(0))
-    # チャリロトの記者予想（取れている日だけ。無い日は空欄のまま＝LightGBMが欠損として扱う）
+    # チャリロトの記者予想（2026/11 の検証で効果なし。使うときは USE_CR=True）
     try:
+        if not USE_CR:
+            raise RuntimeError("使わない")
         from .chariloto import read_all, MARK
         cr = read_all()
         if len(cr):
@@ -419,3 +443,89 @@ def run(valid_from="2026-08-01", out="reports/compress.json", log=print):
 
 if __name__ == "__main__":
     run(*(sys.argv[1:2] or []))
+
+
+# ---------- 本番用：全データで学習して保存 ----------
+MODEL_DIR = Path("models")
+
+
+def train_all(log=print):
+    """全期間で学習し、models/compress_win.txt・compress_top3.txt・compress_meta.json に保存"""
+    _FROZEN[0] = False
+    _G.clear()
+    T = load_all(log)
+    _, mk = market(T["odds_trifecta"])
+    e, X = rider_stats(T, mk, log)
+    F = race_features(e, X)
+    tr = e["rank"].notna().values
+    m1 = fit_residual(F, e.y1.values, e.m_win.values, tr)
+    m3 = fit_residual(F, e.y3.values, e.m_top3.values, tr)
+    MODEL_DIR.mkdir(exist_ok=True)
+    m1.save_model(str(MODEL_DIR / "compress_win.txt"))
+    m3.save_model(str(MODEL_DIR / "compress_top3.txt"))
+    meta = dict(G=_G, features=list(F.columns), trained_at=pd.Timestamp.now(tz="Asia/Tokyo").strftime("%Y-%m-%d %H:%M"),
+                n_rows=int(tr.sum()), last_date=str(e.date.max()))
+    (MODEL_DIR / "compress_meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
+    log(f"学習: {meta['n_rows']}行（〜{meta['last_date']}）→ models/compress_*.txt")
+    return meta
+
+
+# ---------- 当日判定：締切前のオッズで補正した2車複の確率 ----------
+class LivePredictor:
+    """起動時に過去の全データを1回だけ読み、レースごとにその出走選手の分だけ指標を計算して予想する"""
+
+    def __init__(self, log=print):
+        import lightgbm as lgb
+        meta = json.loads((MODEL_DIR / "compress_meta.json").read_text(encoding="utf-8"))
+        self.features = meta["features"]
+        _G.clear(); _G.update(meta["G"]); _FROZEN[0] = True
+        self.m1 = lgb.Booster(model_file=str(MODEL_DIR / "compress_win.txt"))
+        self.m3 = lgb.Booster(model_file=str(MODEL_DIR / "compress_top3.txt"))
+        T = load_all(log)
+        _, mk = market(T["odds_trifecta"])
+        self.hist = prepare(T["races"], T["entries"], T["finish"], mk)
+        log(f"圧縮モデル: 過去 {len(self.hist)} 行を読み込み（学習 {meta['trained_at']}）")
+
+    def predict(self, race, ent, od):
+        """race: dict(race_id, date, venue, race_no, grade, bank_len, wind, weather)
+        ent: 出走表（kdreams.parse_race の entries）  od: 3連単オッズ（combo, odds）
+        戻り値: 選手ごとの DataFrame（car, m_win, m_top3, p1, p3）"""
+        rid = str(race["race_id"])
+        tri, mk = market(od.assign(race_id=rid))
+        races = pd.DataFrame([race]).assign(race_id=rid)
+        ent = ent.assign(race_id=rid)
+        fin = pd.DataFrame(dict(race_id=rid, car=ent["car"].values, rank=np.nan, kimarite=np.nan, sb=np.nan, agari=np.nan))
+        new = prepare(races, ent, fin, mk)
+        rids = set(new["rid"])
+        past_races = set(self.hist.loc[self.hist.rid.isin(rids), "race_id"])
+        sub = pd.concat([self.hist[self.hist.race_id.isin(past_races)], new], ignore_index=True)
+        sub = sub.sort_values(["date", "race_no"], kind="stable").reset_index(drop=True)
+        X = stats(sub)
+        F = race_features(sub, X)
+        mask = (sub.race_id == rid).values
+        Fr = F.loc[mask].reindex(columns=self.features)
+        er = sub.loc[mask]
+        z1 = _logit(er.m_win.values) + self.m1.predict(Fr, raw_score=True)
+        z3 = _logit(er.m_top3.values) + self.m3.predict(Fr, raw_score=True)
+        p1 = 1 / (1 + np.exp(-z1)); p1 = p1 / p1.sum()
+        p3 = 1 / (1 + np.exp(-z3)); p3 = np.clip(p3 / p3.sum() * 3, 1e-5, 0.99)
+        out = pd.DataFrame(dict(car=er.car.astype(int).values, m_win=er.m_win.values, m_top3=er.m_top3.values,
+                                p1=p1, p3=p3))
+        return out, tri
+
+
+def quinella_plan(pred, tri, qn_odds, ev_min=1.0, stake=100):
+    """補正した確率で2車複を組み直し、期待値 ev_min 以上の目を返す（紙上運用 cmp2）"""
+    f1 = dict(zip(pred.car, pred.p1 / pred.m_win))
+    f3 = dict(zip(pred.car, pred.p3 / pred.m_top3))
+    k = tri.c1.map(f1).fillna(1) * np.sqrt(tri.c2.map(f3).fillna(1) * tri.c3.map(f3).fillna(1))
+    q2 = tri.q * k
+    q2 = q2 / q2.sum()
+    a = np.minimum(tri.c1, tri.c2); b = np.maximum(tri.c1, tri.c2)
+    qn = pd.DataFrame(dict(a=a, b=b, q=q2)).groupby(["a", "b"]).q.sum()
+    bets = []
+    for (x, y), p in qn.items():
+        o = qn_odds.get(f"{x}={y}")
+        if o and o > 0 and p * o >= ev_min:
+            bets.append(dict(combo=f"{x}={y}", stake=stake, odds=float(o), p=round(float(p), 5), ev=round(float(p * o), 3)))
+    return sorted(bets, key=lambda d: -d["ev"])

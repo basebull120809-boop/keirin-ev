@@ -33,6 +33,8 @@ jobs:
           timeout 150m python main.py nkcollect "$S" "$E" 2>&1 | grep -v "^  " | tail -50 || echo "nkcollect skipped"
       - name: 学習（当日運用のモデル更新）
         run: python main.py train || echo "train skipped"
+      - name: 学習（独自指標の圧縮モデル：紙上運用 cmp2 用）
+        run: python main.py compress-train || echo "compress-train skipped"
       - name: レポート
         run: python main.py report > /dev/null || echo "report failed"
       - name: 保存

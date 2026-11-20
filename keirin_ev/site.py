@@ -103,7 +103,7 @@ def day_races(pb, last):
                           invest=_bl(g, "invest"), ex=_bl(g, "ex"), trio=_bl(g, "trio"), qn=_bl(g, "qn"), wide=_bl(g, "wide"),
                           wide_result=_wide_result(r, g),
                           tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
-                          evr3=_bl(g, "evr3"), evr2=_bl(g, "evr2"),
+                          evr3=_bl(g, "evr3"), evr2=_bl(g, "evr2"), cmp2=_bl(g, "cmp2"),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
                           ex_result=dict(combo=r["ex_combo"], payout=_int(r.get("ex_payout")))
