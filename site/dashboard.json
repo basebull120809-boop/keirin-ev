@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-20 20:49",
+ "updated_at": "2026-11-20 20:56",
  "picks": {
   "date": "2026-11-20",
   "races": [
@@ -3654,14 +3654,21 @@
     "race_no": 1,
     "deadline": "20:45",
     "judged_at": "20:39:26",
-    "result": null,
+    "result": {
+     "combo": "2-3-1",
+     "payout": 250
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 130,
+     "all": "1=2・1=3・2=3"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3672,7 +3679,7 @@
       "odds": 30.4,
       "p": 0.0376,
       "ev": 1.063,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=4",
@@ -3680,13 +3687,22 @@
       "odds": 16.5,
       "p": 0.066,
       "ev": 1.012,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=3",
+     "payout": 160
+    },
+    "ex_result": {
+     "combo": "2-3",
+     "payout": 210
+    },
+    "trio_result": {
+     "combo": "1=2=3",
+     "payout": 130
+    },
     "notes": [
      "主導権を取るライン：1-2-3-5（佐藤和典）77%、4-6-7（鶴健志）23%",
      "主導権予想：2十文字悠真のライン 68%（2番手は 4鶴健志 32%） → 逃げ切り目 2車単 2-3（2.7倍）",
@@ -5857,12 +5873,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 2200,
+    "stake": 2400,
     "payout": 4680.0,
-    "roi": 2.1273,
-    "points": 22,
+    "roi": 1.95,
+    "points": 24,
     "hits": 6,
-    "races": 19,
+    "races": 20,
     "race_hits": 6,
     "days": 2
    },
@@ -5880,14 +5896,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 1000,
+     "stake": 1200,
      "payout": 410.0,
-     "points": 10,
+     "points": 12,
      "hits": 1,
-     "races": 10,
+     "races": 11,
      "race_hits": 1,
-     "roi": 0.41,
-     "cum": 2480.0
+     "roi": 0.3417,
+     "cum": 2280.0
     }
    ]
   },
@@ -6103,12 +6119,12 @@
   },
   "pool": {
    "total": {
-    "stake": 132500,
+    "stake": 133000,
     "payout": 110850.0,
-    "roi": 0.8366,
-    "points": 265,
+    "roi": 0.8335,
+    "points": 266,
     "hits": 36,
-    "races": 163,
+    "races": 164,
     "race_hits": 36,
     "days": 5
    },
@@ -6159,14 +6175,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 17000,
+     "stake": 17500,
      "payout": 27700.0,
-     "points": 34,
+     "points": 35,
      "hits": 8,
-     "races": 23,
+     "races": 24,
      "race_hits": 8,
-     "roi": 1.6294,
-     "cum": -21650.0
+     "roi": 1.5829,
+     "cum": -22150.0
     }
    ]
   },
@@ -6288,13 +6304,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 164000,
-    "payout": 148500.0,
-    "roi": 0.9055,
-    "points": 164,
-    "hits": 39,
-    "races": 164,
-    "race_hits": 39,
+    "stake": 165000,
+    "payout": 150600.0,
+    "roi": 0.9127,
+    "points": 165,
+    "hits": 40,
+    "races": 165,
+    "race_hits": 40,
     "days": 5
    },
    "daily": [
@@ -6344,14 +6360,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 19000,
-     "payout": 7600.0,
-     "points": 19,
-     "hits": 3,
-     "races": 19,
-     "race_hits": 3,
-     "roi": 0.4,
-     "cum": -15500.0
+     "stake": 20000,
+     "payout": 9700.0,
+     "points": 20,
+     "hits": 4,
+     "races": 20,
+     "race_hits": 4,
+     "roi": 0.485,
+     "cum": -14400.0
     }
    ]
   },
@@ -6727,12 +6743,12 @@
   },
   "evr": {
    "total": {
-    "stake": 5800,
+    "stake": 6000,
     "payout": 8470.0,
-    "roi": 1.4603,
-    "points": 58,
+    "roi": 1.4117,
+    "points": 60,
     "hits": 13,
-    "races": 36,
+    "races": 37,
     "race_hits": 11,
     "days": 2
    },
@@ -6750,14 +6766,14 @@
     },
     {
      "date": "2026-11-20",
-     "stake": 3100,
+     "stake": 3300,
      "payout": 670.0,
-     "points": 31,
+     "points": 33,
      "hits": 2,
-     "races": 19,
+     "races": 20,
      "race_hits": 2,
-     "roi": 0.2161,
-     "cum": 2670.0
+     "roi": 0.203,
+     "cum": 2470.0
     }
    ]
   }
