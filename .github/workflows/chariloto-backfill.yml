@@ -11,19 +11,23 @@ concurrency: { group: chariloto-backfill, cancel-in-progress: false }
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 300
     env: { TZ: Asia/Tokyo, PYTHONUNBUFFERED: "1" }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11", cache: pip }
       - run: pip install -r requirements.txt
-      - run: |
-          mkdir -p debug
-          python main.py crbackfill "${{ github.event.inputs.days || '3' }}" 2>&1 | tee debug/chariloto_log.txt
-      - name: 保存（このブランチに）
+      - name: 取得（10日分ずつ保存して、途中で止まっても取れた分は残す）
         run: |
           git config user.name "keirin-bot"; git config user.email "bot@users.noreply.github.com"
-          git add data/daily debug/chariloto_log.txt
-          git commit -m "chariloto-backfill $(date +%F_%H%M)" || exit 0
-          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          mkdir -p debug
+          total="${{ github.event.inputs.days || '3' }}"; left=$total
+          while [ "$left" -gt 0 ]; do
+            n=$(( left < 10 ? left : 10 ))
+            python main.py crbackfill "$n" 2>&1 | tee -a debug/chariloto_log.txt
+            git add data/daily debug/chariloto_log.txt
+            git commit -m "chariloto-backfill $(date +%F_%H%M)" || true
+            for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+            left=$(( left - n ))
+          done

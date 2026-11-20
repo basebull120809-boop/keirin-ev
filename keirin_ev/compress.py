@@ -26,7 +26,7 @@ SMOOTH = 8.0          # 率をならす強さ（出走数が少ない選手は�
 def load_all(log=print):
     days = collected_dates()
     T = {t: [] for t in ("races", "entries", "finish", "results", "odds_trifecta",
-                          "odds_exacta", "odds_quinella")}
+                          "odds_exacta", "odds_quinella", "odds_wide")}
     for d in days:
         for t in T:
             df = read(d, t)
@@ -35,7 +35,7 @@ def load_all(log=print):
     T = {t: pd.concat(v, ignore_index=True) for t, v in T.items()}
     keys = dict(races=["race_id"], results=["race_id"], entries=["race_id", "car"], finish=["race_id", "car"],
                 odds_trifecta=["race_id", "combo", "snapshot"], odds_exacta=["race_id", "combo"],
-                odds_quinella=["race_id", "combo"])
+                odds_quinella=["race_id", "combo"], odds_wide=["race_id", "combo"])
     for t in T:
         T[t]["race_id"] = T[t]["race_id"].astype(str)
         k = [c for c in keys[t] if c in T[t]]
@@ -290,9 +290,33 @@ def bet_sim(T, V, log=print):
     qn["hit"] = (w3["qn_combo"].values == qn.combo.values)
     qn["pay"] = np.where(qn.hit, w3["qn_payout"].values, 0)
     qn["ev"] = qn.q2 * qn.odds
-    for name, d in (("3連単", tri), ("2車単", ex), ("2車複", qn)):
+    # ワイド：2人とも3着内に入る確率（3連単の確率から足し上げ）
+    wd = []
+    for a_, b_ in ((0, 1), (0, 2), (1, 2)):
+        cs = [tri.c1, tri.c2, tri.c3]
+        wd.append(pd.DataFrame(dict(race_id=tri.race_id, a=np.minimum(cs[a_], cs[b_]), b=np.maximum(cs[a_], cs[b_]), q2=tri.q2)))
+    wd = pd.concat(wd).groupby(["race_id", "a", "b"]).q2.sum().reset_index()
+    wd["combo"] = wd.a.astype(str) + "=" + wd.b.astype(str)
+    wo = T.get("odds_wide")
+    if wo is not None and len(wo):
+        wo = wo[wo.race_id.isin(races) & (wo.odds > 0)]
+        wd = wd.merge(wo[["race_id", "combo", "odds"]], on=["race_id", "combo"])
+        wpay = {}
+        for r_, cs_, ps_ in zip(res.index, res["wide_combos"], res["wide_payouts"]):
+            if isinstance(cs_, str) and isinstance(ps_, str) and r_ in races:
+                for c_, p_ in zip(cs_.split("|"), ps_.split("|")):
+                    try:
+                        wpay[(r_, "=".join(sorted(c_.split("="), key=int)))] = float(p_)
+                    except ValueError:
+                        pass
+        wd["pay"] = [wpay.get((r_, c_), 0.0) for r_, c_ in zip(wd.race_id, wd.combo)]
+        wd = wd[wd.race_id.isin({k[0] for k in wpay})]
+        wd["ev"] = wd.q2 * wd.odds                         # ワイドの odds は下限側（実際の払戻は下限〜上限）
+    else:
+        wd = wd.iloc[:0].assign(pay=[], ev=[])
+    for name, d in (("3連単", tri), ("2車単", ex), ("2車複", qn), ("ワイド", wd)):
         rows = []
-        for th in (1.0, 1.1, 1.2, 1.3, 1.5):
+        for th in (0.9, 1.0, 1.1, 1.2, 1.3, 1.5):
             b = d[d.ev >= th]
             if len(b) == 0:
                 continue
