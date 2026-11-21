@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-21 15:04",
+ "updated_at": "2026-11-21 15:11",
  "picks": {
   "date": "2026-11-21",
   "races": [
@@ -2355,14 +2355,21 @@
     "race_no": 10,
     "deadline": "15:00",
     "judged_at": "14:54:05",
-    "result": null,
+    "result": {
+     "combo": "7-5-3",
+     "payout": 9250
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=5",
+     "payout": 1070,
+     "all": "3=5・3=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2373,14 +2380,23 @@
       "odds": 5.0,
       "p": 0.2154,
       "ev": 1.002,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
     "cmp2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=7",
+     "payout": 1850
+    },
+    "ex_result": {
+     "combo": "7-5",
+     "payout": 3170
+    },
+    "trio_result": {
+     "combo": "3=5=7",
+     "payout": 3070
+    },
     "notes": [
      "主導権を取るライン：1-7（佐藤和也）71%、4-6（高橋築）12%、3-5（西村光太）10%",
      "主導権予想：7小原佑太のライン 72%（2番手は 4高橋築 11%） → 逃げ切り目 2車単 7-1（6.7倍）",
@@ -4178,12 +4194,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 4800,
+    "stake": 4900,
     "payout": 14350.0,
-    "roi": 2.9896,
-    "points": 48,
+    "roi": 2.9286,
+    "points": 49,
     "hits": 11,
-    "races": 36,
+    "races": 37,
     "race_hits": 11,
     "days": 3
    },
@@ -4212,14 +4228,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 900,
+     "stake": 1000,
      "payout": 3380.0,
-     "points": 9,
+     "points": 10,
      "hits": 3,
-     "races": 8,
+     "races": 9,
      "race_hits": 3,
-     "roi": 3.7556,
-     "cum": 9550.0
+     "roi": 3.38,
+     "cum": 9450.0
     }
    ]
   },
@@ -4457,12 +4473,12 @@
   },
   "pool": {
    "total": {
-    "stake": 153000,
+    "stake": 153500,
     "payout": 125500.0,
-    "roi": 0.8203,
-    "points": 306,
+    "roi": 0.8176,
+    "points": 307,
     "hits": 40,
-    "races": 189,
+    "races": 190,
     "race_hits": 40,
     "days": 6
    },
@@ -4524,14 +4540,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 10000,
+     "stake": 10500,
      "payout": 1050.0,
-     "points": 20,
+     "points": 21,
      "hits": 1,
-     "races": 15,
+     "races": 16,
      "race_hits": 1,
-     "roi": 0.105,
-     "cum": -27500.0
+     "roi": 0.1,
+     "cum": -28000.0
     }
    ]
   },
@@ -4664,12 +4680,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 189000,
+    "stake": 190000,
     "payout": 171700.0,
-    "roi": 0.9085,
-    "points": 189,
+    "roi": 0.9037,
+    "points": 190,
     "hits": 47,
-    "races": 189,
+    "races": 190,
     "race_hits": 47,
     "days": 6
    },
@@ -4731,14 +4747,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 9000,
+     "stake": 10000,
      "payout": 17200.0,
-     "points": 9,
+     "points": 10,
      "hits": 4,
-     "races": 9,
+     "races": 10,
      "race_hits": 4,
-     "roi": 1.9111,
-     "cum": -17300.0
+     "roi": 1.72,
+     "cum": -18300.0
     }
    ]
   },
@@ -5136,12 +5152,12 @@
   },
   "evr": {
    "total": {
-    "stake": 10800,
+    "stake": 10900,
     "payout": 21080.0,
-    "roi": 1.9519,
-    "points": 108,
+    "roi": 1.9339,
+    "points": 109,
     "hits": 24,
-    "races": 61,
+    "races": 62,
     "race_hits": 20,
     "days": 3
    },
@@ -5170,14 +5186,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 1300,
+     "stake": 1400,
      "payout": 4600.0,
-     "points": 13,
+     "points": 14,
      "hits": 5,
-     "races": 10,
+     "races": 11,
      "race_hits": 4,
-     "roi": 3.5385,
-     "cum": 10280.0
+     "roi": 3.2857,
+     "cum": 10180.0
     }
    ]
   }
