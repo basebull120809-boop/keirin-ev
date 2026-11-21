@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-21 21:39",
+ "updated_at": "2026-11-21 21:46",
  "picks": {
   "date": "2026-11-21",
   "races": [
@@ -4075,14 +4075,21 @@
     "race_no": 4,
     "deadline": "21:35",
     "judged_at": "21:29:17",
-    "result": null,
+    "result": {
+     "combo": "1-2-3",
+     "payout": 300
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 100,
+     "all": "1=2・1=3・2=3"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4095,7 +4102,7 @@
       "odds": 57.5,
       "p": 0.0209,
       "ev": 1.2,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=7",
@@ -4103,12 +4110,21 @@
       "odds": 7.5,
       "p": 0.1433,
       "ev": 1.074,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 180
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 190
+    },
+    "trio_result": {
+     "combo": "1=2=3",
+     "payout": 140
+    },
     "notes": [
      "主導権を取るライン：1-7（高橋奏多）60%、4-6（及川裕奨）21%、2-3（織茂雄一郎）17%",
      "主導権予想：1高橋奏多のライン 62%（2番手は 2織茂雄一郎 19%） → 逃げ切り目 2車単 1-7（6.3倍）",
@@ -6263,12 +6279,12 @@
  "paper": {
   "cmp2": {
    "total": {
-    "stake": 6000,
+    "stake": 6200,
     "payout": 9610.0,
-    "roi": 1.6017,
-    "points": 60,
+    "roi": 1.55,
+    "points": 62,
     "hits": 6,
-    "races": 25,
+    "races": 26,
     "race_hits": 6,
     "days": 2
    },
@@ -6286,14 +6302,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 3400,
+     "stake": 3600,
      "payout": 460.0,
-     "points": 34,
+     "points": 36,
      "hits": 1,
-     "races": 16,
+     "races": 17,
      "race_hits": 1,
-     "roi": 0.1353,
-     "cum": 3610.0
+     "roi": 0.1278,
+     "cum": 3410.0
     }
    ]
   },
@@ -6832,12 +6848,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 199000,
+    "stake": 200000,
     "payout": 173700.0,
-    "roi": 0.8729,
-    "points": 199,
+    "roi": 0.8685,
+    "points": 200,
     "hits": 48,
-    "races": 199,
+    "races": 200,
     "race_hits": 48,
     "days": 6
    },
@@ -6899,14 +6915,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 19000,
+     "stake": 20000,
      "payout": 19200.0,
-     "points": 19,
+     "points": 20,
      "hits": 5,
-     "races": 19,
+     "races": 20,
      "race_hits": 5,
-     "roi": 1.0105,
-     "cum": -25300.0
+     "roi": 0.96,
+     "cum": -26300.0
     }
    ]
   },
