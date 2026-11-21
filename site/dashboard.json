@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-21 13:39",
+ "updated_at": "2026-11-21 13:40",
  "picks": {
   "date": "2026-11-21",
   "races": [
@@ -1669,14 +1669,21 @@
     "race_no": 7,
     "deadline": "13:29",
     "judged_at": "13:23:27",
-    "result": null,
+    "result": {
+     "combo": "7-3-2",
+     "payout": 13870
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=3",
+     "payout": 380,
+     "all": "2=3・2=7・3=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -1687,14 +1694,23 @@
       "odds": 22.5,
       "p": 0.0539,
       "ev": 1.128,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
     "cmp2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=7",
+     "payout": 2820
+    },
+    "ex_result": {
+     "combo": "7-3",
+     "payout": 5110
+    },
+    "trio_result": {
+     "combo": "2=3=7",
+     "payout": 1060
+    },
     "notes": [
      "主導権を取るライン：2-7（田中晴基）52%、3-5（高橋晋也）35%、1-4（野崎将史）12%",
      "主導権予想：3高橋晋也のライン 46%（2番手は 7武田亮 38%）",
@@ -3272,12 +3288,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 4500,
+    "stake": 4600,
     "payout": 14140.0,
-    "roi": 3.1422,
-    "points": 45,
+    "roi": 3.0739,
+    "points": 46,
     "hits": 10,
-    "races": 33,
+    "races": 34,
     "race_hits": 10,
     "days": 3
    },
@@ -3306,14 +3322,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 600,
+     "stake": 700,
      "payout": 3170.0,
-     "points": 6,
+     "points": 7,
      "hits": 2,
-     "races": 5,
+     "races": 6,
      "race_hits": 2,
-     "roi": 5.2833,
-     "cum": 9640.0
+     "roi": 4.5286,
+     "cum": 9540.0
     }
    ]
   },
@@ -3551,12 +3567,12 @@
   },
   "pool": {
    "total": {
-    "stake": 149500,
+    "stake": 150000,
     "payout": 124450.0,
-    "roi": 0.8324,
-    "points": 299,
+    "roi": 0.8297,
+    "points": 300,
     "hits": 39,
-    "races": 183,
+    "races": 184,
     "race_hits": 39,
     "days": 6
    },
@@ -3618,14 +3634,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 6500,
+     "stake": 7000,
      "payout": 0.0,
-     "points": 13,
+     "points": 14,
      "hits": 0,
-     "races": 9,
+     "races": 10,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -25050.0
+     "cum": -25550.0
     }
    ]
   },
@@ -4230,12 +4246,12 @@
   },
   "evr": {
    "total": {
-    "stake": 10400,
+    "stake": 10500,
     "payout": 20410.0,
-    "roi": 1.9625,
-    "points": 104,
+    "roi": 1.9438,
+    "points": 105,
     "hits": 22,
-    "races": 57,
+    "races": 58,
     "race_hits": 18,
     "days": 3
    },
@@ -4264,14 +4280,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 900,
+     "stake": 1000,
      "payout": 3930.0,
-     "points": 9,
+     "points": 10,
      "hits": 3,
-     "races": 6,
+     "races": 7,
      "race_hits": 2,
-     "roi": 4.3667,
-     "cum": 10010.0
+     "roi": 3.93,
+     "cum": 9910.0
     }
    ]
   }
