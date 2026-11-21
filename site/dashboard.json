@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-21 10:54",
+ "updated_at": "2026-11-21 11:01",
  "picks": {
   "date": "2026-11-21",
   "races": [
@@ -889,14 +889,21 @@
     "race_no": 7,
     "deadline": "10:50",
     "judged_at": "10:44:24",
-    "result": null,
+    "result": {
+     "combo": "2-5-4",
+     "payout": 11720
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 430,
+     "all": "2=4・2=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -907,7 +914,7 @@
       "odds": 21.4,
       "p": 0.0516,
       "ev": 1.027,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
@@ -918,12 +925,21 @@
       "odds": 6.4,
       "p": 0.1651,
       "ev": 1.056,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=5",
+     "payout": 1130
+    },
+    "ex_result": {
+     "combo": "2-5",
+     "payout": 3420
+    },
+    "trio_result": {
+     "combo": "2=4=5",
+     "payout": 1010
+    },
     "notes": [
      "主導権を取るライン：1-5-6（高佐龍太郎）46%、2-7（西澤優聖）31%、3（中西勇）14%",
      "主導権予想：1高佐龍太郎のライン 47%（2番手は 2西澤優聖 36%）",
@@ -2238,12 +2254,12 @@
  "paper": {
   "cmp2": {
    "total": {
-    "stake": 3200,
+    "stake": 3300,
     "payout": 9150.0,
-    "roi": 2.8594,
-    "points": 32,
+    "roi": 2.7727,
+    "points": 33,
     "hits": 5,
-    "races": 11,
+    "races": 12,
     "race_hits": 5,
     "days": 2
    },
@@ -2261,14 +2277,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 600,
+     "stake": 700,
      "payout": 0.0,
-     "points": 6,
+     "points": 7,
      "hits": 0,
-     "races": 2,
+     "races": 3,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 5950.0
+     "cum": 5850.0
     }
    ]
   },
@@ -2321,12 +2337,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 4200,
+    "stake": 4300,
     "payout": 12790.0,
-    "roi": 3.0452,
-    "points": 42,
+    "roi": 2.9744,
+    "points": 43,
     "hits": 9,
-    "races": 31,
+    "races": 32,
     "race_hits": 9,
     "days": 3
    },
@@ -2355,14 +2371,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 300,
+     "stake": 400,
      "payout": 1820.0,
-     "points": 3,
+     "points": 4,
      "hits": 1,
-     "races": 3,
+     "races": 4,
      "race_hits": 1,
-     "roi": 6.0667,
-     "cum": 8590.0
+     "roi": 4.55,
+     "cum": 8490.0
     }
    ]
   },
@@ -2600,12 +2616,12 @@
   },
   "pool": {
    "total": {
-    "stake": 144500,
+    "stake": 145500,
     "payout": 124450.0,
-    "roi": 0.8612,
-    "points": 289,
+    "roi": 0.8553,
+    "points": 291,
     "hits": 39,
-    "races": 177,
+    "races": 178,
     "race_hits": 39,
     "days": 6
    },
@@ -2667,14 +2683,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 1500,
+     "stake": 2500,
      "payout": 0.0,
-     "points": 3,
+     "points": 5,
      "hits": 0,
-     "races": 3,
+     "races": 4,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -20050.0
+     "cum": -21050.0
     }
    ]
   },
@@ -3257,12 +3273,12 @@
   },
   "evr": {
    "total": {
-    "stake": 10000,
+    "stake": 10100,
     "payout": 18300.0,
-    "roi": 1.83,
-    "points": 100,
+    "roi": 1.8119,
+    "points": 101,
     "hits": 20,
-    "races": 55,
+    "races": 56,
     "race_hits": 17,
     "days": 3
    },
@@ -3291,14 +3307,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 500,
+     "stake": 600,
      "payout": 1820.0,
-     "points": 5,
+     "points": 6,
      "hits": 1,
-     "races": 4,
+     "races": 5,
      "race_hits": 1,
-     "roi": 3.64,
-     "cum": 8300.0
+     "roi": 3.0333,
+     "cum": 8200.0
     }
    ]
   }
