@@ -22,6 +22,7 @@ class Rules:
     hard_odds: float = 10.0      # 1番人気がこの倍率未満なら「硬い」
     wide_odds: float = 40.0      # 1番人気がこの倍率以上なら最大点数
     min_firsts: int = 2          # 1着候補の最低人数
+    extra_points_9: int = 0      # 9車立てのときに足す点数（ラインが多く展開が割れやすいので広げる）
     race_ev_min: float = 1.10    # レース全体の期待値の下限（これ未満は見送り）
     race_budget: int = 3000      # 1レースの購入額
     # --- 的中重視型 ---
@@ -39,15 +40,28 @@ class Rules:
     unit: int = 100
 
 
+def n_riders(odds):
+    """オッズが付いている3連単の組数から出走人数を求める（n×(n-1)×(n-2) = 組数）"""
+    k = int((odds > 0).sum())
+    n = 3
+    while n * (n - 1) * (n - 2) < k:
+        n += 1
+    return n
+
+
 def n_points(odds, rules):
     valid = odds[odds > 0]
     if not len(valid):
         return 0
     fav = valid.min()
     if fav < rules.hard_odds:
-        return rules.hard_points
-    t = min(1.0, (fav - rules.hard_odds) / max(1e-9, rules.wide_odds - rules.hard_odds))
-    return int(round(rules.min_points + t * (rules.max_points - rules.min_points)))
+        base = rules.hard_points
+    else:
+        t = min(1.0, (fav - rules.hard_odds) / max(1e-9, rules.wide_odds - rules.hard_odds))
+        base = int(round(rules.min_points + t * (rules.max_points - rules.min_points)))
+    if rules.extra_points_9 and n_riders(odds) >= 9:
+        base += rules.extra_points_9
+    return base
 
 
 def _equal_payout(odds_sel, budget, unit):
@@ -215,6 +229,9 @@ def pick_formation(p, odds, rules, combos):
     if sel is None:
         return []
     ev = p * odds
+    race_ev = float((stakes * p[sel] * odds[sel]).sum() / stakes.sum())
+    if race_ev < rules.race_ev_min:              # 期待値の低いレースは見送り（過去検証で下位3割は回収率が低い）
+        return []
     keep = np.argsort(-p[sel])
     return [(int(sel[i]), int(stakes[i]), float(p[sel[i]]), float(odds[sel[i]]), float(ev[sel[i]]))
             for i in keep]
