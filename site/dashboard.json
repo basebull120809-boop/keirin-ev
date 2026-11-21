@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-21 12:54",
+ "updated_at": "2026-11-21 12:55",
  "picks": {
   "date": "2026-11-21",
   "races": [
@@ -1252,7 +1252,10 @@
     "race_no": 6,
     "deadline": "12:44",
     "judged_at": "12:41:08",
-    "result": null,
+    "result": {
+     "combo": "5-6-1",
+     "payout": 325110
+    },
     "bets": [],
     "invest": [],
     "ex": [
@@ -1262,7 +1265,7 @@
       "odds": 4.6,
       "p": 0.1909,
       "ev": 0.817,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "7-2",
@@ -1270,7 +1273,7 @@
       "odds": 5.8,
       "p": 0.1467,
       "ev": 0.791,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2-3",
@@ -1278,22 +1281,35 @@
       "odds": 9.2,
       "p": 0.1002,
       "ev": 0.857,
-      "hit": null
+      "hit": false
      }
     ],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=5",
+     "payout": 1580,
+     "all": "1=5・1=6・5=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
     "evr3": [],
     "evr2": [],
     "cmp2": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=6",
+     "payout": 30080
+    },
+    "ex_result": {
+     "combo": "5-6",
+     "payout": 43410
+    },
+    "trio_result": {
+     "combo": "1=5=6",
+     "payout": 29760
+    },
     "notes": [
      "1000回シミュレーション：的中 447回／プラス収支 446回（トリガミ 1回）・平均回収率 91%",
      "展開の内訳（1着が出たライン）：2-7 59%、3-5 32%、1-4-6 10%",
@@ -2835,12 +2851,12 @@
   },
   "ex": {
    "total": {
-    "stake": 544300,
+    "stake": 547300,
     "payout": 519570.0,
-    "roi": 0.9546,
-    "points": 761,
+    "roi": 0.9493,
+    "points": 764,
     "hits": 71,
-    "races": 193,
+    "races": 194,
     "race_hits": 71,
     "days": 9
    },
@@ -2935,14 +2951,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 2800,
+     "stake": 5800,
      "payout": 3920.0,
-     "points": 3,
+     "points": 6,
      "hits": 1,
-     "races": 1,
+     "races": 2,
      "race_hits": 1,
-     "roi": 1.4,
-     "cum": -24730.0
+     "roi": 0.6759,
+     "cum": -27730.0
     }
    ]
   },
@@ -3067,12 +3083,12 @@
   },
   "pool": {
    "total": {
-    "stake": 147500,
+    "stake": 148000,
     "payout": 124450.0,
-    "roi": 0.8437,
-    "points": 295,
+    "roi": 0.8409,
+    "points": 296,
     "hits": 39,
-    "races": 180,
+    "races": 181,
     "race_hits": 39,
     "days": 6
    },
@@ -3134,14 +3150,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 4500,
+     "stake": 5000,
      "payout": 0.0,
-     "points": 9,
+     "points": 10,
      "hits": 0,
-     "races": 6,
+     "races": 7,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": -23050.0
+     "cum": -23550.0
     }
    ]
   },
@@ -3263,12 +3279,12 @@
   },
   "tenkai": {
    "total": {
-    "stake": 184000,
+    "stake": 185000,
     "payout": 159400.0,
-    "roi": 0.8663,
-    "points": 184,
+    "roi": 0.8616,
+    "points": 185,
     "hits": 44,
-    "races": 184,
+    "races": 185,
     "race_hits": 44,
     "days": 6
    },
@@ -3330,14 +3346,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 4000,
+     "stake": 5000,
      "payout": 4900.0,
-     "points": 4,
+     "points": 5,
      "hits": 1,
-     "races": 4,
+     "races": 5,
      "race_hits": 1,
-     "roi": 1.225,
-     "cum": -24600.0
+     "roi": 0.98,
+     "cum": -25600.0
     }
    ]
   },
@@ -3622,12 +3638,12 @@
   },
   "rec": {
    "total": {
-    "stake": 667000,
+    "stake": 670000,
     "payout": 509590.0,
-    "roi": 0.764,
-    "points": 973,
+    "roi": 0.7606,
+    "points": 976,
     "hits": 108,
-    "races": 239,
+    "races": 240,
     "race_hits": 108,
     "days": 9
    },
@@ -3722,14 +3738,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 4800,
+     "stake": 7800,
      "payout": 3920.0,
-     "points": 7,
+     "points": 10,
      "hits": 1,
-     "races": 2,
+     "races": 3,
      "race_hits": 1,
-     "roi": 0.8167,
-     "cum": -157410.0
+     "roi": 0.5026,
+     "cum": -160410.0
     }
    ]
   },
