@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-21 14:38",
+ "updated_at": "2026-11-21 14:40",
  "picks": {
   "date": "2026-11-21",
   "races": [
@@ -2132,14 +2132,21 @@
     "race_no": 9,
     "deadline": "14:29",
     "judged_at": "14:23:08",
-    "result": null,
+    "result": {
+     "combo": "4-1-5",
+     "payout": 2600
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 100,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2152,7 +2159,7 @@
       "odds": 76.7,
       "p": 0.0136,
       "ev": 1.04,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=5",
@@ -2160,12 +2167,21 @@
       "odds": 10.5,
       "p": 0.0973,
       "ev": 1.021,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 140
+    },
+    "ex_result": {
+     "combo": "4-1",
+     "payout": 580
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 450
+    },
     "notes": [
      "主導権を取るライン：1-4-7（川越勇星）76%、3-6（橋本壮史）20%、5（小川賢人）3%",
      "主導権予想：4丸山留依のライン 73%（2番手は 3橋本壮史 20%） → 逃げ切り目 2車単 4-1（5.1倍）",
@@ -3787,12 +3803,12 @@
  "paper": {
   "cmp2": {
    "total": {
-    "stake": 4400,
+    "stake": 4600,
     "payout": 9610.0,
-    "roi": 2.1841,
-    "points": 44,
+    "roi": 2.0891,
+    "points": 46,
     "hits": 6,
-    "races": 17,
+    "races": 18,
     "race_hits": 6,
     "days": 2
    },
@@ -3810,14 +3826,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 1800,
+     "stake": 2000,
      "payout": 460.0,
-     "points": 18,
+     "points": 20,
      "hits": 1,
-     "races": 8,
+     "races": 9,
      "race_hits": 1,
-     "roi": 0.2556,
-     "cum": 5210.0
+     "roi": 0.23,
+     "cum": 5010.0
     }
    ]
   },
@@ -4149,12 +4165,12 @@
   },
   "pool": {
    "total": {
-    "stake": 152000,
+    "stake": 152500,
     "payout": 125500.0,
-    "roi": 0.8257,
-    "points": 304,
+    "roi": 0.823,
+    "points": 305,
     "hits": 40,
-    "races": 187,
+    "races": 188,
     "race_hits": 40,
     "days": 6
    },
@@ -4216,14 +4232,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 9000,
+     "stake": 9500,
      "payout": 1050.0,
-     "points": 18,
+     "points": 19,
      "hits": 1,
-     "races": 13,
+     "races": 14,
      "race_hits": 1,
-     "roi": 0.1167,
-     "cum": -26500.0
+     "roi": 0.1105,
+     "cum": -27000.0
     }
    ]
   },
@@ -4356,13 +4372,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 188000,
-    "payout": 165900.0,
-    "roi": 0.8824,
-    "points": 188,
-    "hits": 46,
-    "races": 188,
-    "race_hits": 46,
+    "stake": 189000,
+    "payout": 171700.0,
+    "roi": 0.9085,
+    "points": 189,
+    "hits": 47,
+    "races": 189,
+    "race_hits": 47,
     "days": 6
    },
    "daily": [
@@ -4423,14 +4439,14 @@
     },
     {
      "date": "2026-11-21",
-     "stake": 8000,
-     "payout": 11400.0,
-     "points": 8,
-     "hits": 3,
-     "races": 8,
-     "race_hits": 3,
-     "roi": 1.425,
-     "cum": -22100.0
+     "stake": 9000,
+     "payout": 17200.0,
+     "points": 9,
+     "hits": 4,
+     "races": 9,
+     "race_hits": 4,
+     "roi": 1.9111,
+     "cum": -17300.0
     }
    ]
   },
