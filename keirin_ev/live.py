@@ -222,6 +222,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                              p=round(p, 5), ev=round(ev, 3), taken_at=t.strftime("%H:%M:%S"),
                              kind=kind))
     rec, why, cand, pats = None, "", {}, {}
+    mi, mi_why = None, ""
     skip_reason = ""
     try:                                         # 券種の使い分け（2車単・3連複・3連単）
         import importlib
@@ -347,6 +348,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         fin = _bt.sim_finishes(sim, cars, COMBOS) if sim is not None else None
         mp = _bt.multi_plans(P, cars, COMBOS, mo, drift=drift, finishes=fin)
         pick, mwhy, msumm = _bt.multi_pick(mp)
+        mi, mi_why = None, ""
         KIND_OF = dict(qn="qn", wide="wide", ex="ex", trio="trio", tri="yoso")
         shown = ("yoso", "ex", "trio", "qn", "wide")
         bets = [b for b in bets if b["kind"] not in shown + tuple(k + "_z" for k in shown)]
@@ -370,6 +372,20 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
             bets += [dict(base_m, **b, kind=kd, rec=True) for b in tg]
             rec, why, skip_reason = kd, mwhy, ""
             scen_notes.append(f"券種をまたいで選択：{mwhy.split('（')[0]}")
+        if rec is None:                          # 見送りでも予想は必ず出す（「見送り推奨」として記録。収支には入れない）
+            fp = pick or (_bt.multi_pick(mp, ev_min=0, synth_min=0)[0] if len(mp) else None)
+            if fp is not None:
+                fb = [dict(b, stake=0) for b in fp["bets"]]
+                mg = None
+                for ms in (gmin, 1.0):
+                    mg = guard_stakes(fb, budget=max(3000, 200 * fp["k"]), min_synth=ms)
+                    if mg:
+                        break
+                mg = mg or [dict(b, stake=100) for b in fb]
+                mi = KIND_OF[fp["t"]]
+                bets += [dict(base_m, **b, kind=mi + "_m", rec=False) for b in mg]
+                mi_why = (f"{_bt.MULTI_LABEL[fp['t']]}{fp['k']}点：1000回のシミュレーションで{fp['sim_hit']:.0%}的中"
+                          f"・合成{fp['synth']:.1f}倍・見込み回収{fp['ev']:.0%}")
         if scen is not None:
             ll = scen.lead_lines(X["T"], 0)
             nm = dict(zip(ent["car"].astype(int), ent["name"].astype(str)))
@@ -389,7 +405,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     if sim is not None:                          # 出す買い目を1000回のレースで採点
         try:
             from .simulate import evaluate, lead_lines, summary_text
-            shown = [b for b in bets if b.get("rec")] or [b for b in bets if b["kind"] == "yoso"]
+            shown = ([b for b in bets if b.get("rec")] or [b for b in bets if b["kind"].endswith("_m")]
+                     or [b for b in bets if b["kind"] == "yoso"])
             sim_ev = evaluate(sim, cars, shown)
             notes = summary_text(sim_ev, lead_lines(sim, X["T"], 0, cars)) + notes
         except Exception as e:
@@ -402,6 +419,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 n_bets=sum(b["kind"] in ("yoso", "ex", "trio", "qn", "wide") for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
                                 rec=rec, rec_reason=why, sim=sim_ev,
+                                mi=mi, mi_reason=mi_why,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason=skip_reason or ("" if rec or any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),
                            ensure_ascii=False) + "\n")
@@ -718,7 +736,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3"]), b["kind"].isin(["qn", "qn_z", "evr2", "cmp2"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "trio_m"]), b["kind"].isin(["qn", "qn_z", "evr2", "cmp2", "qn_m"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],
@@ -726,7 +744,7 @@ def paper_results():
     b["hit"] = (b["combo"] == target).astype(object)
     b["payout"] = np.where(b["hit"], b["stake"] / 100 * pd.to_numeric(pay, errors="coerce"), 0)
     b.loc[pd.isna(target), ["hit", "payout"]] = np.nan
-    is_w = b["kind"].isin(["wide", "wide_z"])  # ワイドは当たりが3組（同着ならそれ以上）
+    is_w = b["kind"].isin(["wide", "wide_z", "wide_m"])  # ワイドは当たりが3組（同着ならそれ以上）
     if is_w.any():
         def _wide(row):
             cs, ps = row["wide_combos"], row["wide_payouts"]

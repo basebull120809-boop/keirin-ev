@@ -65,7 +65,7 @@ def simulate(P, T, r, odds, n=N_SIM, prm=None, seed=None):
 
 
 def _hits(combo, oc, kind=None):
-    if kind in ("wide", "wide_z"):                 # ワイド：2人とも3着以内
+    if kind in ("wide", "wide_z", "wide_m"):                 # ワイド：2人とも3着以内
         return set(int(x) for x in combo.split("=")) <= set(oc[:3])
     if "=" in combo:                               # 3連複 / 2車複
         s = set(int(x) for x in combo.split("="))

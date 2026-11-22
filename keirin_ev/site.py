@@ -84,6 +84,15 @@ def _wide_result(r, g):
     return dict(combo=c, payout=_int(pay.get(c)), all=cs.replace("|", "・"))
 
 
+def _mi(g):
+    """見送り推奨の買い目（kind が「券種_m」。紙上の参考記録で、収支には入れない）"""
+    ks = [k for k in g["kind"].unique() if str(k).endswith("_m")]
+    if not ks:
+        return {}
+    k = ks[0]
+    return dict(mi=k[:-2], mi_bets=_bl(g, k))
+
+
 def day_races(pb, last):
     """指定日の買い目（レースごと・結果つき）"""
     from .kdreams import VENUE_JA
@@ -104,6 +113,7 @@ def day_races(pb, last):
                           wide_result=_wide_result(r, g),
                           tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
                           evr3=_bl(g, "evr3"), evr2=_bl(g, "evr2"), cmp2=_bl(g, "cmp2"),
+                          **_mi(g),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
                           ex_result=dict(combo=r["ex_combo"], payout=_int(r.get("ex_payout")))
@@ -124,6 +134,11 @@ def day_races(pb, last):
         n = notes.get(str(rid_of.get((r["venue_slug"], r["race_no"]), "")), {})
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
         r["rec"] = n.get("rec"); r["rec_reason"] = n.get("rec_reason", ""); r["cand"] = n.get("cand", {})
+        if not r["rec"] and r.get("mi_bets"):     # 見送り推奨：予想は出すが収支には入れない
+            r["mi"] = n.get("mi") or r.get("mi"); r["mi_reason"] = n.get("mi_reason", "")
+            r["skip_reason"] = n.get("reason", "")
+        else:
+            r.pop("mi", None); r.pop("mi_bets", None)
         r.pop("venue_slug", None)
         only_rec(r)
     races.sort(key=lambda x: x["deadline"] or x["judged_at"])
@@ -142,6 +157,7 @@ def picks_and_paper():
     picks = dict(date=last, races=day_races(pb, last))
     paper = {}
     done = pb.dropna(subset=["hit"])
+    done = done[~done["kind"].astype(str).str.endswith("_m")]   # 見送り推奨は収支に入れない
     groups = list(done.groupby("kind"))
     if "rec" in done:                          # おすすめ券種だけを買った場合
         rr = done[done["rec"].astype(str).str.lower().isin(["true", "1"])]
@@ -187,10 +203,10 @@ def today_board(date):
     for r in sc.sort_values("deadline").itertuples():
         n = judged.get(str(r.race_id))
         # 予想＝おすすめの券種が出たレースだけ（おすすめなしは見送り。画面には出さない）
-        st = "wait" if n is None else ("buy" if n.get("rec") else "skip")
+        st = "wait" if n is None else ("buy" if n.get("rec") else ("mi" if n.get("mi") else "skip"))
         rows.append(dict(venue=VENUE_JA.get(r.venue, r.venue), race_no=int(r.race_no),
                          deadline=r.deadline, status=st, invest=bool((n or {}).get("n_invest")),
-                         reason=(n or {}).get("reason", ""),
+                         reason=(n or {}).get("reason", ""), mi=(n or {}).get("mi"),
                          notes=(n or {}).get("notes", []), lines=(n or {}).get("lines", [])))
     return dict(date=date, races=rows)
 
@@ -210,7 +226,7 @@ def export_history(days=30):
         races = day_races(pb, day)
         sub = pb[pb["date"] == day]
         summ = {}
-        kg = list(sub.groupby("kind"))
+        kg = list(sub[~sub["kind"].astype(str).str.endswith("_m")].groupby("kind"))
         if "rec" in sub:
             rr = sub[sub["rec"].astype(str).str.lower().isin(["true", "1"])]
             if len(rr):
@@ -299,7 +315,7 @@ def export_report(con, days, dates, market=None, backtest=None):
 
 DOC_LIMIT = 250_000      # ページのデータベースは1文書 256KiB まで（少し余裕を見る）
 HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4",
-             "result", "ex_result", "trio_result", "qn_result", "wide_result")
+             "result", "ex_result", "trio_result", "qn_result", "wide_result", "mi", "mi_bets", "mi_reason", "skip_reason")
 
 
 def _size(v):
@@ -312,7 +328,7 @@ def slim_history(h, limit=DOC_LIMIT):
     days = []
     for d in h.get("days", []):
         races = [only_rec({k: r.get(k) for k in HIST_KEEP if k in r})
-                 for r in d.get("races", []) if r.get("rec") and (r.get("bets") or r.get(r["rec"]))]
+                 for r in d.get("races", []) if (r.get("rec") and (r.get("bets") or r.get(r["rec"]))) or r.get("mi_bets")]
         days.append(dict(date=d.get("date"), summary=d.get("summary"), races=races))
     out = dict(updated_at=h.get("updated_at"), days=days)
     while len(out["days"]) > 1 and _size(out) > limit:
