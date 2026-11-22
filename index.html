@@ -889,6 +889,18 @@ async function load() {
     return false;
   }
 }
+/* ページ自体の更新：ホーム画面から開いたままだと古いページが残るので、新しいページが出ていたら読み直す */
+const BUILD = "2026-11-22-mi2";
+let buildAt = 0;
+async function checkBuild(force) {
+  if (!force && Date.now() - buildAt < 300000) return;
+  buildAt = Date.now();
+  try {
+    const r = await fetch(RAW + "index.html?t=" + Date.now(), { cache: "no-store" });
+    const m = r.ok && (await r.text()).match(/const BUILD = "([^"]+)"/);
+    if (m && m[1] !== BUILD) location.replace(location.pathname + "?v=" + m[1] + location.hash);
+  } catch (e) {}
+}
 let histAt = 0;
 async function loadHistory(force) {
   if (!force && Date.now() - histAt < 60000) return;
@@ -899,22 +911,23 @@ async function loadHistory(force) {
   safe(renderHistory);
 }
 route();
-load(); loadHistory(true);
+load(); loadHistory(true); checkBuild(true);
 /* 手動の再読み込み（ホーム画面から開いたときはブラウザの再読み込みが使えないため） */
 $("#reload").addEventListener("click", async () => {
   const b = $("#reload");
   if (b.classList.contains("busy")) return;
   b.classList.remove("done"); b.classList.add("busy");
   const t0 = Date.now();
+  checkBuild(true);
   const ok = (await Promise.all([load(), loadHistory(true)]))[0];
   await new Promise(r => setTimeout(r, Math.max(0, 500 - (Date.now() - t0))));   // 押したことが見えるよう最低0.5秒回す
   b.classList.remove("busy");
   if (ok) { b.classList.add("done"); setTimeout(() => b.classList.remove("done"), 1200); }
   else $("#updated").textContent = "読み込めませんでした";
 });
-setInterval(() => { if (!document.hidden) load(); }, 30000);
+setInterval(() => { if (!document.hidden) { load(); checkBuild(); } }, 30000);
 setInterval(() => { if (!document.hidden) { safe(renderHead); safe(renderToday); } }, 15000);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { load(); checkBuild(true); } });
 </script>
 </body>
 </html>
