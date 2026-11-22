@@ -467,7 +467,7 @@ def parse_finish(s, rid):
                          agari=_num(rest[2]) if len(rest) > 2 else None,
                          kimarite=rest[3] if len(rest) > 3 else None,
                          sb=rest[4] if len(rest) > 4 else None,
-                         reason=rest[5] if len(rest) > 5 else None))
+                         reason=(rest[5] or None) if len(rest) > 5 else None))   # 空欄は None（空文字だと「取れた」扱いになり、毎回取り直してしまう）
     return pd.DataFrame(rows)
 
 
@@ -671,6 +671,7 @@ def reason_fill(n_days=3, log=print):
             continue
         y = pd.concat(F, ignore_index=True)
         y["race_id"] = y["race_id"].astype(str)
+        y["reason"] = y["reason"].where(y["reason"].astype(str).str.strip().ne(""))   # 空欄は欠損に
         f = f.drop(columns=[c for c in ("reason",) if c in f]).merge(y, on=["race_id", "car"], how="left")
         if not f["reason"].notna().any():          # 1件も取れなかった日は印を付けて飛ばす（毎回取り直さない）
             f["reason"] = "-"
