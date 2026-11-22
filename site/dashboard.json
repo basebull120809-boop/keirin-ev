@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-22 08:59",
+ "updated_at": "2026-11-22 09:04",
  "picks": {
   "date": "2026-11-22",
   "races": [
@@ -464,6 +464,7 @@
     "status": "skip",
     "invest": false,
     "reason": "2車単5点はどの目が当たっても1.7倍以上戻る配分にできないため見送り",
+    "mi": null,
     "notes": [
      "主導権を取るライン：1-7（佐竹和也）49%、2-5（松岡孝高）28%、3-4（江本博明）21%",
      "主導権予想：7眞砂英作のライン 35%（2番手は 5原井剣也 33%）",
@@ -508,6 +509,7 @@
     "status": "buy",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [
      "1000回シミュレーション：的中 527回／プラス収支 522回（トリガミ 5回）・平均回収率 100%",
      "展開の内訳（1着が出たライン）：2-4-5 62%、1-7 32%、3-6 7%",
@@ -551,6 +553,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -561,6 +564,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -571,6 +575,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -581,6 +586,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -591,6 +597,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -601,6 +608,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -611,6 +619,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -621,6 +630,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -631,6 +641,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -641,6 +652,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -651,6 +663,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -661,6 +674,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -671,6 +685,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -681,6 +696,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -691,6 +707,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -701,6 +718,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -711,6 +729,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -721,6 +740,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -731,6 +751,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -741,6 +762,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -751,6 +773,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -761,6 +784,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -771,6 +795,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -781,6 +806,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -791,6 +817,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -801,6 +828,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -811,6 +839,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -821,6 +850,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -831,6 +861,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -841,6 +872,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -851,6 +883,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -861,6 +894,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -871,6 +905,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -881,6 +916,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -891,6 +927,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -901,6 +938,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -911,6 +949,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -921,6 +960,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -931,6 +971,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -941,6 +982,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -951,6 +993,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -961,6 +1004,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -971,6 +1015,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -981,6 +1026,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -991,6 +1037,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1001,6 +1048,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1011,6 +1059,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1021,6 +1070,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1031,6 +1081,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1041,6 +1092,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1051,6 +1103,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1061,6 +1114,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1071,6 +1125,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1081,6 +1136,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1091,6 +1147,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1101,6 +1158,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1111,6 +1169,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1121,6 +1180,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1131,6 +1191,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1141,6 +1202,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1151,6 +1213,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1161,6 +1224,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1171,6 +1235,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    },
@@ -1181,6 +1246,7 @@
     "status": "wait",
     "invest": false,
     "reason": "",
+    "mi": null,
     "notes": [],
     "lines": []
    }
