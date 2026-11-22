@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-22 12:01",
+ "updated_at": "2026-11-22 12:09",
  "picks": {
   "date": "2026-11-22",
   "races": [
@@ -3075,14 +3075,21 @@
     "race_no": 4,
     "deadline": "11:58",
     "judged_at": "11:52:16",
-    "result": null,
+    "result": {
+     "combo": "3-4-1",
+     "payout": 700
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=3",
+     "payout": 140,
+     "all": "1=3・1=4・3=4"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3097,7 +3104,7 @@
       "odds": 1.9,
       "p": 0.4577,
       "ev": 0.809,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "2=3=4",
@@ -3105,7 +3112,7 @@
       "odds": 6.0,
       "p": 0.1254,
       "ev": 0.7,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=4",
@@ -3113,7 +3120,7 @@
       "odds": 10.7,
       "p": 0.0647,
       "ev": 0.644,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=7",
@@ -3121,7 +3128,7 @@
       "odds": 13.2,
       "p": 0.047,
       "ev": 0.577,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4=7",
@@ -3129,7 +3136,7 @@
       "odds": 17.5,
       "p": 0.0436,
       "ev": 0.71,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=3",
@@ -3137,7 +3144,7 @@
       "odds": 20.2,
       "p": 0.0318,
       "ev": 0.597,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=6",
@@ -3145,7 +3152,7 @@
       "odds": 30.9,
       "p": 0.0199,
       "ev": 0.572,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=5",
@@ -3153,7 +3160,7 @@
       "odds": 41.6,
       "p": 0.0192,
       "ev": 0.741,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=7",
@@ -3161,7 +3168,7 @@
       "odds": 41.0,
       "p": 0.0168,
       "ev": 0.642,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=4=5",
@@ -3169,12 +3176,21 @@
       "odds": 38.5,
       "p": 0.0158,
       "ev": 0.566,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=4",
+     "payout": 180
+    },
+    "ex_result": {
+     "combo": "3-4",
+     "payout": 470
+    },
+    "trio_result": {
+     "combo": "1=3=4",
+     "payout": 170
+    },
     "notes": [
      "1000回シミュレーション：的中 824回／プラス収支 216回（トリガミ 608回）・平均回収率 68%",
      "展開の内訳（1着が出たライン）：1-3-4 85%、2-5-6 12%、7 3%",
@@ -5647,13 +5663,13 @@
   },
   "tenkai": {
    "total": {
-    "stake": 221000,
-    "payout": 184900.0,
-    "roi": 0.8367,
-    "points": 221,
-    "hits": 52,
-    "races": 221,
-    "race_hits": 52,
+    "stake": 222000,
+    "payout": 189600.0,
+    "roi": 0.8541,
+    "points": 222,
+    "hits": 53,
+    "races": 222,
+    "race_hits": 53,
     "days": 7
    },
    "daily": [
@@ -5725,14 +5741,14 @@
     },
     {
      "date": "2026-11-22",
-     "stake": 13000,
-     "payout": 9000.0,
-     "points": 13,
-     "hits": 3,
-     "races": 13,
-     "race_hits": 3,
-     "roi": 0.6923,
-     "cum": -36100.0
+     "stake": 14000,
+     "payout": 13700.0,
+     "points": 14,
+     "hits": 4,
+     "races": 14,
+     "race_hits": 4,
+     "roi": 0.9786,
+     "cum": -32400.0
     }
    ]
   },
