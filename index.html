@@ -898,7 +898,7 @@ async function checkBuild(force) {
   try {
     const r = await fetch(RAW + "index.html?t=" + Date.now(), { cache: "no-store" });
     const m = r.ok && (await r.text()).match(/const BUILD = "([^"]+)"/);
-    if (m && m[1] !== BUILD) location.replace(location.pathname + "?v=" + m[1] + location.hash);
+    if (m && m[1] !== BUILD && !location.search.includes("v=" + m[1])) location.replace(location.pathname + "?v=" + m[1] + location.hash);
   } catch (e) {}
 }
 let histAt = 0;
