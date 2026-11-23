@@ -284,8 +284,11 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
 # 合成オッズ1.7倍未満（確定時の見込み）・見込み回収80%未満の買い方は使わない。差が1%以内なら見込み回収の高い方。
 # 過去検証（2026-09〜11・2,273R、確定オッズ）：685R 的中39%・回収84%・平均5.4点
 #   （参考：前の「見込み回収最大」は 的中27〜30%・回収97% だったが1点勝負が多かった）
-MULTI_CANDS = {"qn": [2, 3, 4], "wide": [2, 3, 4], "ex": [3, 4, 5, 6],
+# 2026-11-23 改訂：ワイドは候補から外した（おすすめ・見送り推奨とも出さない）
+# 2026-11-23 改訂：9車立ては3連複だけ・点数を多めに（NINE_CANDS）
+MULTI_CANDS = {"qn": [2, 3, 4], "ex": [3, 4, 5, 6],
                "trio": [4, 5, 6, 8, 10], "tri": [10, 12, 15, 18, 20]}
+NINE_CANDS = {"trio": [8, 10, 12, 15]}
 MULTI_LABEL = {"qn": "2車複", "wide": "ワイド", "ex": "2車単", "trio": "3連複", "tri": "3連単"}
 MULTI_EV_MIN = 0.80       # 買い方全体の見込み回収（確定時の見込みオッズで）がこれ未満の買い方は使わない
 MULTI_SYNTH_MIN = 1.7     # 合成オッズ（確定時の見込み）がこれ未満の買い方は使わない（2026-11-18 2.0→1.7：2.0では買いが1日数Rしか出ないため）
@@ -332,7 +335,9 @@ def multi_plans(P, cars, combos, odds, drift=0.93, cands=None, finishes=None):
     """odds: {券種: {組: 判定時オッズ}}（無い券種は飛ばす）。finishes: シミュレーション各回の着順（あれば的中回数を数える）
     戻り値: 候補の買い方のリスト（確率の高い順に上から k 点。hit=的中確率, sim_hit=シミュレーションで当たった割合,
     synth=合成オッズ, ev=見込み回収。オッズはどれも確定時の見込み）"""
-    cands = cands or MULTI_CANDS
+    if cands is None:
+        n_cars = sum(1 for c in cars if c == c and c not in (None, "", 0))
+        cands = NINE_CANDS if n_cars >= 9 else MULTI_CANDS
     pm = all_marginals(P, cars, combos)
     keys = [_sim_keys(f) for f in finishes] if finishes else None
     out = _Plans()

@@ -33,7 +33,8 @@ def _probs(P, cars, combos):
     return trio, qn
 
 
-def _pick(probs, odds):
+def _pick(probs, odds, odds_max=None):
+    odds_max = ODDS_MAX if odds_max is None else odds_max
     out = []
     for k, o in odds.items():
         try:
@@ -42,7 +43,7 @@ def _pick(probs, odds):
             continue
         k = _key(k)
         p = probs.get(k, 0.0)
-        if o <= 0 or o > ODDS_MAX or p <= 0:
+        if o <= 0 or o > odds_max or p <= 0:
             continue
         ev = p * o * DRIFT
         if ev >= EV_MIN:
@@ -54,3 +55,12 @@ def plan(P, cars, combos, trio_odds, qn_odds):
     """P: 残差モデルの3連単確率（504）→ (3連複の買い目, 2車複の買い目)"""
     trio, qn = _probs(P, cars, combos)
     return _pick(trio, trio_odds or {}), _pick(qn, qn_odds or {})
+
+
+def plan_over(P, cars, combos, trio_odds, qn_odds):
+    """オッズ上限なしの追加分（ODDS_MAX 倍を超える目だけ。kind="evr3x" / "evr2x"）
+    2026-11-23 追加：上限を外すと回収率がどう変わるかを、今までの evr3・evr2 と分けて紙上で確かめる"""
+    trio, qn = _probs(P, cars, combos)
+    inf = float("inf")
+    t3, t2 = _pick(trio, trio_odds or {}, inf), _pick(qn, qn_odds or {}, inf)
+    return [b for b in t3 if b["odds"] > ODDS_MAX], [b for b in t2 if b["odds"] > ODDS_MAX]

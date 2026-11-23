@@ -297,6 +297,9 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                          deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
             bets += [dict(base4, **b, kind="evr3", rec=False) for b in b3]
             bets += [dict(base4, **b, kind="evr2", rec=False) for b in b2]
+            x3, x2 = evbuy.plan_over(P_res, cars, COMBOS, tro4, qno4)   # オッズ上限なしの追加分（紙上記録・収支外）
+            bets += [dict(base4, **b, kind="evr3x", rec=False) for b in x3]
+            bets += [dict(base4, **b, kind="evr2x", rec=False) for b in x2]
         except Exception as e:
             print("残差モデルの期待値買い失敗", rid, e, flush=True)
     try:                                         # 独自指標の圧縮モデル（2026/11 追加）：補正した確率で期待値1以上の2車複を紙上で記録（見送りとは別枠）
@@ -736,7 +739,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "trio_m"]), b["kind"].isin(["qn", "qn_z", "evr2", "cmp2", "qn_m"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "evr3x", "trio_m"]), b["kind"].isin(["qn", "qn_z", "evr2", "evr2x", "cmp2", "qn_m"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],
