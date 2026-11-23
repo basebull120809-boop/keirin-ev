@@ -289,6 +289,8 @@ def recommend(pl, yoso_bets, win, r: TypeRules = TypeRules(), tri_conf=None):
 MULTI_CANDS = {"qn": [2, 3, 4], "ex": [3, 4, 5, 6],
                "trio": [4, 5, 6, 8, 10], "tri": [10, 12, 15, 18, 20]}
 NINE_CANDS = {"trio": [8, 10, 12, 15]}
+# 2026-11-23 改訂：7車立ては3連複の多点買いをやめる（最大6点。8点・10点は出さない）
+SEVEN_CANDS = {**MULTI_CANDS, "trio": [4, 5, 6]}
 MULTI_LABEL = {"qn": "2車複", "wide": "ワイド", "ex": "2車単", "trio": "3連複", "tri": "3連単"}
 MULTI_EV_MIN = 0.80       # 買い方全体の見込み回収（確定時の見込みオッズで）がこれ未満の買い方は使わない
 MULTI_SYNTH_MIN = 1.7     # 合成オッズ（確定時の見込み）がこれ未満の買い方は使わない（2026-11-18 2.0→1.7：2.0では買いが1日数Rしか出ないため）
@@ -337,7 +339,7 @@ def multi_plans(P, cars, combos, odds, drift=0.93, cands=None, finishes=None):
     synth=合成オッズ, ev=見込み回収。オッズはどれも確定時の見込み）"""
     if cands is None:
         n_cars = sum(1 for c in cars if c == c and c not in (None, "", 0))
-        cands = NINE_CANDS if n_cars >= 9 else MULTI_CANDS
+        cands = NINE_CANDS if n_cars >= 9 else (SEVEN_CANDS if n_cars == 7 else MULTI_CANDS)
     pm = all_marginals(P, cars, combos)
     keys = [_sim_keys(f) for f in finishes] if finishes else None
     out = _Plans()
