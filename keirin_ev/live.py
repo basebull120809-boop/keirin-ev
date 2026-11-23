@@ -603,9 +603,12 @@ def run(max_minutes=340):
     # 結果待ち：締切を過ぎた（これから過ぎる）全レース。今日のバンク傾向にも使う
     pending = {rid: [dl, venue, dl + pd.Timedelta(minutes=RES_AFTER)]
                for dl, venue, rid in full if rid not in have}
+    from . import late
+    late_done = late.done_ids(date)            # 締切直前のオッズ：締切がまだ先の全レース（前の実行で記録済みは除く）
+    late_q = [x for x in full if x[0] > now() + pd.Timedelta(minutes=late.LATE_MIN) and x[2] not in late_done]
     if not sched:
         print("判定するレースが残っていません", flush=True)
-    while (sched or pending) and time.time() - t0 < max_minutes * 60:
+    while (sched or pending or late_q) and time.time() - t0 < max_minutes * 60:
         _reload_if_changed(sig, t0, max_minutes, last_pull)
         got = check_results(date, pending, lambda m: print(m, flush=True))
         if got:
@@ -616,6 +619,20 @@ def run(max_minutes=340):
             except Exception as e:
                 print("サイト用データ更新失敗:", e, flush=True)
             push_now(f"live 結果 {len(got)}R")
+        t = now()
+        for dl, venue, rid in late_q:              # 締切直前のオッズを記録（判定後の下落を実測するため。買い目には使わない）
+            left = (dl - t).total_seconds() / 60
+            if rid in late_done or left > late.LATE_MAX:
+                continue
+            late_done.add(rid)                     # 失敗しても取り直さない（判定の時間を削らないため）
+            if left < late.LATE_MIN:
+                continue
+            try:
+                n = late.snapshot(date, venue, rid, dl)
+                print(f"{now():%H:%M:%S} {venue} {int(rid[-4:])}R 直前オッズ {n}券種（締切{left:.1f}分前）", flush=True)
+            except Exception as e:
+                print("直前オッズの取得失敗", rid, e, flush=True)
+        late_q = [x for x in late_q if x[2] not in late_done]
         t = now()
         for dl, venue, rid in sched:
             left = (dl - t).total_seconds() / 60
