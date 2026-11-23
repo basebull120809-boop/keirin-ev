@@ -61,6 +61,7 @@ def _bl(g, kind):
     return out
 
 
+REC_START = "2026-11-24"   # 2車複の期待値買い（qn_ev）だけにした日
 BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4")   # おすすめ以外は空にする券種（evr3・evr2 は紙上記録として残す）
 
 
@@ -162,6 +163,7 @@ def picks_and_paper():
     groups = list(done.groupby("kind"))
     if "rec" in done:                          # おすすめ券種だけを買った場合
         rr = done[done["rec"].astype(str).str.lower().isin(["true", "1"])]
+        rr = rr[rr["date"].astype(str) >= REC_START]   # 方式を1つに絞った日から集計し直す（前の方式の成績を混ぜない）
         if len(rr):
             groups.append(("rec", rr))
     ev = done[done["kind"].isin(["evr3", "evr2"])]   # 残差モデルの期待値買い（3連複＋2車複を合わせて）
@@ -180,6 +182,7 @@ def picks_and_paper():
                                       hits=int(sub["hit"].sum()), races=sub["race_id"].nunique(),
                                       race_hits=int(d["race_hits"].sum()), days=len(d)),
                            daily=d.to_dict("records"))
+    paper.pop("yoso", None)                    # ページはおすすめが無いと3連単の記録を出すので、前の方式の成績を出さないよう外す
     paper = paper or None
     return picks, paper
 

@@ -130,6 +130,74 @@ def _compress_predictor():
     return _CMP[0]
 
 
+def strategy():
+    """config.json の strategy（"qn_ev" = 2車複の期待値買いだけ。それ以外・未設定なら従来の全方式）"""
+    try:
+        return json.loads(Path("config.json").read_text(encoding="utf-8")).get("strategy", "")
+    except Exception:
+        return ""
+
+
+def _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
+    """ただ1つの方式：残差モデルの2車複確率 × 判定時オッズ × 0.93 が1.0以上、50倍以下の目を全部100円ずつ。
+
+    過去検証（2025-11〜2026-11・毎月その前10か月で学習し直し・確定オッズ）:
+      5,282レース 6,887点 的中レース9.7% 回収率112.5%（95%区間 103〜124%）。13か月中12か月で100%超
+    的中は10レースに1回ほど。当てにいく方式ではなく、オッズが確率より高い目だけを買う方式。
+    """
+    base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
+    bets, reason, qno = [], "", {}
+    try:
+        sp = kdreams.soup(html)
+        _oq, _ot = kdreams.parse_odds_quinella(sp, rid), kdreams.parse_odds_trio(sp, rid)
+        for nm, df in (("quinella", _oq), ("trio", _ot)):    # 判定時オッズは検証用に保存を続ける
+            if len(df):
+                fo = day / f"odds_live_{nm}.csv.gz"
+                df.assign(taken_at=t.strftime("%H:%M:%S")).to_csv(fo, mode="a", index=False, compression="gzip",
+                                                                   header=not fo.exists())
+        qno = dict(_oq[["combo", "odds"]].values)
+    except Exception as e:
+        print("2車複のオッズを読めず", rid, e, flush=True)
+    cars = X["T"].cars[0]
+    if P_res is None:
+        reason = "残差モデルが使えないため見送り"
+    elif not qno:
+        reason = "2車複のオッズが取得できなかったため見送り"
+    else:
+        from . import evbuy
+        _, b2 = evbuy.plan(P_res, cars, COMBOS, {}, qno)
+        bets = [dict(base, **b, kind="qn", rec=True) for b in b2]
+        if not bets:
+            reason = f"オッズが確率より高い2車複がない（期待値{evbuy.EV_MIN:g}以上・{evbuy.ODDS_MAX:g}倍以下）ため見送り"
+    notes, line_probs = [], []
+    try:
+        from .insights import race_notes
+        notes, line_probs = race_notes(P_res if P_res is not None else np.zeros(len(COMBOS)), X["T"], ent, his, od,
+                                       date=date, venue=venue)
+    except Exception as e:
+        print("解説作成失敗", rid, e, flush=True)
+    why = ""
+    if bets:
+        hp = sum(b["p"] for b in bets)
+        why = f"2車複{len(bets)}点：オッズがモデルの確率より高い目だけ（当たる見込み {hp:.0%}・各100円）"
+    with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
+                                deadline=dl.strftime("%H:%M") if dl is not None else "",
+                                notes=notes, lines=line_probs,
+                                names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
+                                n_bets=len(bets), n_invest=0, rec="qn" if bets else None, rec_reason=why,
+                                cand={}, reason=reason), ensure_ascii=False) + "\n")
+    if bets:
+        f = day / "bets.csv"
+        new = pd.DataFrame(bets)
+        if f.exists():
+            old = pd.read_csv(f, dtype={"race_id": str}, on_bad_lines="skip")
+            new = pd.concat([old, new], ignore_index=True)
+        new.to_csv(f, index=False)
+    return bets, ent, notes
+
+
 def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
     html = kdreams.fetch(f"/{venue}/racedetail/{rid}/", refresh=True)
     ent, od, _, info, _, his = kdreams.parse_race(html, rid, extra=True)
@@ -190,6 +258,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         pass
     except Exception as e:
         print("残差モデルを使えず旧モデルで判定", rid, e, flush=True)
+    if strategy() == "qn_ev":                    # 2026-11-24 方式を1つに絞った：残差モデルの期待値で2車複だけ買う
+        return _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res)
     scen = None
     try:                                         # 展開シナリオ予想（全展開を想定＋オッズ）があれば最優先で使う
         from .scenario import ScenarioModel
@@ -572,7 +642,8 @@ def run(max_minutes=340):
         model = TrifectaModel.from_json("models/latest.json")
     except Exception as e:
         print("モデルなし（オッズの記録のみ行います）:", e); model = None
-    _compress_predictor()                      # 圧縮モデルの過去データを先に読んでおく（最初の判定が締切に遅れないように）
+    if strategy() != "qn_ev":
+        _compress_predictor()                  # 圧縮モデルの過去データを先に読んでおく（最初の判定が締切に遅れないように）
     kdreams.SLEEP_SEC = 1.0
     full = schedule(date)
     sched = [x for x in full if x[0] > now() + pd.Timedelta(minutes=LEAD_MIN)]
