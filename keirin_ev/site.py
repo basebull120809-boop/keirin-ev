@@ -61,7 +61,7 @@ def _bl(g, kind):
     return out
 
 
-REC_START = "2026-11-24"   # 2車複の期待値買い（qn_ev）だけにした日
+REC_START = "2026-11-24"   # 的中重視の1方式（strategy=hit）だけにした日
 BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4")   # おすすめ以外は空にする券種（evr3・evr2 は紙上記録として残す）
 
 

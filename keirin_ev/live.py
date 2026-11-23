@@ -131,23 +131,59 @@ def _compress_predictor():
 
 
 def strategy():
-    """config.json の strategy（"qn_ev" = 2車複の期待値買いだけ。それ以外・未設定なら従来の全方式）"""
+    """config.json の strategy（"hit" = 的中重視の1方式だけ。それ以外・未設定なら従来の全方式）"""
     try:
         return json.loads(Path("config.json").read_text(encoding="utf-8")).get("strategy", "")
     except Exception:
         return ""
 
 
-def _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
-    """ただ1つの方式：残差モデルの2車複確率 × 判定時オッズ × 0.93 が1.0以上、50倍以下の目を全部100円ずつ。
+HIT_SYNTH = 1.6      # 合成オッズの下限（判定時オッズ×0.93で見込む）
+HIT_GO = 0.95        # 勝負（収支に入れる）にする見込み回収（当たる見込み×合成オッズ）の線
+HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
+HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
 
-    過去検証（2025-11〜2026-11・毎月その前10か月で学習し直し・確定オッズ）:
-      5,282レース 6,887点 的中レース9.7% 回収率112.5%（95%区間 103〜124%）。13か月中12か月で100%超
-    的中は10レースに1回ほど。当てにいく方式ではなく、オッズが確率より高い目だけを買う方式。
+
+def _hit_plan(probs, odds, kind):
+    """確率の高い目から足して、合成オッズ HIT_SYNTH 倍以上を保てるところまで（最大12候補を見る）"""
+    cand = []
+    for c, o in (odds or {}).items():
+        try:
+            o = float(o)
+        except (TypeError, ValueError):
+            continue
+        from .pools import _key
+        c = _key(c); p = probs.get(c, 0.0)
+        if o > 0 and p > 0:
+            cand.append((p, o, c))
+    cand.sort(reverse=True)
+    inv, sel = 0.0, []
+    for p, o, c in cand[:12]:
+        if 1 / (inv + 1 / (o * HIT_DRIFT)) < HIT_SYNTH:
+            break
+        inv += 1 / (o * HIT_DRIFT); sel.append((p, o, c))
+    if not sel:
+        return None
+    H = sum(p for p, _, _ in sel); S = 1 / inv
+    return dict(kind=kind, H=H, S=S, ev=H * S,
+                bets=[dict(combo=c, stake=0, odds=o, p=round(p, 5), ev=round(p * o * HIT_DRIFT, 3)) for p, o, c in sel])
+
+
+def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
+    """ただ1つの方式（2026-11-24）：全レースで的中重視の予想を出す。
+
+    残差モデルの確率で、2車複・3連複それぞれ「確率の高い目から、合成オッズ1.6倍以上（判定時オッズ×0.93で見込む）を
+    保てるところまで」買う形を作り、見込み回収（当たる見込み×合成オッズ）が高い方を1つ出す。
+    金額は どの目が当たっても払戻がそろう配分（1レース約1,000円）。
+    見込み回収 HIT_GO 以上だけを「勝負」（収支に入れる）、それ以外は「見送り推奨」（予想は出す・収支外）。
+    過去検証（2025-11〜2026-11・毎月学習し直し・確定オッズ）：全レースで的中41〜44%・回収約78%、
+    見込み0.95以上（1日2〜3R）で的中47%・回収104%（95%区間 97〜113%）
     """
+    from .pools import _key
+    from .scenario import guard_stakes
     base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                 deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
-    bets, reason, qno = [], "", {}
+    qno, tro = {}, {}
     try:
         sp = kdreams.soup(html)
         _oq, _ot = kdreams.parse_odds_quinella(sp, rid), kdreams.parse_odds_trio(sp, rid)
@@ -156,20 +192,52 @@ def _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                 fo = day / f"odds_live_{nm}.csv.gz"
                 df.assign(taken_at=t.strftime("%H:%M:%S")).to_csv(fo, mode="a", index=False, compression="gzip",
                                                                    header=not fo.exists())
-        qno = dict(_oq[["combo", "odds"]].values)
+        qno, tro = dict(_oq[["combo", "odds"]].values), dict(_ot[["combo", "odds"]].values)
     except Exception as e:
-        print("2車複のオッズを読めず", rid, e, flush=True)
+        print("2車複・3連複のオッズを読めず", rid, e, flush=True)
     cars = X["T"].cars[0]
+    bets, reason, rec, why, mi, mi_why = [], "", None, "", None, ""
     if P_res is None:
         reason = "残差モデルが使えないため見送り"
-    elif not qno:
-        reason = "2車複のオッズが取得できなかったため見送り"
     else:
-        from . import evbuy
-        _, b2 = evbuy.plan(P_res, cars, COMBOS, {}, qno)
-        bets = [dict(base, **b, kind="qn", rec=True) for b in b2]
-        if not bets:
-            reason = f"オッズが確率より高い2車複がない（期待値{evbuy.EV_MIN:g}以上・{evbuy.ODDS_MAX:g}倍以下）ため見送り"
+        qp, tp = {}, {}
+        for k, (i, j, l) in enumerate(COMBOS):
+            p = float(P_res[k])
+            if p <= 0 or not (cars[i] and cars[j] and cars[l]):
+                continue
+            a, b, c = int(cars[i]), int(cars[j]), int(cars[l])
+            kq, kt = _key(f"{a}={b}"), _key(f"{a}={b}={c}")
+            qp[kq] = qp.get(kq, 0.0) + p; tp[kt] = tp.get(kt, 0.0) + p
+        plans = [x for x in (_hit_plan(qp, qno, "qn"), _hit_plan(tp, tro, "trio")) if x]
+        if not plans:
+            reason = "合成オッズ1.6倍以上で組める目がないため見送り"
+        else:
+            pl = max(plans, key=lambda x: x["ev"])
+            bl = pl["bets"]
+            st = None
+            while bl and st is None:              # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
+                st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
+                if st is None:
+                    bl = bl[:-1]
+            if not st:
+                reason = "100円単位で合成1.6倍以上の配分にできないため見送り"
+            else:
+                lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
+                txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
+                       f"・見込み回収{pl['ev']:.0%}")
+                if pl["ev"] >= HIT_GO:
+                    bets = [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
+                    rec, why = pl["kind"], "勝負：" + txt
+                else:
+                    bets = [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
+                    mi, mi_why = pl["kind"], txt
+                    reason = f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）"
+        try:                                      # 回収重視の2車複（期待値1.0以上）も紙上で記録だけ続ける（表示・おすすめの収支には入れない）
+            from . import evbuy
+            _, b2 = evbuy.plan(P_res, cars, COMBOS, {}, qno)
+            bets += [dict(base, **b, kind="evr2", rec=False) for b in b2]
+        except Exception as e:
+            print("回収重視の記録失敗", rid, e, flush=True)
     notes, line_probs = [], []
     try:
         from .insights import race_notes
@@ -177,17 +245,13 @@ def _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                                        date=date, venue=venue)
     except Exception as e:
         print("解説作成失敗", rid, e, flush=True)
-    why = ""
-    if bets:
-        hp = sum(b["p"] for b in bets)
-        why = f"2車複{len(bets)}点：オッズがモデルの確率より高い目だけ（当たる見込み {hp:.0%}・各100円）"
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
-                                n_bets=len(bets), n_invest=0, rec="qn" if bets else None, rec_reason=why,
-                                cand={}, reason=reason), ensure_ascii=False) + "\n")
+                                n_bets=sum(1 for b in bets if b.get("rec")), n_invest=0, rec=rec, rec_reason=why,
+                                mi=mi, mi_reason=mi_why, cand={}, reason=reason), ensure_ascii=False) + "\n")
     if bets:
         f = day / "bets.csv"
         new = pd.DataFrame(bets)
@@ -195,7 +259,7 @@ def _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             old = pd.read_csv(f, dtype={"race_id": str}, on_bad_lines="skip")
             new = pd.concat([old, new], ignore_index=True)
         new.to_csv(f, index=False)
-    return bets, ent, notes
+    return [b for b in bets if b["kind"] != "evr2"], ent, notes
 
 
 def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
@@ -258,8 +322,8 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         pass
     except Exception as e:
         print("残差モデルを使えず旧モデルで判定", rid, e, flush=True)
-    if strategy() == "qn_ev":                    # 2026-11-24 方式を1つに絞った：残差モデルの期待値で2車複だけ買う
-        return _judge_qn_ev(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res)
+    if strategy() == "hit":                      # 2026-11-24 方式を1つに絞った：全レースで的中重視の予想（勝負は見込み回収0.95以上だけ）
+        return _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res)
     scen = None
     try:                                         # 展開シナリオ予想（全展開を想定＋オッズ）があれば最優先で使う
         from .scenario import ScenarioModel
@@ -642,7 +706,7 @@ def run(max_minutes=340):
         model = TrifectaModel.from_json("models/latest.json")
     except Exception as e:
         print("モデルなし（オッズの記録のみ行います）:", e); model = None
-    if strategy() != "qn_ev":
+    if strategy() != "hit":
         _compress_predictor()                  # 圧縮モデルの過去データを先に読んでおく（最初の判定が締切に遅れないように）
     kdreams.SLEEP_SEC = 1.0
     full = schedule(date)
