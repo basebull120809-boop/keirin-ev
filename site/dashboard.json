@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 16:11",
+ "updated_at": "2026-11-24 16:14",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -3216,14 +3216,21 @@
     "race_no": 2,
     "deadline": "16:03",
     "judged_at": "15:57:09",
-    "result": null,
+    "result": {
+     "combo": "2-5-3",
+     "payout": 19100
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=3",
+     "payout": 1830,
+     "all": "2=3・2=5・3=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3240,7 +3247,7 @@
       "odds": 4.9,
       "p": 0.2686,
       "ev": 1.224,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=5",
@@ -3248,12 +3255,21 @@
       "odds": 3.7,
       "p": 0.1776,
       "ev": 0.611,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=5",
+     "payout": 930
+    },
+    "ex_result": {
+     "combo": "2-5",
+     "payout": 2530
+    },
+    "trio_result": {
+     "combo": "2=3=5",
+     "payout": 3160
+    },
     "notes": [
      "1着が出るライン：5-1-6 が 75%",
      "上がり最速：2 井上公利（直近平均 11.1秒、2位と0.1秒差）",
