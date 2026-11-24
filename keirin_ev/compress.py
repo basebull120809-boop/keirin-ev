@@ -514,9 +514,9 @@ class LivePredictor:
         return out, tri
 
 
-def quinella_plan(pred, tri, qn_odds, ev_min=1.0, stake=100, odds_max=20.0):
+def quinella_plan(pred, tri, qn_odds, ev_min=1.0, stake=100, odds_max=10.0):
     """補正した確率で2車複を組み直し、期待値 ev_min 以上・オッズ odds_max 倍以下の目を返す（紙上運用 cmp2）
-    odds_max は 2026-11-24 追加：上限がなく数百〜9999.9倍の目まで拾っていたため、20倍で切る"""
+    odds_max は 2026-11-24 追加：上限がなく数百〜9999.9倍の目まで拾っていたため、10倍で切る"""
     f1 = dict(zip(pred.car, pred.p1 / pred.m_win))
     f3 = dict(zip(pred.car, pred.p3 / pred.m_top3))
     k = tri.c1.map(f1).fillna(1) * np.sqrt(tri.c2.map(f3).fillna(1) * tri.c3.map(f3).fillna(1))
