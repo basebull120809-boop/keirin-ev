@@ -236,27 +236,33 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
         if not plans:
             reason = "2点以上・合成オッズ1.6倍以上で組める目がないため見送り"
         else:
-            pl = max(plans, key=lambda x: (x["H"], x["ev"]))   # まず当てる：当たる見込みの高い券種
-            bl = pl["bets"]
-            st = None
-            while len(bl) >= HIT_MINPTS and st is None:              # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
-                st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
-                if st is None:
-                    bl = bl[:-1]
-            if not st:
-                reason = "100円単位・2点以上で合成1.6倍以上の配分にできないため見送り"
-            else:
+            # 2026-11-24 本人の希望で「あらゆる方向から」：条件を満たす券種（2車複・3連複）は両方買う
+            plans.sort(key=lambda x: (x["H"], x["ev"]), reverse=True)   # まず当てる：当たる見込みの高い券種から
+            go, ng = [], []
+            for pl in plans:
+                st = _hit_stakes(pl)               # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
+                if not st:
+                    continue
                 lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
                 txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
                 if pl["H"] >= HIT_HMIN and pl["ev"] >= HIT_GO and strategy() != "ev":
-                    bets += [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
-                    rec, why = pl["kind"], "勝負：" + txt
+                    go.append((pl, st, txt))
                 else:
-                    bets += [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
-                    mi, mi_why = pl["kind"], txt
-                    reason = (f"当たる見込みが{HIT_HMIN:.0%}に届かない（{pl['H']:.0%}）" if pl["H"] < HIT_HMIN
-                              else f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）")
+                    ng.append((pl, st, txt))
+            if go:
+                for pl, st, _ in go:
+                    bets += [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
+                rec = go[0][0]["kind"]; rec2 = go[1][0]["kind"] if len(go) > 1 else None
+                why = "勝負：" + "／".join(t for _, _, t in go)
+            elif ng:
+                pl, st, txt = ng[0]
+                bets += [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
+                mi, mi_why = pl["kind"], txt
+                reason = (f"当たる見込みが{HIT_HMIN:.0%}に届かない（{pl['H']:.0%}）" if pl["H"] < HIT_HMIN
+                          else f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）")
+            else:
+                reason = "100円単位・2点以上で合成1.6倍以上の配分にできないため見送り"
         try:                                      # 回収重視の2車複・3連複（期待値1.0以上・50倍以下）を紙上で記録（evr2・evr3）
             from . import evbuy
             b3, b2 = evbuy.plan(P_res, cars, COMBOS, tro, qno)
