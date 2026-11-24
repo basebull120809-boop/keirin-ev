@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 10:54",
+ "updated_at": "2026-11-24 10:56",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -1005,14 +1005,21 @@
     "race_no": 7,
     "deadline": "10:45",
     "judged_at": "10:39:26",
-    "result": null,
+    "result": {
+     "combo": "7-2-4",
+     "payout": 870
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 230,
+     "all": "2=4・2=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -1029,7 +1036,7 @@
       "odds": 3.6,
       "p": 0.204,
       "ev": 0.683,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "2=5=7",
@@ -1037,12 +1044,21 @@
       "odds": 5.3,
       "p": 0.1388,
       "ev": 0.684,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 130
+    },
+    "ex_result": {
+     "combo": "7-2",
+     "payout": 350
+    },
+    "trio_result": {
+     "combo": "2=4=7",
+     "payout": 320
+    },
     "notes": [
      "1着が出るライン：2-7-4 が 73%",
      "上がり最速：4 飯田辰哉（直近平均 10.8秒、2位と0.4秒差）",
