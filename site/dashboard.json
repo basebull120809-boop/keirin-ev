@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 10:19",
+ "updated_at": "2026-11-24 10:26",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -782,14 +782,21 @@
     "race_no": 5,
     "deadline": "10:15",
     "judged_at": "10:09:06",
-    "result": null,
+    "result": {
+     "combo": "7-5-6",
+     "payout": 22920
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "5=6",
+     "payout": 570,
+     "all": "5=6・5=7・6=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -806,7 +813,7 @@
       "odds": 3.5,
       "p": 0.2919,
       "ev": 0.95,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "2=5",
@@ -814,12 +821,21 @@
       "odds": 4.0,
       "p": 0.1907,
       "ev": 0.709,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=7",
+     "payout": 160
+    },
+    "ex_result": {
+     "combo": "7-5",
+     "payout": 1520
+    },
+    "trio_result": {
+     "combo": "5=6=7",
+     "payout": 2010
+    },
     "notes": [
      "1着が出るライン：5-2 が 65%",
      "上がり最速：6 三登誉哲（直近平均 12.1秒、2位と0.1秒差）",
