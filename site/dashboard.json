@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 22:07",
+ "updated_at": "2026-11-24 22:08",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -5853,14 +5853,21 @@
     "race_no": 4,
     "deadline": "21:56",
     "judged_at": "21:54:28",
-    "result": null,
+    "result": {
+     "combo": "1-2-4",
+     "payout": 1020
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 130,
+     "all": "1=2・1=4・2=4"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -5879,7 +5886,7 @@
       "odds": 3.9,
       "p": 0.2539,
       "ev": 0.921,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=2=3",
@@ -5887,12 +5894,21 @@
       "odds": 6.4,
       "p": 0.1144,
       "ev": 0.681,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 440
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 590
+    },
+    "trio_result": {
+     "combo": "1=2=4",
+     "payout": 410
+    },
     "notes": [
      "1着が出るライン：1-5 が 56%",
      "上がり最速：2 富澤洋祐（直近平均 11.6秒、2位と0.2秒差）",
