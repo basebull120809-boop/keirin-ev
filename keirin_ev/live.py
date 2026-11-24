@@ -159,7 +159,7 @@ HIT_GO = 0.85        # 勝負（収支に入れる）にする見込み回収（
 HIT_HMIN = 0.60      # 勝負にする当たる見込みの下限（まず当てる：2026-11-24。実績で見込み50〜60%は実際46%しか当たらず、60%以上で約68%）
 HIT_MINPTS = 2       # 1点買いはしない
 HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
-HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
+HIT_BUDGET = 2000    # 1レースの金額（2026-11-24：2,000円に固定。点数が多くても増やさない）
 
 
 def _hit_plan(probs, odds, kind):
@@ -234,13 +234,13 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             bl = pl["bets"]
             st = None
             while len(bl) >= HIT_MINPTS and st is None:              # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
-                st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
+                st = guard_stakes(bl, budget=HIT_BUDGET, drift=HIT_DRIFT, min_synth=HIT_SYNTH)
                 if st is None:
                     bl = bl[:-1]
             if not st:
                 reason = "100円単位・2点以上で合成1.6倍以上の配分にできないため見送り"
             else:
-                pst = prob_stakes(st, budget=sum(b["stake"] for b in st), drift=HIT_DRIFT, min_back=1.2)   # 当たりそうな目に厚く（どれが当たっても合計の1.2倍以上が戻る）
+                pst = prob_stakes(st, budget=HIT_BUDGET, drift=HIT_DRIFT, min_back=1.2)   # 当たりそうな目に厚く（どれが当たっても合計の1.2倍以上が戻る）
                 if pst:
                     st = pst
                     tot = sum(b["stake"] for b in st)
