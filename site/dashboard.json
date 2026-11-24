@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 16:47",
+ "updated_at": "2026-11-24 16:51",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -3661,14 +3661,21 @@
     "race_no": 3,
     "deadline": "16:40",
     "judged_at": "16:34:18",
-    "result": null,
+    "result": {
+     "combo": "5-2-1",
+     "payout": 2450
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 140,
+     "all": "1=2・1=5・2=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3680,7 +3687,7 @@
       "odds": 12.7,
       "p": 0.0949,
       "ev": 1.121,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -3694,7 +3701,7 @@
       "odds": 4.0,
       "p": 0.2349,
       "ev": 0.874,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=5",
@@ -3702,7 +3709,7 @@
       "odds": 5.9,
       "p": 0.1396,
       "ev": 0.766,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=6",
@@ -3710,12 +3717,21 @@
       "odds": 8.9,
       "p": 0.1132,
       "ev": 0.937,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=5",
+     "payout": 520
+    },
+    "ex_result": {
+     "combo": "5-2",
+     "payout": 870
+    },
+    "trio_result": {
+     "combo": "1=2=5",
+     "payout": 390
+    },
     "notes": [
      "1着が出るライン：1-6 が 45%",
      "上がり最速：4 瀧本匡平（直近平均 10.6秒、2位と1.5秒差）",
@@ -6097,12 +6113,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 22500,
+    "stake": 22600,
     "payout": 23810.0,
-    "roi": 1.0582,
-    "points": 225,
+    "roi": 1.0535,
+    "points": 226,
     "hits": 30,
-    "races": 157,
+    "races": 158,
     "race_hits": 30,
     "days": 6
    },
@@ -6164,14 +6180,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 2500,
+     "stake": 2600,
      "payout": 2880.0,
-     "points": 25,
+     "points": 26,
      "hits": 1,
-     "races": 18,
+     "races": 19,
      "race_hits": 1,
-     "roi": 1.152,
-     "cum": 1310.0
+     "roi": 1.1077,
+     "cum": 1210.0
     }
    ]
   },
@@ -7215,12 +7231,12 @@
   },
   "evr": {
    "total": {
-    "stake": 39200,
+    "stake": 39300,
     "payout": 48430.0,
-    "roi": 1.2355,
-    "points": 392,
+    "roi": 1.2323,
+    "points": 393,
     "hits": 52,
-    "races": 194,
+    "races": 195,
     "race_hits": 46,
     "days": 6
    },
@@ -7282,14 +7298,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 2500,
+     "stake": 2600,
      "payout": 2880.0,
-     "points": 25,
+     "points": 26,
      "hits": 1,
-     "races": 18,
+     "races": 19,
      "race_hits": 1,
-     "roi": 1.152,
-     "cum": 9230.0
+     "roi": 1.1077,
+     "cum": 9130.0
     }
    ]
   }
