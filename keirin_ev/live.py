@@ -198,7 +198,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
     勝負（1日約8R）で的中53%・回収89%（95%区間 86〜92%）。当てる方を優先したので回収率は100%に届かない
     """
     from .pools import _key
-    from .scenario import guard_stakes
+    from .scenario import guard_stakes, prob_stakes
     base = dict(date=date, race_id=rid, venue=venue, race_no=int(rid[-4:]),
                 deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
     qno, tro = {}, {}
@@ -240,8 +240,15 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             if not st:
                 reason = "100円単位・2点以上で合成1.6倍以上の配分にできないため見送り"
             else:
+                pst = prob_stakes(st, budget=sum(b["stake"] for b in st), drift=HIT_DRIFT, min_back=1.2)   # 当たりそうな目に厚く（どれが当たっても合計の1.2倍以上が戻る）
+                if pst:
+                    st = pst
+                    tot = sum(b["stake"] for b in st)
+                    pl = dict(pl, ev=sum(b["stake"] * b["p"] * b["odds"] * HIT_DRIFT for b in st) / tot)
                 lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
-                txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
+                tot = sum(b["stake"] for b in st)
+                pays = [b["stake"] * b["odds"] * HIT_DRIFT for b in st]
+                txt = (f"{lab}{len(st)}点・{tot:,}円：当たる見込み{pl['H']:.0%}・払戻{min(pays):,.0f}〜{max(pays):,.0f}円（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
                 if pl["H"] >= HIT_HMIN and pl["ev"] >= HIT_GO:
                     bets = [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
