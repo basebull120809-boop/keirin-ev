@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 13:19",
+ "updated_at": "2026-11-24 13:24",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -1722,14 +1722,21 @@
     "race_no": 6,
     "deadline": "13:10",
     "judged_at": "13:04:27",
-    "result": null,
+    "result": {
+     "combo": "7-2-4",
+     "payout": 1920
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 1210,
+     "all": "2=4・2=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -1746,7 +1753,7 @@
       "odds": 7.9,
       "p": 0.1334,
       "ev": 0.98,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=5=7",
@@ -1754,7 +1761,7 @@
       "odds": 8.6,
       "p": 0.1181,
       "ev": 0.945,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "4=5=7",
@@ -1762,7 +1769,7 @@
       "odds": 7.1,
       "p": 0.0899,
       "ev": 0.594,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=5=7",
@@ -1770,12 +1777,21 @@
       "odds": 11.4,
       "p": 0.0768,
       "ev": 0.814,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 250
+    },
+    "ex_result": {
+     "combo": "7-2",
+     "payout": 320
+    },
+    "trio_result": {
+     "combo": "2=4=7",
+     "payout": 1280
+    },
     "notes": [
      "1着が出るライン：7-2 が 50%",
      "上がり最速：2 山本紳貴（直近平均 10.7秒、2位と0.1秒差）",
