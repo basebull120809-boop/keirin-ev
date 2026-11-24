@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 22:36",
+ "updated_at": "2026-11-24 22:42",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -6344,14 +6344,21 @@
     "race_no": 5,
     "deadline": "22:31",
     "judged_at": "22:25:07",
-    "result": null,
+    "result": {
+     "combo": "7-2-3",
+     "payout": 4340
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=3",
+     "payout": 220,
+     "all": "2=3・2=7・3=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -6370,7 +6377,7 @@
       "odds": 3.4,
       "p": 0.2447,
       "ev": 0.774,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=6",
@@ -6378,12 +6385,21 @@
       "odds": 7.9,
       "p": 0.1252,
       "ev": 0.92,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 650
+    },
+    "ex_result": {
+     "combo": "7-2",
+     "payout": 1040
+    },
+    "trio_result": {
+     "combo": "2=3=7",
+     "payout": 980
+    },
     "notes": [
      "1着が出るライン：3-4-6 が 49%",
      "上がり最速：6 竹内一暢（直近平均 11.0秒、2位と0.1秒差）",
