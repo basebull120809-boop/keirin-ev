@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 09:49",
+ "updated_at": "2026-11-24 09:56",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -444,14 +444,21 @@
     "race_no": 4,
     "deadline": "09:45",
     "judged_at": "09:39:08",
-    "result": null,
+    "result": {
+     "combo": "5-3-1",
+     "payout": 370
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=3",
+     "payout": 170,
+     "all": "1=3・1=5・3=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -463,15 +470,24 @@
       "odds": 14.1,
       "p": 0.0848,
       "ev": 1.113,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
     "evr3x": [],
     "evr2x": [],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=5",
+     "payout": 140
+    },
+    "ex_result": {
+     "combo": "5-3",
+     "payout": 200
+    },
+    "trio_result": {
+     "combo": "1=3=5",
+     "payout": 160
+    },
     "notes": [
      "1着が出るライン：3-5-1 が 80%",
      "上がり最速：2 江本博明（直近平均 11.0秒、2位と0.3秒差）",
@@ -1891,12 +1907,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 20300,
+    "stake": 20400,
     "payout": 20930.0,
-    "roi": 1.031,
-    "points": 203,
+    "roi": 1.026,
+    "points": 204,
     "hits": 29,
-    "races": 141,
+    "races": 142,
     "race_hits": 29,
     "days": 6
    },
@@ -1958,14 +1974,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 300,
+     "stake": 400,
      "payout": 0.0,
-     "points": 3,
+     "points": 4,
      "hits": 0,
-     "races": 2,
+     "races": 3,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 630.0
+     "cum": 530.0
     }
    ]
   },
@@ -3009,12 +3025,12 @@
   },
   "evr": {
    "total": {
-    "stake": 37000,
+    "stake": 37100,
     "payout": 45550.0,
-    "roi": 1.2311,
-    "points": 370,
+    "roi": 1.2278,
+    "points": 371,
     "hits": 51,
-    "races": 178,
+    "races": 179,
     "race_hits": 45,
     "days": 6
    },
@@ -3076,14 +3092,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 300,
+     "stake": 400,
      "payout": 0.0,
-     "points": 3,
+     "points": 4,
      "hits": 0,
-     "races": 2,
+     "races": 3,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 8550.0
+     "cum": 8450.0
     }
    ]
   }
