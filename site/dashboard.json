@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 14:00",
+ "updated_at": "2026-11-24 14:03",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -2077,14 +2077,21 @@
     "race_no": 7,
     "deadline": "13:52",
     "judged_at": "13:46:37",
-    "result": null,
+    "result": {
+     "combo": "5-4-1",
+     "payout": 5070
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 180,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2101,7 +2108,7 @@
       "odds": 5.3,
       "p": 0.1322,
       "ev": 0.652,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "2=4=5",
@@ -2109,7 +2116,7 @@
       "odds": 6.4,
       "p": 0.1094,
       "ev": 0.651,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4=6",
@@ -2117,12 +2124,21 @@
       "odds": 10.2,
       "p": 0.0986,
       "ev": 0.935,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=5",
+     "payout": 470
+    },
+    "ex_result": {
+     "combo": "5-4",
+     "payout": 1350
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 670
+    },
     "notes": [
      "1着が出るライン：1-4-6 が 56%",
      "上がり最速：2 伊藤健詞（直近平均 10.5秒、2位と0.0秒差）",
