@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 17:39",
+ "updated_at": "2026-11-24 17:43",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -4156,14 +4156,21 @@
     "race_no": 5,
     "deadline": "17:32",
     "judged_at": "17:26:20",
-    "result": null,
+    "result": {
+     "combo": "2-5-6",
+     "payout": 340
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=5",
+     "payout": 100,
+     "all": "2=5・2=6・5=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4180,7 +4187,7 @@
       "odds": 2.9,
       "p": 0.2874,
       "ev": 0.775,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=5=6",
@@ -4188,12 +4195,21 @@
       "odds": 5.5,
       "p": 0.1928,
       "ev": 0.986,
-      "hit": null
+      "hit": true
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=5",
+     "payout": 100
+    },
+    "ex_result": {
+     "combo": "2-5",
+     "payout": 130
+    },
+    "trio_result": {
+     "combo": "2=5=6",
+     "payout": 330
+    },
     "notes": [
      "1着が出るライン：2-5-6 が 94%",
      "上がり最速：1 中川博文（直近平均 11.3秒、2位と0.5秒差）",
