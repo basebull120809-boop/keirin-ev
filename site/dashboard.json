@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 09:59",
+ "updated_at": "2026-11-24 10:06",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -540,14 +540,21 @@
     "race_no": 4,
     "deadline": "09:55",
     "judged_at": "09:49:19",
-    "result": null,
+    "result": {
+     "combo": "3-7-6",
+     "payout": 530
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=6",
+     "payout": 620,
+     "all": "3=6・3=7・6=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -564,7 +571,7 @@
       "odds": 4.4,
       "p": 0.2249,
       "ev": 0.92,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=3",
@@ -572,7 +579,7 @@
       "odds": 6.1,
       "p": 0.1473,
       "ev": 0.836,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=3=7",
@@ -580,12 +587,21 @@
       "odds": 9.2,
       "p": 0.0955,
       "ev": 0.817,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=7",
+     "payout": 220
+    },
+    "ex_result": {
+     "combo": "3-7",
+     "payout": 280
+    },
+    "trio_result": {
+     "combo": "3=6=7",
+     "payout": 560
+    },
     "notes": [
      "1着が出るライン：3-7-6 が 81%",
      "上がり最速：5 小田桐義継（直近平均 11.4秒、2位と0.3秒差）",
