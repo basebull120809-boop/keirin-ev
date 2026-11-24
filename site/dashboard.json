@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 18:18",
+ "updated_at": "2026-11-24 18:22",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -4495,14 +4495,21 @@
     "race_no": 7,
     "deadline": "18:11",
     "judged_at": "18:05:16",
-    "result": null,
+    "result": {
+     "combo": "1-7-4",
+     "payout": 2630
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 240,
+     "all": "1=4・1=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4519,7 +4526,7 @@
       "odds": 3.0,
       "p": 0.2916,
       "ev": 0.814,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4",
@@ -4527,12 +4534,21 @@
       "odds": 5.3,
       "p": 0.149,
       "ev": 0.734,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=7",
+     "payout": 770
+    },
+    "ex_result": {
+     "combo": "1-7",
+     "payout": 1250
+    },
+    "trio_result": {
+     "combo": "1=4=7",
+     "payout": 410
+    },
     "notes": [
      "1着が出るライン：5-2 が 51%",
      "上がり最速：7 佐藤愼太郎（直近平均 10.9秒、2位と0.8秒差）",
