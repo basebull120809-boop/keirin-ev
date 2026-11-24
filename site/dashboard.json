@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 22:34",
+ "updated_at": "2026-11-24 22:36",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -6193,14 +6193,21 @@
     "race_no": 5,
     "deadline": "22:22",
     "judged_at": "22:16:30",
-    "result": null,
+    "result": {
+     "combo": "6-1-5",
+     "payout": 4550
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=5",
+     "payout": 300,
+     "all": "1=5・1=6・5=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -6211,7 +6218,7 @@
       "odds": 37.4,
       "p": 0.0446,
       "ev": 1.551,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=5=6",
@@ -6219,7 +6226,7 @@
       "odds": 26.8,
       "p": 0.0435,
       "ev": 1.085,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4=6",
@@ -6227,7 +6234,7 @@
       "odds": 13.7,
       "p": 0.0833,
       "ev": 1.061,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [
@@ -6237,7 +6244,7 @@
       "odds": 44.1,
       "p": 0.0269,
       "ev": 1.104,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -6253,7 +6260,7 @@
       "odds": 4.0,
       "p": 0.2264,
       "ev": 0.842,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=6",
@@ -6261,7 +6268,7 @@
       "odds": 5.7,
       "p": 0.155,
       "ev": 0.822,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "5=6",
@@ -6269,12 +6276,21 @@
       "odds": 10.8,
       "p": 0.0987,
       "ev": 0.991,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=6",
+     "payout": 520
+    },
+    "ex_result": {
+     "combo": "6-1",
+     "payout": 1110
+    },
+    "trio_result": {
+     "combo": "1=5=6",
+     "payout": 1520
+    },
     "notes": [
      "1着が出るライン：3-1-4 が 56%",
      "上がり最速：1 宮崎一彰（直近平均 11.9秒、2位と0.0秒差）",
@@ -9371,12 +9387,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 23800,
+    "stake": 23900,
     "payout": 26270.0,
-    "roi": 1.1038,
-    "points": 238,
+    "roi": 1.0992,
+    "points": 239,
     "hits": 32,
-    "races": 168,
+    "races": 169,
     "race_hits": 32,
     "days": 6
    },
@@ -9438,14 +9454,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 3800,
+     "stake": 3900,
      "payout": 5340.0,
-     "points": 38,
+     "points": 39,
      "hits": 3,
-     "races": 29,
+     "races": 30,
      "race_hits": 3,
-     "roi": 1.4053,
-     "cum": 2470.0
+     "roi": 1.3692,
+     "cum": 2370.0
     }
    ]
   },
@@ -9476,12 +9492,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 17400,
+    "stake": 17700,
     "payout": 26130.0,
-    "roi": 1.5017,
-    "points": 174,
+    "roi": 1.4763,
+    "points": 177,
     "hits": 23,
-    "races": 117,
+    "races": 118,
     "race_hits": 23,
     "days": 6
    },
@@ -9543,14 +9559,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 700,
+     "stake": 1000,
      "payout": 1510.0,
-     "points": 7,
+     "points": 10,
      "hits": 1,
-     "races": 6,
+     "races": 7,
      "race_hits": 1,
-     "roi": 2.1571,
-     "cum": 8730.0
+     "roi": 1.51,
+     "cum": 8430.0
     }
    ]
   },
@@ -10511,12 +10527,12 @@
   },
   "evr": {
    "total": {
-    "stake": 41200,
+    "stake": 41600,
     "payout": 52400.0,
-    "roi": 1.2718,
-    "points": 412,
+    "roi": 1.2596,
+    "points": 416,
     "hits": 55,
-    "races": 207,
+    "races": 208,
     "race_hits": 48,
     "days": 6
    },
@@ -10578,14 +10594,14 @@
     },
     {
      "date": "2026-11-24",
-     "stake": 4500,
+     "stake": 4900,
      "payout": 6850.0,
-     "points": 45,
+     "points": 49,
      "hits": 4,
-     "races": 31,
+     "races": 32,
      "race_hits": 3,
-     "roi": 1.5222,
-     "cum": 11200.0
+     "roi": 1.398,
+     "cum": 10800.0
     }
    ]
   }
