@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 14:59",
+ "updated_at": "2026-11-24 15:13",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -2629,14 +2629,21 @@
     "race_no": 10,
     "deadline": "15:02",
     "judged_at": "14:56:11",
-    "result": null,
+    "result": {
+     "combo": "1-5-4",
+     "payout": 2020
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 690,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2653,7 +2660,7 @@
       "odds": 3.2,
       "p": 0.2468,
       "ev": 0.734,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=7",
@@ -2661,12 +2668,21 @@
       "odds": 4.6,
       "p": 0.2107,
       "ev": 0.901,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=5",
+     "payout": 550
+    },
+    "ex_result": {
+     "combo": "1-5",
+     "payout": 780
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 1080
+    },
     "notes": [
      "1着が出るライン：2-7-3 が 71%",
      "上がり最速：3 小林大介（直近平均 10.5秒、2位と0.3秒差）",
