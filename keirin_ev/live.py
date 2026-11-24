@@ -144,7 +144,7 @@ HIT_HMIN = 0.50      # 勝負にする当たる見込みの下限（まず当て
 HIT_MINPTS = 2       # 1点買いはしない
 HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
 HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
-HIT_KINDS = ("trio",)  # 的中重視で使う券種（2026-11-24 本人の希望で3連複だけ。2車複も使うなら ("qn", "trio")）
+HIT_KINDS = ("qn", "trio")  # 的中重視で使う券種（2車複・3連複から当たる見込みの高い方を1つ。3連複だけにするなら ("trio",)）
 HIT_SIDE_GO = 0.95   # 的中重視の別枠（kind="hit2"・"hit3"）にする見込み回収の下限（reports/qn_ev.md：1日約2.6R・的中47%・回収104%（95%区間97〜113%））
 
 
@@ -234,7 +234,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
         except Exception as e:
             print("的中重視の別枠の記録失敗", rid, e, flush=True)
         if not plans:
-            reason = "3連複で2点以上・合成オッズ1.6倍以上に組める目がないため見送り"
+            reason = "2点以上・合成オッズ1.6倍以上で組める目がないため見送り"
         else:
             pl = max(plans, key=lambda x: (x["H"], x["ev"]))   # まず当てる：当たる見込みの高い券種
             bl = pl["bets"]
