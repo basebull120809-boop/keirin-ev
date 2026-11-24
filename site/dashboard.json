@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 21:35",
+ "updated_at": "2026-11-24 21:42",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -8116,9 +8116,9 @@
     "venue": "四日市",
     "race_no": 4,
     "deadline": "21:48",
-    "status": "wait",
+    "status": "skip",
     "invest": false,
-    "reason": "",
+    "reason": "オッズが取得できなかったため",
     "mi": null,
     "notes": [],
     "lines": []
