@@ -139,7 +139,9 @@ def strategy():
 
 
 HIT_SYNTH = 1.6      # 合成オッズの下限（判定時オッズ×0.93で見込む）
-HIT_GO = 0.95        # 勝負（収支に入れる）にする見込み回収（当たる見込み×合成オッズ）の線
+HIT_GO = 0.85        # 勝負（収支に入れる）にする見込み回収（当たる見込み×合成オッズ）の下限
+HIT_HMIN = 0.50      # 勝負にする当たる見込みの下限（まず当てる：2026-11-24）
+HIT_MINPTS = 2       # 1点買いはしない
 HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
 HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
 
@@ -162,7 +164,7 @@ def _hit_plan(probs, odds, kind):
         if 1 / (inv + 1 / (o * HIT_DRIFT)) < HIT_SYNTH:
             break
         inv += 1 / (o * HIT_DRIFT); sel.append((p, o, c))
-    if not sel:
+    if len(sel) < HIT_MINPTS:                # 2点目で合成1.6倍を割る券種は使わない（1点買いはしない）
         return None
     H = sum(p for p, _, _ in sel); S = 1 / inv
     return dict(kind=kind, H=H, S=S, ev=H * S,
@@ -173,11 +175,11 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
     """ただ1つの方式（2026-11-24）：全レースで的中重視の予想を出す。
 
     残差モデルの確率で、2車複・3連複それぞれ「確率の高い目から、合成オッズ1.6倍以上（判定時オッズ×0.93で見込む）を
-    保てるところまで」買う形を作り、見込み回収（当たる見込み×合成オッズ）が高い方を1つ出す。
+    保てるところまで」買う形を作る（最低2点。1点買いはしない）。当たる見込みが高い方を1つ出す。
     金額は どの目が当たっても払戻がそろう配分（1レース約1,000円）。
-    見込み回収 HIT_GO 以上だけを「勝負」（収支に入れる）、それ以外は「見送り推奨」（予想は出す・収支外）。
-    過去検証（2025-11〜2026-11・毎月学習し直し・確定オッズ）：全レースで的中41〜44%・回収約78%、
-    見込み0.95以上（1日2〜3R）で的中47%・回収104%（95%区間 97〜113%）
+    当たる見込み50%以上かつ見込み回収0.85以上を「勝負」（収支に入れる）、それ以外は「見送り推奨」（予想は出す・収支外）。
+    過去検証（2025-11〜2026-11・毎月学習し直し・確定オッズ）：全レースで的中45%・回収79%、
+    勝負（1日約8R）で的中53%・回収89%（95%区間 86〜92%）。当てる方を優先したので回収率は100%に届かない
     """
     from .pools import _key
     from .scenario import guard_stakes
@@ -210,28 +212,29 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             qp[kq] = qp.get(kq, 0.0) + p; tp[kt] = tp.get(kt, 0.0) + p
         plans = [x for x in (_hit_plan(qp, qno, "qn"), _hit_plan(tp, tro, "trio")) if x]
         if not plans:
-            reason = "合成オッズ1.6倍以上で組める目がないため見送り"
+            reason = "2点以上・合成オッズ1.6倍以上で組める目がないため見送り"
         else:
-            pl = max(plans, key=lambda x: x["ev"])
+            pl = max(plans, key=lambda x: (x["H"], x["ev"]))   # まず当てる：当たる見込みの高い券種
             bl = pl["bets"]
             st = None
-            while bl and st is None:              # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
+            while len(bl) >= HIT_MINPTS and st is None:              # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
                 st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
                 if st is None:
                     bl = bl[:-1]
             if not st:
-                reason = "100円単位で合成1.6倍以上の配分にできないため見送り"
+                reason = "100円単位・2点以上で合成1.6倍以上の配分にできないため見送り"
             else:
                 lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
                 txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
-                if pl["ev"] >= HIT_GO:
+                if pl["H"] >= HIT_HMIN and pl["ev"] >= HIT_GO:
                     bets = [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
                     rec, why = pl["kind"], "勝負：" + txt
                 else:
                     bets = [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
                     mi, mi_why = pl["kind"], txt
-                    reason = f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）"
+                    reason = (f"当たる見込みが{HIT_HMIN:.0%}に届かない（{pl['H']:.0%}）" if pl["H"] < HIT_HMIN
+                              else f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）")
         try:                                      # 回収重視の2車複（期待値1.0以上）も紙上で記録だけ続ける（表示・おすすめの収支には入れない）
             from . import evbuy
             _, b2 = evbuy.plan(P_res, cars, COMBOS, {}, qno)
