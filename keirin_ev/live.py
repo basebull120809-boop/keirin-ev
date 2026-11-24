@@ -138,6 +138,22 @@ def strategy():
         return ""
 
 
+ODDS_CAP = 50.0     # どの買い方でも判定時オッズがこれを超える目は買わない（2026-11-24：夢のような高配当は狙わない）
+
+
+def _cap_odds(bets):
+    """判定時オッズが ODDS_CAP 倍を超える目を外す（オッズが付いていない目はそのまま）"""
+    out = []
+    for b in bets:
+        try:
+            o = float(b.get("odds") or 0)
+        except (TypeError, ValueError):
+            o = 0
+        if o <= ODDS_CAP:
+            out.append(b)
+    return out
+
+
 HIT_SYNTH = 1.6      # 合成オッズの下限（判定時オッズ×0.93で見込む）
 HIT_GO = 0.85        # 勝負（収支に入れる）にする見込み回収（当たる見込み×合成オッズ）の下限
 HIT_HMIN = 0.50      # 勝負にする当たる見込みの下限（まず当てる：2026-11-24）
@@ -255,6 +271,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
                                 n_bets=sum(1 for b in bets if b.get("rec")), n_invest=0, rec=rec, rec_reason=why,
                                 mi=mi, mi_reason=mi_why, cand={}, reason=reason), ensure_ascii=False) + "\n")
+    bets = _cap_odds(bets)
     if bets:
         f = day / "bets.csv"
         new = pd.DataFrame(bets)
@@ -434,9 +451,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                          deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
             bets += [dict(base4, **b, kind="evr3", rec=False) for b in b3]
             bets += [dict(base4, **b, kind="evr2", rec=False) for b in b2]
-            x3, x2 = evbuy.plan_over(P_res, cars, COMBOS, tro4, qno4)   # オッズ上限なしの追加分（紙上記録・収支外）
-            bets += [dict(base4, **b, kind="evr3x", rec=False) for b in x3]
-            bets += [dict(base4, **b, kind="evr2x", rec=False) for b in x2]
+            # オッズ上限なしの追加分（evr3x・evr2x）は 2026-11-24 に停止：夢のような高配当（数百〜数千倍）ばかりで実用にならないため
         except Exception as e:
             print("残差モデルの期待値買い失敗", rid, e, flush=True)
     try:                                         # 独自指標の圧縮モデル（2026/11 追加）：補正した確率で期待値1以上の2車複を紙上で記録（見送りとは別枠）
@@ -563,6 +578,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason=skip_reason or ("" if rec or any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),
                            ensure_ascii=False) + "\n")
+    bets = _cap_odds(bets)
     if bets:
         f = day / "bets.csv"
         new = pd.DataFrame(bets)
