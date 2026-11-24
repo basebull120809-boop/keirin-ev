@@ -5589,14 +5589,21 @@
     "race_no": 12,
     "deadline": "20:25",
     "judged_at": "20:19:03",
-    "result": null,
+    "result": {
+     "combo": "6-5-7",
+     "payout": 8920
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "5=6",
+     "payout": 400,
+     "all": "5=6・5=7・6=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -5615,7 +5622,7 @@
       "odds": 4.2,
       "p": 0.2128,
       "ev": 0.831,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=5",
@@ -5623,7 +5630,7 @@
       "odds": 8.2,
       "p": 0.1198,
       "ev": 0.914,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "5=6",
@@ -5631,12 +5638,21 @@
       "odds": 8.7,
       "p": 0.0833,
       "ev": 0.674,
-      "hit": null
+      "hit": true
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=6",
+     "payout": 770
+    },
+    "ex_result": {
+     "combo": "6-5",
+     "payout": 1730
+    },
+    "trio_result": {
+     "combo": "5=6=7",
+     "payout": 1940
+    },
     "notes": [
      "1着が出るライン：1-7-4 が 44%",
      "上がり最速：6 小松崎大地（直近平均 10.8秒、2位と0.1秒差）",
