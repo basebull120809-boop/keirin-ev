@@ -198,7 +198,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
     except Exception as e:
         print("2車複・3連複のオッズを読めず", rid, e, flush=True)
     cars = X["T"].cars[0]
-    bets, reason, rec, why, mi, mi_why = [], "", None, "", None, ""
+    bets, reason, rec, why, mi, mi_why, rec2 = [], "", None, "", None, "", None
     if P_res is None:
         reason = "残差モデルが使えないため見送り"
     else:
@@ -240,15 +240,16 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             b3, b2 = evbuy.plan(P_res, cars, COMBOS, tro, qno)
             bets += [dict(base, **b, kind="evr2", rec=False) for b in b2]
             bets += [dict(base, **b, kind="evr3", rec=False) for b in b3]
-            if strategy() == "ev":                # 2026-11-24：勝負は2車複の期待値買い（過去検証 回収112.5%・95%区間103〜124%・的中は約10R に1回）
-                if b2:
-                    bets = [dict(base, **b, kind="qn", rec=True) for b in b2] + [
-                        b for b in bets if not str(b["kind"]).endswith("_m")]   # 勝負のレースでは見送り推奨は出さない
-                    rec, reason, mi, mi_why = "qn", "", None, ""
-                    why = (f"勝負：2車複{len(b2)}点（期待値1.0以上・50倍以下・各100円）"
-                           f"・最大期待値{max(b['ev'] for b in b2):.2f}")
+            if strategy() == "ev":                # 2026-11-24：勝負は2車複・3連複の期待値買い（過去検証 2車複112.5%・3連複107%、合わせて110%・95%区間101〜118%）
+                if b2 or b3:                      # 2車単・3連単は同じ条件の過去検証で回収95%前後（100%未満）なので勝負に入れない
+                    bets = ([dict(base, **b, kind="qn", rec=True) for b in b2] + [dict(base, **b, kind="trio", rec=True) for b in b3]
+                            + [b for b in bets if not str(b["kind"]).endswith("_m")])   # 勝負のレースでは見送り推奨は出さない
+                    rec = "qn" if b2 else "trio"; rec2 = "trio" if (b2 and b3) else None
+                    reason, mi, mi_why = "", None, ""
+                    why = "勝負：" + "・".join(f"{lab}{len(bl)}点" for lab, bl in (("2車複", b2), ("3連複", b3)) if bl) + (
+                        f"（期待値1.0以上・50倍以下・各100円）・最大期待値{max(b['ev'] for b in b2 + b3):.2f}")
                 else:
-                    reason = "期待値1.0以上（50倍以下）の2車複がないため見送り"
+                    reason = "期待値1.0以上（50倍以下）の2車複・3連複がないため見送り"
         except Exception as e:
             print("回収重視の記録失敗", rid, e, flush=True)
     notes, line_probs = [], []
@@ -263,7 +264,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
-                                n_bets=sum(1 for b in bets if b.get("rec")), n_invest=0, rec=rec, rec_reason=why,
+                                n_bets=sum(1 for b in bets if b.get("rec")), n_invest=0, rec=rec, rec2=rec2, rec_reason=why,
                                 mi=mi, mi_reason=mi_why, cand={}, reason=reason), ensure_ascii=False) + "\n")
     if bets:
         f = day / "bets.csv"
@@ -624,13 +625,15 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
         hp = sum(b["p"] for b in h4); st = sum(b["stake"] for b in h4)
         L += [f"#### ◎当てる予想：3連複 {len(h4)}点 {st:,}円（的中率 {hp:.0%}・合成 {h4[0].get('synth', 0):.1f}倍）", ""]
         L += [f"- {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(h4, key=lambda b: -b["p"])] + [""]
-    rec = next((b["kind"] for b in bets if b.get("rec")), None)
+    recs = list(dict.fromkeys(b["kind"] for b in bets if b.get("rec")))   # 期待値買い（strategy=ev）では2車複と3連複の両方がありうる
+    rec = recs[0] if recs else None
     if rec in ("ex", "trio", "qn", "wide"):
-        lab = {"ex": "2車単", "trio": "3連複", "qn": "2車複", "wide": "ワイド"}[rec]
-        rb = [b for b in bets if b.get("kind") == rec]
-        hp = sum(b["p"] for b in rb); st = sum(b["stake"] for b in rb)
-        L += [f"#### ◎予想：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
-        L += [f"- {b['combo'].replace('=', '-')}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(rb, key=lambda b: -b["p"])] + [""]
+        for rk in recs:
+            lab = {"ex": "2車単", "trio": "3連複", "qn": "2車複", "wide": "ワイド"}[rk]
+            rb = [b for b in bets if b.get("kind") == rk]
+            hp = sum(b["p"] for b in rb); st = sum(b["stake"] for b in rb)
+            L += [f"#### ◎予想：{lab} {len(rb)}点 {st:,}円（的中率 {hp:.0%}）", ""]
+            L += [f"- {b['combo'].replace('=', '-')}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(rb, key=lambda b: -b["p"])] + [""]
     else:
         yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
         if yoso:

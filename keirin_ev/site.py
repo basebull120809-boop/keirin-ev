@@ -67,9 +67,9 @@ BET_KEYS = ("bets", "invest", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit
 
 def only_rec(r):
     """出すのはおすすめの1券種だけ。おすすめが無いレースは買い目を出さない"""
-    keep = {"yoso": "bets"}.get(r.get("rec"), r.get("rec"))
+    keep = {{"yoso": "bets"}.get(r.get("rec"), r.get("rec")), r.get("rec2")}   # rec2：期待値買いで2車複と3連複の両方を買うレース
     for k in BET_KEYS:
-        if k != keep and k in r:
+        if k not in keep and k in r:
             r[k] = []
     return r
 
@@ -136,6 +136,8 @@ def day_races(pb, last):
         n = notes.get(str(rid_of.get((r["venue_slug"], r["race_no"]), "")), {})
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
         r["rec"] = n.get("rec"); r["rec_reason"] = n.get("rec_reason", ""); r["cand"] = n.get("cand", {})
+        if n.get("rec2"):
+            r["rec2"] = n["rec2"]
         if not r["rec"] and r.get("mi_bets"):     # 見送り推奨：予想は出すが収支には入れない
             r["mi"] = n.get("mi") or r.get("mi"); r["mi_reason"] = n.get("mi_reason", "")
             r["skip_reason"] = n.get("reason", "")
@@ -318,7 +320,7 @@ def export_report(con, days, dates, market=None, backtest=None):
 
 
 DOC_LIMIT = 250_000      # ページのデータベースは1文書 256KiB まで（少し余裕を見る）
-HIST_KEEP = ("venue", "race_no", "deadline", "rec", "bets", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4",
+HIST_KEEP = ("venue", "race_no", "deadline", "rec", "rec2", "bets", "ex", "trio", "qn", "wide", "tenkai", "pool", "hit4",
              "result", "ex_result", "trio_result", "qn_result", "wide_result", "mi", "mi_bets", "mi_reason", "skip_reason")
 
 
