@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 14:57",
+ "updated_at": "2026-11-24 14:59",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -2524,14 +2524,21 @@
     "race_no": 9,
     "deadline": "14:48",
     "judged_at": "14:42:32",
-    "result": null,
+    "result": {
+     "combo": "5-4-6",
+     "payout": 53340
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "4=5",
+     "payout": 2190,
+     "all": "4=5・4=6・5=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2548,7 +2555,7 @@
       "odds": 3.0,
       "p": 0.2489,
       "ev": 0.694,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=7",
@@ -2556,12 +2563,21 @@
       "odds": 6.9,
       "p": 0.1576,
       "ev": 1.012,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=5",
+     "payout": 6260
+    },
+    "ex_result": {
+     "combo": "5-4",
+     "payout": 10210
+    },
+    "trio_result": {
+     "combo": "4=5=6",
+     "payout": 17480
+    },
     "notes": [
      "1着が出るライン：7-1 が 75%",
      "上がり最速：2 木村貴宏（直近平均 10.7秒、2位と0.2秒差）",
