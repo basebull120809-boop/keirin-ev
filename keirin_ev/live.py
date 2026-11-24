@@ -131,7 +131,7 @@ def _compress_predictor():
 
 
 def strategy():
-    """config.json の strategy（"hit" = 的中重視の1方式だけ。それ以外・未設定なら従来の全方式）"""
+    """config.json の strategy（"hit" = 的中重視の1方式だけ／"ev" = 2車複の期待値買いを勝負にする。それ以外・未設定なら従来の全方式）"""
     try:
         return json.loads(Path("config.json").read_text(encoding="utf-8")).get("strategy", "")
     except Exception:
@@ -227,7 +227,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                 lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
                 txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
-                if pl["H"] >= HIT_HMIN and pl["ev"] >= HIT_GO:
+                if pl["H"] >= HIT_HMIN and pl["ev"] >= HIT_GO and strategy() != "ev":
                     bets = [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
                     rec, why = pl["kind"], "勝負：" + txt
                 else:
@@ -235,10 +235,20 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                     mi, mi_why = pl["kind"], txt
                     reason = (f"当たる見込みが{HIT_HMIN:.0%}に届かない（{pl['H']:.0%}）" if pl["H"] < HIT_HMIN
                               else f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）")
-        try:                                      # 回収重視の2車複（期待値1.0以上）も紙上で記録だけ続ける（表示・おすすめの収支には入れない）
+        try:                                      # 回収重視の2車複・3連複（期待値1.0以上・50倍以下）を紙上で記録（evr2・evr3）
             from . import evbuy
-            _, b2 = evbuy.plan(P_res, cars, COMBOS, {}, qno)
+            b3, b2 = evbuy.plan(P_res, cars, COMBOS, tro, qno)
             bets += [dict(base, **b, kind="evr2", rec=False) for b in b2]
+            bets += [dict(base, **b, kind="evr3", rec=False) for b in b3]
+            if strategy() == "ev":                # 2026-11-24：勝負は2車複の期待値買い（過去検証 回収112.5%・95%区間103〜124%・的中は約10R に1回）
+                if b2:
+                    bets = [dict(base, **b, kind="qn", rec=True) for b in b2] + [
+                        b for b in bets if not str(b["kind"]).endswith("_m")]   # 勝負のレースでは見送り推奨は出さない
+                    rec, reason, mi, mi_why = "qn", "", None, ""
+                    why = (f"勝負：2車複{len(b2)}点（期待値1.0以上・50倍以下・各100円）"
+                           f"・最大期待値{max(b['ev'] for b in b2):.2f}")
+                else:
+                    reason = "期待値1.0以上（50倍以下）の2車複がないため見送り"
         except Exception as e:
             print("回収重視の記録失敗", rid, e, flush=True)
     notes, line_probs = [], []
@@ -262,7 +272,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             old = pd.read_csv(f, dtype={"race_id": str}, on_bad_lines="skip")
             new = pd.concat([old, new], ignore_index=True)
         new.to_csv(f, index=False)
-    return [b for b in bets if b["kind"] != "evr2"], ent, notes
+    return [b for b in bets if b["kind"] not in ("evr2", "evr3")], ent, notes
 
 
 def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
@@ -325,7 +335,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         pass
     except Exception as e:
         print("残差モデルを使えず旧モデルで判定", rid, e, flush=True)
-    if strategy() == "hit":                      # 2026-11-24 方式を1つに絞った：全レースで的中重視の予想（勝負は見込み回収0.95以上だけ）
+    if strategy() in ("hit", "ev"):              # 2026-11-24 方式を1つに絞った：全レースで的中重視の予想（勝負は見込み回収0.95以上だけ）
         return _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res)
     scen = None
     try:                                         # 展開シナリオ予想（全展開を想定＋オッズ）があれば最優先で使う
@@ -709,7 +719,7 @@ def run(max_minutes=340):
         model = TrifectaModel.from_json("models/latest.json")
     except Exception as e:
         print("モデルなし（オッズの記録のみ行います）:", e); model = None
-    if strategy() != "hit":
+    if strategy() not in ("hit", "ev"):
         _compress_predictor()                  # 圧縮モデルの過去データを先に読んでおく（最初の判定が締切に遅れないように）
     kdreams.SLEEP_SEC = 1.0
     full = schedule(date)
