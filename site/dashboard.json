@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 19:10",
+ "updated_at": "2026-11-24 19:14",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -4837,14 +4837,21 @@
     "race_no": 9,
     "deadline": "19:03",
     "judged_at": "18:57:30",
-    "result": null,
+    "result": {
+     "combo": "4-2-5",
+     "payout": 4020
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 250,
+     "all": "2=4・2=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4861,7 +4868,7 @@
       "odds": 2.7,
       "p": 0.3643,
       "ev": 0.915,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=5=7",
@@ -4869,12 +4876,21 @@
       "odds": 8.7,
       "p": 0.083,
       "ev": 0.672,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=4",
+     "payout": 460
+    },
+    "ex_result": {
+     "combo": "4-2",
+     "payout": 1280
+    },
+    "trio_result": {
+     "combo": "2=4=5",
+     "payout": 1190
+    },
     "notes": [
      "1着が出るライン：7-5-3 が 74%",
      "上がり最速：5 内藤秀久（直近平均 10.8秒、2位と0.9秒差）",
