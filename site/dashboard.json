@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 16:14",
+ "updated_at": "2026-11-24 16:21",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -3321,14 +3321,21 @@
     "race_no": 12,
     "deadline": "16:10",
     "judged_at": "16:04:16",
-    "result": null,
+    "result": {
+     "combo": "5-2-4",
+     "payout": 3870
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 260,
+     "all": "2=4・2=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3345,7 +3352,7 @@
       "odds": 7.8,
       "p": 0.1076,
       "ev": 0.78,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=4=7",
@@ -3353,7 +3360,7 @@
       "odds": 8.8,
       "p": 0.0902,
       "ev": 0.738,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=4=5",
@@ -3361,7 +3368,7 @@
       "odds": 9.9,
       "p": 0.0803,
       "ev": 0.739,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=2=5",
@@ -3369,7 +3376,7 @@
       "odds": 14.3,
       "p": 0.0803,
       "ev": 1.067,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=5=7",
@@ -3377,12 +3384,21 @@
       "odds": 10.4,
       "p": 0.0741,
       "ev": 0.716,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=5",
+     "payout": 730
+    },
+    "ex_result": {
+     "combo": "5-2",
+     "payout": 1360
+    },
+    "trio_result": {
+     "combo": "2=4=5",
+     "payout": 960
+    },
     "notes": [
      "1着が出るライン：6-2-4 が 38%",
      "上がり最速：5 皿屋豊（直近平均 9.8秒、2位と0.0秒差）",
