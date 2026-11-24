@@ -55,8 +55,8 @@ def snapshot(date, venue, rid, dl=None):
 
 
 # ---------- 集計：判定時オッズ → 直前オッズ → 確定配当 ----------
-_TRIO = {"trio", "pool", "hit4", "evr3", "evr3x", "trio_z", "trio_m"}
-_QN = {"qn", "evr2", "evr2x", "cmp2", "qn_z", "qn_m"}
+_TRIO = {"trio", "pool", "hit4", "evr3", "evr3x", "trio_z", "trio_m", "hit3"}
+_QN = {"qn", "evr2", "evr2x", "cmp2", "qn_z", "qn_m", "hit2"}
 _EX = {"ex", "tenkai", "ex_z", "tenkai_z", "ex_m"}
 
 

@@ -144,6 +144,7 @@ HIT_HMIN = 0.50      # 勝負にする当たる見込みの下限（まず当て
 HIT_MINPTS = 2       # 1点買いはしない
 HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
 HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
+HIT_SIDE_GO = 0.95   # 的中重視の別枠（kind="hit2"・"hit3"）にする見込み回収の下限（reports/qn_ev.md：1日約2.6R・的中47%・回収104%（95%区間97〜113%））
 
 
 def _hit_plan(probs, odds, kind):
@@ -169,6 +170,17 @@ def _hit_plan(probs, odds, kind):
     H = sum(p for p, _, _ in sel); S = 1 / inv
     return dict(kind=kind, H=H, S=S, ev=H * S,
                 bets=[dict(combo=c, stake=0, odds=o, p=round(p, 5), ev=round(p * o * HIT_DRIFT, 3)) for p, o, c in sel])
+
+
+def _hit_stakes(pl):
+    """100円単位で払戻がそろう配分。無理なら確率の低い目から外す（2点未満になれば None）"""
+    from .scenario import guard_stakes
+    bl, st = pl["bets"], None
+    while len(bl) >= HIT_MINPTS and st is None:
+        st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
+        if st is None:
+            bl = bl[:-1]
+    return st or None
 
 
 def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
@@ -211,6 +223,15 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             kq, kt = _key(f"{a}={b}"), _key(f"{a}={b}={c}")
             qp[kq] = qp.get(kq, 0.0) + p; tp[kt] = tp.get(kt, 0.0) + p
         plans = [x for x in (_hit_plan(qp, qno, "qn"), _hit_plan(tp, tro, "trio")) if x]
+        try:                                      # 的中重視の別枠（2026-11-24 追加）：見込み回収の高い方を1つ、0.95以上なら紙上で記録（勝負の収支とは別）
+            side = max(plans, key=lambda x: x["ev"]) if plans else None
+            if side and side["ev"] >= HIT_SIDE_GO:
+                sst = _hit_stakes(side)
+                if sst:
+                    sk = {"qn": "hit2", "trio": "hit3"}[side["kind"]]
+                    bets += [dict(base, **b, kind=sk, rec=False) for b in sst]
+        except Exception as e:
+            print("的中重視の別枠の記録失敗", rid, e, flush=True)
         if not plans:
             reason = "2点以上・合成オッズ1.6倍以上で組める目がないため見送り"
         else:
@@ -228,10 +249,10 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                 txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
                 if pl["H"] >= HIT_HMIN and pl["ev"] >= HIT_GO and strategy() != "ev":
-                    bets = [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
+                    bets += [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
                     rec, why = pl["kind"], "勝負：" + txt
                 else:
-                    bets = [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
+                    bets += [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
                     mi, mi_why = pl["kind"], txt
                     reason = (f"当たる見込みが{HIT_HMIN:.0%}に届かない（{pl['H']:.0%}）" if pl["H"] < HIT_HMIN
                               else f"見込み回収が{HIT_GO:.0%}に届かない（{pl['ev']:.0%}）")
@@ -638,10 +659,16 @@ def fmt(venue, rid, dl, bets, ent, mode, notes=None):
         yoso = [b for b in bets if b.get("kind", "yoso") == "yoso"]
         if yoso:
             L += ["#### ◎予想：3連単"] + _fmt_block(yoso, names)
-        elif not any(b.get("kind") in ("tenkai", "pool", "hit4") for b in bets):
+        elif not any(b.get("kind") in ("tenkai", "pool", "hit4", "hit2", "hit3") for b in bets):
             return None
         else:
             L += ["#### ◎予想：見送り（条件を満たす買い方がないため）", ""]
+    hs = [b for b in bets if b.get("kind") in ("hit2", "hit3")]
+    if hs:                                       # 的中重視の別枠（紙上・勝負の収支とは別）
+        lab = {"hit2": "2車複", "hit3": "3連複"}[hs[0]["kind"]]
+        hp = sum(b["p"] for b in hs); st = sum(b["stake"] for b in hs)
+        L += [f"#### ○的中重視（別枠・紙上）：{lab} {len(hs)}点 {st:,}円（当たる見込み {hp:.0%}）", ""]
+        L += [f"- {b['combo'].replace('=', '-')}　{b['stake']:,}円（{b['odds']:.1f}倍）" for b in sorted(hs, key=lambda b: -b["p"])] + [""]
     pb = [b for b in bets if b.get("kind") == "pool"]
     if pb:
         L += ["#### ズレ予想 3連複（紙上・検証中）"] + [f"- 3連複 {b['combo']}　{b['stake']:,}円（{b['odds']:.1f}倍）割安度 {b['ratio']:.2f}" for b in pb] + [""]
@@ -907,7 +934,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "evr3x", "trio_m"]), b["kind"].isin(["qn", "qn_z", "evr2", "evr2x", "cmp2", "qn_m"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "evr3x", "trio_m", "hit3"]), b["kind"].isin(["qn", "qn_z", "evr2", "evr2x", "cmp2", "qn_m", "hit2"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],

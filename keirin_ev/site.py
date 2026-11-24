@@ -115,6 +115,8 @@ def day_races(pb, last):
                           tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
                           evr3=_bl(g, "evr3"), evr2=_bl(g, "evr2"), cmp2=_bl(g, "cmp2"),
                           evr3x=_bl(g, "evr3x"), evr2x=_bl(g, "evr2x"),
+                          hit_side=_bl(g, "hit2") or _bl(g, "hit3"),
+                          hit_side_kind="qn" if (g["kind"] == "hit2").any() else "trio" if (g["kind"] == "hit3").any() else None,
                           **_mi(g),
                           qn_result=dict(combo=r["qn_combo"], payout=_int(r.get("qn_payout")))
                           if isinstance(r.get("qn_combo"), str) else None,
@@ -171,6 +173,9 @@ def picks_and_paper():
     ev = done[done["kind"].isin(["evr3", "evr2"])]   # 残差モデルの期待値買い（3連複＋2車複を合わせて）
     if len(ev):
         groups.append(("evr", ev))
+    hs = done[done["kind"].isin(["hit2", "hit3"])]   # 的中重視の別枠（見込み回収0.95以上・2026-11-24 追加）
+    if len(hs):
+        groups.append(("hit", hs))
     for kind, sub in groups:
         d = sub.groupby("date").agg(stake=("stake", "sum"), payout=("payout", "sum"),
                                     points=("combo", "size"), hits=("hit", "sum"),
