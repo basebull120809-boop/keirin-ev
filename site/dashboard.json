@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-24 17:26",
+ "updated_at": "2026-11-24 17:30",
  "picks": {
   "date": "2026-11-24",
   "races": [
@@ -4031,14 +4031,21 @@
     "race_no": 5,
     "deadline": "17:19",
     "judged_at": "17:13:12",
-    "result": null,
+    "result": {
+     "combo": "4-1-5",
+     "payout": 49970
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 830,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4055,7 +4062,7 @@
       "odds": 4.9,
       "p": 0.1902,
       "ev": 0.867,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=3=4",
@@ -4063,7 +4070,7 @@
       "odds": 11.4,
       "p": 0.073,
       "ev": 0.774,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=7",
@@ -4071,7 +4078,7 @@
       "odds": 9.4,
       "p": 0.0701,
       "ev": 0.612,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=3=6",
@@ -4079,12 +4086,21 @@
       "odds": 18.0,
       "p": 0.0546,
       "ev": 0.915,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 2700
+    },
+    "ex_result": {
+     "combo": "4-1",
+     "payout": 5160
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 9140
+    },
     "notes": [
      "1着が出るライン：4-3-6 が 60%",
      "上がり最速：5 上原龍（直近平均 11.2秒、2位と0.0秒差）",
