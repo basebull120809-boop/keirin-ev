@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 17:52",
+ "updated_at": "2026-11-25 17:56",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -3583,7 +3583,10 @@
     "race_no": 6,
     "deadline": "17:45",
     "judged_at": "17:39:15",
-    "result": null,
+    "result": {
+     "combo": "2-4-1",
+     "payout": 2660
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -3595,7 +3598,7 @@
       "odds": 3.1,
       "p": 0.315,
       "ev": 0.908,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2",
@@ -3603,11 +3606,15 @@
       "odds": 5.1,
       "p": 0.1983,
       "ev": 0.941,
-      "hit": null
+      "hit": false
      }
     ],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 140,
+     "all": "1=2・1=4・2=4"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3618,9 +3625,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=4",
+     "payout": 790
+    },
+    "ex_result": {
+     "combo": "2-4",
+     "payout": 1360
+    },
+    "trio_result": {
+     "combo": "1=2=4",
+     "payout": 400
+    },
     "notes": [
      "1着が出るライン：1-4-3 が 63%",
      "上がり最速：1 塩崎隼秀（直近平均 11.0秒、2位と0.5秒差）",
@@ -6454,14 +6470,14 @@
   },
   "qn": {
    "total": {
-    "stake": 519600,
+    "stake": 520600,
     "payout": 335710.0,
-    "roi": 0.6461,
-    "points": 543,
+    "roi": 0.6449,
+    "points": 545,
     "hits": 65,
-    "races": 188,
+    "races": 189,
     "race_hits": 65,
-    "days": 11
+    "days": 12
    },
    "daily": [
     {
@@ -6584,6 +6600,17 @@
      "race_hits": 0,
      "roi": 0.0,
      "cum": -183890.0
+    },
+    {
+     "date": "2026-11-25",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 2,
+     "hits": 0,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": -184890.0
     }
    ]
   },
@@ -6981,14 +7008,14 @@
   },
   "rec": {
    "total": {
-    "stake": 4200,
+    "stake": 5200,
     "payout": 0.0,
     "roi": 0.0,
-    "points": 17,
+    "points": 19,
     "hits": 0,
-    "races": 9,
+    "races": 10,
     "race_hits": 0,
-    "days": 1
+    "days": 2
    },
    "daily": [
     {
@@ -7001,6 +7028,17 @@
      "race_hits": 0,
      "roi": 0.0,
      "cum": -4200.0
+    },
+    {
+     "date": "2026-11-25",
+     "stake": 1000,
+     "payout": 0.0,
+     "points": 2,
+     "hits": 0,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": -5200.0
     }
    ]
   },
