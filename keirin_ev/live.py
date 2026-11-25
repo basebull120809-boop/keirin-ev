@@ -145,11 +145,15 @@ HIT_MINPTS = 2       # 1点買いはしない
 HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
 HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
 HIT_KINDS = ("qn", "trio")  # 的中重視で使う券種（2車複・3連複から当たる見込みの高い方を1つ。3連複だけにするなら ("trio",)）
+HIT_WIDE_SYNTH = 1.2  # 2026-11-25 本人の希望「見送り推奨でも当てるように多く買ってもいい」：見込みが60%に届かないレースは、合成1.2倍まで点数を広げる
+HIT_WIDE_MAX = 15     # 広げるときの最大点数
 HIT_SIDE_GO = 0.95   # 的中重視の別枠（kind="hit2"・"hit3"）にする見込み回収の下限（reports/qn_ev.md：1日約2.6R・的中47%・回収104%（95%区間97〜113%））
 
 
-def _hit_plan(probs, odds, kind):
-    """確率の高い目から足して、合成オッズ HIT_SYNTH 倍以上を保てるところまで（最大12候補を見る）"""
+def _hit_plan(probs, odds, kind, synth=None, maxn=12, target=None):
+    """確率の高い目から足して、合成オッズ synth（既定 HIT_SYNTH）倍以上を保てるところまで（最大 maxn 点）。
+    target を渡すと、当たる見込みがそこに届いた時点で止める（広げすぎて合成オッズを下げないため）"""
+    synth = synth or HIT_SYNTH
     cand = []
     for c, o in (odds or {}).items():
         try:
@@ -162,8 +166,10 @@ def _hit_plan(probs, odds, kind):
             cand.append((p, o, c))
     cand.sort(reverse=True)
     inv, sel = 0.0, []
-    for p, o, c in cand[:12]:
-        if 1 / (inv + 1 / (o * HIT_DRIFT)) < HIT_SYNTH:
+    for p, o, c in cand[:maxn]:
+        if target is not None and len(sel) >= HIT_MINPTS and sum(x[0] for x in sel) >= target:
+            break
+        if 1 / (inv + 1 / (o * HIT_DRIFT)) < synth:
             break
         inv += 1 / (o * HIT_DRIFT); sel.append((p, o, c))
     if len(sel) < HIT_MINPTS:                # 2点目で合成1.6倍を割る券種は使わない（1点買いはしない）
@@ -177,8 +183,9 @@ def _hit_stakes(pl):
     """100円単位で払戻がそろう配分。無理なら確率の低い目から外す（2点未満になれば None）"""
     from .scenario import guard_stakes
     bl, st = pl["bets"], None
+    ms = pl.get("synth", HIT_SYNTH)
     while len(bl) >= HIT_MINPTS and st is None:
-        st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
+        st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=ms)
         if st is None:
             bl = bl[:-1]
     return st or None
@@ -224,6 +231,16 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             kq, kt = _key(f"{a}={b}"), _key(f"{a}={b}={c}")
             qp[kq] = qp.get(kq, 0.0) + p; tp[kt] = tp.get(kt, 0.0) + p
         plans = [x for k, x in (("qn", _hit_plan(qp, qno, "qn")), ("trio", _hit_plan(tp, tro, "trio"))) if x and k in HIT_KINDS]
+        if strategy() != "ev" and not any(x["H"] >= HIT_HMIN for x in plans):
+            # 2026-11-25 本人の希望：見込み60%に届かないレースも、点数を広げて（合成1.2倍・最大15点まで）当てにいく
+            wide = []
+            for k, pr, od_ in (("qn", qp, qno), ("trio", tp, tro)):
+                if k in HIT_KINDS:
+                    w = _hit_plan(pr, od_, k, synth=HIT_WIDE_SYNTH, maxn=HIT_WIDE_MAX, target=HIT_HMIN)
+                    if w:
+                        w["synth"] = HIT_WIDE_SYNTH; w["wide"] = True; wide.append(w)
+            if wide:
+                plans = wide + [x for x in plans if x["kind"] not in {w["kind"] for w in wide}]
         try:                                      # 的中重視の別枠（2026-11-24 追加）：見込み回収の高い方を1つ、0.95以上なら紙上で記録（勝負の収支とは別）
             side = max(plans, key=lambda x: x["ev"]) if plans else None
             if side and side["ev"] >= HIT_SIDE_GO:
@@ -243,7 +260,9 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                 st = _hit_stakes(pl)               # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
                 if not st:
                     continue
-                lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
+                lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]] + ("（広げ買い）" if pl.get("wide") else "")
+                H = sum(b["p"] for b in st); S = 1 / sum(1 / (b["odds"] * HIT_DRIFT) for b in st)
+                pl = dict(pl, H=H, S=S, ev=H * S)
                 txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
                 if pl["H"] >= HIT_HMIN and strategy() != "ev":   # 2026-11-25：見込み回収では見送らない（当たる率だけ）
