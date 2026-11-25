@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 19:50",
+ "updated_at": "2026-11-25 19:54",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -4593,14 +4593,21 @@
     "race_no": 10,
     "deadline": "19:42",
     "judged_at": "19:36:13",
-    "result": null,
+    "result": {
+     "combo": "7-4-1",
+     "payout": 760
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 150,
+     "all": "1=4・1=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4612,7 +4619,7 @@
       "odds": 6.7,
       "p": 0.1698,
       "ev": 1.058,
-      "hit": null
+      "hit": true
      }
     ],
     "cmp2": [],
@@ -4620,9 +4627,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 450
+    },
+    "ex_result": {
+     "combo": "7-4",
+     "payout": 460
+    },
+    "trio_result": {
+     "combo": "1=4=7",
+     "payout": 240
+    },
     "notes": [
      "1着が出るライン：7-3 が 71%",
      "上がり最速：5 國井裕樹（直近平均 11.0秒、2位と0.7秒差）",
@@ -7103,13 +7119,13 @@
   },
   "evr2": {
    "total": {
-    "stake": 27000,
-    "payout": 28240.0,
-    "roi": 1.0459,
-    "points": 270,
-    "hits": 36,
-    "races": 189,
-    "race_hits": 36,
+    "stake": 27100,
+    "payout": 28690.0,
+    "roi": 1.0587,
+    "points": 271,
+    "hits": 37,
+    "races": 190,
+    "race_hits": 37,
     "days": 7
    },
    "daily": [
@@ -7181,14 +7197,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 2800,
-     "payout": 1700.0,
-     "points": 28,
-     "hits": 3,
-     "races": 18,
-     "race_hits": 3,
-     "roi": 0.6071,
-     "cum": 1240.0
+     "stake": 2900,
+     "payout": 2150.0,
+     "points": 29,
+     "hits": 4,
+     "races": 19,
+     "race_hits": 4,
+     "roi": 0.7414,
+     "cum": 1590.0
     }
    ]
   },
@@ -8287,13 +8303,13 @@
   },
   "evr": {
    "total": {
-    "stake": 49300,
-    "payout": 59480.0,
-    "roi": 1.2065,
-    "points": 493,
-    "hits": 64,
-    "races": 241,
-    "race_hits": 56,
+    "stake": 49400,
+    "payout": 59930.0,
+    "roi": 1.2132,
+    "points": 494,
+    "hits": 65,
+    "races": 242,
+    "race_hits": 57,
     "days": 7
    },
    "daily": [
@@ -8365,14 +8381,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 7000,
-     "payout": 6810.0,
-     "points": 70,
-     "hits": 8,
-     "races": 29,
-     "race_hits": 7,
-     "roi": 0.9729,
-     "cum": 10180.0
+     "stake": 7100,
+     "payout": 7260.0,
+     "points": 71,
+     "hits": 9,
+     "races": 30,
+     "race_hits": 8,
+     "roi": 1.0225,
+     "cum": 10530.0
     }
    ]
   }
