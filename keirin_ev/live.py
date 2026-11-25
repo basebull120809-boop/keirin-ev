@@ -145,7 +145,7 @@ HIT_MINPTS = 2       # 1点買いはしない
 HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
 HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
 HIT_KINDS = ("qn", "trio")  # 的中重視で使う券種（2車複・3連複から当たる見込みの高い方を1つ。3連複だけにするなら ("trio",)）
-HIT_WIDE_SYNTH = 1.2  # 2026-11-25 本人の希望「見送り推奨でも当てるように多く買ってもいい」：見込みが60%に届かないレースは、合成1.2倍まで点数を広げる
+HIT_WIDE_SYNTH = 1.4  # 2026-11-25 本人の希望「見送り推奨でも当てるように多く買ってもいい」：見込みが60%に届かないレースは、合成1.4倍まで点数を広げる（本人の希望で1.2→1.4）
 HIT_WIDE_MAX = 15     # 広げるときの最大点数
 HIT_SIDE_GO = 0.95   # 的中重視の別枠（kind="hit2"・"hit3"）にする見込み回収の下限（reports/qn_ev.md：1日約2.6R・的中47%・回収104%（95%区間97〜113%））
 
@@ -232,7 +232,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             qp[kq] = qp.get(kq, 0.0) + p; tp[kt] = tp.get(kt, 0.0) + p
         plans = [x for k, x in (("qn", _hit_plan(qp, qno, "qn")), ("trio", _hit_plan(tp, tro, "trio"))) if x and k in HIT_KINDS]
         if strategy() != "ev" and not any(x["H"] >= HIT_HMIN for x in plans):
-            # 2026-11-25 本人の希望：見込み60%に届かないレースも、点数を広げて（合成1.2倍・最大15点まで）当てにいく
+            # 2026-11-25 本人の希望：見込み60%に届かないレースも、点数を広げて（合成1.4倍・最大15点まで）当てにいく
             wide = []
             for k, pr, od_ in (("qn", qp, qno), ("trio", tp, tro)):
                 if k in HIT_KINDS:
