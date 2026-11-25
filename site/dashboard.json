@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 16:14",
+ "updated_at": "2026-11-25 16:21",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -2621,14 +2621,21 @@
     "race_no": 12,
     "deadline": "16:10",
     "judged_at": "16:04:27",
-    "result": null,
+    "result": {
+     "combo": "2-1-6",
+     "payout": 1850
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 150,
+     "all": "1=2・1=6・2=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2639,7 +2646,7 @@
       "odds": 35.2,
       "p": 0.032,
       "ev": 1.049,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [
@@ -2649,7 +2656,7 @@
       "odds": 11.0,
       "p": 0.1157,
       "ev": 1.183,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -2665,7 +2672,7 @@
       "odds": 3.1,
       "p": 0.2545,
       "ev": 0.734,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=6",
@@ -2673,12 +2680,21 @@
       "odds": 7.9,
       "p": 0.1323,
       "ev": 0.972,
-      "hit": null
+      "hit": true
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 230
+    },
+    "ex_result": {
+     "combo": "2-1",
+     "payout": 450
+    },
+    "trio_result": {
+     "combo": "1=2=6",
+     "payout": 790
+    },
     "notes": [
      "1着が出るライン：7-1-4 が 48%",
      "上がり最速：2 皿屋豊（直近平均 10.2秒、2位と0.5秒差）",
@@ -4625,12 +4641,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 25900,
+    "stake": 26000,
     "payout": 26760.0,
-    "roi": 1.0332,
-    "points": 259,
+    "roi": 1.0292,
+    "points": 260,
     "hits": 34,
-    "races": 181,
+    "races": 182,
     "race_hits": 34,
     "days": 7
    },
@@ -4703,14 +4719,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 1700,
+     "stake": 1800,
      "payout": 220.0,
-     "points": 17,
+     "points": 18,
      "hits": 1,
-     "races": 10,
+     "races": 11,
      "race_hits": 1,
-     "roi": 0.1294,
-     "cum": 860.0
+     "roi": 0.1222,
+     "cum": 760.0
     }
    ]
   },
@@ -4741,12 +4757,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 20500,
+    "stake": 20600,
     "payout": 29960.0,
-    "roi": 1.4615,
-    "points": 205,
+    "roi": 1.4544,
+    "points": 206,
     "hits": 27,
-    "races": 133,
+    "races": 134,
     "race_hits": 27,
     "days": 7
    },
@@ -4819,14 +4835,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 2400,
+     "stake": 2500,
      "payout": 3830.0,
-     "points": 24,
+     "points": 25,
      "hits": 4,
-     "races": 12,
+     "races": 13,
      "race_hits": 4,
-     "roi": 1.5958,
-     "cum": 9460.0
+     "roi": 1.532,
+     "cum": 9360.0
     }
    ]
   },
@@ -5787,12 +5803,12 @@
   },
   "evr": {
    "total": {
-    "stake": 46400,
+    "stake": 46600,
     "payout": 56720.0,
-    "roi": 1.2224,
-    "points": 464,
+    "roi": 1.2172,
+    "points": 466,
     "hits": 61,
-    "races": 229,
+    "races": 230,
     "race_hits": 54,
     "days": 7
    },
@@ -5865,14 +5881,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 4100,
+     "stake": 4300,
      "payout": 4050.0,
-     "points": 41,
+     "points": 43,
      "hits": 5,
-     "races": 17,
+     "races": 18,
      "race_hits": 5,
-     "roi": 0.9878,
-     "cum": 10320.0
+     "roi": 0.9419,
+     "cum": 10120.0
     }
    ]
   }
