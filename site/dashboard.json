@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 16:22",
+ "updated_at": "2026-11-25 16:28",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -2747,14 +2747,21 @@
     "race_no": 2,
     "deadline": "16:17",
     "judged_at": "16:11:06",
-    "result": null,
+    "result": {
+     "combo": "1-2-7",
+     "payout": 42130
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 1170,
+     "all": "1=2・1=7・2=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2773,7 +2780,7 @@
       "odds": 4.6,
       "p": 0.2107,
       "ev": 0.901,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4",
@@ -2781,12 +2788,21 @@
       "odds": 6.5,
       "p": 0.1366,
       "ev": 0.826,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 5030
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 7430
+    },
+    "trio_result": {
+     "combo": "1=2=7",
+     "payout": 7760
+    },
     "notes": [
      "1着が出るライン：5-2-7 が 54%",
      "上がり最速：4 小塚潤（直近平均 11.4秒、2位と0.4秒差）",
