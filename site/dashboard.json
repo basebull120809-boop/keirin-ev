@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 14:44",
+ "updated_at": "2026-11-25 14:47",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -1541,14 +1541,21 @@
     "race_no": 9,
     "deadline": "14:36",
     "judged_at": "14:30:14",
-    "result": null,
+    "result": {
+     "combo": "1-2-3",
+     "payout": 750
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 200,
+     "all": "1=2・1=3・2=3"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -1559,7 +1566,7 @@
       "odds": 48.7,
       "p": 0.0299,
       "ev": 1.352,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=3",
@@ -1567,7 +1574,7 @@
       "odds": 15.9,
       "p": 0.0893,
       "ev": 1.32,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=2=5",
@@ -1575,7 +1582,7 @@
       "odds": 15.9,
       "p": 0.0802,
       "ev": 1.186,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=6=7",
@@ -1583,7 +1590,7 @@
       "odds": 28.1,
       "p": 0.0447,
       "ev": 1.167,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=7",
@@ -1591,7 +1598,7 @@
       "odds": 15.5,
       "p": 0.0732,
       "ev": 1.056,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=5=7",
@@ -1599,7 +1606,7 @@
       "odds": 25.2,
       "p": 0.0437,
       "ev": 1.024,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
@@ -1616,7 +1623,7 @@
       "odds": 6.4,
       "p": 0.1578,
       "ev": 0.939,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=4",
@@ -1624,12 +1631,21 @@
       "odds": 9.0,
       "p": 0.1106,
       "ev": 0.926,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 340
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 320
+    },
+    "trio_result": {
+     "combo": "1=2=3",
+     "payout": 550
+    },
     "notes": [
      "1着が出るライン：1-4-2-3-5-6 が 92%",
      "上がり最速：2 掛水泰範（直近平均 11.2秒、2位と0.0秒差）",
@@ -3308,13 +3324,13 @@
   },
   "evr3": {
    "total": {
-    "stake": 19100,
-    "payout": 26770.0,
-    "roi": 1.4016,
-    "points": 191,
-    "hits": 24,
-    "races": 128,
-    "race_hits": 24,
+    "stake": 19700,
+    "payout": 27320.0,
+    "roi": 1.3868,
+    "points": 197,
+    "hits": 25,
+    "races": 129,
+    "race_hits": 25,
     "days": 7
    },
    "daily": [
@@ -3386,14 +3402,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 1000,
-     "payout": 640.0,
-     "points": 10,
-     "hits": 1,
-     "races": 7,
-     "race_hits": 1,
-     "roi": 0.64,
-     "cum": 7670.0
+     "stake": 1600,
+     "payout": 1190.0,
+     "points": 16,
+     "hits": 2,
+     "races": 8,
+     "race_hits": 2,
+     "roi": 0.7438,
+     "cum": 7620.0
     }
    ]
   },
@@ -4354,13 +4370,13 @@
   },
   "evr": {
    "total": {
-    "stake": 44100,
-    "payout": 53310.0,
-    "roi": 1.2088,
-    "points": 441,
-    "hits": 57,
-    "races": 222,
-    "race_hits": 50,
+    "stake": 44700,
+    "payout": 53860.0,
+    "roi": 1.2049,
+    "points": 447,
+    "hits": 58,
+    "races": 223,
+    "race_hits": 51,
     "days": 7
    },
    "daily": [
@@ -4432,14 +4448,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 1800,
-     "payout": 640.0,
-     "points": 18,
-     "hits": 1,
-     "races": 10,
-     "race_hits": 1,
-     "roi": 0.3556,
-     "cum": 9210.0
+     "stake": 2400,
+     "payout": 1190.0,
+     "points": 24,
+     "hits": 2,
+     "races": 11,
+     "race_hits": 2,
+     "roi": 0.4958,
+     "cum": 9160.0
     }
    ]
   }
