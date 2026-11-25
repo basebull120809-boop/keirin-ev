@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 08:59",
+ "updated_at": "2026-11-25 09:16",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -320,14 +320,21 @@
     "race_no": 2,
     "deadline": "09:05",
     "judged_at": "08:59:12",
-    "result": null,
+    "result": {
+     "combo": "1-4-5",
+     "payout": 1990
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 100,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -338,7 +345,7 @@
       "odds": 13.2,
       "p": 0.083,
       "ev": 1.019,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [
@@ -348,7 +355,7 @@
       "odds": 5.1,
       "p": 0.2241,
       "ev": 1.063,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -356,9 +363,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 210
+    },
+    "ex_result": {
+     "combo": "1-4",
+     "payout": 600
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 280
+    },
     "notes": [
      "1着が出るライン：1-4-3 が 61%",
      "上がり最速：6 井上典善（直近平均 11.4秒、2位と0.6秒差）",
@@ -1558,12 +1574,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 24400,
+    "stake": 24500,
     "payout": 26540.0,
-    "roi": 1.0877,
-    "points": 244,
+    "roi": 1.0833,
+    "points": 245,
     "hits": 33,
-    "races": 172,
+    "races": 173,
     "race_hits": 33,
     "days": 7
    },
@@ -1636,14 +1652,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 200,
+     "stake": 300,
      "payout": 0.0,
-     "points": 2,
+     "points": 3,
      "hits": 0,
-     "races": 1,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 2140.0
+     "cum": 2040.0
     }
    ]
   },
@@ -1674,14 +1690,14 @@
   },
   "evr3": {
    "total": {
-    "stake": 18100,
+    "stake": 18200,
     "payout": 26130.0,
-    "roi": 1.4436,
-    "points": 181,
+    "roi": 1.4357,
+    "points": 182,
     "hits": 23,
-    "races": 121,
+    "races": 122,
     "race_hits": 23,
-    "days": 6
+    "days": 7
    },
    "daily": [
     {
@@ -1749,6 +1765,17 @@
      "race_hits": 1,
      "roi": 1.0786,
      "cum": 8030.0
+    },
+    {
+     "date": "2026-11-25",
+     "stake": 100,
+     "payout": 0.0,
+     "points": 1,
+     "hits": false,
+     "races": 1,
+     "race_hits": 0,
+     "roi": 0.0,
+     "cum": 7930.0
     }
    ]
   },
@@ -2709,12 +2736,12 @@
   },
   "evr": {
    "total": {
-    "stake": 42500,
+    "stake": 42700,
     "payout": 52670.0,
-    "roi": 1.2393,
-    "points": 425,
+    "roi": 1.2335,
+    "points": 427,
     "hits": 56,
-    "races": 213,
+    "races": 214,
     "race_hits": 49,
     "days": 7
    },
@@ -2787,14 +2814,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 200,
+     "stake": 400,
      "payout": 0.0,
-     "points": 2,
+     "points": 4,
      "hits": 0,
-     "races": 1,
+     "races": 2,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 10170.0
+     "cum": 9970.0
     }
    ]
   }
