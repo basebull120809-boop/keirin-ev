@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 17:00",
+ "updated_at": "2026-11-25 17:07",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -3077,14 +3077,21 @@
     "race_no": 4,
     "deadline": "16:53",
     "judged_at": "16:47:24",
-    "result": null,
+    "result": {
+     "combo": "5-6-2",
+     "payout": 111630
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=5",
+     "payout": 1560,
+     "all": "2=5・2=6・5=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -3095,7 +3102,7 @@
       "odds": 28.3,
       "p": 0.0439,
       "ev": 1.155,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=6=7",
@@ -3103,7 +3110,7 @@
       "odds": 9.2,
       "p": 0.1226,
       "ev": 1.049,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
@@ -3120,7 +3127,7 @@
       "odds": 9.2,
       "p": 0.1226,
       "ev": 1.049,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=7",
@@ -3128,7 +3135,7 @@
       "odds": 5.8,
       "p": 0.1195,
       "ev": 0.645,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=6",
@@ -3136,7 +3143,7 @@
       "odds": 10.4,
       "p": 0.0835,
       "ev": 0.807,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=4=6",
@@ -3144,7 +3151,7 @@
       "odds": 16.4,
       "p": 0.0478,
       "ev": 0.728,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=4=7",
@@ -3152,12 +3159,21 @@
       "odds": 19.8,
       "p": 0.0459,
       "ev": 0.846,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "5=6",
+     "payout": 4760
+    },
+    "ex_result": {
+     "combo": "5-6",
+     "payout": 14230
+    },
+    "trio_result": {
+     "combo": "2=5=6",
+     "payout": 11900
+    },
     "notes": [
      "1着が出るライン：7-3 が 41%",
      "上がり最速：5 谷口友真（直近平均 11.5秒、2位と0.3秒差）",
@@ -5366,12 +5382,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 20700,
+    "stake": 20900,
     "payout": 31240.0,
-    "roi": 1.5092,
-    "points": 207,
+    "roi": 1.4947,
+    "points": 209,
     "hits": 28,
-    "races": 135,
+    "races": 136,
     "race_hits": 28,
     "days": 7
    },
@@ -5444,14 +5460,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 2600,
+     "stake": 2800,
      "payout": 5110.0,
-     "points": 26,
+     "points": 28,
      "hits": 5,
-     "races": 14,
+     "races": 15,
      "race_hits": 5,
-     "roi": 1.9654,
-     "cum": 10540.0
+     "roi": 1.825,
+     "cum": 10340.0
     }
    ]
   },
@@ -6412,12 +6428,12 @@
   },
   "evr": {
    "total": {
-    "stake": 46800,
+    "stake": 47000,
     "payout": 58400.0,
-    "roi": 1.2479,
-    "points": 468,
+    "roi": 1.2426,
+    "points": 470,
     "hits": 63,
-    "races": 231,
+    "races": 232,
     "race_hits": 55,
     "days": 7
    },
@@ -6490,14 +6506,14 @@
     },
     {
      "date": "2026-11-25",
-     "stake": 4500,
+     "stake": 4700,
      "payout": 5730.0,
-     "points": 45,
+     "points": 47,
      "hits": 7,
-     "races": 19,
+     "races": 20,
      "race_hits": 6,
-     "roi": 1.2733,
-     "cum": 11600.0
+     "roi": 1.2191,
+     "cum": 11400.0
     }
    ]
   }
