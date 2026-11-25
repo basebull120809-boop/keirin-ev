@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-25 15:26",
+ "updated_at": "2026-11-25 15:29",
  "picks": {
   "date": "2026-11-25",
   "races": [
@@ -1785,14 +1785,21 @@
     "race_no": 11,
     "deadline": "15:18",
     "judged_at": "15:12:22",
-    "result": null,
+    "result": {
+     "combo": "4-2-3",
+     "payout": 8850
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=3",
+     "payout": 280,
+     "all": "2=3・2=4・3=4"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -1811,7 +1818,7 @@
       "odds": 3.7,
       "p": 0.2288,
       "ev": 0.787,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=7",
@@ -1819,12 +1826,21 @@
       "odds": 5.1,
       "p": 0.1746,
       "ev": 0.828,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=4",
+     "payout": 1530
+    },
+    "ex_result": {
+     "combo": "4-2",
+     "payout": 2490
+    },
+    "trio_result": {
+     "combo": "2=3=4",
+     "payout": 1680
+    },
     "notes": [
      "1着が出るライン：2-7 が 71%",
      "上がり最速：2 齋木翔多（直近平均 10.5秒、2位と1.3秒差）",
