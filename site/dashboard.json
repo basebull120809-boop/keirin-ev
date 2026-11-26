@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 13:38",
+ "updated_at": "2026-11-26 13:46",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -2559,14 +2559,21 @@
     "race_no": 7,
     "deadline": "13:35",
     "judged_at": "13:29:04",
-    "result": null,
+    "result": {
+     "combo": "2-7-4",
+     "payout": 2450
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 350,
+     "all": "2=4・2=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2585,7 +2592,7 @@
       "odds": 3.8,
       "p": 0.2347,
       "ev": 0.829,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=4=7",
@@ -2593,7 +2600,7 @@
       "odds": 6.4,
       "p": 0.1398,
       "ev": 0.832,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=5=7",
@@ -2601,12 +2608,21 @@
       "odds": 6.2,
       "p": 0.1238,
       "ev": 0.714,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 270
+    },
+    "ex_result": {
+     "combo": "2-7",
+     "payout": 720
+    },
+    "trio_result": {
+     "combo": "2=4=7",
+     "payout": 530
+    },
     "notes": [
      "1着が出るライン：7-1-5 が 69%",
      "上がり最速：2 嶋田誠也（直近平均 11.0秒、2位と0.4秒差）",
