@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 13:11",
+ "updated_at": "2026-11-26 13:19",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -2265,14 +2265,21 @@
     "race_no": 6,
     "deadline": "13:08",
     "judged_at": "13:02:27",
-    "result": null,
+    "result": {
+     "combo": "1-3-6",
+     "payout": 7810
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=3",
+     "payout": 360,
+     "all": "1=3・1=6・3=6"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -2283,7 +2290,7 @@
       "odds": 28.0,
       "p": 0.0413,
       "ev": 1.077,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [
@@ -2293,7 +2300,7 @@
       "odds": 10.0,
       "p": 0.1322,
       "ev": 1.23,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=6",
@@ -2301,7 +2308,7 @@
       "odds": 22.2,
       "p": 0.05,
       "ev": 1.032,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=4",
@@ -2309,7 +2316,7 @@
       "odds": 22.6,
       "p": 0.0485,
       "ev": 1.019,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -2325,7 +2332,7 @@
       "odds": 3.1,
       "p": 0.2083,
       "ev": 0.6,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=4",
@@ -2333,7 +2340,7 @@
       "odds": 7.0,
       "p": 0.1531,
       "ev": 0.996,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=5",
@@ -2341,12 +2348,21 @@
       "odds": 9.0,
       "p": 0.0767,
       "ev": 0.642,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=3",
+     "payout": 1180
+    },
+    "ex_result": {
+     "combo": "1-3",
+     "payout": 2410
+    },
+    "trio_result": {
+     "combo": "1=3=6",
+     "payout": 1610
+    },
     "notes": [
      "1着が出るライン：1-6 が 44%",
      "上がり最速：2 佐山寛明（直近平均 10.9秒、2位と0.6秒差）",
@@ -4266,12 +4282,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 29900,
+    "stake": 30200,
     "payout": 29880.0,
-    "roi": 0.9993,
-    "points": 299,
+    "roi": 0.9894,
+    "points": 302,
     "hits": 39,
-    "races": 209,
+    "races": 210,
     "race_hits": 39,
     "days": 8
    },
@@ -4355,14 +4371,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 1500,
+     "stake": 1800,
      "payout": 1190.0,
-     "points": 15,
+     "points": 18,
      "hits": 2,
-     "races": 9,
+     "races": 10,
      "race_hits": 2,
-     "roi": 0.7933,
-     "cum": -20.0
+     "roi": 0.6611,
+     "cum": -320.0
     }
    ]
   },
@@ -4393,12 +4409,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 25200,
+    "stake": 25300,
     "payout": 31460.0,
-    "roi": 1.2484,
-    "points": 252,
+    "roi": 1.2435,
+    "points": 253,
     "hits": 29,
-    "races": 165,
+    "races": 166,
     "race_hits": 29,
     "days": 8
    },
@@ -4482,14 +4498,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 1300,
+     "stake": 1400,
      "payout": 0.0,
-     "points": 13,
+     "points": 14,
      "hits": 0,
-     "races": 10,
+     "races": 11,
      "race_hits": 0,
      "roi": 0.0,
-     "cum": 6260.0
+     "cum": 6160.0
     }
    ]
   },
@@ -5516,12 +5532,12 @@
   },
   "evr": {
    "total": {
-    "stake": 55100,
+    "stake": 55500,
     "payout": 61340.0,
-    "roi": 1.1132,
-    "points": 551,
+    "roi": 1.1052,
+    "points": 555,
     "hits": 68,
-    "races": 272,
+    "races": 273,
     "race_hits": 60,
     "days": 8
    },
@@ -5605,14 +5621,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 2800,
+     "stake": 3200,
      "payout": 1190.0,
-     "points": 28,
+     "points": 32,
      "hits": 2,
-     "races": 14,
+     "races": 15,
      "race_hits": 2,
-     "roi": 0.425,
-     "cum": 6240.0
+     "roi": 0.3719,
+     "cum": 5840.0
     }
    ]
   }
