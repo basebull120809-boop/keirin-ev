@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 11:10",
+ "updated_at": "2026-11-26 11:14",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -461,14 +461,21 @@
     "race_no": 1,
     "deadline": "11:00",
     "judged_at": "10:54:18",
-    "result": null,
+    "result": {
+     "combo": "5-1-4",
+     "payout": 1110
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 170,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -487,7 +494,7 @@
       "odds": 3.0,
       "p": 0.3492,
       "ev": 0.974,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "1=3",
@@ -495,12 +502,21 @@
       "odds": 4.9,
       "p": 0.14,
       "ev": 0.638,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=5",
+     "payout": 130
+    },
+    "ex_result": {
+     "combo": "5-1",
+     "payout": 350
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 620
+    },
     "notes": [
      "1着が出るライン：5-1-3 が 70%",
      "上がり最速：4 矢島一弥（直近平均 11.2秒、2位と0.2秒差）",
