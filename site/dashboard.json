@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 22:30",
+ "updated_at": "2026-11-26 22:36",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -8474,7 +8474,10 @@
     "race_no": 6,
     "deadline": "22:25",
     "judged_at": "22:19:26",
-    "result": null,
+    "result": {
+     "combo": "2-1-5",
+     "payout": 1870
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -8485,7 +8488,7 @@
       "odds": 3.0,
       "p": 0.2718,
       "ev": 0.758,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=3",
@@ -8493,12 +8496,16 @@
       "odds": 3.4,
       "p": 0.2301,
       "ev": 0.728,
-      "hit": null
+      "hit": false
      }
     ],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 100,
+     "all": "1=2・1=5・2=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -8509,7 +8516,7 @@
       "odds": 34.9,
       "p": 0.0314,
       "ev": 1.019,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
@@ -8518,9 +8525,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 110
+    },
+    "ex_result": {
+     "combo": "2-1",
+     "payout": 200
+    },
+    "trio_result": {
+     "combo": "1=2=5",
+     "payout": 830
+    },
     "notes": [
      "1着が出るライン：2-1-6 が 86%",
      "上がり最速：5 徳吉広紀（直近平均 11.7秒、2位と0.4秒差）",
@@ -11965,12 +11981,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 28500,
+    "stake": 28600,
     "payout": 33580.0,
-    "roi": 1.1782,
-    "points": 285,
+    "roi": 1.1741,
+    "points": 286,
     "hits": 31,
-    "races": 188,
+    "races": 189,
     "race_hits": 31,
     "days": 8
    },
@@ -12054,14 +12070,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 4600,
+     "stake": 4700,
      "payout": 2120.0,
-     "points": 46,
+     "points": 47,
      "hits": 2,
-     "races": 33,
+     "races": 34,
      "race_hits": 2,
-     "roi": 0.4609,
-     "cum": 5080.0
+     "roi": 0.4511,
+     "cum": 4980.0
     }
    ]
   },
@@ -12848,12 +12864,12 @@
   },
   "trio": {
    "total": {
-    "stake": 550900,
+    "stake": 551800,
     "payout": 386630.0,
-    "roi": 0.7018,
-    "points": 841,
+    "roi": 0.7007,
+    "points": 843,
     "hits": 91,
-    "races": 222,
+    "races": 223,
     "race_hits": 91,
     "days": 14
    },
@@ -13003,14 +13019,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 44000,
+     "stake": 44900,
      "payout": 33640.0,
-     "points": 142,
+     "points": 144,
      "hits": 18,
-     "races": 35,
+     "races": 36,
      "race_hits": 18,
-     "roi": 0.7645,
-     "cum": -164270.0
+     "roi": 0.7492,
+     "cum": -165170.0
     }
    ]
   },
@@ -13066,12 +13082,12 @@
   },
   "rec": {
    "total": {
-    "stake": 83200,
+    "stake": 84100,
     "payout": 64570.0,
-    "roi": 0.7761,
-    "points": 261,
+    "roi": 0.7678,
+    "points": 263,
     "hits": 36,
-    "races": 56,
+    "races": 57,
     "race_hits": 32,
     "days": 3
    },
@@ -13100,25 +13116,25 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 66500,
+     "stake": 67400,
      "payout": 50280.0,
-     "points": 203,
+     "points": 205,
      "hits": 29,
-     "races": 40,
+     "races": 41,
      "race_hits": 27,
-     "roi": 0.7561,
-     "cum": -18630.0
+     "roi": 0.746,
+     "cum": -19530.0
     }
    ]
   },
   "evr": {
    "total": {
-    "stake": 64100,
+    "stake": 64200,
     "payout": 65000.0,
-    "roi": 1.014,
-    "points": 641,
+    "roi": 1.0125,
+    "points": 642,
     "hits": 72,
-    "races": 307,
+    "races": 308,
     "race_hits": 64,
     "days": 8
    },
@@ -13202,14 +13218,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 11800,
+     "stake": 11900,
      "payout": 4850.0,
-     "points": 118,
+     "points": 119,
      "hits": 6,
-     "races": 49,
+     "races": 50,
      "race_hits": 6,
-     "roi": 0.411,
-     "cum": 900.0
+     "roi": 0.4076,
+     "cum": 800.0
     }
    ]
   },
