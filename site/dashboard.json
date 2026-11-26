@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 22:39",
+ "updated_at": "2026-11-26 22:46",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -8586,7 +8586,10 @@
     "race_no": 7,
     "deadline": "22:35",
     "judged_at": "22:29:30",
-    "result": null,
+    "result": {
+     "combo": "1-7-6",
+     "payout": 13150
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -8598,7 +8601,7 @@
       "odds": 3.2,
       "p": 0.2843,
       "ev": 0.846,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2",
@@ -8606,11 +8609,15 @@
       "odds": 4.1,
       "p": 0.2112,
       "ev": 0.805,
-      "hit": null
+      "hit": false
      }
     ],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=6",
+     "payout": 260,
+     "all": "1=6・1=7・6=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -8622,7 +8629,7 @@
       "odds": 9.6,
       "p": 0.1148,
       "ev": 1.025,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -8630,9 +8637,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=7",
+     "payout": 1400
+    },
+    "ex_result": {
+     "combo": "1-7",
+     "payout": 2170
+    },
+    "trio_result": {
+     "combo": "1=6=7",
+     "payout": 3530
+    },
     "notes": [
      "1着が出るライン：1-2-4-6 が 77%",
      "上がり最速：1 木村優駿（直近平均 11.4秒、2位と0.1秒差）",
@@ -11960,12 +11976,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 35600,
+    "stake": 35700,
     "payout": 31420.0,
-    "roi": 0.8826,
-    "points": 356,
+    "roi": 0.8801,
+    "points": 357,
     "hits": 41,
-    "races": 237,
+    "races": 238,
     "race_hits": 41,
     "days": 8
    },
@@ -12049,14 +12065,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 7200,
+     "stake": 7300,
      "payout": 2730.0,
-     "points": 72,
+     "points": 73,
      "hits": 4,
-     "races": 37,
+     "races": 38,
      "race_hits": 4,
-     "roi": 0.3792,
-     "cum": -4180.0
+     "roi": 0.374,
+     "cum": -4280.0
     }
    ]
   },
@@ -12617,12 +12633,12 @@
   },
   "qn": {
    "total": {
-    "stake": 547100,
+    "stake": 548100,
     "payout": 354940.0,
-    "roi": 0.6488,
-    "points": 620,
+    "roi": 0.6476,
+    "points": 622,
     "hits": 78,
-    "races": 216,
+    "races": 217,
     "race_hits": 78,
     "days": 13
    },
@@ -12761,14 +12777,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 22500,
+     "stake": 23500,
      "payout": 16640.0,
-     "points": 61,
+     "points": 63,
      "hits": 11,
-     "races": 23,
+     "races": 24,
      "race_hits": 11,
-     "roi": 0.7396,
-     "cum": -192160.0
+     "roi": 0.7081,
+     "cum": -193160.0
     }
    ]
   },
@@ -13188,12 +13204,12 @@
   },
   "rec": {
    "total": {
-    "stake": 84100,
+    "stake": 85100,
     "payout": 64570.0,
-    "roi": 0.7678,
-    "points": 263,
+    "roi": 0.7588,
+    "points": 265,
     "hits": 36,
-    "races": 57,
+    "races": 58,
     "race_hits": 32,
     "days": 3
    },
@@ -13222,25 +13238,25 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 67400,
+     "stake": 68400,
      "payout": 50280.0,
-     "points": 205,
+     "points": 207,
      "hits": 29,
-     "races": 41,
+     "races": 42,
      "race_hits": 27,
-     "roi": 0.746,
-     "cum": -19530.0
+     "roi": 0.7351,
+     "cum": -20530.0
     }
    ]
   },
   "evr": {
    "total": {
-    "stake": 64200,
+    "stake": 64300,
     "payout": 65000.0,
-    "roi": 1.0125,
-    "points": 642,
+    "roi": 1.0109,
+    "points": 643,
     "hits": 72,
-    "races": 308,
+    "races": 309,
     "race_hits": 64,
     "days": 8
    },
@@ -13324,14 +13340,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 11900,
+     "stake": 12000,
      "payout": 4850.0,
-     "points": 119,
+     "points": 120,
      "hits": 6,
-     "races": 50,
+     "races": 51,
      "race_hits": 6,
-     "roi": 0.4076,
-     "cum": 800.0
+     "roi": 0.4042,
+     "cum": 700.0
     }
    ]
   },
