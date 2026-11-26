@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 15:26",
+ "updated_at": "2026-11-26 15:30",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -4286,7 +4286,10 @@
     "race_no": 10,
     "deadline": "15:17",
     "judged_at": "15:11:35",
-    "result": null,
+    "result": {
+     "combo": "7-4-1",
+     "payout": 2070
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -4298,7 +4301,7 @@
       "odds": 2.7,
       "p": 0.39,
       "ev": 0.979,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=7",
@@ -4306,11 +4309,15 @@
       "odds": 3.9,
       "p": 0.1583,
       "ev": 0.574,
-      "hit": null
+      "hit": false
      }
     ],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 220,
+     "all": "1=4・1=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -4321,9 +4328,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=7",
+     "payout": 830
+    },
+    "ex_result": {
+     "combo": "7-4",
+     "payout": 1070
+    },
+    "trio_result": {
+     "combo": "1=4=7",
+     "payout": 280
+    },
     "notes": [
      "1着が出るライン：1-7-4 が 64%",
      "上がり最速：7 金子貴志（直近平均 11.9秒、2位と0.1秒差）",
@@ -7293,12 +7309,12 @@
   },
   "qn": {
    "total": {
-    "stake": 538500,
+    "stake": 539500,
     "payout": 349160.0,
-    "roi": 0.6484,
-    "points": 597,
+    "roi": 0.6472,
+    "points": 599,
     "hits": 74,
-    "races": 207,
+    "races": 208,
     "race_hits": 74,
     "days": 13
    },
@@ -7437,14 +7453,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 13900,
+     "stake": 14900,
      "payout": 10860.0,
-     "points": 38,
+     "points": 40,
      "hits": 7,
-     "races": 14,
+     "races": 15,
      "race_hits": 7,
-     "roi": 0.7813,
-     "cum": -189340.0
+     "roi": 0.7289,
+     "cum": -190340.0
     }
    ]
   },
@@ -7864,12 +7880,12 @@
   },
   "rec": {
    "total": {
-    "stake": 52600,
+    "stake": 53600,
     "payout": 44320.0,
-    "roi": 0.8426,
-    "points": 169,
+    "roi": 0.8269,
+    "points": 171,
     "hits": 24,
-    "races": 35,
+    "races": 36,
     "race_hits": 20,
     "days": 3
    },
@@ -7898,14 +7914,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 35900,
+     "stake": 36900,
      "payout": 30030.0,
-     "points": 111,
+     "points": 113,
      "hits": 17,
-     "races": 19,
+     "races": 20,
      "race_hits": 15,
-     "roi": 0.8365,
-     "cum": -8280.0
+     "roi": 0.8138,
+     "cum": -9280.0
     }
    ]
   },
