@@ -267,6 +267,12 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             b3, b2 = evbuy.plan(P_res, cars, COMBOS, tro, qno)
             bets += [dict(base, **b, kind="evr2", rec=False) for b in b2]
             bets += [dict(base, **b, kind="evr3", rec=False) for b in b3]
+            try:                                  # ケリー配分の期待値買い（紙上・収支外。2026-11-27 追加）
+                k3, k2 = evbuy.plan_kelly(P_res, cars, COMBOS, tro, qno, load_config()[0].get("bankroll", 100_000))
+                bets += [dict(base, **b, kind="evk2", rec=False) for b in k2]
+                bets += [dict(base, **b, kind="evk3", rec=False) for b in k3]
+            except Exception as e:
+                print("ケリー配分の記録失敗", rid, e, flush=True)
             if strategy() == "ev":                # 2026-11-24：勝負は2車複・3連複の期待値買い（過去検証 2車複112.5%・3連複107%、合わせて110%・95%区間101〜118%）
                 if b2 or b3:                      # 2車単・3連単は同じ条件の過去検証で回収95%前後（100%未満）なので勝負に入れない
                     bets = ([dict(base, **b, kind="qn", rec=True) for b in b2] + [dict(base, **b, kind="trio", rec=True) for b in b3]
@@ -300,7 +306,7 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             old = pd.read_csv(f, dtype={"race_id": str}, on_bad_lines="skip")
             new = pd.concat([old, new], ignore_index=True)
         new.to_csv(f, index=False)
-    return [b for b in bets if b["kind"] not in ("evr2", "evr3")], ent, notes
+    return [b for b in bets if b["kind"] not in ("evr2", "evr3", "evk2", "evk3")], ent, notes
 
 
 def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
@@ -472,6 +478,9 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                          deadline=dl.strftime("%H:%M") if dl is not None else "", taken_at=t.strftime("%H:%M:%S"))
             bets += [dict(base4, **b, kind="evr3", rec=False) for b in b3]
             bets += [dict(base4, **b, kind="evr2", rec=False) for b in b2]
+            k3, k2 = evbuy.plan_kelly(P_res, cars, COMBOS, tro4, qno4, load_config()[0].get("bankroll", 100_000))
+            bets += [dict(base4, **b, kind="evk3", rec=False) for b in k3]   # ケリー配分（紙上・収支外）
+            bets += [dict(base4, **b, kind="evk2", rec=False) for b in k2]
             x3, x2 = evbuy.plan_over(P_res, cars, COMBOS, tro4, qno4)   # オッズ上限なしの追加分（紙上記録・収支外）
             bets += [dict(base4, **b, kind="evr3x", rec=False) for b in x3]
             bets += [dict(base4, **b, kind="evr2x", rec=False) for b in x2]
@@ -940,7 +949,7 @@ def paper_results():
             r[c] = np.nan
     b = b.merge(r[["race_id", "win", "tri_payout", "ex_combo", "ex_payout", "trio_combo", "trio_payout",
                    "qn_combo", "qn_payout", "wide_combos", "wide_payouts"]], on="race_id", how="left")
-    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "evr3x", "trio_m", "hit3"]), b["kind"].isin(["qn", "qn_z", "evr2", "evr2x", "cmp2", "qn_m", "hit2"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
+    is_ex, is_trio, is_qn = b["kind"].isin(["ex", "tenkai", "ex_z", "tenkai_z", "ex_m"]), b["kind"].isin(["trio", "pool", "hit4", "trio_z", "evr3", "evr3x", "evk3", "trio_m", "hit3"]), b["kind"].isin(["qn", "qn_z", "evr2", "evr2x", "evk2", "cmp2", "qn_m", "hit2"])   # tenkai は2車単、pool・evr3 は3連複、evr2・cmp2 は2車複
     target = np.where(is_ex, b["ex_combo"], np.where(is_trio, b["trio_combo"],
                       np.where(is_qn, b["qn_combo"], b["win"])))
     pay = np.where(is_ex, b["ex_payout"], np.where(is_trio, b["trio_payout"],

@@ -115,6 +115,7 @@ def day_races(pb, last):
                           tenkai=_bl(g, "tenkai"), pool=_bl(g, "pool"), hit4=_bl(g, "hit4"),
                           evr3=_bl(g, "evr3"), evr2=_bl(g, "evr2"), cmp2=_bl(g, "cmp2"),
                           evr3x=_bl(g, "evr3x"), evr2x=_bl(g, "evr2x"),
+                          evk3=_bl(g, "evk3"), evk2=_bl(g, "evk2"),
                           hit_side=_bl(g, "hit2") or _bl(g, "hit3"),
                           hit_side_kind="qn" if (g["kind"] == "hit2").any() else "trio" if (g["kind"] == "hit3").any() else None,
                           **_mi(g),
@@ -173,6 +174,9 @@ def picks_and_paper():
     ev = done[done["kind"].isin(["evr3", "evr2"])]   # 残差モデルの期待値買い（3連複＋2車複を合わせて）
     if len(ev):
         groups.append(("evr", ev))
+    ek = done[done["kind"].isin(["evk3", "evk2"])]   # ケリー配分の期待値買い（3連複＋2車複・2026-11-27 追加）
+    if len(ek):
+        groups.append(("evk", ek))
     hs = done[done["kind"].isin(["hit2", "hit3"])]   # 的中重視の別枠（見込み回収0.95以上・2026-11-24 追加）
     if len(hs):
         groups.append(("hit", hs))

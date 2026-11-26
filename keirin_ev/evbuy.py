@@ -64,3 +64,42 @@ def plan_over(P, cars, combos, trio_odds, qn_odds):
     inf = float("inf")
     t3, t2 = _pick(trio, trio_odds or {}, inf), _pick(qn, qn_odds or {}, inf)
     return [b for b in t3 if b["odds"] > ODDS_MAX], [b for b in t2 if b["odds"] > ODDS_MAX]
+
+
+# ---------- ケリー配分（2026-11-27 追加・紙上記録 kind="evk2" / "evk3"） ----------
+# 判定時→確定で、選んだ目のオッズは実測で約0.78倍に下がる（11/19〜25 の紙上記録523点）。
+# 0.93 で見込むと確定時の期待値が平均0.95に落ちるため、ケリーでは実測に近い 0.8 で見込む。
+# 賭け金 = 資金 × ケリー比率 × KELLY_FRAC（予想の誤差を見込んで4分の1）。100円単位（四捨五入・最低100円）。
+KELLY_DRIFT = 0.8
+KELLY_FRAC = 0.25
+
+
+def kelly_stake(p, odds, bankroll, frac=KELLY_FRAC, drift=KELLY_DRIFT):
+    """1点の賭け金（円）とケリー比率。期待値（確率×オッズ×drift）が1未満なら (0, 0)"""
+    o = odds * drift
+    if p <= 0 or o <= 1 or p * o < 1:
+        return 0, 0.0
+    f = (p * o - 1) / (o - 1)
+    return max(100, int(round(bankroll * f * frac / 100)) * 100), f
+
+
+def plan_kelly(P, cars, combos, trio_odds, qn_odds, bankroll, frac=KELLY_FRAC, drift=KELLY_DRIFT):
+    """→ (3連複の買い目, 2車複の買い目)。50倍以下・確率×判定時オッズ×drift ≥ 1 の目に、ケリーで決めた金額"""
+    trio, qn = _probs(P, cars, combos)
+
+    def pick(probs, odds):
+        out = []
+        for k, o in (odds or {}).items():
+            try:
+                o = float(o)
+            except (TypeError, ValueError):
+                continue
+            k = _key(k)
+            p = probs.get(k, 0.0)
+            if o <= 0 or o > ODDS_MAX:
+                continue
+            st, f = kelly_stake(p, o, bankroll, frac, drift)
+            if st:
+                out.append(dict(combo=k, stake=st, odds=o, p=round(p, 5), ev=round(p * o * drift, 3), kelly=round(f, 5)))
+        return sorted(out, key=lambda b: -b["ev"])
+    return pick(trio, trio_odds), pick(qn, qn_odds)
