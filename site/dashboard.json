@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 19:53",
+ "updated_at": "2026-11-26 19:57",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -7240,14 +7240,21 @@
     "race_no": 11,
     "deadline": "19:46",
     "judged_at": "19:40:46",
-    "result": null,
+    "result": {
+     "combo": "1-4-5",
+     "payout": 1170
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=4",
+     "payout": 100,
+     "all": "1=4・1=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -7259,7 +7266,7 @@
       "odds": 24.7,
       "p": 0.0524,
       "ev": 1.204,
-      "hit": null
+      "hit": false
      }
     ],
     "cmp2": [],
@@ -7275,7 +7282,7 @@
       "odds": 3.2,
       "p": 0.2718,
       "ev": 0.809,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=4",
@@ -7283,12 +7290,21 @@
       "odds": 5.0,
       "p": 0.178,
       "ev": 0.828,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=4",
+     "payout": 120
+    },
+    "ex_result": {
+     "combo": "1-4",
+     "payout": 220
+    },
+    "trio_result": {
+     "combo": "1=4=5",
+     "payout": 450
+    },
     "notes": [
      "1着が出るライン：1-4-6 が 90%",
      "上がり最速：2 栗本武典（直近平均 11.0秒、2位と0.6秒差）",
@@ -10351,12 +10367,12 @@
   },
   "evr2": {
    "total": {
-    "stake": 34500,
+    "stake": 34600,
     "payout": 30950.0,
-    "roi": 0.8971,
-    "points": 345,
+    "roi": 0.8945,
+    "points": 346,
     "hits": 40,
-    "races": 231,
+    "races": 232,
     "race_hits": 40,
     "days": 8
    },
@@ -10440,14 +10456,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 6100,
+     "stake": 6200,
      "payout": 2260.0,
-     "points": 61,
+     "points": 62,
      "hits": 3,
-     "races": 31,
+     "races": 32,
      "race_hits": 3,
-     "roi": 0.3705,
-     "cum": -3550.0
+     "roi": 0.3645,
+     "cum": -3650.0
     }
    ]
   },
@@ -11601,12 +11617,12 @@
   },
   "evr": {
    "total": {
-    "stake": 62500,
+    "stake": 62600,
     "payout": 64530.0,
-    "roi": 1.0325,
-    "points": 625,
+    "roi": 1.0308,
+    "points": 626,
     "hits": 71,
-    "races": 299,
+    "races": 300,
     "race_hits": 63,
     "days": 8
    },
@@ -11690,14 +11706,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 10200,
+     "stake": 10300,
      "payout": 4380.0,
-     "points": 102,
+     "points": 103,
      "hits": 5,
-     "races": 41,
+     "races": 42,
      "race_hits": 5,
-     "roi": 0.4294,
-     "cum": 2030.0
+     "roi": 0.4252,
+     "cum": 1930.0
     }
    ]
   }
