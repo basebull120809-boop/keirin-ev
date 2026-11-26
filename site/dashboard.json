@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-26 22:49",
+ "updated_at": "2026-11-26 22:56",
  "picks": {
   "date": "2026-11-26",
   "races": [
@@ -8696,14 +8696,21 @@
     "race_no": 7,
     "deadline": "22:45",
     "judged_at": "22:39:04",
-    "result": null,
+    "result": {
+     "combo": "1-2-5",
+     "payout": 290
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "1=2",
+     "payout": 100,
+     "all": "1=2・1=5・2=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -8714,7 +8721,7 @@
       "odds": 13.3,
       "p": 0.0875,
       "ev": 1.082,
-      "hit": null
+      "hit": false
      }
     ],
     "evr2": [],
@@ -8723,9 +8730,18 @@
     "evr2x": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "1=2",
+     "payout": 120
+    },
+    "ex_result": {
+     "combo": "1-2",
+     "payout": 160
+    },
+    "trio_result": {
+     "combo": "1=2=5",
+     "payout": 170
+    },
     "notes": [
      "1着が出るライン：1-2-5 が 88%",
      "上がり最速：2 高橋義秋（直近平均 11.8秒、2位と0.2秒差）",
@@ -12250,12 +12266,12 @@
   },
   "evr3": {
    "total": {
-    "stake": 28600,
+    "stake": 28700,
     "payout": 33580.0,
-    "roi": 1.1741,
-    "points": 286,
+    "roi": 1.17,
+    "points": 287,
     "hits": 31,
-    "races": 189,
+    "races": 190,
     "race_hits": 31,
     "days": 8
    },
@@ -12339,14 +12355,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 4700,
+     "stake": 4800,
      "payout": 2120.0,
-     "points": 47,
+     "points": 48,
      "hits": 2,
-     "races": 34,
+     "races": 35,
      "race_hits": 2,
-     "roi": 0.4511,
-     "cum": 4980.0
+     "roi": 0.4417,
+     "cum": 4880.0
     }
    ]
   },
@@ -13398,12 +13414,12 @@
   },
   "evr": {
    "total": {
-    "stake": 64300,
+    "stake": 64400,
     "payout": 65000.0,
-    "roi": 1.0109,
-    "points": 643,
+    "roi": 1.0093,
+    "points": 644,
     "hits": 72,
-    "races": 309,
+    "races": 310,
     "race_hits": 64,
     "days": 8
    },
@@ -13487,14 +13503,14 @@
     },
     {
      "date": "2026-11-26",
-     "stake": 12000,
+     "stake": 12100,
      "payout": 4850.0,
-     "points": 120,
+     "points": 121,
      "hits": 6,
-     "races": 51,
+     "races": 52,
      "race_hits": 6,
-     "roi": 0.4042,
-     "cum": 700.0
+     "roi": 0.4008,
+     "cum": 600.0
     }
    ]
   },
