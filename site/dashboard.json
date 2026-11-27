@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-27 18:37",
+ "updated_at": "2026-11-27 18:54",
  "picks": {
   "date": "2026-11-27",
   "races": [
@@ -6504,7 +6504,10 @@
     "race_no": 8,
     "deadline": "18:43",
     "judged_at": "18:37:02",
-    "result": null,
+    "result": {
+     "combo": "2-7-4",
+     "payout": 6130
+    },
     "bets": [],
     "invest": [],
     "ex": [],
@@ -6515,7 +6518,7 @@
       "odds": 7.3,
       "p": 0.106,
       "ev": 0.72,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=2=7",
@@ -6523,7 +6526,7 @@
       "odds": 7.9,
       "p": 0.0826,
       "ev": 0.607,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=5=7",
@@ -6531,7 +6534,7 @@
       "odds": 11.9,
       "p": 0.0801,
       "ev": 0.886,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "2=4=7",
@@ -6539,7 +6542,7 @@
       "odds": 14.9,
       "p": 0.0696,
       "ev": 0.964,
-      "hit": null
+      "hit": true
      },
      {
       "combo": "2=5=7",
@@ -6547,7 +6550,7 @@
       "odds": 12.8,
       "p": 0.0586,
       "ev": 0.698,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "3=6=7",
@@ -6555,12 +6558,16 @@
       "odds": 16.8,
       "p": 0.0548,
       "ev": 0.856,
-      "hit": null
+      "hit": false
      }
     ],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "2=4",
+     "payout": 710,
+     "all": "2=4・2=7・4=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -6573,9 +6580,18 @@
     "evk2": [],
     "hit_side": [],
     "hit_side_kind": null,
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "2=7",
+     "payout": 390
+    },
+    "ex_result": {
+     "combo": "2-7",
+     "payout": 1630
+    },
+    "trio_result": {
+     "combo": "2=4=7",
+     "payout": 1330
+    },
     "notes": [
      "1着が出るライン：7-2 が 46%",
      "上がり最速：7 市橋司優人（直近平均 11.3秒、2位と0.2秒差）",
@@ -10283,13 +10299,13 @@
   },
   "trio": {
    "total": {
-    "stake": 590900,
-    "payout": 418540.0,
-    "roi": 0.7083,
-    "points": 965,
-    "hits": 110,
-    "races": 257,
-    "race_hits": 110,
+    "stake": 592700,
+    "payout": 421200.0,
+    "roi": 0.7106,
+    "points": 971,
+    "hits": 111,
+    "races": 258,
+    "race_hits": 111,
     "days": 15
    },
    "daily": [
@@ -10449,14 +10465,14 @@
     },
     {
      "date": "2026-11-27",
-     "stake": 35600,
-     "payout": 29380.0,
-     "points": 111,
-     "hits": 17,
-     "races": 31,
-     "race_hits": 17,
-     "roi": 0.8253,
-     "cum": -172360.0
+     "stake": 37400,
+     "payout": 32040.0,
+     "points": 117,
+     "hits": 18,
+     "races": 32,
+     "race_hits": 18,
+     "roi": 0.8567,
+     "cum": -171500.0
     }
    ]
   },
@@ -10512,13 +10528,13 @@
   },
   "rec": {
    "total": {
-    "stake": 143900,
-    "payout": 112640.0,
-    "roi": 0.7828,
-    "points": 435,
-    "hits": 67,
-    "races": 95,
-    "race_hits": 55,
+    "stake": 145700,
+    "payout": 115300.0,
+    "roi": 0.7914,
+    "points": 441,
+    "hits": 68,
+    "races": 96,
+    "race_hits": 56,
     "days": 4
    },
    "daily": [
@@ -10557,14 +10573,14 @@
     },
     {
      "date": "2026-11-27",
-     "stake": 54300,
-     "payout": 45540.0,
-     "points": 157,
-     "hits": 29,
-     "races": 34,
-     "race_hits": 21,
-     "roi": 0.8387,
-     "cum": -31260.0
+     "stake": 56100,
+     "payout": 48200.0,
+     "points": 163,
+     "hits": 30,
+     "races": 35,
+     "race_hits": 22,
+     "roi": 0.8592,
+     "cum": -30400.0
     }
    ]
   },
