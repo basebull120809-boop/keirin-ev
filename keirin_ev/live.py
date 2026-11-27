@@ -292,12 +292,19 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                                        date=date, venue=venue)
     except Exception as e:
         print("解説作成失敗", rid, e, flush=True)
+    fc = None
+    try:                                         # 予想着順・予想決まり手率（ページのグラフ用）
+        from .insights import race_forecast
+        if P_res is not None:
+            fc = race_forecast(P_res, X["T"], ent)
+    except Exception as e:
+        print("予想着順の作成失敗", rid, e, flush=True)
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
                                 notes=notes, lines=line_probs,
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
-                                n_bets=sum(1 for b in bets if b.get("rec")), n_invest=0, rec=rec, rec2=rec2, rec_reason=why,
+                                n_bets=sum(1 for b in bets if b.get("rec")), n_invest=0, rec=rec, rec2=rec2, rec_reason=why, fc=fc,
                                 mi=mi, mi_reason=mi_why, cand={}, reason=reason), ensure_ascii=False) + "\n")
     if bets:
         f = day / "bets.csv"
@@ -585,6 +592,12 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         notes, line_probs = race_notes(P, X["T"], ent, his, od, date=date, venue=venue)
     except Exception as e:
         print("解説作成失敗", rid, e, flush=True); notes, line_probs = [], []
+    fc = None
+    try:                                         # 予想着順・予想決まり手率（ページのグラフ用）
+        from .insights import race_forecast
+        fc = race_forecast(P, X["T"], ent)
+    except Exception as e:
+        print("予想着順の作成失敗", rid, e, flush=True)
     if tk_note:
         notes = [tk_note] + notes
     notes = scen_notes + notes
@@ -605,7 +618,7 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
                                 names={int(c): str(nm) for c, nm in zip(ent["car"], ent["name"])},
                                 n_bets=sum(b["kind"] in ("yoso", "ex", "trio", "qn", "wide") for b in bets),
                                 n_invest=sum(b["kind"] == "invest" for b in bets),
-                                rec=rec, rec_reason=why, sim=sim_ev,
+                                rec=rec, rec_reason=why, sim=sim_ev, fc=fc,
                                 mi=mi, mi_reason=mi_why,
                                 cand={k: {kk: round(vv, 4) for kk, vv in v.items()} for k, v in cand.items()},
                                 reason=skip_reason or ("" if rec or any(b["kind"] == "yoso" for b in bets) else "当たる確率の高い目で組んでも合成オッズが低すぎるため")),

@@ -138,6 +138,8 @@ def day_races(pb, last):
     for r in races:
         n = notes.get(str(rid_of.get((r["venue_slug"], r["race_no"]), "")), {})
         r["notes"] = n.get("notes", []); r["lines"] = n.get("lines", []); r["names"] = n.get("names", {})
+        if n.get("fc"):
+            r["fc"] = n["fc"]
         r["rec"] = n.get("rec"); r["rec_reason"] = n.get("rec_reason", ""); r["cand"] = n.get("cand", {})
         if n.get("rec2"):
             r["rec2"] = n["rec2"]
@@ -222,7 +224,8 @@ def today_board(date):
         rows.append(dict(venue=VENUE_JA.get(r.venue, r.venue), race_no=int(r.race_no),
                          deadline=r.deadline, status=st, invest=bool((n or {}).get("n_invest")),
                          reason=(n or {}).get("reason", ""), mi=(n or {}).get("mi"),
-                         notes=(n or {}).get("notes", []), lines=(n or {}).get("lines", [])))
+                         notes=(n or {}).get("notes", []), lines=(n or {}).get("lines", []), names=(n or {}).get("names", {}),
+                         **({"fc": n["fc"]} if (n or {}).get("fc") else {})))
     return dict(date=date, races=rows)
 
 
