@@ -204,3 +204,45 @@ def view_notes(ent, his, date, venue, p1, p3, cars, k):
         if loc:
             out.append("地元：" + "・".join(nm(c) for c in loc))
     return out
+
+
+KIM = [("nige", "逃げ"), ("makuri", "まくり"), ("sashi", "差し")]
+# 1着の決まり手は 逃げ・まくり・差し の3つ（マークは2着だけに付く）。マークの回数は差しに足す。
+# 回数が無い・少ない選手は、位置ごとの目安に寄せる（単騎・先頭は自力、番手より後ろは差し）
+KIM_PRIOR = {"単騎": (0.3, 0.5, 0.2), "先頭": (0.55, 0.4, 0.05), "番手": (0.02, 0.1, 0.88),
+             "3番手": (0.02, 0.2, 0.78), "4番手以降": (0.02, 0.2, 0.78)}
+
+
+def kim_share(row, prior_n=2.0):
+    """出走表の決まり手の回数（逃・捲・差・マ）→ 1着になったときの 逃げ・まくり・差し の割合"""
+    g = lambda k: pd.to_numeric(row.get(k), errors="coerce")
+    cnt = np.nan_to_num(np.array([g("nige"), g("makuri"), g("sashi") + np.nan_to_num(g("mark"))], dtype=float), nan=0.0).clip(min=0)
+    pr = np.array(KIM_PRIOR[position(row.get("line_pos"), row.get("line_size"))], dtype=float)
+    return (cnt + prior_n * pr) / (cnt.sum() + prior_n)
+
+
+def race_forecast(P, T, ent):
+    """予想着順（各車の1着・2着・3着の確率）と、予想決まり手率の目安
+
+    決まり手率 = Σ 各車の1着確率 × その選手の決まり手の割合（出走表の回数から。少ない選手は位置の目安に寄せる）
+    モデルが決まり手そのものを予測しているわけではない。
+    """
+    from .model import COMBOS, MAXN
+    P = np.asarray(P, dtype=float)
+    if P.sum() <= 0:
+        return None
+    P = P / P.sum()
+    cars = T.cars[0]; k = int(T.mask[0].sum())
+    pr = np.zeros((MAXN, 3))
+    for pos in range(3):
+        np.add.at(pr[:, pos], COMBOS[:, pos], P)
+    e = ent.set_index("car")
+    rank, kim = [], np.zeros(len(KIM))
+    for idx in range(k):
+        c = int(cars[idx])
+        rank.append(dict(car=c, p=[round(float(x), 4) for x in pr[idx]]))
+        if c in e.index:
+            kim += pr[idx, 0] * kim_share(e.loc[c])
+    rank.sort(key=lambda r: -(r["p"][0] + r["p"][1] + r["p"][2]))
+    kim = kim / kim.sum() if kim.sum() > 0 else kim
+    return dict(rank=rank, kim=[dict(k=lab, p=round(float(p), 4)) for (_, lab), p in zip(KIM, kim)])
