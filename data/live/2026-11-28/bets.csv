@@ -1,0 +1,4 @@
+date,race_id,venue,race_no,deadline,taken_at,combo,stake,odds,p,ev,kind,rec
+2026-11-28,7320261126030001,komatsushima,1,08:45,08:39:20,1=4=5,400,3.4,0.21937,0.694,trio,True
+2026-11-28,7320261126030001,komatsushima,1,08:45,08:39:20,1=4=7,300,5.0,0.21011,0.977,trio,True
+2026-11-28,7320261126030001,komatsushima,1,08:45,08:39:20,3=4=5,200,9.7,0.07122,0.642,trio,True
