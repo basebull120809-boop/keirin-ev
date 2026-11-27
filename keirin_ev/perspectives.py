@@ -162,6 +162,8 @@ def add(entries: pd.DataFrame, races: pd.DataFrame, history=None) -> pd.DataFram
     df["p_local"] = (df["pref"].astype(str) == df["venue"].map(VENUE_PREF)).astype(float)
     df = add_original(df, history)
     df = add_bank(df)
+    from .extra import add as add_extra       # 落車・欠場明け、対戦成績、ラインの連携
+    df = add_extra(df.reset_index(drop=True), history)
     return df.drop(columns=["_hb"] + (["_wind"] if "_wind" in df else []))
 
 
@@ -400,6 +402,7 @@ def add_original(df, history):
     return df.drop(columns=["_zs", "_back", "_hz"])
 
 
+from .extra import X_FEATURES, X_LABEL
 ORIG_FEATURES = ["p_meet", "p_gear", "p_head_rival", "p_2nd_rival", "p_line_back",
                  "p_2nd_gap", "p_today_head", "p_today_2nd",
                  "p_tip", "p_eval", "p_lead_pred", "p_osae_pred", "p_kiai",
@@ -407,7 +410,7 @@ ORIG_FEATURES = ["p_meet", "p_gear", "p_head_rival", "p_2nd_rival", "p_line_back
                  "p_wind_2nd", "p_b_short"]
 
 P_FEATURES = ["p_s", "p_b", "p_head_b", "p_jiriki_head", "p_oikomi_2nd",
-              "p_banate", "p_agari", "p_form", "p_local"] + ORIG_FEATURES
+              "p_banate", "p_agari", "p_form", "p_local"] + ORIG_FEATURES + X_FEATURES
 P_LABEL = dict(p_s="S（スタート）", p_b="B（バック）", p_head_b="前の先行力（番手から）",
                p_jiriki_head="自力型×先頭", p_oikomi_2nd="差し型×番手", p_banate="番手巧者",
                p_agari="上がりタイム", p_form="調子（直近の着順）", p_local="地元",
@@ -417,4 +420,4 @@ P_LABEL = dict(p_s="S（スタート）", p_b="B（バック）", p_head_b="前�
                p_tip="記者の印", p_eval="記者の総評", p_lead_pred="先行予想", p_osae_pred="押え先行予想",
                p_kiai="好気合", p_straight_head="直線の長さ（先頭）", p_straight_2nd="直線の長さ（番手）",
                p_cant_head="カント（先頭）", p_venue_head="場の傾向（先頭）", p_venue_2nd="場の傾向（番手）",
-               p_wind_2nd="風×番手", p_b_short="B×短いバンク")
+               p_wind_2nd="風×番手", p_b_short="B×短いバンク", **X_LABEL)
