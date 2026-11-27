@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-27 15:46",
+ "updated_at": "2026-11-27 15:52",
  "picks": {
   "date": "2026-11-27",
   "races": [
@@ -5013,14 +5013,21 @@
     "race_no": 11,
     "deadline": "15:41",
     "judged_at": "15:35:24",
-    "result": null,
+    "result": {
+     "combo": "4-5-7",
+     "payout": 19570
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "4=5",
+     "payout": 630,
+     "all": "4=5・4=7・5=7"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -5041,7 +5048,7 @@
       "odds": 1.9,
       "p": 0.3814,
       "ev": 0.674,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "4=5=7",
@@ -5049,12 +5056,21 @@
       "odds": 8.4,
       "p": 0.1064,
       "ev": 0.831,
-      "hit": null
+      "hit": true
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "4=5",
+     "payout": 2350
+    },
+    "ex_result": {
+     "combo": "4-5",
+     "payout": 5130
+    },
+    "trio_result": {
+     "combo": "4=5=7",
+     "payout": 830
+    },
     "notes": [
      "1着が出るライン：5-7-2 が 82%",
      "上がり最速：1 坂本修一（直近平均 9.7秒、2位と0.5秒差）",
