@@ -246,3 +246,65 @@ def race_forecast(P, T, ent):
     rank.sort(key=lambda r: -(r["p"][0] + r["p"][1] + r["p"][2]))
     kim = kim / kim.sum() if kim.sum() > 0 else kim
     return dict(rank=rank, kim=[dict(k=lab, p=round(float(p), 4)) for (_, lab), p in zip(KIM, kim)])
+
+
+def _num(v, nd=2):
+    v = pd.to_numeric(v, errors="coerce")
+    return None if v is None or v != v else round(float(v), nd)
+
+
+def race_details(P, T, ent, his, odds):
+    """レースカードに出す追加情報（選手の比較表・市場との差・ラインが崩れる確率）
+
+    riders  : 選手ごとの 競走得点・ギヤ・S/B回数・直近の上がり平均・直近の平均着順 と、
+              モデルの1着・3着内の確率（p1・p3）と市場（3連単オッズから逆算）の確率（m1・m3）
+    collapse: 2人以上のラインごとに「ラインの誰も3着に入らない」確率（モデル p・市場 m）
+    """
+    from .model import COMBOS
+    from .perspectives import history_stats
+    P = np.asarray(P, dtype=float)
+    if P.sum() <= 0:
+        return None
+    P = P / P.sum()
+    cars = T.cars[0]; k = int(T.mask[0].sum())
+    car_of = np.array([int(cars[i]) if i < k else -1 for i in range(len(cars))])
+    cc = car_of[COMBOS]                                  # (504,3) 車番
+    # 市場の3連単確率（同じ並び）
+    Q = np.zeros(len(COMBOS))
+    if odds is not None and len(odds):
+        o = odds[pd.to_numeric(odds["odds"], errors="coerce") > 0]
+        look = {f"{a}-{b}-{c}": n for n, (a, b, c) in enumerate(cc) if min(a, b, c) > 0}
+        for cmb, od in zip(o["combo"].astype(str), o["odds"].astype(float)):
+            n = look.get(cmb)
+            if n is not None:
+                Q[n] = 1 / od
+        Q = Q / Q.sum() if Q.sum() > 0 else Q
+    e = ent.copy(); e["car"] = e["car"].astype(int); e = e.set_index("car")
+    hs = history_stats(his) if his is not None else pd.DataFrame()
+    hs = hs.set_index(hs["car"].astype(int)) if len(hs) else hs
+    riders = []
+    for i in range(k):
+        c = car_of[i]
+        if c not in e.index:
+            continue
+        r = e.loc[c]
+        in3 = (cc == c).any(1)
+        riders.append(dict(
+            car=int(c), name=str(r.get("name", "")), cls=str(r.get("class", "") or ""), style=str(r.get("tactic", "") or r.get("style", "") or ""),
+            score=_num(r.get("score")), gear=_num(r.get("gear")), s=_num(r.get("s_cnt"), 0), b=_num(r.get("back_cnt"), 0),
+            agari=_num(hs.loc[c, "agari_avg"]) if len(hs) and c in hs.index else None,
+            form=_num(hs.loc[c, "form_avg"], 1) if len(hs) and c in hs.index else None,
+            p1=round(float(P[cc[:, 0] == c].sum()), 4), p3=round(float(P[in3].sum()), 4),
+            m1=round(float(Q[cc[:, 0] == c].sum()), 4) if Q.sum() > 0 else None,
+            m3=round(float(Q[in3].sum()), 4) if Q.sum() > 0 else None))
+    collapse = []
+    if {"line_id", "line_pos", "line_size"} <= set(e.columns):
+        for lid, g in e[e.index.isin(car_of[:k])].groupby("line_id"):
+            if len(g) < 2:
+                continue
+            mem = [int(c) for c in g.sort_values("line_pos").index]
+            none3 = ~np.isin(cc, mem).any(1)
+            collapse.append(dict(cars=mem, p=round(float(P[none3].sum()), 4),
+                                 m=round(float(Q[none3].sum()), 4) if Q.sum() > 0 else None))
+        collapse.sort(key=lambda x: -x["p"])
+    return dict(riders=riders, collapse=collapse)
