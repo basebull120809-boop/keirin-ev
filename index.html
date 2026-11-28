@@ -241,6 +241,15 @@ details.more[open] summary::before{content:"－"}
 .rl .op .car.dim{opacity:.45}
 .rl .op b{font-family:var(--num);margin-left:2px}
 .rl .op.top b{color:var(--lime)}
+/* 予想コメント */
+.cmt{display:grid;gap:8px;margin:0 12px 12px}
+.cm{padding:10px 12px;border-radius:12px;border-left:3px solid var(--blue);background:rgba(77,155,255,.08);font-size:13px;line-height:1.75;color:#d6dde7}
+.cm.why{border-left-color:var(--lime);background:rgba(198,255,58,.06)}
+.cmh{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--blue);margin-bottom:2px}
+.cm.why .cmh{color:var(--lime)}
+.cm p{margin:0}
+.cm .th{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,.14);color:#c3ccd8}
+.cm .th b{font-size:11px;letter-spacing:.12em;color:var(--gold);margin-right:6px}
 .notes{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:#c9d2de}
 .notes li{padding-left:14px;position:relative}
 .notes li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:2px;background:var(--lime);transform:rotate(45deg)}
@@ -642,7 +651,7 @@ function cardBody(r) {
   /* 本命の券種が出ないレースでも、当てる（3連複）・ズレ（3連複）・展開（2車単）の買い目を必ず出す */
   const main = k ? (k === r.rec ? recBlock(r) : betBlock(r, "yoso")) : miBlock(r);
   const alt = hitBlock(r) + poolBlock(r) + tenkaiBlock(r);
-  return main + alt +
+  return main + commentHTML(r) + alt +
     ((r.lines?.length || r.notes?.length || r.fc) ? `<div class="blk">${linesHTML(r)}${rolesHTML(r)}${fcHTML(r)}${collapseHTML(r)}${gapHTML(r)}${notesHTML(r)}${riderTable(r)}</div>` : "");
 }
 /* 予想着順（各車の1着・2着・3着の確率）と予想決まり手率（1着の確率 × 選手ごとの過去の決まり手の割合から出した目安） */
@@ -718,6 +727,132 @@ function riderTable(r) {
       <td>${cell(x, "p1", v => pct(v, 0))}${df(x.p1, x.m1)}</td><td>${cell(x, "p3", v => pct(v, 0))}${df(x.p3, x.m3)}</td></tr>`).join("")}
     </tbody></table></div>
     <div class="fc"><div class="note">S＝スタートを取った回数、B＝バック先頭の回数、上がり＝直近の最後の200mの平均（秒・小さいほど速い）、平均着＝直近6走の平均着順。緑の文字はその列でいちばん良い値、確率の下の「市場」はオッズから出した確率。</div></div></details>`;
+}
+/* ---- 予想コメント（展望・競輪のセオリー・この予想にした理由）：ライン・展開予想・選手データ・メモから文章にする ---- */
+const CM = {
+  who: (r, c) => `${c}${r.names?.[c] ? " " + r.names[c] : ""}`,
+  pc: v => Math.round(v * 100) + "%",
+  note: (r, re) => { for (const n of r.notes || []) { const m = n.match(re); if (m) return m; } return null; },
+  style: (r, c) => (r.fc?.riders || []).find(x => x.car === c)?.style || r.fc?.roles?.tactic?.[c] || "",
+  nige: s => /先行|押え先/.test(s), jiriki: s => /先行|押え先|自在|まくり|追上/.test(s),
+  lineName: l => l.cars.length > 1 ? `${l.cars.join("-")}ライン` : `単騎${l.cars[0]}`,
+  p3: r => new Map((r.fc?.rank || []).map(x => [x.car, x.p[0] + x.p[1] + x.p[2]])),
+  pick: r => { const k = pickK(r); if (k) return { k, bets: listOf(r, k), skip: false, why: r.rec_reason || "" };
+    const m = miK(r); return m ? { k: m, bets: r.mi_bets, skip: true, why: r.mi_reason || "" } : null; },
+};
+function cmtTenbo(r) {
+  const L = (r.lines || []).filter(l => l.cars?.length); if (!L.length) return "";
+  const w = c => CM.who(r, c), pc = CM.pc, out = [], R = r.fc?.roles;
+  const multi = L.filter(l => l.cars.length > 1), solo = L.filter(l => l.cars.length === 1);
+  const N = ["", "", "二", "三", "四", "五", "六", "七", "八", "九"][L.length] || L.length;
+  out.push(`並びは${multi.map(l => l.cars.join("-")).join("、")}${solo.length ? `${multi.length ? "、" : ""}単騎${solo.map(l => l.cars[0]).join("・")}` : ""}の${N}分戦。`);
+  const B = CM.note(r, /B（バック）最多 (\d) /), S = CM.note(r, /S（スタート）は (\d) /), A = CM.note(r, /上がり最速：(\d) /);
+  const ld = R?.lead?.[0];
+  if (ld && ld.p >= .35) out.push(`誘導を切って先行するのは${ld.cars.length > 1 ? ld.cars.join("-") + "ラインの" : "単騎の"}${w(ld.head)}が有力（${pc(ld.p)}）${R.lead[1] && R.lead[1].p >= .25 ? `、${w(R.lead[1].head)}も${pc(R.lead[1].p)}で主導権を狙う` : ""}。`);
+  else if (B) out.push(`主導権は${w(+B[1])}（バック回数が最多）が握りそう${S && +S[1] !== +B[1] ? `、スタートは${w(+S[1])}が取りに行く` : ""}。`);
+  const [t1, t2] = L;
+  if (t1.p >= .55) out.push(`${CM.lineName(t1)}が1着${pc(t1.p)}と抜けていて、本線はこのライン。`);
+  else if (t2 && t1.p - t2.p < .1) out.push(`${CM.lineName(t1)}（${pc(t1.p)}）と${CM.lineName(t2)}（${pc(t2.p)}）の力が拮抗。`);
+  else out.push(`中心は${CM.lineName(t1)}（1着${pc(t1.p)}）${t2 ? `、対抗は${CM.lineName(t2)}（${pc(t2.p)}）` : ""}。`);
+  const f = r.fc;
+  if (f?.rank?.length) {
+    const k = (f.kim || []).reduce((p, q) => !p || q.p > p.p ? q : p, null);
+    const KW = { 逃げ: "先行がそのまま押し切る形", まくり: "後ろからのまくりが決まる形", 差し: "番手からの差しが決まる形" };
+    const sa = R?.sashi?.[0], mk = R?.makuri?.[0];
+    let t = `予想着順は${fcOrder(f).join("→")}`;
+    if (k) t += `で、${KW[k.k] || k.k}（${pc(k.p)}）が本線`;
+    if (k?.k === "差し" && sa) t += `。差しで1着の候補は${w(sa.car)}（${pc(sa.p)}）`;
+    if (k?.k === "まくり" && mk) t += `。まくりで1着の候補は${w(mk.car)}（${pc(mk.p)}）`;
+    out.push(t + "。");
+  }
+  if (A && !t1.cars.includes(+A[1])) out.push(`上がり最速の${w(+A[1])}の伸びには注意。`);
+  const gap = (f?.riders || []).filter(x => x.m3 != null).map(x => ({ ...x, d: x.p3 - x.m3 })).sort((a, b) => b.d - a.d)[0];
+  if (gap && gap.d >= .05) out.push(`オッズより評価しているのは${w(gap.car)}（3着内 モデル${pc(gap.p3)}／市場${pc(gap.m3)}）。`);
+  return out.join("");
+}
+function cmtSeori(r) {
+  const L = (r.lines || []).filter(l => l.cars?.length); if (!L.length) return "";
+  const w = c => CM.who(r, c), pc = CM.pc, out = [], R = r.fc?.roles;
+  const multi = L.filter(l => l.cars.length > 1), solo = L.filter(l => l.cars.length === 1), [t1, t2, t3] = L;
+  if (L.length === 2 && !solo.length) out.push("二分戦は先行するラインがそのまま主導権を取りやすく、ライン同士の決着が多い。");
+  else if (L.length <= 3) out.push("三分戦は、先行ラインの後ろを取った中団ラインのまくりが届きやすい。");
+  else out.push(`${L.length}分戦の細切れ戦は主導権争いが激しくなりやすく、まくり・追い込みで荒れることがある。`);
+  const heads = L.map(l => ({ l, c: l.cars[0], s: CM.style(r, l.cars[0]) }));
+  const ng = heads.filter(h => CM.nige(h.s));
+  if (heads.some(h => h.s)) {
+    if (ng.length === 1) {
+      const h = ng[0];
+      out.push(`先行型は${w(h.c)}だけ。すんなり主導権を取れそうで、${h.l.cars.length > 1 ? `番手の${w(h.l.cars[1])}は風を受けずに回れる絶好の位置` : "単騎でも逃げ残りがある"}。`);
+    } else if (ng.length >= 2) {
+      out.push(`先行型が${ng.map(h => w(h.c)).join("と")}の${ng.length}人。主導権争い（もがき合い）になると脚を使い合い、後ろからのまくり・差しが届きやすい。`);
+      const mid = heads.find(h => !CM.nige(h.s) && CM.jiriki(h.s) && h.l.cars.length > 1);
+      if (mid) out.push(`その場合は中団から${w(mid.c)}（${mid.s}）のまくりが怖い。`);
+    } else out.push(`はっきりした先行型がいない。ペースが落ち着きやすく、位置取りと直線の脚の勝負。`);
+  } else {
+    const B = CM.note(r, /B（バック）最多 (\d) /), ll = B && L.find(l => l.cars.includes(+B[1]));
+    if (ll && ll.cars.length > 1 && ll.cars[0] === +B[1]) out.push(`先行しそうな${w(+B[1])}の番手${w(ll.cars[1])}は、風を受けずに回れるいちばん有利な位置。`);
+  }
+  if (t1.cars.length >= 3 && t1.p >= .5) out.push(`${t1.cars.length}車の${t1.cars.join("-")}ラインは数で有利で、先頭が駆ければ番手・3番手まで残ってライン上位独占もある。`);
+  if (t2 && t3 && t1.p - t2.p < .1) out.push(`力の近い2ラインがやり合えば、後ろの${CM.lineName(t3)}が漁夫の利を得る展開も。`);
+  const A = CM.note(r, /上がり最速：(\d) /);
+  if (A && solo.some(l => l.cars[0] === +A[1])) out.push(`単騎の${w(+A[1])}は位置取りが不利でも、上がり最速の脚で直線に突っ込む一発がある。`);
+  else if (solo.length && multi.length) out.push(`単騎の${solo.map(l => l.cars[0]).join("・")}はラインの援護がなく、セオリーでは割り引き。`);
+  const col = (r.fc?.collapse || []).find(c => c.p >= .3);
+  if (col) out.push(`${col.cars.join("-")}ラインは誰も3着に入らない確率が${pc(col.p)}あり、ラインごと沈む危うさもある。`);
+  const J = CM.note(r, /^地元：(.+)$/);
+  if (J) out.push(`地元の${J[1]}は気合いが入る。`);
+  return out.join("");
+}
+function cmtRiyu(r) {
+  const pk = CM.pick(r); if (!pk?.bets?.length) return "";
+  const w = c => CM.who(r, c), pc = CM.pc, L = r.lines || [], bets = pk.bets, p3 = CM.p3(r);
+  const order = [...p3.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]);
+  const POS = ["先頭", "番手", "3番手", "4番手"];
+  const role = c => { const l = L.find(l => l.cars.includes(c)); return !l ? "" : l.cars.length === 1 ? "単騎" : `${l.cars.join("-")}ラインの${POS[l.cars.indexOf(c)] || "後ろ"}`; };
+  const desc = c => { const rl = role(c), v = p3.get(c); return `${w(c)}（${rl}${v != null ? `${rl ? "・" : ""}3着内${pc(v)}` : ""}）`; };
+  const toSet = s => new Set(String(s).split(/[-=・]/).map(Number));
+  const sets = bets.map(b => toSet(b.combo)), all = [...new Set(sets.flatMap(x => [...x]))];
+  const axis = all.filter(c => sets.every(x => x.has(c)));
+  const rest = all.filter(c => !axis.includes(c)).sort((a, b) => (p3.get(b) || 0) - (p3.get(a) || 0));
+  const rk = c => { const i = order.indexOf(c); return i < 0 ? "" : i === 0 ? "いちばん高い" : `${i + 1}番目に高い`; };
+  const out = [];
+  if (axis.length) {
+    out.push(`軸は${axis.map(desc).join("と")}${axis.length === 1 && rk(axis[0]) ? `。3着内に来る確率が${rk(axis[0])}ので全点に入れた。` : axis.length > 1 ? `の${axis.length}車で、全点に入れた。` : "で、全点に入れた。"}`);
+    if (rest.length) out.push(`相手は${rest.map(desc).join("、")}。`);
+  } else {
+    const groups = [];
+    for (const s of sets) { const g = groups.find(g => [...g.ax].filter(c => s.has(c)).length >= Math.max(1, s.size - 1)); if (g) { g.sets.push(s); g.ax = new Set([...g.ax].filter(c => s.has(c))); } else groups.push({ ax: new Set(s), sets: [s] }); }
+    const no = "①②③④⑤⑥";
+    out.push(`買い目は${groups.length}組。${groups.map((g, i) => { const u = [...new Set(g.sets.flatMap(x => [...x]))], ax = u.filter(c => g.sets.every(x => x.has(c))), op = u.filter(c => !ax.includes(c));
+      return `${groups.length > 1 ? no[i] || "" : ""}${ax.length && op.length && g.sets.length > 1 ? `${ax.map(desc).join("と")}を軸に${op.join("・")}へ流す` : `${u.join("・")}`}`; }).join("。")}。`);
+  }
+  const miss = order.find(c => !all.includes(c));
+  if (miss != null && order.indexOf(miss) < 3) out.push(`${w(miss)}は3着内${pc(p3.get(miss))}あるが、買い目からは外れている。`);
+  const hm = pk.why.match(/(\d+)%的中|当たる見込み(\d+)%/), hit = hm ? +(hm[1] || hm[2]) / 100 : sum(bets, b => b.p);
+  const st = sum(bets, b => b.stake), so = 1 / sum(bets, b => 1 / b.odds), pmin = Math.min(...bets.map(b => b.stake * b.odds));
+  out.push(`${TYPE[pk.k] || pk.k}${bets.length}点にしたのは、券種と点数の候補を比べて、当たる見込みがいちばん高い買い方だったため（当たる見込み${pc(hit)}・合成${so.toFixed(1)}倍）。`);
+  if (st > 0) out.push(`金額は、どの目が当たっても投資額の${(pmin / st).toFixed(1)}倍以上が戻るように配分した（判定時のオッズ）。`);
+  if (pk.skip) out.push(`ただし${r.skip_reason || "おすすめの基準に届かない"}ので、見送り推奨にした。`);
+  /* セオリーとの照らし合わせ */
+  const th = [];
+  for (const c of axis) {
+    const l = L.find(l => l.cars.includes(c)); if (!l) continue;
+    const i = l.cars.indexOf(c), top = l === L[0], st = CM.style(r, c);
+    if (l.cars.length === 1) th.push(`単騎の${w(c)}を軸にするのはセオリーとは逆の狙い。`);
+    else if (i === 1) { const hs = CM.style(r, l.cars[0]); th.push(`${w(c)}は${top ? "本線ラインの" : ""}番手${hs ? `（前は${hs}の${l.cars[0]}）` : ""}。${!hs || CM.jiriki(hs) ? "軸にするのはセオリーどおり。" : "前が自力型ではないので、番手でも展開待ちになる。"}`); }
+    else if (i === 0) th.push(`${w(c)}は${top ? "本線ラインの" : ""}先頭${st ? `（${st}）` : ""}。${top ? "逃げ残りを本線にした形。" : "本線ではないラインの先頭で、主導権を取り切る前提の狙い。"}`);
+    else th.push(`${w(c)}は${l.cars.join("-")}ラインの${i + 1}番手。展開待ちの位置だが、確率ではここが軸になった。`);
+  }
+  const t1 = L[0], sz = sets[0]?.size || 9;
+  if (t1 && t1.cars.length >= sz) { const ln = sets.filter(x => [...x].every(c => t1.cars.includes(c))).length;
+    th.push(ln ? `本線${t1.cars.join("-")}ラインだけの決着も押さえている。` : t1.p >= .5 ? `本線${t1.cars.join("-")}ラインだけでの決着は買い目に入っていない。` : ""); }
+  return { main: out.join(""), th: th.join("") };
+}
+function commentHTML(r) {
+  const t = cmtTenbo(r), s = cmtSeori(r), y = cmtRiyu(r);
+  if (!t && !y) return "";
+  return `<div class="cmt">${t ? `<div class="cm"><div class="cmh">展望</div><p>${esc(t)}</p>${s ? `<p class="th"><b>セオリー</b>${esc(s)}</p>` : ""}</div>` : ""}
+    ${y ? `<div class="cm why"><div class="cmh">この予想にした理由</div><p>${esc(y.main)}</p>${y.th ? `<p class="th"><b>セオリー</b>${esc(y.th)}</p>` : ""}</div>` : ""}</div>`;
 }
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
 
