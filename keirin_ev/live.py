@@ -138,18 +138,26 @@ def strategy():
         return ""
 
 
-HIT_SYNTH = 1.4      # 合成オッズの下限（判定時オッズ×0.93で見込む）（2026-11-25 本人の希望で1.6→1.4。見送りが多すぎるため）
+# 判定時→確定で当たり目のオッズが下がる分（2026-11-28 実測：11/13〜27に当たった買い目432点の 確定÷判定。
+#   2車複146点 0.78倍・3連複286点 0.86倍。オッズ帯による差は小さい。前は券種を問わず0.93倍で見込んでいた）
+HIT_DRIFT_BY = {"qn": 0.78, "trio": 0.86}
+# 合成オッズの下限（確定の見込み＝判定時オッズ×HIT_DRIFT_BY で計算）。
+#   2026-11-25 本人の希望で1.6→1.4。2026-11-28 下がり方を実測に直したのに合わせて下げた：
+#   前の「判定時×0.93で1.4倍」と同じ目が選ばれる値（1.4×0.86/0.93≒1.3、1.4×0.78/0.93≒1.17）
+HIT_SYNTH_BY = {"qn": 1.17, "trio": 1.3}
+HIT_SYNTH = 1.4      # （旧）券種を問わない下限。今は HIT_SYNTH_BY を使う
+HIT_FALLBACK_SYNTH = 0.0  # 上の下限で組めないレース（人気が集中して配当が低い）でも予想を出す：確率の高い2点（トリガミもありうる。見込み回収で分かる）
 HIT_GO = 0.85        # 勝負（収支に入れる）にする見込み回収（当たる見込み×合成オッズ）の下限
 HIT_HMIN = 0.50      # 勝負にする当たる見込みの下限（2026-11-25 本人の希望で60%→50%。60%では勝負がほぼ出ないため）
 HIT_MINPTS = 2       # 1点買いはしない
-HIT_DRIFT = 0.93     # 判定時→確定で当たり目の配当が下がる分
+HIT_DRIFT = 0.93     # （旧）券種を問わない見込み。今は HIT_DRIFT_BY を使う
 HIT_BUDGET = 1000    # 1レースの予算（どの目が当たっても払戻がそろう配分）
 HIT_KINDS = ("qn", "trio")  # 的中重視で使う券種（2車複・3連複から当たる見込みの高い方を1つ。3連複だけにするなら ("trio",)）
 HIT_SIDE_GO = 0.95   # 的中重視の別枠（kind="hit2"・"hit3"）にする見込み回収の下限（reports/qn_ev.md：1日約2.6R・的中47%・回収104%（95%区間97〜113%））
 
 
-def _hit_plan(probs, odds, kind):
-    """確率の高い目から足して、合成オッズ HIT_SYNTH 倍以上を保てるところまで（最大12候補を見る）"""
+def _hit_plan(probs, odds, kind, smin=None):
+    """確率の高い目から足して、合成オッズ HIT_SYNTH_BY 倍以上（smin を渡せばその倍率）を保てるところまで（最大12候補を見る）"""
     cand = []
     for c, o in (odds or {}).items():
         try:
@@ -161,16 +169,18 @@ def _hit_plan(probs, odds, kind):
         if o > 0 and p > 0:
             cand.append((p, o, c))
     cand.sort(reverse=True)
+    dr = HIT_DRIFT_BY.get(kind, HIT_DRIFT)
+    smin = HIT_SYNTH_BY.get(kind, HIT_SYNTH) if smin is None else smin
     inv, sel = 0.0, []
-    for p, o, c in cand[:12]:
-        if 1 / (inv + 1 / (o * HIT_DRIFT)) < HIT_SYNTH:
+    for p, o, c in cand[:12 if smin > 0 else HIT_MINPTS]:
+        if smin > 0 and 1 / (inv + 1 / (o * dr)) < smin:
             break
-        inv += 1 / (o * HIT_DRIFT); sel.append((p, o, c))
+        inv += 1 / (o * dr); sel.append((p, o, c))
     if len(sel) < HIT_MINPTS:                # 2点目で合成1.6倍を割る券種は使わない（1点買いはしない）
         return None
     H = sum(p for p, _, _ in sel); S = 1 / inv
-    return dict(kind=kind, H=H, S=S, ev=H * S,
-                bets=[dict(combo=c, stake=0, odds=o, p=round(p, 5), ev=round(p * o * HIT_DRIFT, 3)) for p, o, c in sel])
+    return dict(kind=kind, H=H, S=S, ev=H * S, smin=smin,
+                bets=[dict(combo=c, stake=0, odds=o, p=round(p, 5), ev=round(p * o * dr, 3)) for p, o, c in sel])
 
 
 def _hit_stakes(pl):
@@ -178,7 +188,9 @@ def _hit_stakes(pl):
     from .scenario import guard_stakes
     bl, st = pl["bets"], None
     while len(bl) >= HIT_MINPTS and st is None:
-        st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT, min_synth=HIT_SYNTH)
+        k = pl.get("kind")
+        st = guard_stakes(bl, budget=max(HIT_BUDGET, 300 * len(bl)), drift=HIT_DRIFT_BY.get(k, HIT_DRIFT),
+                          min_synth=pl["smin"] if pl.get("smin") is not None else HIT_SYNTH_BY.get(k, HIT_SYNTH))
         if st is None:
             bl = bl[:-1]
     return st or None
@@ -233,20 +245,24 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                     bets += [dict(base, **b, kind=sk, rec=False) for b in sst]
         except Exception as e:
             print("的中重視の別枠の記録失敗", rid, e, flush=True)
-        if not plans:
-            reason = "2点以上・合成オッズ1.6倍以上で組める目がないため見送り"
+        # 2026-11-28 本人の希望で全レースに予想を出す：上の条件で組めない・配分できないときは確率の高い2点で組む（後ろに足す）
+        fallback = sorted([x for k, x in (("qn", _hit_plan(qp, qno, "qn", smin=HIT_FALLBACK_SYNTH)),
+                                          ("trio", _hit_plan(tp, tro, "trio", smin=HIT_FALLBACK_SYNTH))) if x and k in HIT_KINDS],
+                          key=lambda x: (x["H"], x["ev"]), reverse=True)
+        if not plans and not fallback:
+            reason = "2点以上で組める目がないため予想なし"
         else:
             # 2026-11-24 本人の希望で「あらゆる方向から」：条件を満たす券種（2車複・3連複）は両方買う
             plans.sort(key=lambda x: (x["H"], x["ev"]), reverse=True)   # まず当てる：当たる見込みの高い券種から
             go, ng = [], []
-            for pl in plans:
+            for pl in plans + (fallback if strategy() != "ev" else []):
                 st = _hit_stakes(pl)               # 100円単位で払戻がそろう配分。無理なら確率の低い目から外す
                 if not st:
                     continue
                 lab = {"qn": "2車複", "trio": "3連複"}[pl["kind"]]
                 txt = (f"{lab}{len(st)}点：当たる見込み{pl['H']:.0%}・合成{pl['S']:.1f}倍（確定見込み）"
                        f"・見込み回収{pl['ev']:.0%}")
-                if pl["H"] >= HIT_HMIN and strategy() != "ev":   # 2026-11-25：見込み回収では見送らない（当たる率だけ）
+                if strategy() != "ev" and not go:   # 2026-11-28 本人の希望で「勝負」をやめ、全レースに予想を1つ（当たる見込みの高い券種）
                     go.append((pl, st, txt))
                 else:
                     ng.append((pl, st, txt))
@@ -254,14 +270,14 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
                 for pl, st, _ in go:
                     bets += [dict(base, **b, kind=pl["kind"], rec=True) for b in st]
                 rec = go[0][0]["kind"]; rec2 = go[1][0]["kind"] if len(go) > 1 else None
-                why = "勝負：" + "／".join(t for _, _, t in go)
+                why = "予想：" + "／".join(t for _, _, t in go)
             elif ng:
                 pl, st, txt = ng[0]
                 bets += [dict(base, **b, kind=pl["kind"] + "_m", rec=False) for b in st]
                 mi, mi_why = pl["kind"], txt
                 reason = f"当たる見込みが{HIT_HMIN:.0%}に届かない（{pl['H']:.0%}）"
             else:
-                reason = "100円単位・2点以上で合成1.6倍以上の配分にできないため見送り"
+                reason = "100円単位・2点以上で払戻がそろう配分にできないため予想なし"
         try:                                      # 回収重視の2車複・3連複（期待値1.0以上・50倍以下）を紙上で記録（evr2・evr3）
             from . import evbuy
             b3, b2 = evbuy.plan(P_res, cars, COMBOS, tro, qno)

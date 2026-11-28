@@ -858,7 +858,7 @@ function recordBlock(r, title, note, hot) {
       ${daily.map(d => `<tr><td>${esc(d.date.slice(5).replace("-", "/"))}</td><td>${d.races}</td><td>${d.race_hits ?? d.hits}</td><td>${Math.round(d.stake).toLocaleString()}</td><td>${Math.round(d.payout).toLocaleString()}</td><td style="color:${d.roi >= 1 ? "var(--good)" : "inherit"}">${pct(d.roi, 0)}</td></tr>`).join("")}
     </tbody></table></div>`;
 }
-/* 見込みと実際の的中：勝負レースの「当たる見込み」の合計と実際の的中数。実際がこれ以下になる確率で、運の範囲かを見る */
+/* 見込みと実際の的中：予想（◎）の「当たる見込み」の合計と実際の的中数。実際がこれ以下になる確率で、運の範囲かを見る */
 function lowerTail(ps, k) {
   let dp = [1];
   for (const p of ps) { const n = dp.map((v, i) => v * (1 - p)); n.push(0); dp.forEach((v, i) => n[i + 1] += v * p); dp = n; }
@@ -877,7 +877,7 @@ function expHTML() {
   const all = ds.flatMap(d => d.ps), ah = sum(ds, d => d.hits), ae = sum(ds, d => d.exp), at = lowerTail(all, ah);
   const mx = Math.max(...ds.map(d => d.n), 1);
   const note = t => t == null ? "" : t < .05 ? `<span style="color:var(--bad)">珍しい（${pct(t, 0)}）</span>` : t < .2 ? `<span style="color:var(--gold)">やや少ない（${pct(t, 0)}）</span>` : t > .8 ? `<span style="color:var(--good)">見込み以上（${pct(t, 0)}）</span>` : `<span style="color:var(--muted)">運の範囲（${pct(t, 0)}）</span>`;
-  return `<div class="sec-h">見込みと実際の的中<span>勝負レース・結果が出たものだけ</span></div>
+  return `<div class="sec-h">見込みと実際の的中<span>予想・結果が出たものだけ</span></div>
     <div class="kpis">
       <div class="card kpi big"><div class="l">${ds.length}日の的中</div><div class="v">${ah}<span style="font-size:14px;color:var(--muted)">/${all.length}R</span></div><div class="s">見込み ${ae.toFixed(1)}回</div></div>
       <div class="card kpi"><div class="l">見込みとの差</div><div class="v" style="color:${ah >= ae ? "var(--good)" : "var(--bad)"}">${(ah - ae >= 0 ? "+" : "") + (ah - ae).toFixed(1)}</div><div class="s">回</div></div>
@@ -1026,7 +1026,7 @@ async function load() {
   }
 }
 /* ページ自体の更新：ホーム画面から開いたままだと古いページが残るので、新しいページが出ていたら読み直す */
-const BUILD = "2026-11-28-detail";
+const BUILD = "2026-11-28-yoso";
 let buildAt = 0;
 async function checkBuild(force) {
   if (!force && Date.now() - buildAt < 300000) return;
