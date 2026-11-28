@@ -299,6 +299,13 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
             fc = race_forecast(P_res, X["T"], ent)
     except Exception as e:
         print("予想着順の作成失敗", rid, e, flush=True)
+    try:                                         # 選手の比較表・市場との差・ラインが崩れる確率（ページ用）
+        from .insights import race_details
+        det = race_details(P_res, X["T"], ent, his, od) if P_res is not None and fc is not None else None
+        if det:
+            fc.update(det)
+    except Exception as e:
+        print("追加情報の作成失敗", rid, e, flush=True)
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(dict(race_id=rid, venue=venue, race_no=int(rid[-4:]),
                                 deadline=dl.strftime("%H:%M") if dl is not None else "",
@@ -598,6 +605,13 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         fc = race_forecast(P, X["T"], ent)
     except Exception as e:
         print("予想着順の作成失敗", rid, e, flush=True)
+    try:                                         # 選手の比較表・市場との差・ラインが崩れる確率（ページ用）
+        from .insights import race_details
+        det = race_details(P, X["T"], ent, his, od) if fc is not None else None
+        if det:
+            fc.update(det)
+    except Exception as e:
+        print("追加情報の作成失敗", rid, e, flush=True)
     if tk_note:
         notes = [tk_note] + notes
     notes = scen_notes + notes

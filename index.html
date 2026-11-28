@@ -202,6 +202,36 @@ details.more[open] summary::before{content:"－"}
 .k0{background:var(--hot)} .k1{background:var(--gold)} .k2{background:var(--blue)}
 .kimbar .k0,.kimbar .k2{color:#fff}
 .fc .note{font-size:11px;color:var(--dim);margin-top:4px}
+/* ラインが崩れる確率・市場との差・選手の比較表 */
+.col{margin-top:12px}
+.colr{display:grid;grid-template-columns:auto 1fr 3.2em;gap:8px;align-items:center;font-size:12px;padding-block:3px}
+.colr .cars{display:inline-flex;gap:2px}
+.coltrack{position:relative;height:12px;border-radius:4px;background:rgba(255,255,255,.05)}
+.coltrack i{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--hot)}
+.coltrack b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg);opacity:.7}
+.colr .v{font-family:var(--num);font-size:12px;text-align:right}
+.gap{margin-top:12px;font-size:12px;display:grid;gap:4px}
+.gap div{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.gap .up{color:var(--good);font-family:var(--num);font-weight:700}
+.gap .dn{color:var(--bad);font-family:var(--num);font-weight:700}
+.rt{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.rt th{font-size:10px;color:var(--muted);font-weight:700;text-align:right;padding:4px 5px;border-bottom:1px solid var(--line2)}
+.rt td{text-align:right;padding:5px;border-bottom:1px solid var(--line);font-family:var(--num);font-variant-numeric:tabular-nums}
+.rt th:nth-child(-n+2),.rt td:nth-child(-n+2){text-align:left}
+.rt td .nm{font-family:var(--body);color:#c9d2de}
+.rt td small{display:block;font-size:10px;color:var(--dim);font-family:var(--body)}
+.rt .best{color:var(--lime);font-weight:700}
+.rt .up{color:var(--good)} .rt .dn{color:var(--bad)}
+.rtwrap{overflow-x:auto;margin-top:6px;-webkit-overflow-scrolling:touch}
+.ev{display:grid;gap:0}
+.evr{display:grid;grid-template-columns:3.2em minmax(0,1fr);gap:2px 8px;align-items:center;font-size:12px;padding-block:6px;border-top:1px solid var(--line)}
+.evr .tx{grid-column:2;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.evr:first-child{border-top:0}
+.evtrack{position:relative;height:14px;border-radius:4px;background:rgba(255,255,255,.05)}
+.evtrack i{position:absolute;inset:0 auto 0 0;border-radius:4px;background:var(--lime);opacity:.85}
+.evtrack b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg)}
+.evr .v{font-family:var(--num);white-space:nowrap}
+.evr .pr{font-size:11px;white-space:nowrap}
 .notes{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:#c9d2de}
 .notes li{padding-left:14px;position:relative}
 .notes li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:2px;background:var(--lime);transform:rotate(45deg)}
@@ -604,7 +634,7 @@ function cardBody(r) {
   const main = k ? (k === r.rec ? recBlock(r) : betBlock(r, "yoso")) : miBlock(r);
   const alt = hitBlock(r) + poolBlock(r) + tenkaiBlock(r);
   return main + alt +
-    ((r.lines?.length || r.notes?.length || r.fc) ? `<div class="blk">${linesHTML(r)}${fcHTML(r)}${notesHTML(r)}</div>` : "");
+    ((r.lines?.length || r.notes?.length || r.fc) ? `<div class="blk">${linesHTML(r)}${fcHTML(r)}${collapseHTML(r)}${gapHTML(r)}${notesHTML(r)}${riderTable(r)}</div>` : "");
 }
 /* 予想着順（各車の1着・2着・3着の確率）と予想決まり手率（1着の確率 × 選手ごとの過去の決まり手の割合から出した目安） */
 function fcOrder(f) {
@@ -628,6 +658,40 @@ function fcHTML(r) {
     <div class="kimbar" role="img" aria-label="${kim.map(k => `${esc(k.k)} ${pct(k.p, 0)}`).join("、")}">${kim.map(k => `<span class="k${k.i % 3}" style="flex:${k.p.toFixed(3)}">${k.p >= .22 ? `${esc(k.k)} ${pct(k.p, 0)}` : ""}</span>`).join("")}</div>
     <div class="fclg">${kim.map(k => `<span><i class="k${k.i % 3}"></i>${esc(k.k)} ${pct(k.p, 0)}</span>`).join("")}</div>
     <div class="note">各車の1着の確率 × その選手の過去の決まり手の割合から出した目安（10〜11月の4,228レースで実際の割合とほぼ一致）</div></div>` : ""}`;
+}
+/* ラインが崩れる確率（2人以上のラインで、誰も3着に入らない確率。白い線は市場の見積もり） */
+function collapseHTML(r) {
+  const c = r.fc?.collapse; if (!c?.length) return "";
+  return `<div class="fc col"><div class="lb"><span>ラインが崩れる確率</span><em>誰も3着に入らない確率</em></div>
+    ${c.map(l => `<div class="colr"><span class="cars">${l.cars.map(x => car(x, "sm")).join("")}</span>
+      <span class="coltrack" title="モデル ${pct(l.p, 0)}${l.m != null ? "・市場 " + pct(l.m, 0) : ""}"><i style="width:${(l.p * 100).toFixed(1)}%"></i>${l.m != null ? `<b style="left:${(l.m * 100).toFixed(1)}%"></b>` : ""}</span>
+      <span class="v">${pct(l.p, 0)}</span></div>`).join("")}
+    <div class="fclg"><span><i style="background:var(--hot)"></i>モデル</span><span><i style="background:var(--fg);width:2px;opacity:.7"></i>市場の見積もり</span></div></div>`;
+}
+/* 市場との差：モデルが市場（オッズ）より高く・低く見ている選手（3着内の確率で3ポイント以上の差） */
+function gapHTML(r) {
+  const rs = (r.fc?.riders || []).filter(x => x.m3 != null);
+  if (!rs.length) return "";
+  const d = rs.map(x => ({ ...x, d3: x.p3 - x.m3, d1: x.p1 - x.m1 })).filter(x => Math.abs(x.d3) >= .03).sort((a, b) => b.d3 - a.d3);
+  const row = x => `<div>${car(x.car, "sm")}<span>${esc(x.name)}</span><span class="${x.d3 > 0 ? "up" : "dn"}">3着内 ${x.d3 > 0 ? "+" : "−"}${Math.abs(x.d3 * 100).toFixed(0)}pt</span><span style="color:var(--muted)">（モデル ${pct(x.p3, 0)}／市場 ${pct(x.m3, 0)}）</span></div>`;
+  return `<div class="fc"><div class="lb"><span>市場との差</span><em>モデルとオッズの見方が違う選手</em></div>
+    <div class="gap">${d.length ? d.map(row).join("") : '<div style="color:var(--muted)">3ポイント以上の差がある選手はいません（オッズとほぼ同じ見方）</div>'}</div></div>`;
+}
+/* 選手の比較表（競走得点・ギヤ・S/B・直近の上がり・直近の平均着順・モデルと市場の確率） */
+function riderTable(r) {
+  const rs = r.fc?.riders; if (!rs?.length) return "";
+  const best = (k, lo) => { const v = rs.map(x => x[k]).filter(x => x != null); return v.length ? (lo ? Math.min(...v) : Math.max(...v)) : null; };
+  const b = { score: best("score"), s: best("s"), b: best("b"), agari: best("agari", 1), form: best("form", 1), p1: best("p1"), p3: best("p3") };
+  const cell = (x, k, f) => x[k] == null ? "—" : `<span class="${b[k] != null && x[k] === b[k] && (k !== "s" && k !== "b" || x[k] > 0) ? "best" : ""}">${f ? f(x[k]) : x[k]}</span>`;
+  const df = (p, m) => m == null ? "" : `<small class="${p - m >= .03 ? "up" : p - m <= -.03 ? "dn" : ""}">市場 ${pct(m, 0)}</small>`;
+  return `<details class="more"><summary>選手の比較表（${rs.length}人）</summary><div class="rtwrap"><table class="rt">
+    <thead><tr><th>車</th><th>選手</th><th>得点</th><th>ギヤ</th><th>S</th><th>B</th><th>上がり</th><th>平均着</th><th>1着</th><th>3着内</th></tr></thead><tbody>
+    ${rs.map(x => `<tr><td>${car(x.car, "sm")}</td><td><span class="nm">${esc(x.name)}</span><small>${esc([x.cls, x.style].filter(Boolean).join("・"))}</small></td>
+      <td>${cell(x, "score", v => v.toFixed(1))}</td><td>${x.gear == null ? "—" : x.gear.toFixed(2)}</td><td>${cell(x, "s")}</td><td>${cell(x, "b")}</td>
+      <td>${cell(x, "agari", v => v.toFixed(1))}</td><td>${cell(x, "form", v => v.toFixed(1))}</td>
+      <td>${cell(x, "p1", v => pct(v, 0))}${df(x.p1, x.m1)}</td><td>${cell(x, "p3", v => pct(v, 0))}${df(x.p3, x.m3)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="fc"><div class="note">S＝スタートを取った回数、B＝バック先頭の回数、上がり＝直近の最後の200mの平均（秒・小さいほど速い）、平均着＝直近6走の平均着順。緑の文字はその列でいちばん良い値、確率の下の「市場」はオッズから出した確率。</div></div></details>`;
 }
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
 
@@ -794,10 +858,41 @@ function recordBlock(r, title, note, hot) {
       ${daily.map(d => `<tr><td>${esc(d.date.slice(5).replace("-", "/"))}</td><td>${d.races}</td><td>${d.race_hits ?? d.hits}</td><td>${Math.round(d.stake).toLocaleString()}</td><td>${Math.round(d.payout).toLocaleString()}</td><td style="color:${d.roi >= 1 ? "var(--good)" : "inherit"}">${pct(d.roi, 0)}</td></tr>`).join("")}
     </tbody></table></div>`;
 }
+/* 見込みと実際の的中：勝負レースの「当たる見込み」の合計と実際の的中数。実際がこれ以下になる確率で、運の範囲かを見る */
+function lowerTail(ps, k) {
+  let dp = [1];
+  for (const p of ps) { const n = dp.map((v, i) => v * (1 - p)); n.push(0); dp.forEach((v, i) => n[i + 1] += v * p); dp = n; }
+  return dp.slice(0, k + 1).reduce((a, b) => a + b, 0);
+}
+function expDays() {
+  return histDays().map(d => {
+    const rs = d.races.filter(r => r.rec && listOf(r, r.rec).length && resOf(r, r.rec));
+    const ps = rs.map(r => Math.min(1, sum(listOf(r, r.rec), b => b.p))), hits = rs.filter(r => listOf(r, r.rec).some(b => b.hit)).length;
+    return { date: d.date, n: rs.length, exp: sum(ps, p => p), hits, tail: rs.length ? lowerTail(ps, hits) : null, ps };
+  }).filter(x => x.n);
+}
+function expHTML() {
+  const ds = expDays().slice(0, 14);
+  if (!ds.length) return "";
+  const all = ds.flatMap(d => d.ps), ah = sum(ds, d => d.hits), ae = sum(ds, d => d.exp), at = lowerTail(all, ah);
+  const mx = Math.max(...ds.map(d => d.n), 1);
+  const note = t => t == null ? "" : t < .05 ? `<span style="color:var(--bad)">珍しい（${pct(t, 0)}）</span>` : t < .2 ? `<span style="color:var(--gold)">やや少ない（${pct(t, 0)}）</span>` : t > .8 ? `<span style="color:var(--good)">見込み以上（${pct(t, 0)}）</span>` : `<span style="color:var(--muted)">運の範囲（${pct(t, 0)}）</span>`;
+  return `<div class="sec-h">見込みと実際の的中<span>勝負レース・結果が出たものだけ</span></div>
+    <div class="kpis">
+      <div class="card kpi big"><div class="l">${ds.length}日の的中</div><div class="v">${ah}<span style="font-size:14px;color:var(--muted)">/${all.length}R</span></div><div class="s">見込み ${ae.toFixed(1)}回</div></div>
+      <div class="card kpi"><div class="l">見込みとの差</div><div class="v" style="color:${ah >= ae ? "var(--good)" : "var(--bad)"}">${(ah - ae >= 0 ? "+" : "") + (ah - ae).toFixed(1)}</div><div class="s">回</div></div>
+      <div class="card kpi"><div class="l">これ以下になる確率</div><div class="v">${pct(at, 0)}</div><div class="s">${at < .05 ? "偶然では起きにくい" : "運の範囲"}</div></div>
+    </div>
+    <div class="card panel"><h3>日別（緑の棒＝実際の的中、白い線＝見込み）</h3><div class="ev">
+      ${ds.map(d => `<div class="evr"><span class="num">${esc(d.date.slice(5).replace("-", "/"))}</span>
+        <span class="evtrack"><i style="width:${(d.hits / mx * 100).toFixed(1)}%"></i><b style="left:${(d.exp / mx * 100).toFixed(1)}%"></b></span>
+        <span class="tx"><span class="v">的中 ${d.hits}/${d.n}R・見込み ${d.exp.toFixed(1)}回</span><span class="pr">${note(d.tail)}</span></span></div>`).join("")}</div>
+      <div class="lede" style="margin:8px 0 0">右は「見込みどおりの実力でも、実際の的中数以下になる確率」。5%未満が続くときは、運ではなく何かがずれている合図です。</div></div>`;
+}
 function renderRecord() {
   const r = D.paper;
   if (!r) return;
-  let html = "";
+  let html = expHTML();
   if (r.rec) html += recordBlock(r.rec, "◎ 予想（券種おすすめ）", "システムが券種を選んだレースだけ");
   if (r.yoso) html += recordBlock(r.yoso, "3連単（本命予想）", "フォーメーション・毎レース");
   if (html) $("#record-body").innerHTML = html;
@@ -931,7 +1026,7 @@ async function load() {
   }
 }
 /* ページ自体の更新：ホーム画面から開いたままだと古いページが残るので、新しいページが出ていたら読み直す */
-const BUILD = "2026-11-22-mi2";
+const BUILD = "2026-11-28-detail";
 let buildAt = 0;
 async function checkBuild(force) {
   if (!force && Date.now() - buildAt < 300000) return;
@@ -949,7 +1044,7 @@ async function loadHistory(force) {
   try {
     H = await getJSON("site/history.json");
   } catch (e) {}
-  safe(renderHistory);
+  safe(renderHistory); safe(renderRecord);
 }
 route();
 load(); loadHistory(true); checkBuild(true);
