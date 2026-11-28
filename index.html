@@ -184,6 +184,24 @@ details.more[open] summary::before{content:"－"}
 .lines .lb{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:4px}
 .linebar{display:flex;height:22px;border-radius:7px;overflow:hidden;background:rgba(255,255,255,.05);gap:2px}
 .linebar span{display:flex;align-items:center;justify-content:center;font-family:var(--num);font-size:11px;font-weight:700;min-width:0;overflow:hidden;white-space:nowrap}
+/* 予想着順・予想決まり手率 */
+.fc{margin-top:12px}
+.fc .lb{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.fc .lb em{font-style:normal;font-weight:400;color:var(--fg)}
+.fcr{display:grid;grid-template-columns:22px minmax(0,4.6em) 1fr 7.4em;gap:6px;align-items:center;font-size:12px;padding-block:2px}
+.fcr .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c9d2de}
+.fcbar{display:flex;height:12px;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.05)}
+.fcbar i{display:block;height:100%}
+.fcbar .r1,.fclg .r1{background:var(--lime)} .fcbar .r2,.fclg .r2{background:rgba(198,255,58,.5)} .fcbar .r3,.fclg .r3{background:rgba(198,255,58,.22)}
+.fcr .v{font-family:var(--num);font-size:11px;text-align:right;white-space:nowrap;color:var(--muted)}
+.fcr .v b{color:var(--fg)}
+.fclg{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:6px}
+.fclg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.kimbar{display:flex;height:22px;border-radius:7px;overflow:hidden;gap:2px}
+.kimbar span{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;min-width:0;color:#07090d}
+.k0{background:var(--hot)} .k1{background:var(--gold)} .k2{background:var(--blue)}
+.kimbar .k0,.kimbar .k2{color:#fff}
+.fc .note{font-size:11px;color:var(--dim);margin-top:4px}
 .notes{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:#c9d2de}
 .notes li{padding-left:14px;position:relative}
 .notes li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:2px;background:var(--lime);transform:rotate(45deg)}
@@ -586,7 +604,30 @@ function cardBody(r) {
   const main = k ? (k === r.rec ? recBlock(r) : betBlock(r, "yoso")) : miBlock(r);
   const alt = hitBlock(r) + poolBlock(r) + tenkaiBlock(r);
   return main + alt +
-    ((r.lines?.length || r.notes?.length) ? `<div class="blk">${linesHTML(r)}${notesHTML(r)}</div>` : "");
+    ((r.lines?.length || r.notes?.length || r.fc) ? `<div class="blk">${linesHTML(r)}${fcHTML(r)}${notesHTML(r)}</div>` : "");
+}
+/* 予想着順（各車の1着・2着・3着の確率）と予想決まり手率（1着の確率 × 選手ごとの過去の決まり手の割合から出した目安） */
+function fcOrder(f) {
+  const left = [...f.rank], out = [];
+  for (let i = 0; i < 3 && left.length; i++) { left.sort((a, b) => b.p[i] - a.p[i]); out.push(left.shift().car); }
+  return out;
+}
+function fcHTML(r) {
+  const f = r.fc; if (!f?.rank?.length) return "";
+  const nm = r.names || {}, mx = Math.max(...f.rank.map(x => x.p[0] + x.p[1] + x.p[2]), .01);
+  const w = v => (v / mx * 100).toFixed(1) + "%";
+  const rows = f.rank.map(x => { const [a, b, c] = x.p;
+    return `<div class="fcr">${car(x.car, "sm")}<span class="nm">${esc(nm[x.car] || "")}</span>
+      <span class="fcbar" title="1着 ${pct(a, 0)}・2着 ${pct(b, 0)}・3着 ${pct(c, 0)}"><i class="r1" style="width:${w(a)}"></i><i class="r2" style="width:${w(b)}"></i><i class="r3" style="width:${w(c)}"></i></span>
+      <span class="v">1着<b>${pct(a, 0)}</b>・内${pct(a + b + c, 0)}</span></div>`; }).join("");
+  const kim = (f.kim || []).map((k, i) => ({ ...k, i })).filter(k => k.p > 0);
+  const top = kim.length ? kim.reduce((p, q) => q.p > p.p ? q : p) : null;
+  return `<div class="fc"><div class="lb"><span>予想着順</span><em>いちばん来そうな並び ${fcOrder(f).join("→")}</em></div>${rows}
+    <div class="fclg"><span><i class="r1"></i>1着</span><span><i class="r2"></i>2着</span><span><i class="r3"></i>3着</span><span>「内」は3着以内</span></div></div>
+    ${kim.length ? `<div class="fc"><div class="lb"><span>予想決まり手率</span><em>いちばん多いのは${esc(top.k)} ${pct(top.p, 0)}</em></div>
+    <div class="kimbar" role="img" aria-label="${kim.map(k => `${esc(k.k)} ${pct(k.p, 0)}`).join("、")}">${kim.map(k => `<span class="k${k.i % 3}" style="flex:${k.p.toFixed(3)}">${k.p >= .22 ? `${esc(k.k)} ${pct(k.p, 0)}` : ""}</span>`).join("")}</div>
+    <div class="fclg">${kim.map(k => `<span><i class="k${k.i % 3}"></i>${esc(k.k)} ${pct(k.p, 0)}</span>`).join("")}</div>
+    <div class="note">各車の1着の確率 × その選手の過去の決まり手の割合から出した目安（10〜11月の4,228レースで実際の割合とほぼ一致）</div></div>` : ""}`;
 }
 const notesHTML = r => r.notes?.length ? `<ul class="notes">${r.notes.map(n => `<li>${esc(n)}</li>`).join("")}</ul>` : "";
 
