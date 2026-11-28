@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-28 16:04",
+ "updated_at": "2026-11-28 16:05",
  "picks": {
   "date": "2026-11-28",
   "races": [
@@ -7242,14 +7242,21 @@
     "race_no": 1,
     "deadline": "15:54",
     "judged_at": "15:48:32",
-    "result": null,
+    "result": {
+     "combo": "3-5-4",
+     "payout": 3790
+    },
     "bets": [],
     "invest": [],
     "ex": [],
     "trio": [],
     "qn": [],
     "wide": [],
-    "wide_result": null,
+    "wide_result": {
+     "combo": "3=4",
+     "payout": 360,
+     "all": "3=4・3=5・4=5"
+    },
     "tenkai": [],
     "pool": [],
     "hit4": [],
@@ -7270,7 +7277,7 @@
       "odds": 3.7,
       "p": 0.2468,
       "ev": 0.849,
-      "hit": null
+      "hit": false
      },
      {
       "combo": "1=3=4",
@@ -7278,12 +7285,21 @@
       "odds": 3.2,
       "p": 0.2172,
       "ev": 0.646,
-      "hit": null
+      "hit": false
      }
     ],
-    "qn_result": null,
-    "ex_result": null,
-    "trio_result": null,
+    "qn_result": {
+     "combo": "3=5",
+     "payout": 1440
+    },
+    "ex_result": {
+     "combo": "3-5",
+     "payout": 1370
+    },
+    "trio_result": {
+     "combo": "3=4=5",
+     "payout": 1780
+    },
     "notes": [
      "1着が出るライン：4-1-6 が 75%",
      "上がり最速：3 早川成矢（直近平均 10.3秒、2位と0.9秒差）",
