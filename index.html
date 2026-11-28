@@ -188,7 +188,7 @@ details.more[open] summary::before{content:"－"}
 .fc{margin-top:12px}
 .fc .lb{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .fc .lb em{font-style:normal;font-weight:400;color:var(--fg)}
-.fcr{display:grid;grid-template-columns:22px minmax(0,4.6em) 1fr 7.4em;gap:6px;align-items:center;font-size:12px;padding-block:2px}
+.fcr{display:grid;grid-template-columns:22px minmax(0,4.6em) 1fr 8.8em;gap:6px;align-items:center;font-size:12px;padding-block:2px}
 .fcr .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c9d2de}
 .fcbar{display:flex;height:12px;border-radius:4px;overflow:hidden;background:rgba(255,255,255,.05)}
 .fcbar i{display:block;height:100%}
@@ -619,11 +619,11 @@ function fcHTML(r) {
   const rows = f.rank.map(x => { const [a, b, c] = x.p;
     return `<div class="fcr">${car(x.car, "sm")}<span class="nm">${esc(nm[x.car] || "")}</span>
       <span class="fcbar" title="1着 ${pct(a, 0)}・2着 ${pct(b, 0)}・3着 ${pct(c, 0)}"><i class="r1" style="width:${w(a)}"></i><i class="r2" style="width:${w(b)}"></i><i class="r3" style="width:${w(c)}"></i></span>
-      <span class="v">1着<b>${pct(a, 0)}</b>・内${pct(a + b + c, 0)}</span></div>`; }).join("");
+      <span class="v">1着<b>${pct(a, 0)}</b>・3着内${pct(a + b + c, 0)}</span></div>`; }).join("");
   const kim = (f.kim || []).map((k, i) => ({ ...k, i })).filter(k => k.p > 0);
   const top = kim.length ? kim.reduce((p, q) => q.p > p.p ? q : p) : null;
   return `<div class="fc"><div class="lb"><span>予想着順</span><em>いちばん来そうな並び ${fcOrder(f).join("→")}</em></div>${rows}
-    <div class="fclg"><span><i class="r1"></i>1着</span><span><i class="r2"></i>2着</span><span><i class="r3"></i>3着</span><span>「内」は3着以内</span></div></div>
+    <div class="fclg"><span><i class="r1"></i>1着</span><span><i class="r2"></i>2着</span><span><i class="r3"></i>3着</span></div></div>
     ${kim.length ? `<div class="fc"><div class="lb"><span>予想決まり手率</span><em>いちばん多いのは${esc(top.k)} ${pct(top.p, 0)}</em></div>
     <div class="kimbar" role="img" aria-label="${kim.map(k => `${esc(k.k)} ${pct(k.p, 0)}`).join("、")}">${kim.map(k => `<span class="k${k.i % 3}" style="flex:${k.p.toFixed(3)}">${k.p >= .22 ? `${esc(k.k)} ${pct(k.p, 0)}` : ""}</span>`).join("")}</div>
     <div class="fclg">${kim.map(k => `<span><i class="k${k.i % 3}"></i>${esc(k.k)} ${pct(k.p, 0)}</span>`).join("")}</div>
