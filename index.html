@@ -232,6 +232,15 @@ details.more[open] summary::before{content:"－"}
 .evtrack b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg)}
 .evr .v{font-family:var(--num);white-space:nowrap}
 .evr .pr{font-size:11px;white-space:nowrap}
+/* 展開予想 */
+.rl{display:grid;grid-template-columns:6.2em 1fr;gap:6px 8px;align-items:start;font-size:12px;padding-block:5px;border-top:1px solid var(--line)}
+.rl:first-of-type{border-top:0}
+.rl>span:first-child{color:var(--muted);font-weight:700;padding-top:3px}
+.rl .ops{display:flex;flex-wrap:wrap;gap:6px 10px}
+.rl .op{display:inline-flex;align-items:center;gap:3px}
+.rl .op .car.dim{opacity:.45}
+.rl .op b{font-family:var(--num);margin-left:2px}
+.rl .op.top b{color:var(--lime)}
 .notes{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;color:#c9d2de}
 .notes li{padding-left:14px;position:relative}
 .notes li::before{content:"";position:absolute;left:0;top:.6em;width:6px;height:6px;border-radius:2px;background:var(--lime);transform:rotate(45deg)}
@@ -634,7 +643,7 @@ function cardBody(r) {
   const main = k ? (k === r.rec ? recBlock(r) : betBlock(r, "yoso")) : miBlock(r);
   const alt = hitBlock(r) + poolBlock(r) + tenkaiBlock(r);
   return main + alt +
-    ((r.lines?.length || r.notes?.length || r.fc) ? `<div class="blk">${linesHTML(r)}${fcHTML(r)}${collapseHTML(r)}${gapHTML(r)}${notesHTML(r)}${riderTable(r)}</div>` : "");
+    ((r.lines?.length || r.notes?.length || r.fc) ? `<div class="blk">${linesHTML(r)}${rolesHTML(r)}${fcHTML(r)}${collapseHTML(r)}${gapHTML(r)}${notesHTML(r)}${riderTable(r)}</div>` : "");
 }
 /* 予想着順（各車の1着・2着・3着の確率）と予想決まり手率（1着の確率 × 選手ごとの過去の決まり手の割合から出した目安） */
 function fcOrder(f) {
@@ -658,6 +667,23 @@ function fcHTML(r) {
     <div class="kimbar" role="img" aria-label="${kim.map(k => `${esc(k.k)} ${pct(k.p, 0)}`).join("、")}">${kim.map(k => `<span class="k${k.i % 3}" style="flex:${k.p.toFixed(3)}">${k.p >= .22 ? `${esc(k.k)} ${pct(k.p, 0)}` : ""}</span>`).join("")}</div>
     <div class="fclg">${kim.map(k => `<span><i class="k${k.i % 3}"></i>${esc(k.k)} ${pct(k.p, 0)}</span>`).join("")}</div>
     <div class="note">各車の1着の確率 × その選手の過去の決まり手の割合から出した目安（10〜11月の4,228レースで実際の割合とほぼ一致）</div></div>` : ""}`;
+}
+/* 展開予想：誘導を切って先行（H）・バック（B）を取るライン、まくり・差しで1着になる選手 */
+function rolesHTML(r) {
+  const R = r.fc?.roles; if (!R) return "";
+  const line = (xs) => xs.filter(x => x.p >= .05).slice(0, 3).map((x, i) => `<span class="op${i ? "" : " top"}">${x.cars.map((c, j) => car(c, "sm" + (j ? " dim" : ""))).join("")}<b>${pct(x.p, 0)}</b></span>`).join("");
+  const one = (xs) => xs.filter(x => x.p >= .02).slice(0, 3).map((x, i) => `<span class="op${i ? "" : " top"}">${car(x.car, "sm")}<span>${esc(r.names?.[x.car] || "")}</span><b>${pct(x.p, 0)}</b></span>`).join("");
+  const rows = [
+    R.lead?.length ? ["誘導を切る", line(R.lead)] : null,
+    R.back?.length ? ["バックを取る", line(R.back)] : null,
+    R.makuri?.length ? ["まくりで1着", one(R.makuri)] : null,
+    R.sashi?.length ? ["差しで1着", one(R.sashi)] : null,
+  ].filter(x => x && x[1]);
+  if (!rows.length) return "";
+  const tac = R.tactic ? Object.entries(R.tactic).map(([c, t]) => `${c}${esc(t)}`).join("・") : "";
+  return `<div class="fc"><div class="lb"><span>展開予想</span><em>先頭の車番が動く選手（薄い車番はライン）</em></div>
+    ${rows.map(([l, h]) => `<div class="rl"><span>${l}</span><span class="ops">${h}</span></div>`).join("")}
+    <div class="note">誘導を切る＝先に動いて誘導員を外し、先行して最終ホームを先頭で通るライン（過去の検証で本命が当たる率70%）。バック＝最終バックを先頭で通るライン（同62%）。まくり・差しは「1着の確率×その選手の決まり手の割合」。${tac ? `記者の予想：${tac}` : ""}</div></div>`;
 }
 /* ラインが崩れる確率（2人以上のラインで、誰も3着に入らない確率。白い線は市場の見積もり） */
 function collapseHTML(r) {
@@ -1026,7 +1052,7 @@ async function load() {
   }
 }
 /* ページ自体の更新：ホーム画面から開いたままだと古いページが残るので、新しいページが出ていたら読み直す */
-const BUILD = "2026-11-28-yoso";
+const BUILD = "2026-11-28-roles";
 let buildAt = 0;
 async function checkBuild(force) {
   if (!force && Date.now() - buildAt < 300000) return;

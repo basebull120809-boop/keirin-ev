@@ -22,6 +22,7 @@ TIP = {"◎": 3, "○": 2, "▲": 1.5, "△": 1, "×": 0.5, "注": 0.5}
 LEAD_MIN = 0.5          # 2車単を記録する主導権確率の下限
 STAKE = 1000
 PATH = "models/tenkai.json"
+PATH_H = "models/tenkai_h.json"   # 目標＝H（誘導を切って先行し、最終ホームを先頭で通過した選手のライン）
 
 
 def lines(ent):

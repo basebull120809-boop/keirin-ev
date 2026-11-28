@@ -320,6 +320,9 @@ def _judge_hit(date, venue, rid, dl, t, day, html, ent, od, his, X, P_res):
         det = race_details(P_res, X["T"], ent, his, od) if P_res is not None and fc is not None else None
         if det:
             fc.update(det)
+        if fc is not None:                       # 展開予想（誘導を切る・バック・まくり・差し）
+            from .insights import race_roles
+            fc["roles"] = race_roles(ent, fc)
     except Exception as e:
         print("追加情報の作成失敗", rid, e, flush=True)
     with open(day / "notes.jsonl", "a", encoding="utf-8") as f:
@@ -626,6 +629,9 @@ def judge(date, venue, rid, model, rules, bank, dl=None, inv_rules=None):
         det = race_details(P, X["T"], ent, his, od) if fc is not None else None
         if det:
             fc.update(det)
+        if fc is not None:                       # 展開予想（誘導を切る・バック・まくり・差し）
+            from .insights import race_roles
+            fc["roles"] = race_roles(ent, fc)
     except Exception as e:
         print("追加情報の作成失敗", rid, e, flush=True)
     if tk_note:
