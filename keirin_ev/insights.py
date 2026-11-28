@@ -308,3 +308,42 @@ def race_details(P, T, ent, his, odds):
                                  m=round(float(Q[none3].sum()), 4) if Q.sum() > 0 else None))
         collapse.sort(key=lambda x: -x["p"])
     return dict(riders=riders, collapse=collapse)
+
+
+def race_roles(ent, fc):
+    """展開予想（ページ用）：誘導を切って先行（H）・バック（B）を取るラインの確率と、まくり・差しで1着になる確率
+
+    lead / back : 展開予想モデル（tenkai.py。ライン先頭の B・S回数、逃げ・捲り回数、得点、記者の展開予想などから）。
+                  H は検証期間の本命的中70%（B回数最多の選手なら63%）、B は62%（同57%）
+    makuri / sashi : 各車の1着の確率 × 選手の決まり手の割合（race_forecast と同じ考え方）
+    tactic : 記者の展開予想（出走表の「先行」「まくり」「追込」など）
+    """
+    from . import tenkai
+    out = {}
+    e = ent.copy(); e["car"] = e["car"].astype(int)
+    for key, path in (("lead", tenkai.PATH_H), ("back", tenkai.PATH)):
+        try:
+            m = tenkai.load(path)
+            H, ee = tenkai.lines(e)
+            if H.empty:
+                continue
+            H = H.assign(p=tenkai.predict(H, m["beta"])).sort_values("p", ascending=False)
+            mem = ee.sort_values("line_pos").groupby("lkey")["car"].apply(lambda s: [int(x) for x in s]).to_dict()
+            out[key] = [dict(head=int(r.car), cars=mem.get(r.lkey, [int(r.car)]), p=round(float(r.p), 4)) for r in H.itertuples()][:4]
+        except Exception as ex:
+            print("展開予想の計算失敗:", key, ex, flush=True)
+    if fc and fc.get("rank"):
+        es = e.set_index("car")
+        mk, ss = [], []
+        for r in fc["rank"]:
+            c = r["car"]
+            if c not in es.index:
+                continue
+            sh = kim_share(es.loc[c])
+            mk.append(dict(car=c, p=round(float(r["p"][0] * sh[1]), 4)))
+            ss.append(dict(car=c, p=round(float(r["p"][0] * sh[2]), 4)))
+        out["makuri"] = sorted(mk, key=lambda x: -x["p"])[:4]
+        out["sashi"] = sorted(ss, key=lambda x: -x["p"])[:4]
+    if "tactic" in e:
+        out["tactic"] = {int(c): str(t) for c, t in zip(e["car"], e["tactic"].fillna("")) if str(t)}
+    return out

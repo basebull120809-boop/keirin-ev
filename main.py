@@ -291,6 +291,7 @@ def main():
         try:                                     # 展開予想（どのラインが主導権を取るか）
             from keirin_ev import tenkai
             tenkai.train()
+            tenkai.train(target="H", path=tenkai.PATH_H)   # 誘導を切って先行する選手（H）の予想（ページの展開予想用）
         except Exception as e:
             print("展開予想の学習失敗:", e)
         try:                                     # 展開シナリオ予想（判定ではこれを最優先で使う）
