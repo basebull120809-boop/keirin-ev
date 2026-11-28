@@ -211,7 +211,7 @@
    }
   ]
  },
- "updated_at": "2026-11-28 08:59",
+ "updated_at": "2026-11-28 09:02",
  "picks": {
   "date": "2026-11-28",
   "races": [
@@ -617,7 +617,16 @@
       ],
       "p": 0.1187
      }
-    ]
+    ],
+    "names": {
+     "1": "岩原健馬",
+     "2": "米村光星",
+     "3": "長野和弘",
+     "4": "宇根秀俊",
+     "5": "櫻木雄太",
+     "6": "田川辰二",
+     "7": "土井勲"
+    }
    },
    {
     "venue": "佐世保",
@@ -656,7 +665,16 @@
       ],
       "p": 0.1391
      }
-    ]
+    ],
+    "names": {
+     "1": "三木翔太",
+     "2": "阿部龍也",
+     "3": "竜門孝宗",
+     "4": "川口秀人",
+     "5": "横田政直",
+     "6": "梶應弘樹",
+     "7": "野崎修一"
+    }
    },
    {
     "venue": "小松島",
@@ -696,7 +714,16 @@
       ],
       "p": 0.1197
      }
-    ]
+    ],
+    "names": {
+     "1": "八谷誠賢",
+     "2": "上田学",
+     "3": "大利航平",
+     "4": "在本直樹",
+     "5": "高倉俊宏",
+     "6": "穴井利久",
+     "7": "中村泰輔"
+    }
    },
    {
     "venue": "佐世保",
@@ -707,7 +734,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小松島",
@@ -718,7 +746,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "佐世保",
@@ -729,7 +758,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小松島",
@@ -740,7 +770,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "佐世保",
@@ -751,7 +782,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小松島",
@@ -762,7 +794,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "佐世保",
@@ -773,7 +806,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "佐世保",
@@ -784,7 +818,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "佐世保",
@@ -795,7 +830,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -806,7 +842,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -817,7 +854,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -828,7 +866,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -839,7 +878,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -850,7 +890,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -861,7 +902,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -872,7 +914,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -883,7 +926,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -894,7 +938,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -905,7 +950,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -916,7 +962,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -927,7 +974,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -938,7 +986,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -949,7 +998,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -960,7 +1010,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -971,7 +1022,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -982,7 +1034,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -993,7 +1046,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -1004,7 +1058,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1015,7 +1070,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "富山",
@@ -1026,7 +1082,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1037,7 +1094,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1048,7 +1106,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "平塚",
@@ -1059,7 +1118,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1070,7 +1130,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1081,7 +1142,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1092,7 +1154,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1103,7 +1166,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1114,7 +1178,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1125,7 +1190,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1136,7 +1202,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1147,7 +1214,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1158,7 +1226,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1169,7 +1238,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1180,7 +1250,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1191,7 +1262,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1202,7 +1274,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1213,7 +1286,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1224,7 +1298,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1235,7 +1310,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1246,7 +1322,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1257,7 +1334,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "小倉",
@@ -1268,7 +1346,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松阪",
@@ -1279,7 +1358,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1290,7 +1370,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1301,7 +1382,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1312,7 +1394,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1323,7 +1406,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1334,7 +1418,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1345,7 +1430,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1356,7 +1442,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1367,7 +1454,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1378,7 +1466,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1389,7 +1478,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1400,7 +1490,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1411,7 +1502,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "久留米",
@@ -1422,7 +1514,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    },
    {
     "venue": "松戸",
@@ -1433,7 +1526,8 @@
     "reason": "",
     "mi": null,
     "notes": [],
-    "lines": []
+    "lines": [],
+    "names": {}
    }
   ]
  },
